@@ -37,10 +37,14 @@ public class GameScreen extends ScreenAdapter {
 
     @Override
     public void render(float delta) {
-        ScreenUtils.clear(1, 1, 1, 1); //clears the buffer after each frame with the chosen color » white
+        ScreenUtils.clear(1, 1, 1, 1); // clears the buffer after each frame with the chosen color » white
+
+        // Defines active input method for moving the "character"
         position.x += inputAxes.adAxis() * delta * velocity;
         position.y += inputAxes.wsAxis() * delta * velocity;
+        // Configure cursor catching
         Gdx.input.setCursorCatched(true);
+        // Quitting with "ESC"
         if(Gdx.input.isKeyPressed(Input.Keys.ESCAPE))Gdx.app.exit();
 
 
