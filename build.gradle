@@ -43,7 +43,7 @@ project(":desktop") {
     apply plugin: "java-library"
 
 
-    dependencies {
+    dependencies { // seems to be a false positve of IDEA if an error shows up
         implementation project(":core")
         api "com.badlogicgames.gdx:gdx-backend-lwjgl3:$gdxVersion"
         api "com.badlogicgames.gdx:gdx-platform:$gdxVersion:natives-desktop"
@@ -58,7 +58,7 @@ project(":core") {
     apply plugin: "java-library"
 
 
-    dependencies {
+    dependencies { // seems to be a false positve of IDEA if an error shows up
         api "com.badlogicgames.gdx:gdx:$gdxVersion"
         api "com.badlogicgames.gdx:gdx-bullet:$gdxVersion"
         api "com.badlogicgames.gdx:gdx-freetype:$gdxVersion"

@@ -18,4 +18,12 @@ public class util {
     public static int getCentreY() {
         return Gdx.graphics.getHeight() / 2;
     }
+
+    public static int getRealCentreX(int width){
+        return Gdx.graphics.getWidth() / 2 - width / 2;
+    }
+
+    public static int getRealCentreY(int height){
+        return Gdx.graphics.getHeight() / 2 - height / 2;
+    }
 }

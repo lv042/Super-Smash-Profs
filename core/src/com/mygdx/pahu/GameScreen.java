@@ -17,41 +17,55 @@ public class GameScreen extends ScreenAdapter {
     Texture img;
     ShapeRenderer shaprenderer;
     int size = 100;
-    Vector2 position = new Vector2 (100.0f, 100.0f);
+    Vector2 position = new Vector2 (util.getRealCentreX(size / 2), util.getRealCentreY(size / 2));
     int velocity = 300;
+    SpriteBatch playerBatch;
+    Texture playerTexture;
+
+
+
+
 
     public GameScreen() {
-        /*batch = new SpriteBatch();
-        img = new Texture("badlogic.jpg");*/
+        batch = new SpriteBatch();
+        img = new Texture("badlogic.jpg");
         shaprenderer = new ShapeRenderer();
+        playerBatch = new SpriteBatch();
+        playerTexture = new Texture("knight.png");
 
     }
 
     @Override
     public void render(float delta) {
+        ScreenUtils.clear(1, 1, 1, 1); //clears the buffer after each frame with the chosen color » white
         position.x += inputAxes.adAxis() * delta * velocity;
         position.y += inputAxes.wsAxis() * delta * velocity;
         Gdx.input.setCursorCatched(true);
         if(Gdx.input.isKeyPressed(Input.Keys.ESCAPE))Gdx.app.exit();
-        ScreenUtils.clear(1, 1, 1, 1); //clears the buffer after each frame with the chosen color » white
 
- /*       batch.begin();
+
+        batch.begin();
         batch.draw(img, 0, 0); //draws  texture at (x|y) location
-        batch.end();*/
+        batch.end();
         Gdx.input.setCursorPosition(util.getCentreX(),util.getCentreY());
         shaprenderer.begin(ShapeRenderer.ShapeType.Filled);
         shaprenderer.setColor(Color.BLUE);
-        shaprenderer.circle(position.x, position.y, size, size);
+        shaprenderer.circle(position.x, position.y, size);
         shaprenderer.end();
-
         //GameClass.INSTANCE.setScreen(new MainMenuScreen());
+
+        playerBatch.begin();
+        playerBatch.draw(playerTexture, 100,500);
+        playerBatch.end();
     }
 
     @Override
     public void dispose() {
         //Frees memory since openGL works in c and therefore has no garbage collector
+        shaprenderer.dispose();
         batch.dispose();
         img.dispose();
+        playerBatch.dispose();
     }
 
     @Override
