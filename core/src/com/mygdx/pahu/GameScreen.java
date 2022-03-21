@@ -1,27 +1,49 @@
 package com.mygdx.pahu;
 
-import com.badlogic.gdx.Screen;
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input;
 import com.badlogic.gdx.ScreenAdapter;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
+import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.ScreenUtils;
+import com.mygdx.pahu.util;
+import com.mygdx.pahu.inputAxes;
 
 public class GameScreen extends ScreenAdapter {
     SpriteBatch batch;
     Texture img;
+    ShapeRenderer shaprenderer;
+    int size = 100;
+    Vector2 position = new Vector2 (100.0f, 100.0f);
+    int velocity = 300;
 
     public GameScreen() {
-        batch = new SpriteBatch();
-        img = new Texture("badlogic.jpg");
+        /*batch = new SpriteBatch();
+        img = new Texture("badlogic.jpg");*/
+        shaprenderer = new ShapeRenderer();
 
     }
 
     @Override
     public void render(float delta) {
-        ScreenUtils.clear(0, 0, 0, 1); //clears the buffer after each frame with the chosen color » white
-        batch.begin();
-        batch.draw(img, 0, 0); //draws  texture at (xy) location
-        batch.end();
+        position.x += inputAxes.adAxis() * delta * velocity;
+        position.y += inputAxes.wsAxis() * delta * velocity;
+        Gdx.input.setCursorCatched(true);
+        if(Gdx.input.isKeyPressed(Input.Keys.ESCAPE))Gdx.app.exit();
+        ScreenUtils.clear(1, 1, 1, 1); //clears the buffer after each frame with the chosen color » white
+
+ /*       batch.begin();
+        batch.draw(img, 0, 0); //draws  texture at (x|y) location
+        batch.end();*/
+        Gdx.input.setCursorPosition(util.getCentreX(),util.getCentreY());
+        shaprenderer.begin(ShapeRenderer.ShapeType.Filled);
+        shaprenderer.setColor(Color.BLUE);
+        shaprenderer.circle(position.x, position.y, size, size);
+        shaprenderer.end();
+
         //GameClass.INSTANCE.setScreen(new MainMenuScreen());
     }
 
@@ -36,4 +58,5 @@ public class GameScreen extends ScreenAdapter {
     public void hide() {
         this.dispose();
     }
+
 }

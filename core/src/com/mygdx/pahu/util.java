@@ -3,19 +3,19 @@ package com.mygdx.pahu;
 import com.badlogic.gdx.Gdx;
 
 public class util {
-    public int getLength() {
+    public static int getLength() {
         return Gdx.graphics.getWidth();
     }
 
-    public int getHeight() {
+    public static int getHeight() {
         return Gdx.graphics.getHeight();
     }
 
-    public int getCentreX() {
+    public static int getCentreX() {
         return Gdx.graphics.getWidth() / 2;
     }
 
-    public int getCentreY() {
+    public static int getCentreY() {
         return Gdx.graphics.getHeight() / 2;
     }
 }
