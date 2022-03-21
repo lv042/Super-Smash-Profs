@@ -7,6 +7,8 @@ import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
+import com.badlogic.gdx.maps.tiled.TiledMap;
+import com.badlogic.gdx.maps.tiled.TmxMapLoader;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.ScreenUtils;
 import com.mygdx.pahu.util;
@@ -61,6 +63,9 @@ public class GameScreen extends ScreenAdapter {
         playerBatch.begin();
         playerBatch.draw(playerTexture, 100,500);
         playerBatch.end();
+
+        TiledMap map = new TmxMapLoader().load("Simple.tmx");
+
     }
 
     @Override
