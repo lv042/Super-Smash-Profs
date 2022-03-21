@@ -1,71 +1,94 @@
 package com.mygdx.pahu;
 
+
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.ScreenAdapter;
+import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
+import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
 import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.math.Vector3;
+import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
+import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.utils.ScreenUtils;
+import helper.*;
+import helper.TileMapHelper;
+
 import com.mygdx.pahu.util;
 import com.mygdx.pahu.inputAxes;
 
+import static helper.Constants.PPM;
+
 public class GameScreen extends ScreenAdapter {
-    SpriteBatch batch;
-    Texture img;
-    ShapeRenderer shaprenderer;
-    int size = 100;
-    Vector2 position = new Vector2 (util.getRealCentreX(size / 2), util.getRealCentreY(size / 2));
-    int velocity = 300;
-    SpriteBatch playerBatch;
-    Texture playerTexture;
+
+    private Texture texture;
+    private SpriteBatch batch;
+    private Sprite sprite;
+    private AssetManager assetManager;
+    private OrthographicCamera camera;
+    private World world;
+    private Box2DDebugRenderer box2DDebugRenderer; //allows to see objects without textures
+
+    private OrthogonalTiledMapRenderer orthogonalTiledMapRenderer;
+    private    TileMapHelper tileMapHelper;
+
+    public GameScreen(OrthographicCamera camera) {
+        this.assetManager = new AssetManager();
+        this.texture = new Texture("knight.png");
+        this.batch = new SpriteBatch();
+        this.sprite = new Sprite(texture);
+
+        this.camera = camera;
+        this.world = new World(new Vector2(0,0), false);
+        this.box2DDebugRenderer = new Box2DDebugRenderer();
+
+        this.tileMapHelper = new TileMapHelper();
+        this.orthogonalTiledMapRenderer = tileMapHelper.setupMap();
 
 
 
 
 
-    public GameScreen() {
-        batch = new SpriteBatch();
-        img = new Texture("badlogic.jpg");
-        shaprenderer = new ShapeRenderer();
-        playerBatch = new SpriteBatch();
-        playerTexture = new Texture("knight.png");
 
     }
 
     @Override
     public void render(float delta) {
+        this.update(delta);
         ScreenUtils.clear(1, 1, 1, 1); //clears the buffer after each frame with the chosen color » white
-        position.x += inputAxes.adAxis() * delta * velocity;
-        position.y += inputAxes.wsAxis() * delta * velocity;
-        Gdx.input.setCursorCatched(true);
-        if(Gdx.input.isKeyPressed(Input.Keys.ESCAPE))Gdx.app.exit();
-
-
+        orthogonalTiledMapRenderer.render();
         batch.begin();
-        batch.draw(img, 0, 0); //draws  texture at (x|y) location
+        //render objects
+        sprite.draw(batch);
+        sprite.rotate(delta * 90.0f);
         batch.end();
-        Gdx.input.setCursorPosition(util.getCentreX(),util.getCentreY());
-        shaprenderer.begin(ShapeRenderer.ShapeType.Filled);
-        shaprenderer.setColor(Color.BLUE);
-        shaprenderer.circle(position.x, position.y, size);
-        shaprenderer.end();
-        //GameClass.INSTANCE.setScreen(new MainMenuScreen());
+        box2DDebugRenderer.render(world, camera.combined.scl(PPM));
+    }
 
-        playerBatch.begin();
-        playerBatch.draw(playerTexture, 100,500);
-        playerBatch.end();
+    private void update(float delta) {
+        world.step(1/60, 6, 2);
+        cameraUpdate();
+
+        batch.setProjectionMatrix(camera.combined);
+
+        orthogonalTiledMapRenderer.setView(camera);
+
+        if(Gdx.input.isKeyPressed(Input.Keys.ESCAPE)) Gdx.app.exit();
+    }
+
+    private void cameraUpdate() {
+        camera.position.set(new Vector3(0,0,0));
     }
 
     @Override
     public void dispose() {
-        //Frees memory since openGL works in c and therefore has no garbage collector
-        shaprenderer.dispose();
-        batch.dispose();
-        img.dispose();
-        playerBatch.dispose();
+
     }
 
     @Override

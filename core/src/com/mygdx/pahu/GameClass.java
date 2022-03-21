@@ -1,15 +1,18 @@
 package com.mygdx.pahu;
 
-
 import com.badlogic.gdx.ApplicationAdapter;
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.utils.ScreenUtils;
 
 public class GameClass extends Game {
 
+	private int screenWidth;
+	private int screenHeight;
+	private OrthographicCamera camera;
 
 	public static GameClass INSTANCE;
 
@@ -19,7 +22,11 @@ public class GameClass extends Game {
 
 	@Override
 	public void create () {
-		INSTANCE.setScreen(new GameScreen());
+		this.screenWidth = Gdx.graphics.getWidth();
+		this.screenHeight = Gdx.graphics.getHeight();
+		this.camera = new OrthographicCamera();
+		this.camera.setToOrtho(false, screenWidth, screenHeight);
+		INSTANCE.setScreen(new GameScreen(camera));
 
 
 	}

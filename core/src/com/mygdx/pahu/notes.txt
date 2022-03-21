@@ -1,0 +1,63 @@
+package com.mygdx.pahu;
+
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input;
+import com.badlogic.gdx.ScreenAdapter;
+import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.Sprite;
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
+import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.utils.ScreenUtils;
+import com.mygdx.pahu.util;
+import com.mygdx.pahu.inputAxes;
+
+public class GameScreen extends ScreenAdapter {
+    SpriteBatch batch;
+    Texture img;
+    ShapeRenderer shaprenderer;
+    int size = 100;
+    Vector2 position = new Vector2 (util.getRealCentreX(size / 2), util.getRealCentreY(size / 2));
+    int velocity = 300;
+    SpriteBatch playerBatch;
+    Texture playerTexture;
+    Sprite playerSprite;
+
+
+
+
+
+    public GameScreen() {
+        batch = new SpriteBatch();
+        img = new Texture("badlogic.jpg");
+        shaprenderer = new ShapeRenderer();
+        playerBatch = new SpriteBatch();
+        playerTexture = new Texture("knight.png");
+        playerSprite = new Sprite(playerTexture);
+        
+
+    }
+
+    @Override
+    public void render(float delta) {
+        ScreenUtils.clear(1, 1, 1, 1); //clears the buffer after each frame with the chosen color » white
+
+
+    }
+
+    @Override
+    public void dispose() {
+        //Frees memory since openGL works in c and therefore has no garbage collector
+        shaprenderer.dispose();
+        batch.dispose();
+        img.dispose();
+        playerBatch.dispose();
+    }
+
+    @Override
+    public void hide() {
+        this.dispose();
+    }
+
+}

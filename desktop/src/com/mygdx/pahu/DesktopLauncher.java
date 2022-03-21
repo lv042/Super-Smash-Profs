@@ -14,8 +14,8 @@ public class DesktopLauncher {
 		int height = 1080;
 		boolean useFullScreenMode = false;
 		boolean useOwnResolution = false;
-		boolean useVSync = true;
-		int fps = 120;
+		boolean useVSync = false;
+		int fps = 60;
 
 		config.setTitle("Our Game");
 		config.setWindowIcon(iconPath);
