@@ -39,6 +39,11 @@ public class GameScreen extends ScreenAdapter {
     private    TileMapHelper tileMapHelper;
 
 
+    /**
+     * The Game Screen
+     * @param camera
+     * The camera which will be used for displaying the GameScreen
+     */
     public GameScreen(OrthographicCamera camera) {
         this.assetManager = new AssetManager();
         this.texture = new Texture("knight.png");
@@ -59,10 +64,15 @@ public class GameScreen extends ScreenAdapter {
 
     }
 
+    /**
+     * Renders the GameScreen
+     */
     @Override
     public void render(float delta) {
         this.update(delta);
         ScreenUtils.clear(1, 1, 1, 1); //clears the buffer after each frame with the chosen color » white
+
+        // Configure OrthogonalTiledMapRenderer
         orthogonalTiledMapRenderer.setView(camera);
         orthogonalTiledMapRenderer.render();
         batch.begin();
@@ -71,9 +81,14 @@ public class GameScreen extends ScreenAdapter {
         sprite.rotate(delta * 25.0f);
         batch.end();
         box2DDebugRenderer.render(world, camera.combined.scl(PPM));
-        camera.update();
+
     }
 
+    /**
+     * Updates the GameScreen
+     * @param delta
+     * The time between frames
+     */
     private void update(float delta) {
         world.step(1/60, 6, 2);
         cameraUpdate();
@@ -82,11 +97,17 @@ public class GameScreen extends ScreenAdapter {
 
         orthogonalTiledMapRenderer.setView(camera);
 
+        // Exit on ESC press
         if(Gdx.input.isKeyPressed(Input.Keys.ESCAPE)) Gdx.app.exit();
     }
 
+    /**
+     * Updates the Camera. Needs to be executed at least once per render.
+     */
     private void cameraUpdate() {
+        // Set Camera position 
         camera.position.set(new Vector3(10,10,0));
+        camera.update();
     }
 
     @Override

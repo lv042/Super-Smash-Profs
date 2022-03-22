@@ -12,7 +12,12 @@ public class TileMapHelper {
 
     }
 
+    /**
+     *
+     * @return
+     */
     public OrthogonalTiledMapRenderer setupMap(){
+
         float unitScale = 1 / 16f;
         tiledMap = new TmxMapLoader().load("Simple.tmx");
         return new OrthogonalTiledMapRenderer(tiledMap, unitScale);
