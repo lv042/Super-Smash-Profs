@@ -38,6 +38,7 @@ public class GameScreen extends ScreenAdapter {
     private OrthogonalTiledMapRenderer orthogonalTiledMapRenderer;
     private    TileMapHelper tileMapHelper;
 
+
     public GameScreen(OrthographicCamera camera) {
         this.assetManager = new AssetManager();
         this.texture = new Texture("knight.png");
@@ -62,13 +63,15 @@ public class GameScreen extends ScreenAdapter {
     public void render(float delta) {
         this.update(delta);
         ScreenUtils.clear(1, 1, 1, 1); //clears the buffer after each frame with the chosen color » white
+        orthogonalTiledMapRenderer.setView(camera);
         orthogonalTiledMapRenderer.render();
         batch.begin();
         //render objects
         sprite.draw(batch);
-        sprite.rotate(delta * 90.0f);
+        sprite.rotate(delta * 25.0f);
         batch.end();
         box2DDebugRenderer.render(world, camera.combined.scl(PPM));
+        camera.update();
     }
 
     private void update(float delta) {
@@ -83,7 +86,7 @@ public class GameScreen extends ScreenAdapter {
     }
 
     private void cameraUpdate() {
-        camera.position.set(new Vector3(0,0,0));
+        camera.position.set(new Vector3(10,10,0));
     }
 
     @Override
