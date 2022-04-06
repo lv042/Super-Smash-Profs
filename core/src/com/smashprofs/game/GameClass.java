@@ -119,7 +119,7 @@ public class GameClass extends Game {
 
 	}
 
-	public void updateLuca (float deltaTime) {
+	public void updateHero (float deltaTime) {
 		if (deltaTime == 0) return;
 		if (deltaTime > 0.1f) deltaTime = 0.1f; // I dont know whats going on here
 

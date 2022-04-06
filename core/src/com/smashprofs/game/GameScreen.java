@@ -135,7 +135,7 @@ public class GameScreen extends ScreenAdapter {
      */
     private void update(float delta) {
         world.step(1/60, 6, 2);
-        GameClass.INSTANCE.updateLuca(delta);
+        GameClass.INSTANCE.updateHero(delta);
         cameraUpdate();
 
         //batch.setProjectionMatrix(camera.combined);
