@@ -17,10 +17,26 @@ import java.util.concurrent.ScheduledExecutorService;
 
 public class PlayerClass extends Sprite {
 
+    private Vector2 poistion;
+
+    public Vector2 getPosition() {
+        return poistion;
+    }
+
+    private float attackReach = 0.13f;
+
+    public float getAttackReach() {
+        return attackReach;
+    }
+
     public static final float PPM = 100;
     private final World world;
     public float damping = 0.9995f; //the closer this value is to zero the more the player will slow down
     InputState currentInputState;
+
+    public void updatePosition(float deltatime) {
+        poistion = b2dbody.getPosition();
+    }
 
     public enum InputState {
         WASD, ARROWS
@@ -34,6 +50,12 @@ public class PlayerClass extends Sprite {
     private int maxExtraJumps = 1; //currently, only works with one extra jump
     private int jumpCount = 0;
     private BodyDef bdef;
+    boolean standardAttackInput = false;
+
+    public boolean isStandardAttackInput() {
+        return standardAttackInput;
+    }
+
     private Vector2 spawnpoint;
     private Body b2dbody;
     private float maxVelocity = 1.2f;
@@ -177,16 +199,19 @@ public class PlayerClass extends Sprite {
         int leftRightInput = 0;
         boolean jumpInput = false;
 
+
         if (currentInputState == InputState.WASD) {
             leftRightInput = util.adAxis();
             //upDownInput = util.wsAxis();
-            jumpInput = Gdx.input.isKeyPressed(Input.Keys.W);
+            jumpInput = Gdx.input.isKeyJustPressed(Input.Keys.W);
+            standardAttackInput = Gdx.input.isKeyJustPressed(Input.Keys.V);
 
         }
         if (currentInputState == InputState.ARROWS) {
             leftRightInput = util.leftrightAxis();
             //upDownInput = util.updownAxis();
-            jumpInput = Gdx.input.isKeyPressed(Input.Keys.UP) || Gdx.input.isKeyPressed(Input.Keys.SPACE);
+            jumpInput = Gdx.input.isKeyJustPressed(Input.Keys.UP) || Gdx.input.isKeyJustPressed(Input.Keys.SPACE);
+            standardAttackInput = Gdx.input.isKeyJustPressed(Input.Keys.ENTER);
         }
 
 
@@ -217,7 +242,7 @@ public class PlayerClass extends Sprite {
 
                 }
             };
-            timer.schedule(task, 300); // delay in milliseconds
+            timer.schedule(task, 100); // delay in milliseconds
 
         }
 
@@ -277,5 +302,7 @@ public class PlayerClass extends Sprite {
             getB2dbody().setLinearVelocity(new Vector2( pushBack, getB2dbody().getLinearVelocity().y) );
         }
     }
+
+
 
 }

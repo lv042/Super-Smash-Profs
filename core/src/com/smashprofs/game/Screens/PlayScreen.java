@@ -2,6 +2,7 @@ package com.smashprofs.game.Screens;
 
 
 import com.smashprofs.game.GameClass;
+import com.smashprofs.game.Helper.CombatManager;
 import com.smashprofs.game.Helper.util;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
@@ -44,6 +45,8 @@ public class PlayScreen implements Screen {
     private OrthoCachedTiledMapRenderer tiledMapRenderer;
     private PlayerClass playerOne;
     private PlayerClass playerTwo;
+
+    private CombatManager combatManager;
 
 
     //Box2D
@@ -88,8 +91,11 @@ public class PlayScreen implements Screen {
         playerOne.checkGrounded();
         playerTwo.checkGrounded();
 
+        playerOne.updatePosition(deltatime);
+        playerTwo.updatePosition(deltatime);
 
-
+        //combatManager
+        combatManager.update(deltatime, playerOne, playerTwo);
 
 
     }
@@ -100,7 +106,7 @@ public class PlayScreen implements Screen {
 
     public PlayScreen(GameClass game) {
 
-
+        this.combatManager = CombatManager.getCombatManager_INSTANCE();
         this.game = game;
         cameragame = new OrthographicCamera();
         viewport = new FillViewport(GameClass.V_WIDTH / PPM, GameClass.V_HEIGHT / PPM, cameragame);
