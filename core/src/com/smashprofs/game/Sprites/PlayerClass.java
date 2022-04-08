@@ -11,15 +11,32 @@ import com.smashprofs.game.Helper.util;
 
 import java.util.Timer;
 import java.util.TimerTask;
+import com.smashprofs.game.Screens.PlayScreen;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 
 public class PlayerClass extends Sprite {
 
+    private Vector2 poistion;
+
+    public Vector2 getPosition() {
+        return poistion;
+    }
+
+    private float attackReach = 0.13f;
+
+    public float getAttackReach() {
+        return attackReach;
+    }
+
     public static final float PPM = 100;
     private final World world;
     public float damping = 0.9995f; //the closer this value is to zero the more the player will slow down
     InputState currentInputState;
+
+    public void updatePosition(float deltatime) {
+        poistion = b2dbody.getPosition();
+    }
 
     public enum InputState {
         WASD, ARROWS
@@ -28,10 +45,18 @@ public class PlayerClass extends Sprite {
     float playerCollisionBoxRadius = 5;
     boolean isGrounded = true;
     private float respawnDamping = 0.1f;
+
+    private boolean collideWithOtherPlayers = false;
     private int maxExtraJumps = 1; //currently, only works with one extra jump
     private int jumpCount = 0;
     private BodyDef bdef;
-    private Vector2 spawnpoint = new Vector2(90, 90);
+    boolean standardAttackInput = false;
+
+    public boolean isStandardAttackInput() {
+        return standardAttackInput;
+    }
+
+    private Vector2 spawnpoint;
     private Body b2dbody;
     private float maxVelocity = 1.2f;
     private boolean isExtraJumpReady;
@@ -46,10 +71,16 @@ public class PlayerClass extends Sprite {
     private SpriteBatch batch;
     private Sprite sprite;
 
-    public PlayerClass(World world, InputState inputState) {
+    public PlayerClass(World world, InputState inputState, Vector2 spawnpoint) {
         this.world = world;
+        this.currentInputState = inputState;
+        this.spawnpoint = spawnpoint;
+
+
         definePlayer(inputState);
     }
+    
+    private boolean facingRight = true;
 
     public float getRespawnDamping() {
         return respawnDamping;
@@ -78,8 +109,6 @@ public class PlayerClass extends Sprite {
     public float getMaxVelocity() {
         return maxVelocity;
     }
-
-
 
     public int getJumpCOunt() {
         return jumpCount;
@@ -144,6 +173,14 @@ public class PlayerClass extends Sprite {
 
 
         fDef.shape = shape;
+
+        if(collideWithOtherPlayers) {
+            fDef.filter.groupIndex = 0;
+        }
+        else {
+            fDef.filter.groupIndex = -1;
+        }
+
 //        fDef.density = 1;
 //        fDef.restitution = 0.1f;
 //        fDef.friction = 0.5f;
@@ -151,7 +188,6 @@ public class PlayerClass extends Sprite {
 
         b2dbody.createFixture(fDef);
 
-        this.currentInputState = inputState;
 
 
     }
@@ -163,16 +199,19 @@ public class PlayerClass extends Sprite {
         int leftRightInput = 0;
         boolean jumpInput = false;
 
+
         if (currentInputState == InputState.WASD) {
             leftRightInput = util.adAxis();
             //upDownInput = util.wsAxis();
-            jumpInput = Gdx.input.isKeyPressed(Input.Keys.W);
+            jumpInput = Gdx.input.isKeyJustPressed(Input.Keys.W);
+            standardAttackInput = Gdx.input.isKeyJustPressed(Input.Keys.V);
 
         }
         if (currentInputState == InputState.ARROWS) {
             leftRightInput = util.leftrightAxis();
             //upDownInput = util.updownAxis();
-            jumpInput = Gdx.input.isKeyPressed(Input.Keys.UP) || Gdx.input.isKeyPressed(Input.Keys.SPACE);
+            jumpInput = Gdx.input.isKeyJustPressed(Input.Keys.UP) || Gdx.input.isKeyJustPressed(Input.Keys.SPACE);
+            standardAttackInput = Gdx.input.isKeyJustPressed(Input.Keys.ENTER);
         }
 
 
@@ -203,7 +242,7 @@ public class PlayerClass extends Sprite {
 
                 }
             };
-            timer.schedule(task, 300); // delay in milliseconds
+            timer.schedule(task, 100); // delay in milliseconds
 
         }
 
@@ -227,8 +266,6 @@ public class PlayerClass extends Sprite {
         return false;
     }
     
-    
-   
     //Check if the player is touching the ground
     public void checkGrounded() {
         if (b2dbody.getLinearVelocity().y == 0) {
@@ -245,6 +282,26 @@ public class PlayerClass extends Sprite {
 
     }
 
+    public void respawnPlayers() {
+        if(reachedWorldEdge()){
+            //getB2dbody().applyLinearImpulse(new Vector2(0, 2f), getB2dbody().getWorldCenter(), true);
+            getB2dbody().setLinearVelocity(new Vector2(getB2dbody().getLinearVelocity().x * getRespawnDamping(), 5f));
+            System.out.println("Player respawn jump");
+        }
+
+    }
+
+    public void limitPlayersToEdge(){
+        //sets player velocity to 0 if they are at the edge of the map
+        float pushBack = 1f;
+
+        if(getB2dbody().getPosition().x > PlayScreen.getViewport().getWorldWidth()){
+            getB2dbody().setLinearVelocity(new Vector2(-pushBack, getB2dbody().getLinearVelocity().y));
+        }
+        if(getB2dbody().getPosition().x < 0){
+            getB2dbody().setLinearVelocity(new Vector2( pushBack, getB2dbody().getLinearVelocity().y) );
+        }
+    }
 
 
 
