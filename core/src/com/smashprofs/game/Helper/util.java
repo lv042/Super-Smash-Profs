@@ -57,7 +57,7 @@ public class util {
     public static void setupMusic(boolean playMusic) {
         //music from https://www.fesliyanstudios.com/royalty-free-music/download/funny-bit/2399 -> royalty free
 
-        Music gameSong = Gdx.audio.newMusic(Gdx.files.internal("music/beste music ever :).wav"));
+        Music gameSong = Gdx.audio.newMusic(Gdx.files.internal("music/beste music ever.wav"));
 
         if(playMusic){
             gameSong.setLooping(true);

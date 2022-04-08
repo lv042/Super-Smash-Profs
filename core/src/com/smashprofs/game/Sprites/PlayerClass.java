@@ -25,9 +25,10 @@ public class PlayerClass extends Sprite {
         WASD, ARROWS
     }
 
+    float playerCollisionBoxRadius = 5;
     boolean isGrounded = true;
     private float respawnDamping = 0.1f;
-    private int maxExtraJumps = 1;
+    private int maxExtraJumps = 1; //currently, only works with one extra jump
     private int jumpCount = 0;
     private BodyDef bdef;
     private Vector2 spawnpoint = new Vector2(90, 90);
@@ -36,8 +37,11 @@ public class PlayerClass extends Sprite {
     private boolean isExtraJumpReady;
     private float jumpForce = 3f;
     private float walkingSpeedMultiplier = 1.005f;
-    private int extraJumps;
     private State currentState;
+
+    public enum State {
+        FALLING, JUMPING, STANDING, RUNNING
+    }
     private Texture texture;
     private SpriteBatch batch;
     private Sprite sprite;
@@ -62,12 +66,7 @@ public class PlayerClass extends Sprite {
     public State getCurrentState() {
         return currentState;
     }
-
-
-    public enum State {
-        FALLING, JUMPING, STANDING, RUNNING
-    }
-
+    
     public float getJumpForce() {
         return jumpForce;
     }
@@ -80,10 +79,7 @@ public class PlayerClass extends Sprite {
         return maxVelocity;
     }
 
-    public int getExtraJumps() {
 
-        return extraJumps;
-    }
 
     public int getJumpCOunt() {
         return jumpCount;
@@ -136,7 +132,8 @@ public class PlayerClass extends Sprite {
 
         FixtureDef fDef = new FixtureDef();
         CircleShape shape = new CircleShape(); // circle shape is better for player characters so that it can be easily hit walls and other objects
-        shape.setRadius(5 / PPM);
+        
+        shape.setRadius(playerCollisionBoxRadius / PPM);
 
         //Implement the player textures and animations -> @Maurice @Alex
 
@@ -229,7 +226,10 @@ public class PlayerClass extends Sprite {
         }
         return false;
     }
-
+    
+    
+   
+    //Check if the player is touching the ground
     public void checkGrounded() {
         if (b2dbody.getLinearVelocity().y == 0) {
             isGrounded = true;

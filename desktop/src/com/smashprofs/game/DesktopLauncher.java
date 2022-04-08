@@ -8,7 +8,7 @@ public class DesktopLauncher {
 	public static void main (String[] arg) {
 		Lwjgl3ApplicationConfiguration config = new Lwjgl3ApplicationConfiguration();
 
-		String iconPath = "badlogic.jpg";
+		String iconPath = "icon.png";
 		int width = 1920;
 		int height = 1080;
 		boolean useFullScreenMode = false;

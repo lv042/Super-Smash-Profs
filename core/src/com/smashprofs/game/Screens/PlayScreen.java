@@ -68,10 +68,9 @@ public class PlayScreen implements Screen {
         checkInput(deltatime);
 
         //updates the physics 60 times per second
-        world.step(1/60f, 6, 2); //higher iterations make pyhsics more accurate but also way slower
+        world.step(1/60f, 6, 2); //higher iterations make physics more accurate but also way slower
 
         updateCamera();
-        tiledMapRenderer.setView(cameragame);
         viewport.setScreenPosition(0, 0);
         respawnPlayers();
         limitPlayersToEdge();
@@ -117,11 +116,10 @@ public class PlayScreen implements Screen {
 
 
         this.game = game;
-        texture = new Texture("badlogic.jpg");
         cameragame = new OrthographicCamera();
         viewport = new FillViewport(GameClass.V_WIDTH / PPM, GameClass.V_HEIGHT / PPM, cameragame);
         hud = new Hud(game.batch);
-        // StretchViewport is a Viewport that stretches the screen to fill the window.
+        //StretchViewport is a Viewport that stretches the screen to fill the window.
         //Screen Viewport is a Viewport that show as much of the world as possible on the screen -> makes the the world you see depend on the size of the window.
         //FitViewport is a Viewport that maintains the aspect ratio of the world and fills the window. -> Probalby the best option.
 
