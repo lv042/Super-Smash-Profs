@@ -82,6 +82,16 @@ public class PlayerClass extends Sprite {
     
     private boolean facingRight = true;
 
+    public boolean isFacingRight() {
+        return facingRight;
+    }
+
+    private int isFacingRightAxe = 0;
+
+    public int getIsFacingRightAxe() {
+        return isFacingRightAxe;
+    }
+
     public float getRespawnDamping() {
         return respawnDamping;
     }
@@ -200,6 +210,9 @@ public class PlayerClass extends Sprite {
         boolean jumpInput = false;
 
 
+
+
+
         if (currentInputState == InputState.WASD) {
             leftRightInput = util.adAxis();
             //upDownInput = util.wsAxis();
@@ -211,14 +224,23 @@ public class PlayerClass extends Sprite {
             leftRightInput = util.leftrightAxis();
             //upDownInput = util.updownAxis();
             jumpInput = Gdx.input.isKeyJustPressed(Input.Keys.UP) || Gdx.input.isKeyJustPressed(Input.Keys.SPACE);
-            standardAttackInput = Gdx.input.isKeyJustPressed(Input.Keys.ENTER);
+            standardAttackInput = Gdx.input.isKeyJustPressed(Input.Keys.ENTER) || Gdx.input.isKeyJustPressed(Input.Keys.CONTROL_RIGHT);
         }
 
-
+        //calculate direction
+        if(b2dbody.getLinearVelocity().x > 0) {
+            facingRight = true;
+            isFacingRightAxe = 1;
+        }
+        if(b2dbody.getLinearVelocity().x < 0) {
+            facingRight = false;
+            isFacingRightAxe = -1;
+        }
+        System.out.println(facingRight);
 
         //jumping
-        System.out.println(jumpCount);
-        System.out.println(isExtraJumpReady);
+        //System.out.println(jumpCount);
+        //System.out.println(isExtraJumpReady);
 
         if(jumpCount <= maxExtraJumps && (jumpInput) && (isGrounded || isExtraJumpReady)){
 
