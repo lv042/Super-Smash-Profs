@@ -19,7 +19,7 @@ allprojects {
 
     version = '1.0'
     ext {
-        appName = "Pahu"
+        appName = "smashprofs-test"
         gdxVersion = '1.10.0'
         roboVMVersion = '2.3.15'
         box2DLightsVersion = '1.5'
@@ -43,12 +43,11 @@ project(":desktop") {
     apply plugin: "java-library"
 
 
-    dependencies { // seems to be a false positve of IDEA if an error shows up
+    dependencies {
         implementation project(":core")
         api "com.badlogicgames.gdx:gdx-backend-lwjgl3:$gdxVersion"
         api "com.badlogicgames.gdx:gdx-platform:$gdxVersion:natives-desktop"
-        api "com.badlogicgames.gdx:gdx-bullet-platform:$gdxVersion:natives-desktop"
-        api "com.badlogicgames.gdx:gdx-freetype-platform:$gdxVersion:natives-desktop"
+        api "com.badlogicgames.gdx-controllers:gdx-controllers-desktop:$gdxControllersVersion"
         api "com.badlogicgames.gdx:gdx-box2d-platform:$gdxVersion:natives-desktop"
         
     }
@@ -58,13 +57,9 @@ project(":core") {
     apply plugin: "java-library"
 
 
-    dependencies { // seems to be a false positve of IDEA if an error shows up
+    dependencies {
         api "com.badlogicgames.gdx:gdx:$gdxVersion"
-        api "com.badlogicgames.gdx:gdx-bullet:$gdxVersion"
-        api "com.badlogicgames.gdx:gdx-freetype:$gdxVersion"
-        api "com.badlogicgames.box2dlights:box2dlights:$box2DLightsVersion"
-        api "com.badlogicgames.ashley:ashley:$ashleyVersion"
-        api "com.badlogicgames.gdx:gdx-ai:$aiVersion"
+        api "com.badlogicgames.gdx-controllers:gdx-controllers-core:$gdxControllersVersion"
         api "com.badlogicgames.gdx:gdx-box2d:$gdxVersion"
         
     }
