@@ -29,16 +29,19 @@ public class PlayScreen implements Screen {
 
     private float jumpForce = 3f;
 
-    boolean playMusic = true;
+    private Vector2 playerOneSpawnPoint = new Vector2(90, 90);
+
+    private Vector2 playerTwoSpawnPoint = new Vector2(110, 90);
+
+    boolean playMusic = false;
     Texture texture;
     private OrthographicCamera cameragame;
-    public Viewport viewport; // Manages a Camera and determines how world coordinates are mapped to and from the screen.
+    public static Viewport viewport; // Manages a Camera and determines how world coordinates are mapped to and from the screen.
     private Hud hud;
 
     private TmxMapLoader mapLoader;
     private TiledMap map;
     private OrthoCachedTiledMapRenderer tiledMapRenderer;
-
     private PlayerClass playerOne;
     private PlayerClass playerTwo;
 
@@ -65,6 +68,8 @@ public class PlayScreen implements Screen {
 
     public void update(float deltatime){
         tiledMapRenderer.setView(cameragame);
+
+        //input
         checkInput(deltatime);
 
         //updates the physics 60 times per second
@@ -72,45 +77,26 @@ public class PlayScreen implements Screen {
 
         updateCamera();
         viewport.setScreenPosition(0, 0);
-        respawnPlayers();
-        limitPlayersToEdge();
+
+        //player
+        playerOne.respawnPlayers();
+        playerTwo.respawnPlayers();
+
+        playerOne.limitPlayersToEdge();
+        playerTwo.limitPlayersToEdge();
+
         playerOne.checkGrounded();
         playerTwo.checkGrounded();
 
 
+
+
+
     }
 
-    private void respawnPlayers() {
-        if(playerOne.reachedWorldEdge()){
-            //playerOne.getB2dbody().applyLinearImpulse(new Vector2(0, 2f), playerOne.getB2dbody().getWorldCenter(), true);
-            playerOne.getB2dbody().setLinearVelocity(new Vector2(playerOne.getB2dbody().getLinearVelocity().x * playerOne.getRespawnDamping(), 5f));
-            System.out.println("Player respawn jump");
-        }
-        if(playerTwo.reachedWorldEdge()){
-            //playerOne.getB2dbody().applyLinearImpulse(new Vector2(0, 2f), playerOne.getB2dbody().getWorldCenter(), true);
-            playerTwo.getB2dbody().setLinearVelocity(new Vector2(playerOne.getB2dbody().getLinearVelocity().x * playerOne.getRespawnDamping(), 5f));
-            System.out.println("Player respawn jump");
-        }
+    public static Viewport getViewport() {
+        return viewport;
     }
-
-    private void limitPlayersToEdge(){
-        //sets player velocity to 0 if they are at the edge of the map
-        float pushBack = 1f;
-
-        if(playerOne.getB2dbody().getPosition().x > viewport.getWorldWidth()){
-            playerOne.getB2dbody().setLinearVelocity(new Vector2(-pushBack, playerOne.getB2dbody().getLinearVelocity().y));
-        }
-        if(playerOne.getB2dbody().getPosition().x < 0){
-            playerOne.getB2dbody().setLinearVelocity(new Vector2( pushBack, playerOne.getB2dbody().getLinearVelocity().y) );
-        }
-        if(playerTwo.getB2dbody().getPosition().x > viewport.getWorldWidth()){
-            playerTwo.getB2dbody().setLinearVelocity(new Vector2(-pushBack, playerTwo.getB2dbody().getLinearVelocity().y));
-        }
-        if(playerTwo.getB2dbody().getPosition().x < 0){
-            playerTwo.getB2dbody().setLinearVelocity(new Vector2( pushBack, playerTwo.getB2dbody().getLinearVelocity().y) );
-        }
-    }
-
 
     public PlayScreen(GameClass game) {
 
@@ -151,8 +137,8 @@ public class PlayScreen implements Screen {
             body.createFixture(fdef);
         }
 
-        playerOne = new PlayerClass(world, PlayerClass.InputState.WASD);
-        playerTwo = new PlayerClass(world, PlayerClass.InputState.ARROWS);
+        playerOne = new PlayerClass(world, PlayerClass.InputState.WASD, playerOneSpawnPoint);
+        playerTwo = new PlayerClass(world, PlayerClass.InputState.ARROWS, playerTwoSpawnPoint);
 
         util.setupMusic(playMusic);
 
