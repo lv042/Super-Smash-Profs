@@ -1,6 +1,9 @@
 package com.smashprofs.game.Screens;
 
 
+import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
+import com.badlogic.gdx.math.Matrix4;
 import com.smashprofs.game.GameClass;
 import com.smashprofs.game.Helper.CombatManager;
 import com.smashprofs.game.Helper.util;
@@ -25,6 +28,7 @@ import static com.smashprofs.game.Sprites.PlayerClass.PPM;
 
 public class PlayScreen implements Screen {
 
+    private static ShapeRenderer debugRenderer = new ShapeRenderer();
 
     private GameClass game;
 
@@ -97,7 +101,23 @@ public class PlayScreen implements Screen {
         //combatManager
         combatManager.update(deltatime, playerOne, playerTwo);
 
+        //debug
+        DrawDebugLine(new Vector2(0,0), new Vector2(100,100), cameragame.combined);
 
+        //System.out.println("finished update");
+
+
+    }
+
+    public static void DrawDebugLine(Vector2 start, Vector2 end, Matrix4 projectionMatrix)
+    {
+        Gdx.gl.glLineWidth(2);
+        debugRenderer.setProjectionMatrix(projectionMatrix);
+        debugRenderer.begin(ShapeRenderer.ShapeType.Line);
+        debugRenderer.setColor(Color.WHITE);
+        debugRenderer.line(start, end);
+        debugRenderer.end();
+        Gdx.gl.glLineWidth(1);
     }
 
     public static Viewport getViewport() {
@@ -110,7 +130,7 @@ public class PlayScreen implements Screen {
         this.game = game;
         cameragame = new OrthographicCamera();
         viewport = new FillViewport(GameClass.V_WIDTH / PPM, GameClass.V_HEIGHT / PPM, cameragame);
-        hud = new Hud(game.batch);
+
         //StretchViewport is a Viewport that stretches the screen to fill the window.
         //Screen Viewport is a Viewport that show as much of the world as possible on the screen -> makes the the world you see depend on the size of the window.
         //FitViewport is a Viewport that maintains the aspect ratio of the world and fills the window. -> Probalby the best option.
@@ -146,6 +166,8 @@ public class PlayScreen implements Screen {
         playerOne = new PlayerClass(world, PlayerClass.InputState.WASD, playerOneSpawnPoint);
         playerTwo = new PlayerClass(world, PlayerClass.InputState.ARROWS, playerTwoSpawnPoint);
 
+        hud = new Hud(game.batch, playerOne, playerTwo);
+
         util.setupMusic(playMusic);
 
     }
@@ -166,7 +188,7 @@ public class PlayScreen implements Screen {
         Gdx.gl.glClear(Gdx.gl.GL_COLOR_BUFFER_BIT);
         game.batch.setProjectionMatrix(hud.stage.getCamera().combined);
         hud.stage.draw();
-        hud.updateHud(delta);
+        hud.updateHud(delta, playerOne, playerTwo);
         tiledMapRenderer.render();
 
 

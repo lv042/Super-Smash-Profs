@@ -24,25 +24,37 @@ public class CombatManager {
 
         if (distanceBetweenPlayersLength < playerOne.getAttackReach()) {
 
-            float attackPower = 20f;
-
-            Vector2 From1To2 = new Vector2((playerTwo.getPosition().x - playerOne.getPosition().x) * attackPower , ((playerTwo.getPosition().y - playerOne.getPosition().y) + 0.05f) * attackPower);
-            Vector2 From2To1 = new Vector2((playerOne.getPosition().x - playerTwo.getPosition().x) * attackPower, ((playerOne.getPosition().y - playerTwo.getPosition().y) + 0.05f) * attackPower);
-
-            From1To2 = From1To2.nor();
-            From2To1 = From2To1.nor(); //normalize
+            float attackKnockback = 1f;
 
 
+            Vector2 From1To2 = new Vector2((playerTwo.getPosition().x - playerOne.getPosition().x) * 1, ((playerTwo.getPosition().y - playerOne.getPosition().y) + 0.05f) * attackKnockback);
+            Vector2 From2To1 = new Vector2((playerOne.getPosition().x - playerTwo.getPosition().x) * 1, ((playerOne.getPosition().y - playerTwo.getPosition().y) + 0.05f) * attackKnockback);
+
+            if(From1To2.x < 0) From1To2.x = -1 * attackKnockback;
+            if(From1To2.x > 0) From1To2.x = 1 * attackKnockback;
+
+            if(From2To1.x < 0) From2To1.x = -1 * attackKnockback;
+            if(From2To1.x > 0) From2To1.x = 1 * attackKnockback;
+
+            //From1To2 = From1To2.nor();
+            //From2To1 = From2To1.nor(); //normalize
+
+
+            float DirectionRightValue = 1;
             //System.out.println("Player is in range attack range");
             if(playerOne.isStandardAttackInput()){
-                System.out.println("Player is attacking");
+                //System.out.println("Player is attacking");
                 //take damage and yeeeeeet
+
                 playerTwo.getB2dbody().applyLinearImpulse(From1To2, playerOne.getB2dbody().getWorldCenter(), true);
+                playerTwo.setHP(playerTwo.getHP() - playerOne.getAttackDamage());
             }
             if(playerTwo.isStandardAttackInput()){
-                System.out.println("Player is attacking");
-                //take damage and yeeeeeet
+               //System.out.println("Player is attacking");
+                // take damage and yeeeeeet
+
                 playerOne.getB2dbody().applyLinearImpulse(From2To1, playerOne.getB2dbody().getWorldCenter(), true);
+                playerOne.setHP(playerOne.getHP() - playerOne.getAttackDamage());
             }
         }
 

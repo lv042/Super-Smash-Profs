@@ -12,6 +12,8 @@ import com.smashprofs.game.Helper.util;
 import java.util.Timer;
 import java.util.TimerTask;
 import com.smashprofs.game.Screens.PlayScreen;
+import jdk.internal.net.http.hpack.HPACK;
+
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 
@@ -45,6 +47,22 @@ public class PlayerClass extends Sprite {
     float playerCollisionBoxRadius = 5;
     boolean isGrounded = true;
     private float respawnDamping = 0.1f;
+
+    private int HP = 100;
+
+    private int attackDamage = 10;
+
+    public int getHP() {
+        return HP;
+    }
+
+    public void setHP(int HP) {
+        this.HP = HP;
+    }
+
+    public int getAttackDamage() {
+        return attackDamage;
+    }
 
     private boolean collideWithOtherPlayers = false;
     private int maxExtraJumps = 1; //currently, only works with one extra jump
@@ -236,7 +254,7 @@ public class PlayerClass extends Sprite {
             facingRight = false;
             isFacingRightAxe = -1;
         }
-        System.out.println(facingRight);
+        //System.out.println(facingRight);
 
         //jumping
         //System.out.println(jumpCount);
@@ -252,7 +270,7 @@ public class PlayerClass extends Sprite {
 
             getB2dbody().applyLinearImpulse(new Vector2(0, getJumpForce()), getB2dbody().getWorldCenter(), true);
 
-            System.out.println("Jumping");
+            //System.out.println("Jumping");
 
 
             final Timer timer = new Timer();
@@ -304,11 +322,19 @@ public class PlayerClass extends Sprite {
 
     }
 
+    //respawn jumping
     public void respawnPlayers() {
         if(reachedWorldEdge()){
             //getB2dbody().applyLinearImpulse(new Vector2(0, 2f), getB2dbody().getWorldCenter(), true);
             getB2dbody().setLinearVelocity(new Vector2(getB2dbody().getLinearVelocity().x * getRespawnDamping(), 5f));
-            System.out.println("Player respawn jump");
+            //System.out.println("Player respawn jump");
+
+            //lower gravity for some seconds :)
+
+            //damages the player
+            setHP(getHP() - 5);
+
+
         }
 
     }

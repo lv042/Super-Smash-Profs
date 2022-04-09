@@ -9,6 +9,8 @@ import com.badlogic.gdx.audio.Music;
 public class util {
     //Maybe make this class singleton?
 
+    public static boolean debugMode = true;
+
     public static int wsAxis(){
         if(Gdx.input.isKeyPressed(Input.Keys.W)) return 1;
         if(Gdx.input.isKeyPressed(Input.Keys.S)) return -1;
@@ -64,5 +66,11 @@ public class util {
             gameSong.play();
         }
     }
+
+    public static void log(String message){
+        if(debugMode) System.out.println(message);
+    }
+
+
 
 }
