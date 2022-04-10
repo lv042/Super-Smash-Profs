@@ -1,9 +1,11 @@
 package com.smashprofs.game.Screens;
 
 
+import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
+import com.badlogic.gdx.math.Matrix4;
 import com.smashprofs.game.GameClass;
 import com.smashprofs.game.Helper.CombatManager;
-import com.smashprofs.game.Helper.util;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.Screen;
@@ -25,6 +27,7 @@ import static com.smashprofs.game.Sprites.PlayerClass.PPM;
 
 public class PlayScreen implements Screen {
 
+    private static ShapeRenderer debugRenderer = new ShapeRenderer();
 
     private GameClass game;
 
@@ -34,7 +37,6 @@ public class PlayScreen implements Screen {
 
     private Vector2 playerTwoSpawnPoint = new Vector2(110, 90);
 
-    boolean playMusic = false;
     Texture texture;
     private OrthographicCamera cameragame;
     public static Viewport viewport; // Manages a Camera and determines how world coordinates are mapped to and from the screen.
@@ -75,6 +77,14 @@ public class PlayScreen implements Screen {
         //input
         checkInput(deltatime);
 
+        playerOne.updatePosition(deltatime);
+        playerTwo.updatePosition(deltatime);
+
+        //combatManager
+        combatManager.update(deltatime, playerOne, playerTwo);
+
+
+
         //updates the physics 60 times per second
         world.step(1/60f, 6, 2); //higher iterations make physics more accurate but also way slower
 
@@ -91,13 +101,32 @@ public class PlayScreen implements Screen {
         playerOne.checkGrounded();
         playerTwo.checkGrounded();
 
-        playerOne.updatePosition(deltatime);
-        playerTwo.updatePosition(deltatime);
-
-        //combatManager
-        combatManager.update(deltatime, playerOne, playerTwo);
 
 
+        playerOne.update(deltatime); // Most of the code above should go in this method
+        playerTwo.update(deltatime);
+
+
+
+
+
+        //debug
+        DrawDebugLine(new Vector2(0,0), new Vector2(100,100), cameragame.combined);
+
+        //System.out.println("finished update");
+
+
+    }
+
+    public static void DrawDebugLine(Vector2 start, Vector2 end, Matrix4 projectionMatrix)
+    {
+        Gdx.gl.glLineWidth(2);
+        debugRenderer.setProjectionMatrix(projectionMatrix);
+        debugRenderer.begin(ShapeRenderer.ShapeType.Line);
+        debugRenderer.setColor(Color.WHITE);
+        debugRenderer.line(start, end);
+        debugRenderer.end();
+        Gdx.gl.glLineWidth(1);
     }
 
     public static Viewport getViewport() {
@@ -110,7 +139,7 @@ public class PlayScreen implements Screen {
         this.game = game;
         cameragame = new OrthographicCamera();
         viewport = new FillViewport(GameClass.V_WIDTH / PPM, GameClass.V_HEIGHT / PPM, cameragame);
-        hud = new Hud(game.batch);
+
         //StretchViewport is a Viewport that stretches the screen to fill the window.
         //Screen Viewport is a Viewport that show as much of the world as possible on the screen -> makes the the world you see depend on the size of the window.
         //FitViewport is a Viewport that maintains the aspect ratio of the world and fills the window. -> Probalby the best option.
@@ -122,7 +151,7 @@ public class PlayScreen implements Screen {
         cameragame.position.set((viewport.getWorldWidth() / 2), (viewport.getWorldHeight() / 2) , 0); // sets the position of the camera to the center of the screen -> later you can use the util class
 
 
-        world = new World(new Vector2(0, -10f), true); //y value -> gravity
+        world = new World(new Vector2(0, -9.8f), true); //y value -> gravity
         box2DDebugRenderer = new Box2DDebugRenderer();
 
 
@@ -146,7 +175,8 @@ public class PlayScreen implements Screen {
         playerOne = new PlayerClass(world, PlayerClass.InputState.WASD, playerOneSpawnPoint);
         playerTwo = new PlayerClass(world, PlayerClass.InputState.ARROWS, playerTwoSpawnPoint);
 
-        util.setupMusic(playMusic);
+        hud = new Hud(game.batch, playerOne, playerTwo);
+
 
     }
 
@@ -166,7 +196,7 @@ public class PlayScreen implements Screen {
         Gdx.gl.glClear(Gdx.gl.GL_COLOR_BUFFER_BIT);
         game.batch.setProjectionMatrix(hud.stage.getCamera().combined);
         hud.stage.draw();
-        hud.updateHud(delta);
+        hud.updateHud(delta, playerOne, playerTwo);
         tiledMapRenderer.render();
 
 

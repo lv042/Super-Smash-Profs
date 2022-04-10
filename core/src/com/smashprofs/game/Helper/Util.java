@@ -6,8 +6,20 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.audio.Music;
 
-public class util {
+public class Util {
     //Maybe make this class singleton?
+
+    public static boolean debugMode = true;
+
+    private static boolean turnOnMusic = true;
+
+    public static void setDebugMode(boolean debugMode) {
+        Util.debugMode = debugMode;
+    }
+
+    public static void setTurnOnMusic(boolean turnOnMusic) {
+        Util.turnOnMusic = turnOnMusic;
+    }
 
     public static int wsAxis(){
         if(Gdx.input.isKeyPressed(Input.Keys.W)) return 1;
@@ -54,15 +66,21 @@ public class util {
         return Gdx.graphics.getHeight() / 2 - height / 2;
     }
 
-    public static void setupMusic(boolean playMusic) {
+    public static void setupMusic() { //should be implemented as own singelton class
         //music from https://www.fesliyanstudios.com/royalty-free-music/download/funny-bit/2399 -> royalty free
 
         Music gameSong = Gdx.audio.newMusic(Gdx.files.internal("music/beste music ever.wav"));
 
-        if(playMusic){
-            gameSong.setLooping(true);
+        if(turnOnMusic){
             gameSong.play();
+            gameSong.setLooping(true);
         }
     }
+
+    public static void log(String message){
+        if(debugMode) System.out.println(message);
+    }
+
+
 
 }

@@ -7,13 +7,9 @@ import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.*;
-import com.smashprofs.game.Helper.util;
+import com.smashprofs.game.Helper.Util;
 
-import java.util.Timer;
-import java.util.TimerTask;
 import com.smashprofs.game.Screens.PlayScreen;
-import java.util.concurrent.Executors;
-import java.util.concurrent.ScheduledExecutorService;
 
 public class PlayerClass extends Sprite {
 
@@ -38,6 +34,10 @@ public class PlayerClass extends Sprite {
         poistion = b2dbody.getPosition();
     }
 
+    public void update(float deltatime) {
+
+    }
+
     public enum InputState {
         WASD, ARROWS
     }
@@ -45,6 +45,22 @@ public class PlayerClass extends Sprite {
     float playerCollisionBoxRadius = 5;
     boolean isGrounded = true;
     private float respawnDamping = 0.1f;
+
+    private int HP = 100;
+
+    private int attackDamage = 10;
+
+    public int getHP() {
+        return HP;
+    }
+
+    public void setHP(int HP) {
+        this.HP = HP;
+    }
+
+    public int getAttackDamage() {
+        return attackDamage;
+    }
 
     private boolean collideWithOtherPlayers = false;
     private int maxExtraJumps = 1; //currently, only works with one extra jump
@@ -58,10 +74,10 @@ public class PlayerClass extends Sprite {
 
     private Vector2 spawnpoint;
     private Body b2dbody;
-    private float maxVelocity = 1.2f;
+    private float maxVelocity = 1.6f;
     private boolean isExtraJumpReady;
-    private float jumpForce = 3f;
-    private float walkingSpeedMultiplier = 1.005f;
+    private float jumpForce = 2.5f;
+    private float walkingSpeedMultiplier = 1.3f;
     private State currentState;
 
     public enum State {
@@ -81,6 +97,16 @@ public class PlayerClass extends Sprite {
     }
     
     private boolean facingRight = true;
+
+    public boolean isFacingRight() {
+        return facingRight;
+    }
+
+    private int isFacingRightAxe = 0;
+
+    public int getIsFacingRightAxe() {
+        return isFacingRightAxe;
+    }
 
     public float getRespawnDamping() {
         return respawnDamping;
@@ -181,9 +207,9 @@ public class PlayerClass extends Sprite {
             fDef.filter.groupIndex = -1;
         }
 
-//        fDef.density = 1;
-//        fDef.restitution = 0.1f;
-//        fDef.friction = 0.5f;
+     //   fDef.density = 89;
+        fDef.restitution = 0.1f;
+      // fDef.friction = 0.5f;
         //@Maurice @Alex Ihr könnte gerne mal mit diesen Werten rumspielen und schauen was am besten passt :D
 
         b2dbody.createFixture(fDef);
@@ -200,25 +226,37 @@ public class PlayerClass extends Sprite {
         boolean jumpInput = false;
 
 
+
+
+
         if (currentInputState == InputState.WASD) {
-            leftRightInput = util.adAxis();
+            leftRightInput = Util.adAxis();
             //upDownInput = util.wsAxis();
             jumpInput = Gdx.input.isKeyJustPressed(Input.Keys.W);
-            standardAttackInput = Gdx.input.isKeyJustPressed(Input.Keys.V);
+            standardAttackInput = Gdx.input.isKeyJustPressed(Input.Keys.V ) || Gdx.input.isKeyJustPressed(Input.Keys.SPACE);
 
         }
         if (currentInputState == InputState.ARROWS) {
-            leftRightInput = util.leftrightAxis();
+            leftRightInput = Util.leftrightAxis();
             //upDownInput = util.updownAxis();
-            jumpInput = Gdx.input.isKeyJustPressed(Input.Keys.UP) || Gdx.input.isKeyJustPressed(Input.Keys.SPACE);
-            standardAttackInput = Gdx.input.isKeyJustPressed(Input.Keys.ENTER);
+            jumpInput = Gdx.input.isKeyJustPressed(Input.Keys.UP) ;
+            standardAttackInput = Gdx.input.isKeyJustPressed(Input.Keys.ENTER) || Gdx.input.isKeyJustPressed(Input.Keys.CONTROL_RIGHT);
         }
 
-
+        //calculate direction
+        if(b2dbody.getLinearVelocity().x > 0) {
+            facingRight = true;
+            isFacingRightAxe = 1;
+        }
+        if(b2dbody.getLinearVelocity().x < 0) {
+            facingRight = false;
+            isFacingRightAxe = -1;
+        }
+        //System.out.println(facingRight);
 
         //jumping
-        System.out.println(jumpCount);
-        System.out.println(isExtraJumpReady);
+        //System.out.println(jumpCount);
+        //System.out.println(isExtraJumpReady);
 
         if(jumpCount <= maxExtraJumps && (jumpInput) && (isGrounded || isExtraJumpReady)){
 
@@ -230,9 +268,9 @@ public class PlayerClass extends Sprite {
 
             getB2dbody().applyLinearImpulse(new Vector2(0, getJumpForce()), getB2dbody().getWorldCenter(), true);
 
-            System.out.println("Jumping");
-
-
+            //System.out.println("Jumping");
+            isExtraJumpReady = true;
+/*
             final Timer timer = new Timer();
 
             final TimerTask task = new TimerTask() {
@@ -242,7 +280,7 @@ public class PlayerClass extends Sprite {
 
                 }
             };
-            timer.schedule(task, 100); // delay in milliseconds
+            timer.schedule(task, 100); // delay in milliseconds*/
 
         }
 
@@ -282,11 +320,19 @@ public class PlayerClass extends Sprite {
 
     }
 
+    //respawn jumping
     public void respawnPlayers() {
         if(reachedWorldEdge()){
             //getB2dbody().applyLinearImpulse(new Vector2(0, 2f), getB2dbody().getWorldCenter(), true);
             getB2dbody().setLinearVelocity(new Vector2(getB2dbody().getLinearVelocity().x * getRespawnDamping(), 5f));
-            System.out.println("Player respawn jump");
+            //System.out.println("Player respawn jump");
+
+            //lower gravity for some seconds :)
+
+            //damages the player
+            setHP(getHP() - 5);
+
+
         }
 
     }

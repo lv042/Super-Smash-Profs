@@ -3,7 +3,8 @@ package com.smashprofs.game;
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.smashprofs.game.Screens.PlayScreen;
+import com.smashprofs.game.Helper.Util;
+import com.smashprofs.game.Screens.IntroScreen;
 
 public class GameClass extends Game {
 	public SpriteBatch batch;
@@ -13,8 +14,11 @@ public class GameClass extends Game {
 	
 	@Override
 	public void create () {
+		Util.setupMusic();
 		batch = new SpriteBatch();
-		setScreen(new PlayScreen(this)); // passes game to set screen on its own
+		setScreen(new IntroScreen(this));
+
+		//setScreen(new PlayScreen(this)); // passes game to set screen on its own -> now started by intro screen
 	}
 
 	@Override
