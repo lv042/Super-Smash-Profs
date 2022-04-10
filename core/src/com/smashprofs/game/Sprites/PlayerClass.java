@@ -40,6 +40,10 @@ public class PlayerClass extends Sprite {
         poistion = b2dbody.getPosition();
     }
 
+    public void update(float deltatime) {
+
+    }
+
     public enum InputState {
         WASD, ARROWS
     }

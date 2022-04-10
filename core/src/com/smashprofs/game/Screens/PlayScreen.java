@@ -98,6 +98,11 @@ public class PlayScreen implements Screen {
         playerOne.updatePosition(deltatime);
         playerTwo.updatePosition(deltatime);
 
+        playerOne.update(deltatime); // Most of the code above should go in this method
+        playerTwo.update(deltatime);
+
+
+
         //combatManager
         combatManager.update(deltatime, playerOne, playerTwo);
 
