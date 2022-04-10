@@ -13,6 +13,8 @@ public class IntroScreen extends ScreenAdapter {
     int h = 0;
     int tw = 0;
     int th = 0;
+
+    private float zoomFactor = 1.6f;
     OrthographicCamera camera = null;
     Texture texture = null;
     SpriteBatch batch = null;
@@ -36,11 +38,13 @@ public class IntroScreen extends ScreenAdapter {
 
     @Override
     public void render(float delta) {
+        if(zoomFactor > 1.5f) zoomFactor -= 0.0001f;
+        //System.out.println(zoomFactor);
         Gdx.gl.glClearColor(0, 0, 0, 1); //-> light blue
         //Gdx.gl.glClearColor(1, 1, 1, 1);
         Gdx.gl.glClear(Gdx.gl.GL_COLOR_BUFFER_BIT);
         batch.begin();
-        batch.draw(texture, camera.position.x - (tw / 2) / 2, camera.position.y - (th / 2) / 2, tw / 2, th / 2);
+        batch.draw(texture, camera.position.x - (tw / 2) / zoomFactor, camera.position.y - (th / 2) / zoomFactor, tw / zoomFactor, th / zoomFactor);
         batch.end();
 
         if (Gdx.input.isKeyJustPressed(com.badlogic.gdx.Input.Keys.ANY_KEY)) {
