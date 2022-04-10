@@ -7,15 +7,9 @@ import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.*;
-import com.smashprofs.game.Helper.util;
+import com.smashprofs.game.Helper.Util;
 
-import java.util.Timer;
-import java.util.TimerTask;
 import com.smashprofs.game.Screens.PlayScreen;
-import jdk.internal.net.http.hpack.HPACK;
-
-import java.util.concurrent.Executors;
-import java.util.concurrent.ScheduledExecutorService;
 
 public class PlayerClass extends Sprite {
 
@@ -236,16 +230,16 @@ public class PlayerClass extends Sprite {
 
 
         if (currentInputState == InputState.WASD) {
-            leftRightInput = util.adAxis();
+            leftRightInput = Util.adAxis();
             //upDownInput = util.wsAxis();
             jumpInput = Gdx.input.isKeyJustPressed(Input.Keys.W);
-            standardAttackInput = Gdx.input.isKeyJustPressed(Input.Keys.V);
+            standardAttackInput = Gdx.input.isKeyJustPressed(Input.Keys.V ) || Gdx.input.isKeyJustPressed(Input.Keys.SPACE);
 
         }
         if (currentInputState == InputState.ARROWS) {
-            leftRightInput = util.leftrightAxis();
+            leftRightInput = Util.leftrightAxis();
             //upDownInput = util.updownAxis();
-            jumpInput = Gdx.input.isKeyJustPressed(Input.Keys.UP) || Gdx.input.isKeyJustPressed(Input.Keys.SPACE);
+            jumpInput = Gdx.input.isKeyJustPressed(Input.Keys.UP) ;
             standardAttackInput = Gdx.input.isKeyJustPressed(Input.Keys.ENTER) || Gdx.input.isKeyJustPressed(Input.Keys.CONTROL_RIGHT);
         }
 

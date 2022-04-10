@@ -6,7 +6,6 @@ import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Matrix4;
 import com.smashprofs.game.GameClass;
 import com.smashprofs.game.Helper.CombatManager;
-import com.smashprofs.game.Helper.util;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.Screen;
@@ -38,7 +37,6 @@ public class PlayScreen implements Screen {
 
     private Vector2 playerTwoSpawnPoint = new Vector2(110, 90);
 
-    boolean playMusic = false;
     Texture texture;
     private OrthographicCamera cameragame;
     public static Viewport viewport; // Manages a Camera and determines how world coordinates are mapped to and from the screen.
@@ -79,6 +77,14 @@ public class PlayScreen implements Screen {
         //input
         checkInput(deltatime);
 
+        playerOne.updatePosition(deltatime);
+        playerTwo.updatePosition(deltatime);
+
+        //combatManager
+        combatManager.update(deltatime, playerOne, playerTwo);
+
+
+
         //updates the physics 60 times per second
         world.step(1/60f, 6, 2); //higher iterations make physics more accurate but also way slower
 
@@ -95,16 +101,14 @@ public class PlayScreen implements Screen {
         playerOne.checkGrounded();
         playerTwo.checkGrounded();
 
-        playerOne.updatePosition(deltatime);
-        playerTwo.updatePosition(deltatime);
+
 
         playerOne.update(deltatime); // Most of the code above should go in this method
         playerTwo.update(deltatime);
 
 
 
-        //combatManager
-        combatManager.update(deltatime, playerOne, playerTwo);
+
 
         //debug
         DrawDebugLine(new Vector2(0,0), new Vector2(100,100), cameragame.combined);
@@ -173,7 +177,6 @@ public class PlayScreen implements Screen {
 
         hud = new Hud(game.batch, playerOne, playerTwo);
 
-        util.setupMusic(playMusic);
 
     }
 

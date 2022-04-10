@@ -1,7 +1,6 @@
 package com.smashprofs.game.Screens;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.ScreenAdapter;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
@@ -22,6 +21,8 @@ public class IntroScreen extends ScreenAdapter {
     GameClass game = null;
 
     public IntroScreen(GameClass game) {
+
+
         w = Gdx.graphics.getWidth();
         h = Gdx.graphics.getHeight();
         camera = new OrthographicCamera(w, h);
@@ -38,6 +39,8 @@ public class IntroScreen extends ScreenAdapter {
 
     @Override
     public void render(float delta) {
+
+        batch.setProjectionMatrix(camera.combined);
         if(zoomFactor > 1.5f) zoomFactor -= 0.0001f;
         //System.out.println(zoomFactor);
         Gdx.gl.glClearColor(0, 0, 0, 1); //-> light blue
@@ -49,6 +52,7 @@ public class IntroScreen extends ScreenAdapter {
 
         if (Gdx.input.isKeyJustPressed(com.badlogic.gdx.Input.Keys.ANY_KEY)) {
             game.setScreen(new PlayScreen(game));
+
         }
     }
 
