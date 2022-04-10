@@ -142,7 +142,7 @@ public class PlayScreen implements Screen {
         cameragame.position.set((viewport.getWorldWidth() / 2), (viewport.getWorldHeight() / 2) , 0); // sets the position of the camera to the center of the screen -> later you can use the util class
 
 
-        world = new World(new Vector2(0, -10f), true); //y value -> gravity
+        world = new World(new Vector2(0, -9.8f), true); //y value -> gravity
         box2DDebugRenderer = new Box2DDebugRenderer();
 
 

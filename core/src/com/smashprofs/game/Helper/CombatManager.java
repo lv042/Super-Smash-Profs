@@ -24,7 +24,7 @@ public class CombatManager {
 
         if (distanceBetweenPlayersLength < playerOne.getAttackReach()) {
 
-            float attackKnockback = 1f;
+            float attackKnockback = 1.5f;
 
 
             Vector2 From1To2 = new Vector2((playerTwo.getPosition().x - playerOne.getPosition().x) * 1, ((playerTwo.getPosition().y - playerOne.getPosition().y) + 0.05f) * attackKnockback);

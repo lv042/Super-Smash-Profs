@@ -76,10 +76,10 @@ public class PlayerClass extends Sprite {
 
     private Vector2 spawnpoint;
     private Body b2dbody;
-    private float maxVelocity = 1.2f;
+    private float maxVelocity = 1.6f;
     private boolean isExtraJumpReady;
-    private float jumpForce = 3f;
-    private float walkingSpeedMultiplier = 1.005f;
+    private float jumpForce = 2.5f;
+    private float walkingSpeedMultiplier = 1.3f;
     private State currentState;
 
     public enum State {
@@ -209,9 +209,9 @@ public class PlayerClass extends Sprite {
             fDef.filter.groupIndex = -1;
         }
 
-//        fDef.density = 1;
-//        fDef.restitution = 0.1f;
-//        fDef.friction = 0.5f;
+     //   fDef.density = 89;
+        fDef.restitution = 0.1f;
+      // fDef.friction = 0.5f;
         //@Maurice @Alex Ihr könnte gerne mal mit diesen Werten rumspielen und schauen was am besten passt :D
 
         b2dbody.createFixture(fDef);
@@ -271,8 +271,8 @@ public class PlayerClass extends Sprite {
             getB2dbody().applyLinearImpulse(new Vector2(0, getJumpForce()), getB2dbody().getWorldCenter(), true);
 
             //System.out.println("Jumping");
-
-
+            isExtraJumpReady = true;
+/*
             final Timer timer = new Timer();
 
             final TimerTask task = new TimerTask() {
@@ -282,7 +282,7 @@ public class PlayerClass extends Sprite {
 
                 }
             };
-            timer.schedule(task, 100); // delay in milliseconds
+            timer.schedule(task, 100); // delay in milliseconds*/
 
         }
 
