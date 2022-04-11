@@ -66,20 +66,7 @@ public class Util {
         return Gdx.graphics.getHeight() / 2 - height / 2;
     }
 
-    public static void setupMusic() { //should be implemented as own singelton class
-        //music from https://www.fesliyanstudios.com/royalty-free-music/download/funny-bit/2399 -> royalty free
 
-        Music gameSong = Gdx.audio.newMusic(Gdx.files.internal("music/beste music ever.wav"));
-
-        if(turnOnMusic){
-            gameSong.play();
-            gameSong.setLooping(true);
-        }
-    }
-
-    public static void log(String message){
-        if(debugMode) System.out.println(message);
-    }
 
 
 

@@ -6,12 +6,15 @@ import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.smashprofs.game.GameClass;
+import com.smashprofs.game.Helper.SoundManager;
 
 public class IntroScreen extends ScreenAdapter {
     int w = 0;
     int h = 0;
     int tw = 0;
     int th = 0;
+
+    private SoundManager soundManager = SoundManager.getSoundManager_INSTANCE();
 
     private float zoomFactor = 1.6f;
     OrthographicCamera camera = null;
@@ -20,9 +23,13 @@ public class IntroScreen extends ScreenAdapter {
 
     GameClass game = null;
 
+
+    private String introSong = "music/introsong.mp3";
+
     public IntroScreen(GameClass game) {
 
 
+        soundManager.setupMusic(introSong);
         w = Gdx.graphics.getWidth();
         h = Gdx.graphics.getHeight();
         camera = new OrthographicCamera(w, h);

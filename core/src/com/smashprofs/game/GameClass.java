@@ -14,7 +14,8 @@ public class GameClass extends Game {
 	
 	@Override
 	public void create () {
-		Util.setupMusic();
+
+
 		batch = new SpriteBatch();
 		setScreen(new IntroScreen(this));
 

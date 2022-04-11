@@ -21,17 +21,22 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.*;
 import com.badlogic.gdx.utils.viewport.FillViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
-import com.smashprofs.game.Sprites.PlayerClass;
+import com.smashprofs.game.Helper.SoundManager;
+import com.smashprofs.game.Actors.PlayerClass;
 import com.smashprofs.game.Scenes.Hud;
-import static com.smashprofs.game.Sprites.PlayerClass.PPM;
+import static com.smashprofs.game.Actors.PlayerClass.PPM;
 
 public class PlayScreen implements Screen {
 
     private static ShapeRenderer debugRenderer = new ShapeRenderer();
 
+    private String gameSong = "music/beste music ever.wav";
+
     private GameClass game;
 
     private float jumpForce = 3f;
+
+    private SoundManager soundManager = SoundManager.getSoundManager_INSTANCE();
 
     private Vector2 playerOneSpawnPoint = new Vector2(90, 90);
 
@@ -74,6 +79,9 @@ public class PlayScreen implements Screen {
     public void update(float deltatime){
         tiledMapRenderer.setView(cameragame);
 
+        playerOne.checkGrounded();
+        playerTwo.checkGrounded();
+
         //input
         checkInput(deltatime);
 
@@ -98,8 +106,7 @@ public class PlayScreen implements Screen {
         playerOne.limitPlayersToEdge();
         playerTwo.limitPlayersToEdge();
 
-        playerOne.checkGrounded();
-        playerTwo.checkGrounded();
+
 
 
 
@@ -134,7 +141,7 @@ public class PlayScreen implements Screen {
     }
 
     public PlayScreen(GameClass game) {
-
+        soundManager.setupMusic(gameSong);
         this.combatManager = CombatManager.getCombatManager_INSTANCE();
         this.game = game;
         cameragame = new OrthographicCamera();
@@ -151,7 +158,7 @@ public class PlayScreen implements Screen {
         cameragame.position.set((viewport.getWorldWidth() / 2), (viewport.getWorldHeight() / 2) , 0); // sets the position of the camera to the center of the screen -> later you can use the util class
 
 
-        world = new World(new Vector2(0, -9.8f), true); //y value -> gravity
+        world = new World(new Vector2(0, 0), true); //y value -> gravity -> now handled by the player class
         box2DDebugRenderer = new Box2DDebugRenderer();
 
 
@@ -172,8 +179,8 @@ public class PlayScreen implements Screen {
             body.createFixture(fdef);
         }
 
-        playerOne = new PlayerClass(world, PlayerClass.InputState.WASD, playerOneSpawnPoint);
-        playerTwo = new PlayerClass(world, PlayerClass.InputState.ARROWS, playerTwoSpawnPoint);
+        playerOne = new PlayerClass(world, PlayerClass.InputState.WASD, playerOneSpawnPoint, "Martin Goib");
+        playerTwo = new PlayerClass(world, PlayerClass.InputState.ARROWS, playerTwoSpawnPoint, "Jens Huhn");
 
         hud = new Hud(game.batch, playerOne, playerTwo);
 
@@ -191,7 +198,7 @@ public class PlayScreen implements Screen {
     public void render(float delta) {
         update(delta);
 
-        Gdx.gl.glClearColor(0, 1, 1, 1); //-> light blue
+        Gdx.gl.glClearColor(0, 0, 0, 1); //-> light blue
         //Gdx.gl.glClearColor(1, 1, 1, 1);
         Gdx.gl.glClear(Gdx.gl.GL_COLOR_BUFFER_BIT);
         game.batch.setProjectionMatrix(hud.stage.getCamera().combined);

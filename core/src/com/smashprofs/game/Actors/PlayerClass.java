@@ -1,4 +1,4 @@
-package com.smashprofs.game.Sprites;
+package com.smashprofs.game.Actors;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
@@ -7,19 +7,38 @@ import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.*;
+import com.smashprofs.game.Helper.SoundManager;
 import com.smashprofs.game.Helper.Util;
 
 import com.smashprofs.game.Screens.PlayScreen;
 
 public class PlayerClass extends Sprite {
 
+    private String playerName;
     private Vector2 poistion;
+    private float timeCount;
+
+    private float worldTimer;
+    private float stompSpeed = -0.3f;
+
+    private String deathSoundMp3 = "death.mp3";
+
+    private String punchSoundMp3 = "punch.mp3";
+
+    private String stompSoundWav = "stomp.wav";
+    private boolean isStomping;
+    private boolean isDead = false;
+    private String damageSoundMp3 = "damage.mp3";
+
+    public String getDamageSoundMp3() {
+        return damageSoundMp3;
+    }
 
     public Vector2 getPosition() {
         return poistion;
     }
 
-    private float attackReach = 0.13f;
+    private float attackReach = 0.2f;
 
     public float getAttackReach() {
         return attackReach;
@@ -35,7 +54,18 @@ public class PlayerClass extends Sprite {
     }
 
     public void update(float deltatime) {
+        applyForces(0, 0);
+        checkHealth();
 
+
+    }
+
+    public boolean isDead() {
+        return isDead;
+    }
+
+    public void setDead(boolean dead) {
+        isDead = dead;
     }
 
     public enum InputState {
@@ -46,16 +76,23 @@ public class PlayerClass extends Sprite {
     boolean isGrounded = true;
     private float respawnDamping = 0.1f;
 
-    private int HP = 100;
+    private float HP = 100;
+
+    private boolean isBlocking = false;
+
+    public boolean isBlocking() {
+        return isBlocking;
+    }
 
     private int attackDamage = 10;
 
-    public int getHP() {
+    public float getHP() {
         return HP;
     }
 
-    public void setHP(int HP) {
+    public void setHP(float HP) {
         this.HP = HP;
+
     }
 
     public int getAttackDamage() {
@@ -80,23 +117,46 @@ public class PlayerClass extends Sprite {
     private float walkingSpeedMultiplier = 1.3f;
     private State currentState;
 
+    private SoundManager soundManager;
+
     public enum State {
         FALLING, JUMPING, STANDING, RUNNING
     }
+
     private Texture texture;
     private SpriteBatch batch;
     private Sprite sprite;
 
-    public PlayerClass(World world, InputState inputState, Vector2 spawnpoint) {
+    public PlayerClass(World world, InputState inputState, Vector2 spawnpoint, String playerName) {
         this.world = world;
         this.currentInputState = inputState;
         this.spawnpoint = spawnpoint;
-
+        this.playerName = playerName;
 
         definePlayer(inputState);
+
+        soundManager = SoundManager.getSoundManager_INSTANCE();
     }
-    
+
+    private float gravity = -0.098f;
+
+    private Vector2 forcesCombined = new Vector2(0, 0);
+
+    private float startingGravity = gravity;
+
+    public float getStartingGravity() {
+        return startingGravity;
+    }
+
     private boolean facingRight = true;
+
+    public String getPlayerName() {
+        return playerName;
+    }
+
+    public void setPlayerName(String playerName) {
+        this.playerName = playerName;
+    }
 
     public boolean isFacingRight() {
         return facingRight;
@@ -123,7 +183,7 @@ public class PlayerClass extends Sprite {
     public State getCurrentState() {
         return currentState;
     }
-    
+
     public float getJumpForce() {
         return jumpForce;
     }
@@ -156,6 +216,11 @@ public class PlayerClass extends Sprite {
         return isExtraJumpReady;
     }
 
+    public boolean isStomping() {
+        return isStomping;
+    }
+
+
     public BodyDef getBdef() {
         return bdef;
     }
@@ -187,7 +252,7 @@ public class PlayerClass extends Sprite {
 
         FixtureDef fDef = new FixtureDef();
         CircleShape shape = new CircleShape(); // circle shape is better for player characters so that it can be easily hit walls and other objects
-        
+
         shape.setRadius(playerCollisionBoxRadius / PPM);
 
         //Implement the player textures and animations -> @Maurice @Alex
@@ -200,16 +265,15 @@ public class PlayerClass extends Sprite {
 
         fDef.shape = shape;
 
-        if(collideWithOtherPlayers) {
+        if (collideWithOtherPlayers) {
             fDef.filter.groupIndex = 0;
-        }
-        else {
+        } else {
             fDef.filter.groupIndex = -1;
         }
 
-     //   fDef.density = 89;
-        fDef.restitution = 0.1f;
-      // fDef.friction = 0.5f;
+        //fDef.density = 0.1f;
+         //fDef.restitution = 0.4f;
+        // fDef.friction = 0.5f;
         //@Maurice @Alex Ihr könnte gerne mal mit diesen Werten rumspielen und schauen was am besten passt :D
 
         b2dbody.createFixture(fDef);
@@ -218,37 +282,57 @@ public class PlayerClass extends Sprite {
 
     }
 
+
+    private void checkHealth() {
+        if (getHP() <= 0) {
+            die();
+        }
+    }
+
+    private void die() {
+        if (!isDead) {
+            setDead(true);
+            soundManager.playSound(deathSoundMp3);
+            //b2dbody.setLinearVelocity(0, 0);
+            //b2dbody.setTransform(spawnpoint.x / PPM, spawnpoint.y / PPM, 0);
+        }
+    }
+
     public void managePlayerInput(float dt) {
 
 
         int upDownInput = 0;
         int leftRightInput = 0;
         boolean jumpInput = false;
-
-
+        isBlocking = false;
 
 
 
         if (currentInputState == InputState.WASD) {
             leftRightInput = Util.adAxis();
-            //upDownInput = util.wsAxis();
+            upDownInput = Util.wsAxis();
             jumpInput = Gdx.input.isKeyJustPressed(Input.Keys.W);
-            standardAttackInput = Gdx.input.isKeyJustPressed(Input.Keys.V ) || Gdx.input.isKeyJustPressed(Input.Keys.SPACE);
+            standardAttackInput = Gdx.input.isKeyJustPressed(Input.Keys.V) || Gdx.input.isKeyJustPressed(Input.Keys.SPACE);
+            isBlocking = Gdx.input.isKeyPressed(Input.Keys.CONTROL_LEFT);
 
         }
         if (currentInputState == InputState.ARROWS) {
             leftRightInput = Util.leftrightAxis();
-            //upDownInput = util.updownAxis();
-            jumpInput = Gdx.input.isKeyJustPressed(Input.Keys.UP) ;
+            upDownInput = Util.updownAxis();
+            jumpInput = Gdx.input.isKeyJustPressed(Input.Keys.UP);
             standardAttackInput = Gdx.input.isKeyJustPressed(Input.Keys.ENTER) || Gdx.input.isKeyJustPressed(Input.Keys.CONTROL_RIGHT);
+            isBlocking = Gdx.input.isKeyPressed(Input.Keys.ALT_RIGHT);
+        }
+        if(standardAttackInput){
+            soundManager.playSound(punchSoundMp3);
         }
 
         //calculate direction
-        if(b2dbody.getLinearVelocity().x > 0) {
+        if (b2dbody.getLinearVelocity().x > 0) {
             facingRight = true;
             isFacingRightAxe = 1;
         }
-        if(b2dbody.getLinearVelocity().x < 0) {
+        if (b2dbody.getLinearVelocity().x < 0) {
             facingRight = false;
             isFacingRightAxe = -1;
         }
@@ -258,10 +342,10 @@ public class PlayerClass extends Sprite {
         //System.out.println(jumpCount);
         //System.out.println(isExtraJumpReady);
 
-        if(jumpCount <= maxExtraJumps && (jumpInput) && (isGrounded || isExtraJumpReady)){
+        if (jumpCount <= maxExtraJumps && (jumpInput) && (isGrounded || isExtraJumpReady)) {
 
             jumpCount++;
-            if(isExtraJumpReady){
+            if (isExtraJumpReady) {
                 getB2dbody().setLinearVelocity(getB2dbody().getLinearVelocity().x, 0.1f);
             }
 
@@ -285,14 +369,23 @@ public class PlayerClass extends Sprite {
         }
 
         //walking left and right
-        if(getB2dbody().getLinearVelocity().x < getMaxVelocity()){
+        if (getB2dbody().getLinearVelocity().x < getMaxVelocity()) {
             getB2dbody().applyLinearImpulse(new Vector2(0.05f * leftRightInput * getWalkingSpeedMultiplier(), 0.0f), getB2dbody().getWorldCenter(), true);
         }
 
         //damping
-        if(isGrounded()){
+        if (isGrounded()) {
             getB2dbody().setLinearVelocity(new Vector2(getB2dbody().getLinearVelocity().x * damping, getB2dbody().getLinearVelocity().y));
 
+        }
+
+        //stomp
+        if (upDownInput < 0 && !isGrounded) {
+            applyForces(0, stompSpeed);
+            isStomping = true;
+            setHP(getHP() - 0.1f);
+        } else {
+            isStomping = false;
         }
     }
 
@@ -303,52 +396,83 @@ public class PlayerClass extends Sprite {
         }
         return false;
     }
-    
+
     //Check if the player is touching the ground
     public void checkGrounded() {
-        if (b2dbody.getLinearVelocity().y == 0) {
+
+        if (b2dbody.getLinearVelocity().y - getGravity() == 0) {
+            if(isStomping()) {
+                soundManager.playSound(stompSoundWav);
+
+            }
             isGrounded = true;
+            setGravity(getStartingGravity());
             //System.out.println("grounded");
 
             jumpCount = 0;
             isExtraJumpReady = false;
 
-
+            ;
             return;
         }
         isGrounded = false;
 
     }
 
+    public float getGravity() {
+        return gravity;
+    }
+
+    public void setGravity(float gravity) {
+        this.gravity = gravity;
+    }
+
     //respawn jumping
     public void respawnPlayers() {
-        if(reachedWorldEdge()){
+        if (reachedWorldEdge()) {
             //getB2dbody().applyLinearImpulse(new Vector2(0, 2f), getB2dbody().getWorldCenter(), true);
-            getB2dbody().setLinearVelocity(new Vector2(getB2dbody().getLinearVelocity().x * getRespawnDamping(), 5f));
+            getB2dbody().setLinearVelocity(new Vector2(getB2dbody().getLinearVelocity().x * getRespawnDamping(), 2.6f));
             //System.out.println("Player respawn jump");
 
             //lower gravity for some seconds :)
 
+
+            setGravity(startingGravity * 0.3f);
+            soundManager.playSound(getDamageSoundMp3());
+
             //damages the player
-            setHP(getHP() - 5);
+            setHP(getHP() - 10);
 
 
         }
 
     }
 
-    public void limitPlayersToEdge(){
+    public void applyForces(float x, float y) {
+
+        //all forces applied to the player should be done with this method
+        forcesCombined = new Vector2(0 + x, gravity + y);
+        getB2dbody().applyLinearImpulse(forcesCombined, getB2dbody().getWorldCenter(), true);
+        forcesCombined.setZero();
+    }
+
+    public void limitPlayersToEdge() {
         //sets player velocity to 0 if they are at the edge of the map
         float pushBack = 1f;
 
-        if(getB2dbody().getPosition().x > PlayScreen.getViewport().getWorldWidth()){
-            getB2dbody().setLinearVelocity(new Vector2(-pushBack, getB2dbody().getLinearVelocity().y));
+
+        if (getB2dbody().getPosition().x > PlayScreen.getViewport().getWorldWidth()) {
+            getB2dbody().setLinearVelocity(new Vector2(-pushBack, getB2dbody().getLinearVelocity().y + 0.1f));
+            //lower gravity for some seconds :)
+            setGravity(startingGravity * 0.3f);
+            return;
         }
-        if(getB2dbody().getPosition().x < 0){
-            getB2dbody().setLinearVelocity(new Vector2( pushBack, getB2dbody().getLinearVelocity().y) );
+        if (getB2dbody().getPosition().x < 0) {
+            getB2dbody().setLinearVelocity(new Vector2(pushBack, getB2dbody().getLinearVelocity().y + 0.1f));
+            //lower gravity for some seconds :)
+            setGravity(startingGravity * 0.3f);
         }
     }
-
 
 
 }

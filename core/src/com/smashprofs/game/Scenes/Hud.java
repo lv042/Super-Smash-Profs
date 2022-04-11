@@ -10,8 +10,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import com.smashprofs.game.GameClass;
-import com.smashprofs.game.Screens.PlayScreen;
-import com.smashprofs.game.Sprites.PlayerClass;
+import com.smashprofs.game.Actors.PlayerClass;
 
 public class  Hud{
     public Stage stage; //stage to hold all the actors -> A 2D scene graph containing hierarchies of actors. Stage handles the viewport and distributes input events.
@@ -45,8 +44,8 @@ public class  Hud{
 
         // "%03d" is a format specifier for a 3 digit integer
         countdownLabel = new Label(String.format("%03d", worldTimer), new Label.LabelStyle(new BitmapFont(), Color.WHITE));
-        playerOneHud = new Label("Martin Boik " + playerOne.getHP() + "%", new Label.LabelStyle(new BitmapFont(), Color.WHITE));
-        playerTwoHud = new Label("Jens Huhn " + playerTwo.getHP() + "%", new Label.LabelStyle(new BitmapFont(), Color.WHITE));
+        playerOneHud = new Label(playerOne.getPlayerName() + " " + playerOne.getHP() + "%", new Label.LabelStyle(new BitmapFont(), Color.WHITE));
+        playerTwoHud = new Label(playerTwo.getPlayerName() + " " + playerTwo.getHP() + "%", new Label.LabelStyle(new BitmapFont(), Color.WHITE));
         modeLabel = new Label("1 vs. 1", new Label.LabelStyle(new BitmapFont(), Color.WHITE));
 
         table.add(playerOneHud).expandX().padTop(2);
@@ -64,8 +63,8 @@ public class  Hud{
             countdownLabel.setText(String.format("%03d", worldTimer));
             timeCount = 0;
         }
-        playerOneHud.setText("Martin Boik " + playerOne.getHP() + "%");
-        playerTwoHud.setText("Jens Huhn " + playerTwo.getHP() + "%");
+        playerOneHud.setText(playerOne.getPlayerName() + " " + (int)playerOne.getHP() + "%");
+        playerTwoHud.setText(playerTwo.getPlayerName() + " " + (int)playerTwo.getHP() + "%");
     }
 
 
