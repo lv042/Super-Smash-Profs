@@ -6,6 +6,7 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.*;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.*;
+import com.smashprofs.game.GameClass;
 import com.smashprofs.game.Helper.CombatManager;
 import com.smashprofs.game.Helper.SoundManager;
 import com.smashprofs.game.Helper.Util;
@@ -163,8 +164,8 @@ public class PlayerClass extends Sprite {
 
         //super(screen.getAtlas().findRegion("Alex_strip"));
         //alexStand = new TextureRegion(screen.getAtlas().findRegion("Alex_strip"),10,17, 128, 128);
-        setBounds(0,0,128/PPM, 128/PPM);
-        setRegion(alexStand);
+        //setBounds(0,0,77/PPM, 19/PPM);
+        //setRegion(alexStand);
         this.world = world;
         this.currentInputState = inputState;
         this.spawnpoint = spawnpoint;
@@ -389,7 +390,7 @@ public class PlayerClass extends Sprite {
                 getB2dbody().setLinearVelocity(getB2dbody().getLinearVelocity().x, 0.1f);
             }
 
-            // 3=====>
+
             getB2dbody().applyLinearImpulse(new Vector2(0, getJumpForce()), getB2dbody().getWorldCenter(), true);
 
             //System.out.println("Jumping");
@@ -444,7 +445,22 @@ public class PlayerClass extends Sprite {
                 frame = jump.getKeyFrame(stateTime);
                 break;
         }
-//8=>
+
+        Batch batch = getBatch();
+        batch.begin();
+        if(isFacingRight()) {
+            batch.draw(frame, getX(), getY(), getWidth(), getHeight());
+        }
+        else {
+            batch.draw(frame, getX() + getWidth(), getY() + getHeight(), -getWidth(), getHeight());
+
+        }
+
+        batch.end();
+
+
+
+
     }
 
     public boolean reachedWorldEdge() {
