@@ -16,8 +16,11 @@ public class PlayerClass extends Sprite {
 
 
     private Texture alexStand ;
-    private Texture heroTextureWalk;
+    private Texture alexRun;
+    private Texture alexJump;
     private Animation<TextureRegion> stand;
+    private Animation<TextureRegion> run;
+    private Animation<TextureRegion> jump;
 
     private String playerName;
     private Vector2 poistion;
@@ -166,6 +169,7 @@ public class PlayerClass extends Sprite {
         this.currentInputState = inputState;
         this.spawnpoint = spawnpoint;
         this.playerName = playerName;
+        //this.batch =
 
         definePlayer(inputState);
 
@@ -294,11 +298,6 @@ public class PlayerClass extends Sprite {
         shape.setRadius(playerCollisionBoxRadius / PPM);
 
         //Implement the player textures and animations -> @Maurice @Alex
-
-
-//        texture = new Texture("prettyplayer.png");
-//        batch = new SpriteBatch();
-//        sprite = new Sprite(texture);
 
 
         fDef.shape = shape;
@@ -438,12 +437,12 @@ public class PlayerClass extends Sprite {
             case STANDING:
                 frame = stand.getKeyFrame(stateTime);
                 break;
-/*            case WALKING:
-                frame = walk.getKeyFrame(luca.stateTime);
+            case RUNNING:
+                frame = run.getKeyFrame(stateTime);
                 break;
             case JUMPING:
-                frame = jump.getKeyFrame(luca.stateTime);
-                break;*/
+                frame = jump.getKeyFrame(stateTime);
+                break;
         }
 //8=>
     }
