@@ -7,6 +7,7 @@ import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.*;
+import com.smashprofs.game.Helper.CombatManager;
 import com.smashprofs.game.Helper.SoundManager;
 import com.smashprofs.game.Helper.Util;
 
@@ -19,7 +20,7 @@ public class PlayerClass extends Sprite {
     private float timeCount;
 
     private float worldTimer;
-    private float stompSpeed = -0.3f;
+    private float stompSpeed = -5f;
 
     private String deathSoundMp3 = "death.mp3";
 
@@ -29,6 +30,15 @@ public class PlayerClass extends Sprite {
     private boolean isStomping;
     private boolean isDead = false;
     private String damageSoundMp3 = "damage.mp3";
+    private boolean stompHitground;
+
+    public boolean isStompHitground() {
+        return stompHitground;
+    }
+
+    public void setStompHitground(boolean stompHitground) {
+        this.stompHitground = stompHitground;
+    }
 
     public String getDamageSoundMp3() {
         return damageSoundMp3;
@@ -305,6 +315,7 @@ public class PlayerClass extends Sprite {
         int leftRightInput = 0;
         boolean jumpInput = false;
         isBlocking = false;
+        boolean stompInput = false;
 
 
 
@@ -314,6 +325,7 @@ public class PlayerClass extends Sprite {
             jumpInput = Gdx.input.isKeyJustPressed(Input.Keys.W);
             standardAttackInput = Gdx.input.isKeyJustPressed(Input.Keys.V) || Gdx.input.isKeyJustPressed(Input.Keys.SPACE);
             isBlocking = Gdx.input.isKeyPressed(Input.Keys.CONTROL_LEFT);
+            stompInput = Gdx.input.isKeyJustPressed(Input.Keys.S);
 
         }
         if (currentInputState == InputState.ARROWS) {
@@ -322,6 +334,7 @@ public class PlayerClass extends Sprite {
             jumpInput = Gdx.input.isKeyJustPressed(Input.Keys.UP);
             standardAttackInput = Gdx.input.isKeyJustPressed(Input.Keys.ENTER) || Gdx.input.isKeyJustPressed(Input.Keys.CONTROL_RIGHT);
             isBlocking = Gdx.input.isKeyPressed(Input.Keys.ALT_RIGHT);
+            stompInput = Gdx.input.isKeyJustPressed(Input.Keys.DOWN);
         }
         if(standardAttackInput){
             soundManager.playSound(punchSoundMp3);
@@ -380,12 +393,14 @@ public class PlayerClass extends Sprite {
         }
 
         //stomp
-        if (upDownInput < 0 && !isGrounded) {
+
+        if (stompInput  && !isGrounded) {
             applyForces(0, stompSpeed);
+            System.out.println("Stomping");
             isStomping = true;
             setHP(getHP() - 0.1f);
         } else {
-            isStomping = false;
+
         }
     }
 
@@ -403,7 +418,12 @@ public class PlayerClass extends Sprite {
         if (b2dbody.getLinearVelocity().y - getGravity() == 0) {
             if(isStomping()) {
                 soundManager.playSound(stompSoundWav);
-
+                setStompHitground(true);
+                isStomping = false;
+            }
+            else {
+                setStompHitground(false);
+                isStomping = false;
             }
             isGrounded = true;
             setGravity(getStartingGravity());
@@ -439,6 +459,10 @@ public class PlayerClass extends Sprite {
 
             setGravity(startingGravity * 0.3f);
             soundManager.playSound(getDamageSoundMp3());
+
+            //prevents player from stomping into the void to get a respawn jump and then still have the current stomping active
+            setStompHitground(false);
+            isStomping = false;
 
             //damages the player
             setHP(getHP() - 10);

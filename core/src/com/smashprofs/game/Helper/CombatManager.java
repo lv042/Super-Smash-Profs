@@ -55,8 +55,8 @@ public class CombatManager {
 
             }
             attackKnockback = 2f;
-            if(playerOne.isStomping() && playerTwo.isGrounded())attackPlayer(playerOne, playerTwo, attackKnockback, 2f);
-            if(playerTwo.isStomping() && playerOne.isGrounded())attackPlayer(playerTwo, playerOne, attackKnockback, 2f);
+            if(playerOne.isStompHitground())attackPlayer(playerOne, playerTwo, attackKnockback, 2f);
+            if(playerTwo.isStompHitground())attackPlayer(playerTwo, playerOne, attackKnockback, 2f);
 
         }
 
