@@ -2,6 +2,7 @@ package com.smashprofs.game.Screens;
 
 
 import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Matrix4;
 import com.smashprofs.game.GameClass;
@@ -27,6 +28,8 @@ import com.smashprofs.game.Scenes.Hud;
 import static com.smashprofs.game.Actors.PlayerClass.PPM;
 
 public class PlayScreen implements Screen {
+
+    private TextureAtlas atlas;
 
     private static ShapeRenderer debugRenderer = new ShapeRenderer();
 
@@ -141,6 +144,10 @@ public class PlayScreen implements Screen {
     }
 
     public PlayScreen(GameClass game) {
+
+        atlas = new TextureAtlas("Sprites/AlexSpritePack.pack");
+
+
         soundManager.setupMusic(gameSong);
         this.combatManager = CombatManager.getCombatManager_INSTANCE();
         this.game = game;
@@ -179,14 +186,19 @@ public class PlayScreen implements Screen {
             body.createFixture(fdef);
         }
 
-        playerOne = new PlayerClass(world, PlayerClass.InputState.WASD, playerOneSpawnPoint, "Martin Goib");
-        playerTwo = new PlayerClass(world, PlayerClass.InputState.ARROWS, playerTwoSpawnPoint, "Jens Huhn");
+        playerOne = new PlayerClass(world, PlayerClass.InputState.WASD, playerOneSpawnPoint, "Martin Goib", this);
+        playerTwo = new PlayerClass(world, PlayerClass.InputState.ARROWS, playerTwoSpawnPoint, "Jens Huhn", this);
 
         hud = new Hud(game.batch, playerOne, playerTwo);
 
 
     }
 
+
+    public TextureAtlas getAtlas() {
+        return atlas;
+
+    }
 
 
     @Override
@@ -201,10 +213,15 @@ public class PlayScreen implements Screen {
         Gdx.gl.glClearColor(0, 0, 0, 1); //-> light blue
         //Gdx.gl.glClearColor(1, 1, 1, 1);
         Gdx.gl.glClear(Gdx.gl.GL_COLOR_BUFFER_BIT);
-        game.batch.setProjectionMatrix(hud.stage.getCamera().combined);
+
+        game.batch.setProjectionMatrix(cameragame.combined);
+        game.batch.begin();
+        playerOne.draw(game.batch);
+        game.batch.end();
         hud.stage.draw();
         hud.updateHud(delta, playerOne, playerTwo);
         tiledMapRenderer.render();
+
 
 
 

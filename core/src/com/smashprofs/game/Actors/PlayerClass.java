@@ -3,8 +3,7 @@ package com.smashprofs.game.Actors;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.g2d.Sprite;
-import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.g2d.*;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.*;
 import com.smashprofs.game.Helper.CombatManager;
@@ -14,6 +13,11 @@ import com.smashprofs.game.Helper.Util;
 import com.smashprofs.game.Screens.PlayScreen;
 
 public class PlayerClass extends Sprite {
+
+
+    private Texture alexStand ;
+    private Texture heroTextureWalk;
+    private Animation<TextureRegion> stand;
 
     private String playerName;
     private Vector2 poistion;
@@ -66,7 +70,13 @@ public class PlayerClass extends Sprite {
     public void update(float deltatime) {
         applyForces(0, 0);
         checkHealth();
+        setPosition(b2dbody.getPosition().x-getWidth()/2, b2dbody.getPosition().y - getHeight()/2);
 
+
+        if(deltatime == 0 ) return;
+        if(deltatime > 0.1f) deltatime = 0.1f;
+        stateTime += deltatime;
+        renderTexture(deltatime);
 
     }
 
@@ -137,7 +147,19 @@ public class PlayerClass extends Sprite {
     private SpriteBatch batch;
     private Sprite sprite;
 
-    public PlayerClass(World world, InputState inputState, Vector2 spawnpoint, String playerName) {
+    public PlayerClass(World world, InputState inputState, Vector2 spawnpoint, String playerName, PlayScreen screen) {
+
+        alexStand = new Texture("Sprites/herochar_idle_anim_strip_4.png");
+        //heroTextureWalk = new Texture("Sprites/herochar_run_anim_strip_6.png");
+        TextureRegion[] idle = TextureRegion.split(alexStand, 16, 16)[0];
+        stand = new Animation(0.15f, idle[0], idle[1], idle[2], idle[3]);
+        //TextureRegion[] walking = TextureRegion.split(heroTextureWalk, 16, 16)[0];
+        this.currentState = State.STANDING;
+
+        //super(screen.getAtlas().findRegion("Alex_strip"));
+        //alexStand = new TextureRegion(screen.getAtlas().findRegion("Alex_strip"),10,17, 128, 128);
+        setBounds(0,0,128/PPM, 128/PPM);
+        setRegion(alexStand);
         this.world = world;
         this.currentInputState = inputState;
         this.spawnpoint = spawnpoint;
@@ -147,6 +169,9 @@ public class PlayerClass extends Sprite {
 
         soundManager = SoundManager.getSoundManager_INSTANCE();
     }
+
+
+
 
     private float gravity = -0.098f;
 
@@ -362,7 +387,7 @@ public class PlayerClass extends Sprite {
                 getB2dbody().setLinearVelocity(getB2dbody().getLinearVelocity().x, 0.1f);
             }
 
-
+            // 3=====>
             getB2dbody().applyLinearImpulse(new Vector2(0, getJumpForce()), getB2dbody().getWorldCenter(), true);
 
             //System.out.println("Jumping");
@@ -402,6 +427,22 @@ public class PlayerClass extends Sprite {
         } else {
 
         }
+    }
+
+    public void renderTexture (float deltatime) {
+        TextureRegion frame = null;
+        switch (this.currentState) {
+            case STANDING:
+                frame = stand.getKeyFrame(stateTime);
+                break;
+/*            case WALKING:
+                frame = walk.getKeyFrame(luca.stateTime);
+                break;
+            case JUMPING:
+                frame = jump.getKeyFrame(luca.stateTime);
+                break;*/
+        }
+//8=>
     }
 
     public boolean reachedWorldEdge() {
