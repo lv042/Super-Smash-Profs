@@ -153,14 +153,28 @@ public class PlayerClass extends Sprite {
     private SpriteBatch batch;
     private Sprite sprite;
 
-    public PlayerClass(World world, InputState inputState, Vector2 spawnpoint, String playerName, PlayScreen screen) {
+    public PlayerClass(World world, InputState inputState, Vector2 spawnpoint, String playerName) {
 
-        alexStand = new Texture("Sprites/herochar_idle_anim_strip_4.png");
-        //heroTextureWalk = new Texture("Sprites/herochar_run_anim_strip_6.png");
-        TextureRegion[] idle = TextureRegion.split(alexStand, 16, 16)[0];
-        stand = new Animation(0.15f, idle[0], idle[1], idle[2], idle[3]);
-        //TextureRegion[] walking = TextureRegion.split(heroTextureWalk, 16, 16)[0];
+
+
+        alexStand = new Texture("Sprites/Alex_stand.png");
+        alexRun = new Texture("Sprites/Alex_run.png");
+        alexJump = new Texture("Sprites/Alex_jump.png");
+
+        TextureRegion[] standing = TextureRegion.split(alexStand, 100, 100)[0];
+        stand = new Animation(0.15f, standing[0], standing[1], standing[2], standing[3]);
+        stand.setPlayMode(Animation.PlayMode.LOOP);
+
+        TextureRegion[] running = TextureRegion.split(alexRun, 100, 100)[0];
+        run = new Animation(0.15f , running[0], running[1], running[2], running[3], running[4], running[5]);
+        run.setPlayMode(Animation.PlayMode.LOOP);
+
+        TextureRegion[] jumping = TextureRegion.split(alexJump, 100, 100)[0];
+        jump = new Animation(0.15f, jumping[0], jumping[1], jumping[2]);
+        jump.setPlayMode(Animation.PlayMode.NORMAL);
+
         this.currentState = State.STANDING;
+
 
         //super(screen.getAtlas().findRegion("Alex_strip"));
         //alexStand = new TextureRegion(screen.getAtlas().findRegion("Alex_strip"),10,17, 128, 128);
@@ -172,7 +186,7 @@ public class PlayerClass extends Sprite {
         this.playerName = playerName;
         //this.batch =
 
-        definePlayer(inputState);
+        //definePlayer(inputState);
 
         soundManager = SoundManager.getSoundManager_INSTANCE();
 
