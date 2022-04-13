@@ -63,6 +63,8 @@ public class PlayerClass extends Sprite {
     public float damping = 0.9995f; //the closer this value is to zero the more the player will slow down
     InputState currentInputState;
 
+    float stateTime = 0;
+
     public void updatePosition(float deltatime) {
         poistion = b2dbody.getPosition();
     }
@@ -168,6 +170,7 @@ public class PlayerClass extends Sprite {
         definePlayer(inputState);
 
         soundManager = SoundManager.getSoundManager_INSTANCE();
+
     }
 
 
