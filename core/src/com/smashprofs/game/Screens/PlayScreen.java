@@ -2,7 +2,6 @@ package com.smashprofs.game.Screens;
 
 
 import com.badlogic.gdx.graphics.Color;
-import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Matrix4;
 import com.smashprofs.game.GameClass;
@@ -28,8 +27,6 @@ import com.smashprofs.game.Scenes.Hud;
 import static com.smashprofs.game.Actors.PlayerClass.PPM;
 
 public class PlayScreen implements Screen {
-
-    private TextureAtlas atlas;
 
     private static ShapeRenderer debugRenderer = new ShapeRenderer();
 
@@ -82,6 +79,8 @@ public class PlayScreen implements Screen {
     public void update(float deltatime){
         tiledMapRenderer.setView(cameragame);
 
+        playerOne.checkGrounded();
+        playerTwo.checkGrounded();
 
         //input
         checkInput(deltatime);
@@ -90,7 +89,7 @@ public class PlayScreen implements Screen {
         playerTwo.updatePosition(deltatime);
 
         //combatManager
-        combatManager.update(deltatime, playerOne, playerTwo);
+        combatManager.update(deltatime, playerOne, playerTwo, world);
 
 
 
@@ -116,12 +115,10 @@ public class PlayScreen implements Screen {
 
 
 
-        playerOne.checkGrounded();
-        playerTwo.checkGrounded();
 
 
         //debug
-        //DrawDebugLine(new Vector2(0,0), new Vector2(100,100), cameragame.combined);
+        DrawDebugLine(new Vector2(0,0), new Vector2(100,100), cameragame.combined);
 
         //System.out.println("finished update");
 
@@ -144,10 +141,6 @@ public class PlayScreen implements Screen {
     }
 
     public PlayScreen(GameClass game) {
-
-        atlas = new TextureAtlas("Sprites/AlexSpritePack.pack");
-
-
         soundManager.setupMusic(gameSong);
         this.combatManager = CombatManager.getCombatManager_INSTANCE();
         this.game = game;
@@ -186,7 +179,7 @@ public class PlayScreen implements Screen {
             body.createFixture(fdef);
         }
 
-        playerOne = new PlayerClass(world, PlayerClass.InputState.WASD, playerOneSpawnPoint, "Alex Boss");
+        playerOne = new PlayerClass(world, PlayerClass.InputState.WASD, playerOneSpawnPoint, "Martin Goib");
         playerTwo = new PlayerClass(world, PlayerClass.InputState.ARROWS, playerTwoSpawnPoint, "Jens Huhn");
 
         hud = new Hud(game.batch, playerOne, playerTwo);
@@ -194,11 +187,6 @@ public class PlayScreen implements Screen {
 
     }
 
-
-    public TextureAtlas getAtlas() {
-        return atlas;
-
-    }
 
 
     @Override
@@ -208,25 +196,16 @@ public class PlayScreen implements Screen {
 
     @Override
     public void render(float delta) {
-
+        update(delta);
 
         Gdx.gl.glClearColor(0, 0, 0, 1); //-> light blue
         //Gdx.gl.glClearColor(1, 1, 1, 1);
         Gdx.gl.glClear(Gdx.gl.GL_COLOR_BUFFER_BIT);
-        game.batch.setProjectionMatrix(cameragame.combined);
-        game.batch.begin();
-
-        update(delta);
-
-        playerOne.draw(game.batch);
-
-
-        tiledMapRenderer.render();
-        game.batch.end();
-        
-        // Muss unter batch.end() stehen
+        game.batch.setProjectionMatrix(hud.stage.getCamera().combined);
         hud.stage.draw();
         hud.updateHud(delta, playerOne, playerTwo);
+        tiledMapRenderer.render();
+
 
 
         //render our tiledmap debug outlines to screen

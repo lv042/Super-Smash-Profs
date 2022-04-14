@@ -1,6 +1,8 @@
 package com.smashprofs.game.Helper;
 
 import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.physics.box2d.World;
+import com.smashprofs.game.Actors.Bullet;
 import com.smashprofs.game.Actors.PlayerClass;
 
 public class CombatManager {
@@ -20,7 +22,7 @@ public class CombatManager {
         return combatManager_INSTANCE;
     }
 
-    public void update(float deltatime, PlayerClass playerOne, PlayerClass playerTwo) {
+    public void update(float deltatime, PlayerClass playerOne, PlayerClass playerTwo, World world) {
         distanceBetweenPlayers = new Vector2(Math.abs(playerOne.getPosition().x - playerTwo.getPosition().x), Math.abs(playerOne.getPosition().y - playerTwo.getPosition().y));
         distanceBetweenPlayersLength = distanceBetweenPlayers.len();
         //System.out.println(distanceBetweenPlayersLength);
@@ -58,6 +60,16 @@ public class CombatManager {
             if(playerOne.isStompHitground())attackPlayer(playerOne, playerTwo, attackKnockback, 2f);
             if(playerTwo.isStompHitground())attackPlayer(playerTwo, playerOne, attackKnockback, 2f);
 
+
+
+        }
+        if(playerOne.isShooting()){
+            System.out.println("Bullet spawned ");
+            Bullet bullet = new Bullet(world, playerOne);
+        }
+        if(playerTwo.isShooting()){
+            System.out.println("Bullet spawned ");
+            Bullet bullet = new Bullet(world, playerTwo);
         }
 
 
