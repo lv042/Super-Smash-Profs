@@ -76,13 +76,16 @@ public class PlayerClass extends Sprite {
     public void update(float deltatime) {
         applyForces(0, 0);
         checkHealth();
-        setPosition(b2dbody.getPosition().x-getWidth()/2, b2dbody.getPosition().y - getHeight()/2);
-        setRegion(getRenderTexture(deltatime));
-
 
         if(deltatime == 0 ) return;
         if(deltatime > 0.1f) deltatime = 0.1f;
         stateTime += deltatime;
+
+        setPosition(b2dbody.getPosition().x-getWidth()/2, b2dbody.getPosition().y - getHeight()/2);
+        this.setRegion(getRenderTexture(stateTime));
+
+
+
         //renderTexture(deltatime);
 
     }
@@ -179,8 +182,8 @@ public class PlayerClass extends Sprite {
 
         //super(screen.getAtlas().findRegion("Alex_strip"));
         //alexStand = new TextureRegion(screen.getAtlas().findRegion("Alex_strip"),10,17, 128, 128);
-        //setBounds(0,0,77/PPM, 19/PPM);
-        //setRegion(alexStand);
+        setBounds(0,15,25/PPM, 25/PPM);
+        //this.setRegion(alexStand);
         this.world = world;
         this.currentInputState = inputState;
         this.spawnpoint = spawnpoint;
@@ -427,6 +430,14 @@ public class PlayerClass extends Sprite {
         //walking left and right
         if (getB2dbody().getLinearVelocity().x < getMaxVelocity()) {
             getB2dbody().applyLinearImpulse(new Vector2(0.05f * leftRightInput * getWalkingSpeedMultiplier(), 0.0f), getB2dbody().getWorldCenter(), true);
+
+        }
+        // Set State depending on x-velocity of the player body
+        if (getB2dbody().getLinearVelocity().x == 0f) {
+            this.currentState = State.STANDING;
+        }
+        else if(getB2dbody().getLinearVelocity().x != 0f) {
+            this.currentState = State.RUNNING;
         }
 
         //damping
@@ -442,6 +453,7 @@ public class PlayerClass extends Sprite {
             System.out.println("Stomping");
             isStomping = true;
             setHP(getHP() - 0.1f);
+            this.currentState = State.JUMPING;
         } else {
 
         }
@@ -451,12 +463,15 @@ public class PlayerClass extends Sprite {
         TextureRegion frame = null;
         switch (this.currentState) {
             case STANDING:
+                this.setRegion(alexStand);
                 frame = stand.getKeyFrame(stateTime);
                 break;
             case RUNNING:
+                this.setRegion(alexRun);
                 frame = run.getKeyFrame(stateTime);
                 break;
             case JUMPING:
+                this.setRegion(alexJump);
                 frame = jump.getKeyFrame(stateTime);
                 break;
         }
