@@ -82,8 +82,6 @@ public class PlayScreen implements Screen {
     public void update(float deltatime){
         tiledMapRenderer.setView(cameragame);
 
-        playerOne.checkGrounded();
-        playerTwo.checkGrounded();
 
         //input
         checkInput(deltatime);
@@ -118,6 +116,8 @@ public class PlayScreen implements Screen {
 
 
 
+        playerOne.checkGrounded();
+        playerTwo.checkGrounded();
 
 
         //debug
@@ -208,21 +208,25 @@ public class PlayScreen implements Screen {
 
     @Override
     public void render(float delta) {
-        update(delta);
+
 
         Gdx.gl.glClearColor(0, 0, 0, 1); //-> light blue
         //Gdx.gl.glClearColor(1, 1, 1, 1);
         Gdx.gl.glClear(Gdx.gl.GL_COLOR_BUFFER_BIT);
-
         game.batch.setProjectionMatrix(cameragame.combined);
         game.batch.begin();
+
+        update(delta);
+
         playerOne.draw(game.batch);
+
+
+        tiledMapRenderer.render();
         game.batch.end();
+        
+        // Muss unter batch.end() stehen
         hud.stage.draw();
         hud.updateHud(delta, playerOne, playerTwo);
-        tiledMapRenderer.render();
-
-
 
 
         //render our tiledmap debug outlines to screen
