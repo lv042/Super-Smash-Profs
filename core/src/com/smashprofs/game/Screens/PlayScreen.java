@@ -121,7 +121,7 @@ public class PlayScreen implements Screen {
 
 
         //debug
-        DrawDebugLine(new Vector2(0,0), new Vector2(100,100), cameragame.combined);
+        //DrawDebugLine(new Vector2(0,0), new Vector2(100,100), cameragame.combined);
 
         //System.out.println("finished update");
 
