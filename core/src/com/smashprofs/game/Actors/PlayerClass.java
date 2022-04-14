@@ -77,12 +77,13 @@ public class PlayerClass extends Sprite {
         applyForces(0, 0);
         checkHealth();
         setPosition(b2dbody.getPosition().x-getWidth()/2, b2dbody.getPosition().y - getHeight()/2);
+        setRegion(getRenderTexture(deltatime));
 
 
         if(deltatime == 0 ) return;
         if(deltatime > 0.1f) deltatime = 0.1f;
         stateTime += deltatime;
-        renderTexture(deltatime);
+        //renderTexture(deltatime);
 
     }
 
@@ -186,7 +187,7 @@ public class PlayerClass extends Sprite {
         this.playerName = playerName;
         //this.batch =
 
-        //definePlayer(inputState);
+        definePlayer(inputState);
 
         soundManager = SoundManager.getSoundManager_INSTANCE();
 
@@ -446,7 +447,7 @@ public class PlayerClass extends Sprite {
         }
     }
 
-    public void renderTexture (float deltatime) {
+    public TextureRegion getRenderTexture (float stateTime) {
         TextureRegion frame = null;
         switch (this.currentState) {
             case STANDING:
@@ -459,7 +460,8 @@ public class PlayerClass extends Sprite {
                 frame = jump.getKeyFrame(stateTime);
                 break;
         }
-
+        return frame;
+/*
         Batch batch = getBatch();
         batch.begin();
         if(isFacingRight()) {
@@ -469,10 +471,8 @@ public class PlayerClass extends Sprite {
             batch.draw(frame, getX() + getWidth(), getY() + getHeight(), -getWidth(), getHeight());
 
         }
-
-        batch.end();
-
-
+        */
+        // batch.end();
 
 
     }
