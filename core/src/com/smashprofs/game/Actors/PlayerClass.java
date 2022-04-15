@@ -39,6 +39,8 @@ public class PlayerClass extends Sprite {
     private boolean isDead = false;
     private String damageSoundMp3 = "damage.mp3";
     private boolean stompHitground;
+    private float previousY = 0;
+    private float currentY = 0;
 
 
     public boolean isStompHitground() {
@@ -75,19 +77,22 @@ public class PlayerClass extends Sprite {
     }
 
     public void update(float deltatime) {
+        updatePosition(deltatime);
+        checkGrounded();
+        managePlayerInput(deltatime);
+
         applyForces(0, 0);
         checkHealth();
+        limitPlayersToEdge();
+        respawnPlayers();
+
 
         if(deltatime == 0 ) return;
         if(deltatime > 0.1f) deltatime = 0.1f;
         stateTime += deltatime;
 
-        setPosition(b2dbody.getPosition().x-getWidth()/2, b2dbody.getPosition().y - getHeight()/4);
-
-
-
-        this.setRegion(getRenderTexture(stateTime));
-        setFlip(facingRight, false);
+        setAnimationState();
+        setAnimation();
 
 
 
@@ -95,6 +100,29 @@ public class PlayerClass extends Sprite {
 
     }
 
+    private void setAnimation() {
+        this.setPosition(b2dbody.getPosition().x-getWidth()/2, b2dbody.getPosition().y - getHeight()/4); //set the position of the animation to the center of the body
+
+
+
+        this.setRegion(getRenderTexture(stateTime)); //set the texture to the current state of the movement
+        setFlip(facingRight, false); // lets the player face the correct direction
+    }
+
+    private void setAnimationState() {
+        // Set State depending on x-velocity of the player body
+        if (getB2dbody().getLinearVelocity().x == 0f && isGrounded()) {
+            this.currentState = State.STANDING;
+
+
+        }
+        else if(getB2dbody().getLinearVelocity().x != 0f && isGrounded()) {
+            this.currentState = State.RUNNING;
+        }
+        else if(!isGrounded() && getB2dbody().getLinearVelocity().y > 0 && previousY != currentY) {
+            this.currentState = State.JUMPING;
+        }
+    }
 
 
     public boolean isDead() {
@@ -110,7 +138,7 @@ public class PlayerClass extends Sprite {
     }
 
     float playerCollisionBoxRadius = 5;
-    boolean isGrounded = true;
+    boolean isGrounded = false;
     private float respawnDamping = 0.1f;
 
     private float HP = 100;
@@ -180,7 +208,7 @@ public class PlayerClass extends Sprite {
         run.setPlayMode(Animation.PlayMode.LOOP);
 
         TextureRegion[] jumping = TextureRegion.split(alexJump, 100, 100)[0];
-        jump = new Animation(0.15f, jumping[0], jumping[1], jumping[2]);
+        jump = new Animation(0f, running[0]); //Originaly -> jump = new Animation(0.15f, running[0], jumping[1], jumping[2]); -> but jump animation looks like poop
         jump.setPlayMode(Animation.PlayMode.NORMAL);
 
         this.currentState = State.STANDING;
@@ -413,9 +441,7 @@ public class PlayerClass extends Sprite {
         if (jumpCount <= maxExtraJumps && (jumpInput) && (isGrounded || isExtraJumpReady)) {
 
             jumpCount++;
-            if (isExtraJumpReady) {
-                getB2dbody().setLinearVelocity(getB2dbody().getLinearVelocity().x, 0.1f);
-            }
+
 
 
             getB2dbody().applyLinearImpulse(new Vector2(0, getJumpForce()), getB2dbody().getWorldCenter(), true);
@@ -441,13 +467,7 @@ public class PlayerClass extends Sprite {
             getB2dbody().applyLinearImpulse(new Vector2(0.05f * leftRightInput * getWalkingSpeedMultiplier(), 0.0f), getB2dbody().getWorldCenter(), true);
 
         }
-        // Set State depending on x-velocity of the player body
-        if (getB2dbody().getLinearVelocity().x == 0f) {
-            this.currentState = State.STANDING;
-        }
-        else if(getB2dbody().getLinearVelocity().x != 0f) {
-            this.currentState = State.RUNNING;
-        }
+
 
         //damping
         if (isGrounded()) {
@@ -462,9 +482,6 @@ public class PlayerClass extends Sprite {
             System.out.println("Stomping");
             isStomping = true;
             setHP(getHP() - 0.1f);
-            this.currentState = State.JUMPING;
-        } else {
-
         }
     }
 
@@ -474,18 +491,21 @@ public class PlayerClass extends Sprite {
             case STANDING:
                 this.setRegion(alexStand);
                 frame = stand.getKeyFrame(stateTime);
-
                 break;
+
             case RUNNING:
+
                 this.setRegion(alexRun);
                 frame = run.getKeyFrame(stateTime);
                 break;
+
             case JUMPING:
                 this.setRegion(alexJump);
                 frame = jump.getKeyFrame(stateTime);
                 break;
         }
-
+        //System.out.println(getCurrentState());
+        //System.out.println(isGrounded());
         return frame;
 /*
         Batch batch = getBatch();
@@ -513,8 +533,9 @@ public class PlayerClass extends Sprite {
 
     //Check if the player is touching the ground
     public void checkGrounded() {
+        currentY = b2dbody.getPosition().y;
+        if (b2dbody.getLinearVelocity().y - getGravity() <= 0.1 && b2dbody.getLinearVelocity().y - getGravity() >= -0.1 ) {
 
-        if (b2dbody.getLinearVelocity().y - getGravity() == 0) {
             if(isStomping()) {
                 soundManager.playSound(stompSoundWav);
                 setStompHitground(true);
@@ -531,10 +552,14 @@ public class PlayerClass extends Sprite {
             jumpCount = 0;
             isExtraJumpReady = false;
 
-            ;
-            return;
+            previousY = b2dbody.getLinearVelocity().y;
+
         }
-        isGrounded = false;
+        else {
+            isGrounded = false;
+        }
+        previousY = b2dbody.getLinearVelocity().y;
+
 
     }
 

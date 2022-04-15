@@ -67,8 +67,8 @@ public class PlayScreen implements Screen {
     }
     public void checkInput(float deltatime){
 
-        playerOne.managePlayerInput(deltatime);
-        playerTwo.managePlayerInput(deltatime);
+        //Player input is now handeled in the PlayerClass
+        //Only external input is handled here
 
         //exit game
         if(Gdx.input.isKeyPressed(Input.Keys.ESCAPE)){
@@ -81,13 +81,9 @@ public class PlayScreen implements Screen {
     public void update(float deltatime){
         tiledMapRenderer.setView(cameragame);
 
-
-        //input
+        playerOne.update(deltatime); // Most of the code above should go in this method
+        playerTwo.update(deltatime); // update method must be before most of the code below otherwise some values are null;
         checkInput(deltatime);
-
-        playerOne.updatePosition(deltatime);
-        playerTwo.updatePosition(deltatime);
-
         //combatManager
         combatManager.update(deltatime, playerOne, playerTwo, world);
 
@@ -98,34 +94,10 @@ public class PlayScreen implements Screen {
 
         updateCamera();
         viewport.setScreenPosition(0, 0);
-
-        //player
-        playerOne.respawnPlayers();
-        playerTwo.respawnPlayers();
-
-        playerOne.limitPlayersToEdge();
-        playerTwo.limitPlayersToEdge();
-
-
-
-
-
-        playerOne.update(deltatime); // Most of the code above should go in this method
-        playerTwo.update(deltatime);
-
-
-
-        playerOne.checkGrounded();
-        playerTwo.checkGrounded();
-
-
-
         //debug
         DrawDebugLine(playerOne.getPosition(), playerTwo.getPosition(), cameragame.combined);
 
         //System.out.println("finished update");
-
-
     }
 
     public static void DrawDebugLine(Vector2 start, Vector2 end, Matrix4 projectionMatrix)
