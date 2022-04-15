@@ -184,16 +184,18 @@ public class PlayerClass extends Sprite {
 
     private SoundManager soundManager;
 
+    private String userData;
+
     public enum State {
         FALLING, JUMPING, STANDING, RUNNING
     }
 
 
 
-    public PlayerClass(World world, InputState inputState, Vector2 spawnpoint, String playerName) {
+    public PlayerClass(World world, InputState inputState, Vector2 spawnpoint, String playerName, String userData) {
 
 
-
+        this.userData = userData;
 
         alexStand = new Texture("Sprites/Alex_stand.png");
         alexRun = new Texture("Sprites/Alex_run.png");
@@ -336,6 +338,7 @@ public class PlayerClass extends Sprite {
         bdef.type = BodyDef.BodyType.DynamicBody;
         bdef.fixedRotation = true;
         b2dbody = world.createBody(bdef);
+        b2dbody.setUserData(userData);
 
         FixtureDef fDef = new FixtureDef();
         CircleShape shape = new CircleShape(); // circle shape is better for player characters so that it can be easily hit walls and other objects

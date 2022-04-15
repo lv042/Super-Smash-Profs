@@ -6,6 +6,7 @@ import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Matrix4;
 import com.smashprofs.game.GameClass;
+import com.smashprofs.game.Helper.B2dContactListener;
 import com.smashprofs.game.Helper.CombatManager;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
@@ -29,6 +30,7 @@ import static com.smashprofs.game.Actors.PlayerClass.PPM;
 
 public class PlayScreen implements Screen {
 
+    private final B2dContactListener contactListener;
     private TextureAtlas atlas;
 
     private static ShapeRenderer debugRenderer = new ShapeRenderer();
@@ -158,8 +160,11 @@ public class PlayScreen implements Screen {
             body.createFixture(fdef);
         }
 
-        playerOne = new PlayerClass(world, PlayerClass.InputState.WASD, playerOneSpawnPoint, "Alex Boss");
-        playerTwo = new PlayerClass(world, PlayerClass.InputState.ARROWS, playerTwoSpawnPoint, "Jens Huhn");
+        playerOne = new PlayerClass(world, PlayerClass.InputState.WASD, playerOneSpawnPoint, "Alex Boss", "PlayerOne");
+        playerTwo = new PlayerClass(world, PlayerClass.InputState.ARROWS, playerTwoSpawnPoint, "Jens Huhn", "PlayerTwo");
+
+        contactListener = new B2dContactListener(playerOne, playerTwo);
+        world.setContactListener(contactListener);
 
         hud = new Hud(game.batch, playerOne, playerTwo);
 
@@ -189,6 +194,8 @@ public class PlayScreen implements Screen {
         game.batch.begin();
 
         update(delta);
+
+        //contactListener.beginContact(new Contact(true, true, t));
 
         playerOne.draw(game.batch);
 
