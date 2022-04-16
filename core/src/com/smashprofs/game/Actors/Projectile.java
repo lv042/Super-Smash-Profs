@@ -19,11 +19,13 @@ public abstract class  Projectile {
 
     private Vector2 projectileSpawnpoint;
 
+    String userData = "JOeMama";
 
 
     World world;
 
-    public Projectile(World world, PlayerClass originPlayer) {
+    public Projectile(World world, PlayerClass originPlayer, String userData) {
+        this.userData = userData;
         this.world = world;
         this.originPlayer = originPlayer;
         create();
@@ -41,6 +43,7 @@ public abstract class  Projectile {
         bdef.type = BodyDef.BodyType.DynamicBody;
         bdef.fixedRotation = true;
         b2dbody = world.createBody(bdef);
+        b2dbody.setUserData(userData);
 
         FixtureDef fDef = new FixtureDef();
         CircleShape shape = new CircleShape(); // circle shape is better for player characters so that it can be easily hit walls and other objects
@@ -72,9 +75,6 @@ public abstract class  Projectile {
 
     }
 
-    public void beginContact(Contact contact) {
-        System.out.println("Contact");
-    }
 }
 
 

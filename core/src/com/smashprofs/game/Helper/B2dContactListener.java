@@ -9,23 +9,55 @@ import com.smashprofs.game.Actors.PlayerClass;
 
 public class B2dContactListener implements ContactListener {
 
-    PlayerClass playerOne;
-    PlayerClass playerTwo;
+    boolean PlayerOneGotShoot = false;
+    boolean PlayerTwoGotShoot = false;
+    boolean BulletHit = false;
 
-
-
-    CombatManager combatManager = CombatManager.getCombatManager_INSTANCE();
-
-    public B2dContactListener(PlayerClass playerOne, PlayerClass playerTwo) {
-        this.playerOne = playerOne;
-        this.playerTwo = playerTwo;
+    public boolean isPlayerOneGotShoot() {
+        return PlayerOneGotShoot;
     }
+
+    public void setPlayerOneGotShoot(boolean playerOneGotShoot) {
+        PlayerOneGotShoot = playerOneGotShoot;
+    }
+
+    public boolean isPlayerTwoGotShoot() {
+        return PlayerTwoGotShoot;
+    }
+
+    public void setPlayerTwoGotShoot(boolean playerTwoGotShoot) {
+        PlayerTwoGotShoot = playerTwoGotShoot;
+    }
+
+    public boolean isBulletHit() {
+        return BulletHit;
+    }
+
+    public void setBulletHit(boolean bulletHit) {
+        BulletHit = bulletHit;
+    }
+
+    private static B2dContactListener  contactListener = new B2dContactListener();
+
+    public static B2dContactListener getContactListener_INSTANCE() {
+        return contactListener;
+    }
+
+
 
     @Override
     public void beginContact(Contact contact) {
         System.out.println("beginContact");
+        if("PlayerOne".equals(contact.getFixtureA().getBody().getUserData()) && "Bullet".equals(contact.getFixtureB().getBody().getUserData()))
+            PlayerOneGotShoot = true;
+        if("PlayerTwo".equals(contact.getFixtureA().getBody().getUserData()) && "Bullet".equals(contact.getFixtureB().getBody().getUserData()))
+            PlayerTwoGotShoot = true;
 
-        System.out.println("Fixture B: " + contact.getFixtureA().getBody().getUserData());
+        //if("Bullet".equals(contact.getFixtureB().getBody().getUserData())) BulletHit = true;
+        System.out.println("PlayerOneGotShoot: " + PlayerOneGotShoot);
+        System.out.println("PlayerTwoGotShoot: " + PlayerTwoGotShoot);
+        System.out.println("BulletHit: " + BulletHit);
+
 
     }
 

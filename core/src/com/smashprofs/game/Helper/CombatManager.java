@@ -4,9 +4,12 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.World;
 import com.smashprofs.game.Actors.Bullet;
 import com.smashprofs.game.Actors.PlayerClass;
+import com.smashprofs.game.Helper.B2dContactListener;
 
 public class CombatManager {
     private Vector2 distanceBetweenPlayers = new Vector2(0, 0);
+
+    private B2dContactListener contactListener = B2dContactListener.getContactListener_INSTANCE();
 
     private SoundManager soundManager = SoundManager.getSoundManager_INSTANCE();
 
@@ -70,6 +73,19 @@ public class CombatManager {
         if(playerTwo.isShooting()){
             System.out.println("Bullet spawned ");
             Bullet bullet = new Bullet(world, playerTwo);
+        }
+
+        if (contactListener.isPlayerTwoGotShoot()) {
+            attackPlayer(playerOne, playerTwo, 1.5f, 2f);
+            contactListener.setPlayerTwoGotShoot(false);
+            contactListener.setBulletHit(false);
+            System.out.println("abracadabra");
+        }
+        if (contactListener.isPlayerOneGotShoot()) {
+            attackPlayer(playerTwo, playerOne, 1.5f, 2f);
+            contactListener.setPlayerOneGotShoot(false);
+            contactListener.setBulletHit(false);
+            System.out.println("adadadadada");
         }
 
 

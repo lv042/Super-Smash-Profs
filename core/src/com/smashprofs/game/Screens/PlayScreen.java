@@ -163,7 +163,7 @@ public class PlayScreen implements Screen {
         playerOne = new PlayerClass(world, PlayerClass.InputState.WASD, playerOneSpawnPoint, "Alex Boss", "PlayerOne");
         playerTwo = new PlayerClass(world, PlayerClass.InputState.ARROWS, playerTwoSpawnPoint, "Jens Huhn", "PlayerTwo");
 
-        contactListener = new B2dContactListener(playerOne, playerTwo);
+        contactListener = B2dContactListener.getContactListener_INSTANCE();
         world.setContactListener(contactListener);
 
         hud = new Hud(game.batch, playerOne, playerTwo);

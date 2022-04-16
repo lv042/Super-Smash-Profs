@@ -16,7 +16,9 @@ public class Bullet extends Projectile{
 
 
     public Bullet(World world, PlayerClass playerOrigin) {
-        super(world, playerOrigin);
+        super(world, playerOrigin, "Bullet");
+        userData = "Bullet";
     }
+
 
 }
