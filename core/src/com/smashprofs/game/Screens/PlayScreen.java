@@ -5,6 +5,7 @@ import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Matrix4;
+import com.badlogic.gdx.math.Vector3;
 import com.smashprofs.game.GameClass;
 import com.smashprofs.game.Helper.B2dContactListener;
 import com.smashprofs.game.Helper.CombatManager;
@@ -81,6 +82,7 @@ public class PlayScreen implements Screen {
 
 
     public void update(float deltatime){
+
         tiledMapRenderer.setView(cameragame);
 
         playerOne.update(deltatime); // Most of the code above should go in this method
@@ -99,7 +101,10 @@ public class PlayScreen implements Screen {
         //debug
         DrawDebugLine(playerOne.getPosition(), playerTwo.getPosition(), cameragame.combined);
 
-        //System.out.println("finished update");
+        //dynamic camera -> please someone implement this into CameraManager im to lazy to do it now
+        Vector3 middleVector = new Vector3((playerOne.getPosition().x + playerTwo.getPosition().x)/2, (playerOne.getPosition().y + playerTwo.getPosition().y)/2, 0);
+        cameragame.position.set(middleVector);
+
     }
 
     public static void DrawDebugLine(Vector2 start, Vector2 end, Matrix4 projectionMatrix)
