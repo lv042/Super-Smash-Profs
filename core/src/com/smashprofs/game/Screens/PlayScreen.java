@@ -2,12 +2,14 @@ package com.smashprofs.game.Screens;
 
 
 import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Matrix4;
 import com.badlogic.gdx.math.Vector3;
 import com.smashprofs.game.GameClass;
 import com.smashprofs.game.Helper.B2dContactListener;
+import com.smashprofs.game.Helper.CameraManager;
 import com.smashprofs.game.Helper.CombatManager;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
@@ -32,9 +34,8 @@ import static com.smashprofs.game.Actors.PlayerClass.PPM;
 public class PlayScreen implements Screen {
 
     private final B2dContactListener contactListener;
-    private TextureAtlas atlas;
 
-    private static ShapeRenderer debugRenderer = new ShapeRenderer();
+    public static ShapeRenderer debugRenderer = new ShapeRenderer();
 
     private String gameSong = "music/beste music ever.wav";
 
@@ -48,7 +49,7 @@ public class PlayScreen implements Screen {
 
     private Vector2 playerTwoSpawnPoint = new Vector2(110, 90);
 
-    private OrthographicCamera cameragame;
+    private OrthographicCamera gamecamera;
     public static Viewport viewport; // Manages a Camera and determines how world coordinates are mapped to and from the screen.
     private Hud hud;
 
@@ -60,14 +61,14 @@ public class PlayScreen implements Screen {
 
     private CombatManager combatManager;
 
+    private CameraManager cameraManager = CameraManager.getCameraManager_INSTANCE();
+
 
     //Box2D
     private World world;
     private Box2DDebugRenderer box2DDebugRenderer; //renders outline of box2d bodies
 
-    public void updateCamera(){
-        cameragame.update();
-    }
+
     public void checkInput(float deltatime){
 
         //Player input is now handeled in the PlayerClass
@@ -83,7 +84,7 @@ public class PlayScreen implements Screen {
 
     public void update(float deltatime){
 
-        tiledMapRenderer.setView(cameragame);
+        tiledMapRenderer.setView(gamecamera);
 
         playerOne.update(deltatime); // Most of the code above should go in this method
         playerTwo.update(deltatime); // update method must be before most of the code below otherwise some values are null;
@@ -96,15 +97,13 @@ public class PlayScreen implements Screen {
         //updates the physics 60 times per second
         world.step(1/60f, 6, 2); //higher iterations make physics more accurate but also way slower
 
-        updateCamera();
+
         viewport.setScreenPosition(0, 0);
         //debug
-        DrawDebugLine(playerOne.getPosition(), playerTwo.getPosition(), cameragame.combined);
+        DrawDebugLine(playerOne.getPosition(), playerTwo.getPosition(), gamecamera.combined);
 
-        //dynamic camera -> please someone implement this into CameraManager im to lazy to do it now
-        Vector3 middleVector = new Vector3((playerOne.getPosition().x + playerTwo.getPosition().x)/2, (playerOne.getPosition().y + playerTwo.getPosition().y)/2, 0);
-        cameragame.position.set(middleVector);
 
+        cameraManager.updateCameraManager(playerOne, playerTwo);
     }
 
     public static void DrawDebugLine(Vector2 start, Vector2 end, Matrix4 projectionMatrix)
@@ -124,14 +123,12 @@ public class PlayScreen implements Screen {
 
     public PlayScreen(GameClass game) {
 
-        atlas = new TextureAtlas("Sprites/AlexSpritePack.pack");
-
 
         soundManager.setupMusic(gameSong);
         this.combatManager = CombatManager.getCombatManager_INSTANCE();
         this.game = game;
-        cameragame = new OrthographicCamera();
-        viewport = new FillViewport(GameClass.V_WIDTH / PPM, GameClass.V_HEIGHT / PPM, cameragame);
+        gamecamera = cameraManager.getGameCamera();
+        viewport = new FillViewport(GameClass.V_WIDTH / PPM, GameClass.V_HEIGHT / PPM, gamecamera);
 
         //StretchViewport is a Viewport that stretches the screen to fill the window.
         //Screen Viewport is a Viewport that show as much of the world as possible on the screen -> makes the the world you see depend on the size of the window.
@@ -141,7 +138,6 @@ public class PlayScreen implements Screen {
         map = mapLoader.load("1/Map 1.tmx");
         tiledMapRenderer = new OrthoCachedTiledMapRenderer(map, 1 / PPM);
 
-        cameragame.position.set((viewport.getWorldWidth() / 2), (viewport.getWorldHeight() / 2) , 0); // sets the position of the camera to the center of the screen -> later you can use the util class
 
 
         world = new World(new Vector2(0, 0), true); //y value -> gravity -> now handled by the player class
@@ -177,10 +173,7 @@ public class PlayScreen implements Screen {
     }
 
 
-    public TextureAtlas getAtlas() {
-        return atlas;
 
-    }
 
 
     @Override
@@ -195,31 +188,14 @@ public class PlayScreen implements Screen {
         Gdx.gl.glClearColor(0, 0, 0, 1); //-> light blue
         //Gdx.gl.glClearColor(1, 1, 1, 1);
         Gdx.gl.glClear(Gdx.gl.GL_COLOR_BUFFER_BIT);
-        game.batch.setProjectionMatrix(cameragame.combined);
-        game.batch.begin();
-
         update(delta);
-
-        //contactListener.beginContact(new Contact(true, true, t));
-
-        playerOne.draw(game.batch);
-
-
-
-        //playerTwo.draw(game.batch);
-
-
-
         tiledMapRenderer.render();
-        game.batch.end();
-
         // Muss unter batch.end() stehen
         hud.stage.draw();
         hud.updateHud(delta, playerOne, playerTwo);
 
-
         //render our tiledmap debug outlines to screen
-        box2DDebugRenderer.render(world, cameragame.combined);
+        box2DDebugRenderer.render(world, gamecamera.combined);
 
 
     }
@@ -227,7 +203,6 @@ public class PlayScreen implements Screen {
     @Override
     public void resize(int width, int height) {
         viewport.update(width, height);
-
     }
 
     @Override

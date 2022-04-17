@@ -7,7 +7,9 @@ import com.smashprofs.game.Helper.Util;
 import com.smashprofs.game.Screens.IntroScreen;
 
 public class GameClass extends Game {
-	public SpriteBatch batch;
+	public static SpriteBatch batch;
+
+
 	Texture img;
 	public static final int V_WIDTH = 400;
 	public static final int V_HEIGHT = 208;

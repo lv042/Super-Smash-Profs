@@ -4,7 +4,10 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.World;
 import com.smashprofs.game.Actors.Bullet;
 import com.smashprofs.game.Actors.PlayerClass;
+import com.smashprofs.game.Actors.Projectile;
 import com.smashprofs.game.Helper.B2dContactListener;
+
+import java.util.ArrayList;
 
 public class CombatManager {
     private Vector2 distanceBetweenPlayers = new Vector2(0, 0);
@@ -16,6 +19,9 @@ public class CombatManager {
     private float distanceBetweenPlayersLength = distanceBetweenPlayers.len();
 
     private static final CombatManager combatManager_INSTANCE = new CombatManager();
+
+    private ArrayList<Projectile> projectilesList = new ArrayList<Projectile>();
+
 
     //private constructor to avoid client applications to use constructor
     private CombatManager() {
@@ -30,6 +36,7 @@ public class CombatManager {
         distanceBetweenPlayersLength = distanceBetweenPlayers.len();
         //System.out.println(distanceBetweenPlayersLength);
 
+        updateAllProjectiles(deltatime, world);
         if (distanceBetweenPlayersLength < playerOne.getAttackReach()) {
 
             float attackKnockback = 1.5f;
@@ -68,11 +75,13 @@ public class CombatManager {
         }
         if(playerOne.isShooting()){
             System.out.println("Bullet spawned ");
-            Bullet bullet = new Bullet(world, playerOne);
+            Bullet bullet = new Bullet(world, playerOne, CameraManager.getCameraManager_INSTANCE().getGameCamera());
+            projectilesList.add(bullet);
         }
-        if(playerTwo.isShooting()){
-            System.out.println("Bullet spawned ");
-            Bullet bullet = new Bullet(world, playerTwo);
+        if(playerTwo.isShooting() && !playerOne.isBlocking()){
+            System.out.println("Bullet spawned");
+            Bullet bullet = new Bullet(world, playerTwo, CameraManager.getCameraManager_INSTANCE().getGameCamera());
+            projectilesList.add(bullet);
         }
 
         if (contactListener.isPlayerTwoGotShoot()) {
@@ -91,6 +100,13 @@ public class CombatManager {
 
 
 
+    }
+
+    private void updateAllProjectiles(float deltatime, World world) {
+        for    (int i = 0; i < projectilesList.size(); i++) {
+            projectilesList.get(i).update(deltatime);
+
+        }
     }
 
     public void attackPlayer(PlayerClass attacker, PlayerClass target, float attackKnockback ,float yAttackKnockback){

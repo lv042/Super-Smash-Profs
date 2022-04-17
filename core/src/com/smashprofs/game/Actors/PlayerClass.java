@@ -6,42 +6,107 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.*;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.*;
-import com.smashprofs.game.GameClass;
-import com.smashprofs.game.Helper.CombatManager;
+import com.smashprofs.game.Helper.CameraManager;
 import com.smashprofs.game.Helper.SoundManager;
 import com.smashprofs.game.Helper.Util;
-
 import com.smashprofs.game.Screens.PlayScreen;
 
 public class PlayerClass extends Sprite {
 
 
-    private Texture alexStand ;
-    private Texture alexRun;
-    private Texture alexJump;
-    private Animation<TextureRegion> stand;
-    private Animation<TextureRegion> run;
-    private Animation<TextureRegion> jump;
-
+    public static final float PPM = 100;
+    private final World world;
+    public float damping = 0.9995f; //the closer this value is to zero the more the player will slow down
+    InputState currentInputState;
+    float stateTime = 0;
+    float playerCollisionBoxRadius = 5;
+    boolean isGrounded = false;
+    boolean standardAttackInput = false;
+    private final Texture alexStand;
+    private final Texture alexRun;
+    private final Texture alexJump;
+    private final Animation<TextureRegion> stand;
+    private final Animation<TextureRegion> run;
+    private final Animation<TextureRegion> jump;
     private String playerName;
     private Vector2 poistion;
     private float timeCount;
-
     private float worldTimer;
-    private float stompSpeed = -5f;
-
-    private String deathSoundMp3 = "death.mp3";
-
-    private String punchSoundMp3 = "punch.mp3";
-
-    private String stompSoundWav = "stomp.wav";
+    private final float stompSpeed = -5f;
+    private final String deathSoundMp3 = "death.mp3";
+    private final String punchSoundMp3 = "punch.mp3";
+    private final String stompSoundWav = "stomp.wav";
     private boolean isStomping;
     private boolean isDead = false;
-    private String damageSoundMp3 = "damage.mp3";
+    private final String damageSoundMp3 = "damage.mp3";
     private boolean stompHitground;
     private float previousY = 0;
     private float currentY = 0;
+    private final CameraManager cameraManager = CameraManager.getCameraManager_INSTANCE();
+    private final float attackReach = 0.2f;
+    private final Batch batch = new SpriteBatch();
+    private final float respawnDamping = 0.1f;
+    private float HP = 100;
+    private boolean isBlocking = false;
+    private final int attackDamage = 10;
+    private final boolean collideWithOtherPlayers = false;
+    private final int maxExtraJumps = 1; //currently, only works with one extra jump
+    private int jumpCount = 0;
+    private BodyDef bdef;
+    private final Vector2 spawnpoint;
+    private Body b2dbody;
+    private final float maxVelocity = 1.6f;
+    private boolean isExtraJumpReady;
+    private final float jumpForce = 2.5f;
+    private final float walkingSpeedMultiplier = 1.3f;
+    private State currentState;
+    private final SoundManager soundManager;
+    private final String userData;
+    private float gravity = -0.098f;
+    private Vector2 forcesCombined = new Vector2(0, 0);
+    private final float startingGravity = gravity;
+    private boolean isShooting = false;
+    private boolean facingRight = true;
+    private int isFacingRightAxe = 0;
+    public PlayerClass(World world, InputState inputState, Vector2 spawnpoint, String playerName, String userData) {
 
+
+        this.userData = userData;
+
+        alexStand = new Texture("Sprites/Alex_stand.png");
+        alexRun = new Texture("Sprites/Alex_run.png");
+        alexJump = new Texture("Sprites/Alex_jump.png");
+
+        TextureRegion[] standing = TextureRegion.split(alexStand, 100, 100)[0];
+        stand = new Animation(0.15f, standing[0], standing[1], standing[2], standing[3]);
+        stand.setPlayMode(Animation.PlayMode.LOOP);
+
+        TextureRegion[] running = TextureRegion.split(alexRun, 100, 100)[0];
+        run = new Animation(0.15f, running[0], running[1], running[2], running[3], running[4], running[5]);
+        run.setPlayMode(Animation.PlayMode.LOOP);
+
+        TextureRegion[] jumping = TextureRegion.split(alexJump, 100, 100)[0];
+        jump = new Animation(0f, running[0]); //Originaly -> jump = new Animation(0.15f, running[0], jumping[1], jumping[2]); -> but jump animation looks like poop
+        jump.setPlayMode(Animation.PlayMode.NORMAL);
+
+        this.currentState = State.STANDING;
+
+
+        //super(screen.getAtlas().findRegion("Alex_strip"));
+        //alexStand = new TextureRegion(screen.getAtlas().findRegion("Alex_strip"),10,17, 128, 128);
+        setBounds(0, 15, 25 / PPM, 25 / PPM);
+        //this.setRegion(alexStand);
+        this.world = world;
+        this.currentInputState = inputState;
+        this.spawnpoint = spawnpoint;
+        this.playerName = playerName;
+        //this.batch =
+
+        definePlayer();
+
+        soundManager = SoundManager.getSoundManager_INSTANCE();
+
+    }
 
     public boolean isStompHitground() {
         return stompHitground;
@@ -59,18 +124,9 @@ public class PlayerClass extends Sprite {
         return poistion;
     }
 
-    private float attackReach = 0.2f;
-
     public float getAttackReach() {
         return attackReach;
     }
-
-    public static final float PPM = 100;
-    private final World world;
-    public float damping = 0.9995f; //the closer this value is to zero the more the player will slow down
-    InputState currentInputState;
-
-    float stateTime = 0;
 
     public void updatePosition(float deltatime) {
         poistion = b2dbody.getPosition();
@@ -87,22 +143,33 @@ public class PlayerClass extends Sprite {
         respawnPlayers();
 
 
-        if(deltatime == 0 ) return;
-        if(deltatime > 0.1f) deltatime = 0.1f;
+        if (deltatime == 0) return;
+        if (deltatime > 0.1f) deltatime = 0.1f;
         stateTime += deltatime;
 
         setAnimationState();
-        setAnimation();
+        setAnimationPosition();
 
 
-
-        //renderTexture(deltatime);
+        renderTexture(deltatime);
 
     }
 
-    private void setAnimation() {
-        this.setPosition(b2dbody.getPosition().x-getWidth()/2, b2dbody.getPosition().y - getHeight()/4); //set the position of the animation to the center of the body
+    private void renderTexture(float deltatime) {
+        batch.setProjectionMatrix(cameraManager.getGameCamera().combined);
+        batch.begin();
 
+
+        //contactListener.beginContact(new Contact(true, true, t));
+        draw(batch);
+
+
+        //playerTwo.draw(game.batch);
+        batch.end();
+    }
+
+    private void setAnimationPosition() {
+        this.setPosition(b2dbody.getPosition().x - getWidth() / 2, b2dbody.getPosition().y - getHeight() / 4); //set the position of the animation to the center of the body
 
 
         this.setRegion(getRenderTexture(stateTime)); //set the texture to the current state of the movement
@@ -115,15 +182,12 @@ public class PlayerClass extends Sprite {
             this.currentState = State.STANDING;
 
 
-        }
-        else if(getB2dbody().getLinearVelocity().x != 0f && isGrounded()) {
+        } else if (getB2dbody().getLinearVelocity().x != 0f && isGrounded()) {
             this.currentState = State.RUNNING;
-        }
-        else if(!isGrounded() && getB2dbody().getLinearVelocity().y > 0 && previousY != currentY) {
+        } else if (!isGrounded() && getB2dbody().getLinearVelocity().y > 0 && previousY != currentY) {
             this.currentState = State.JUMPING;
         }
     }
-
 
     public boolean isDead() {
         return isDead;
@@ -133,23 +197,9 @@ public class PlayerClass extends Sprite {
         isDead = dead;
     }
 
-    public enum InputState {
-        WASD, ARROWS
-    }
-
-    float playerCollisionBoxRadius = 5;
-    boolean isGrounded = false;
-    private float respawnDamping = 0.1f;
-
-    private float HP = 100;
-
-    private boolean isBlocking = false;
-
     public boolean isBlocking() {
         return isBlocking;
     }
-
-    private int attackDamage = 10;
 
     public float getHP() {
         return HP;
@@ -164,90 +214,13 @@ public class PlayerClass extends Sprite {
         return attackDamage;
     }
 
-    private boolean collideWithOtherPlayers = false;
-    private int maxExtraJumps = 1; //currently, only works with one extra jump
-    private int jumpCount = 0;
-    private BodyDef bdef;
-    boolean standardAttackInput = false;
-
     public boolean isStandardAttackInput() {
         return standardAttackInput;
     }
 
-    private Vector2 spawnpoint;
-    private Body b2dbody;
-    private float maxVelocity = 1.6f;
-    private boolean isExtraJumpReady;
-    private float jumpForce = 2.5f;
-    private float walkingSpeedMultiplier = 1.3f;
-    private State currentState;
-
-    private SoundManager soundManager;
-
-    private String userData;
-
-    public enum State {
-        FALLING, JUMPING, STANDING, RUNNING
-    }
-
-
-
-    public PlayerClass(World world, InputState inputState, Vector2 spawnpoint, String playerName, String userData) {
-
-
-        this.userData = userData;
-
-        alexStand = new Texture("Sprites/Alex_stand.png");
-        alexRun = new Texture("Sprites/Alex_run.png");
-        alexJump = new Texture("Sprites/Alex_jump.png");
-
-        TextureRegion[] standing = TextureRegion.split(alexStand, 100, 100)[0];
-        stand = new Animation(0.15f, standing[0], standing[1], standing[2], standing[3]);
-        stand.setPlayMode(Animation.PlayMode.LOOP);
-
-        TextureRegion[] running = TextureRegion.split(alexRun, 100, 100)[0];
-        run = new Animation(0.15f , running[0], running[1], running[2], running[3], running[4], running[5]);
-        run.setPlayMode(Animation.PlayMode.LOOP);
-
-        TextureRegion[] jumping = TextureRegion.split(alexJump, 100, 100)[0];
-        jump = new Animation(0f, running[0]); //Originaly -> jump = new Animation(0.15f, running[0], jumping[1], jumping[2]); -> but jump animation looks like poop
-        jump.setPlayMode(Animation.PlayMode.NORMAL);
-
-        this.currentState = State.STANDING;
-
-
-        //super(screen.getAtlas().findRegion("Alex_strip"));
-        //alexStand = new TextureRegion(screen.getAtlas().findRegion("Alex_strip"),10,17, 128, 128);
-        setBounds(0,15,25/PPM, 25/PPM);
-        //this.setRegion(alexStand);
-        this.world = world;
-        this.currentInputState = inputState;
-        this.spawnpoint = spawnpoint;
-        this.playerName = playerName;
-        //this.batch =
-
-        definePlayer(inputState);
-
-        soundManager = SoundManager.getSoundManager_INSTANCE();
-
-    }
-
-
-
-
-    private float gravity = -0.098f;
-
-    private Vector2 forcesCombined = new Vector2(0, 0);
-
-    private float startingGravity = gravity;
-
-    private boolean isShooting = false;
-
     public float getStartingGravity() {
         return startingGravity;
     }
-
-    private boolean facingRight = true;
 
     public String getPlayerName() {
         return playerName;
@@ -260,8 +233,6 @@ public class PlayerClass extends Sprite {
     public boolean isFacingRight() {
         return facingRight;
     }
-
-    private int isFacingRightAxe = 0;
 
     public int getIsFacingRightAxe() {
         return isFacingRightAxe;
@@ -319,20 +290,16 @@ public class PlayerClass extends Sprite {
         return isStomping;
     }
 
-
     public BodyDef getBdef() {
         return bdef;
     }
-
-
-
 
     public Vector2 getSpawnpoint() {
         return spawnpoint;
     }
 
     //basically our constructor
-    private void definePlayer(InputState inputState) {
+    private void definePlayer() {
         bdef = new BodyDef();
         bdef.position.set(spawnpoint.x / PPM, spawnpoint.y / PPM);
         bdef.type = BodyDef.BodyType.DynamicBody;
@@ -364,9 +331,7 @@ public class PlayerClass extends Sprite {
         b2dbody.createFixture(fDef);
 
 
-
     }
-
 
     private void checkHealth() {
         if (getHP() <= 0) {
@@ -401,8 +366,6 @@ public class PlayerClass extends Sprite {
         boolean stompInput = false;
 
 
-
-
         if (currentInputState == InputState.WASD) {
             leftRightInput = Util.adAxis();
             upDownInput = Util.wsAxis();
@@ -422,7 +385,7 @@ public class PlayerClass extends Sprite {
             stompInput = Gdx.input.isKeyJustPressed(Input.Keys.DOWN);
             isShooting = Gdx.input.isKeyJustPressed(Input.Keys.P);
         }
-        if(standardAttackInput){
+        if (standardAttackInput) {
             soundManager.playSound(punchSoundMp3);
         }
 
@@ -444,7 +407,6 @@ public class PlayerClass extends Sprite {
         if (jumpCount <= maxExtraJumps && (jumpInput) && (isGrounded || isExtraJumpReady)) {
 
             jumpCount++;
-
 
 
             getB2dbody().applyLinearImpulse(new Vector2(0, getJumpForce()), getB2dbody().getWorldCenter(), true);
@@ -480,7 +442,7 @@ public class PlayerClass extends Sprite {
 
         //stomp
 
-        if (stompInput  && !isGrounded) {
+        if (stompInput && !isGrounded) {
             applyForces(0, stompSpeed);
             System.out.println("Stomping");
             isStomping = true;
@@ -488,7 +450,7 @@ public class PlayerClass extends Sprite {
         }
     }
 
-    public TextureRegion getRenderTexture (float stateTime) {
+    public TextureRegion getRenderTexture(float stateTime) {
         TextureRegion frame = null;
         switch (this.currentState) {
             case STANDING:
@@ -528,23 +490,19 @@ public class PlayerClass extends Sprite {
 
     public boolean reachedWorldEdge() {
 
-        if (b2dbody.getPosition().y < 0) {
-            return true;
-        }
-        return false;
+        return b2dbody.getPosition().y < 0;
     }
 
     //Check if the player is touching the ground
     public void checkGrounded() {
         currentY = b2dbody.getPosition().y;
-        if (b2dbody.getLinearVelocity().y - getGravity() <= 0.1 && b2dbody.getLinearVelocity().y - getGravity() >= -0.1 ) {
+        if (b2dbody.getLinearVelocity().y - getGravity() <= 0.1 && b2dbody.getLinearVelocity().y - getGravity() >= -0.1) {
 
-            if(isStomping()) {
+            if (isStomping()) {
                 soundManager.playSound(stompSoundWav);
                 setStompHitground(true);
                 isStomping = false;
-            }
-            else {
+            } else {
                 setStompHitground(false);
                 isStomping = false;
             }
@@ -557,8 +515,7 @@ public class PlayerClass extends Sprite {
 
             previousY = b2dbody.getLinearVelocity().y;
 
-        }
-        else {
+        } else {
             isGrounded = false;
         }
         previousY = b2dbody.getLinearVelocity().y;
@@ -623,6 +580,14 @@ public class PlayerClass extends Sprite {
             //lower gravity for some seconds :)
             setGravity(startingGravity * 0.3f);
         }
+    }
+
+    public enum InputState {
+        WASD, ARROWS
+    }
+
+    public enum State {
+        FALLING, JUMPING, STANDING, RUNNING
     }
 
 
