@@ -6,6 +6,7 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.*;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.*;
+import com.smashprofs.game.Helper.B2dContactListener;
 import com.smashprofs.game.Helper.CameraManager;
 import com.smashprofs.game.Helper.SoundManager;
 import com.smashprofs.game.Helper.Util;
@@ -43,9 +44,13 @@ public class PlayerClass extends Sprite {
     private float previousY = 0;
     private float currentY = 0;
     private final CameraManager cameraManager = CameraManager.getCameraManager_INSTANCE();
+    
+    private final B2dContactListener contactListener = B2dContactListener.getContactListener_INSTANCE();
     private final float attackReach = 0.2f;
     private final Batch batch = new SpriteBatch();
     private final float respawnDamping = 0.1f;
+
+    private boolean isNotTouchingTiles = true;
     private float HP = 100;
     private boolean isBlocking = false;
     private final int attackDamage = 10;
@@ -68,6 +73,8 @@ public class PlayerClass extends Sprite {
     private boolean isShooting = false;
     private boolean facingRight = true;
     private int isFacingRightAxe = 0;
+    private boolean touchingGround;
+
     public PlayerClass(World world, InputState inputState, Vector2 spawnpoint, String playerName, String userData) {
 
 
@@ -86,8 +93,8 @@ public class PlayerClass extends Sprite {
         run.setPlayMode(Animation.PlayMode.LOOP);
 
         TextureRegion[] jumping = TextureRegion.split(alexJump, 100, 100)[0];
-        jump = new Animation(0f, running[0]); //Originaly -> jump = new Animation(0.15f, running[0], jumping[1], jumping[2]); -> but jump animation looks like poop
-        jump.setPlayMode(Animation.PlayMode.NORMAL);
+        jump = new Animation(1f, running[0], running[3]); //Originaly -> jump = new Animation(0.15f, running[0], jumping[1], jumping[2]); -> but jump animation looks like poop
+        jump.setPlayMode(Animation.PlayMode.LOOP);
 
         this.currentState = State.STANDING;
 
@@ -110,6 +117,10 @@ public class PlayerClass extends Sprite {
 
     public boolean isStompHitground() {
         return stompHitground;
+    }
+    
+    public PlayerClass getInstancePlayer(PlayerClass player) {
+        return this;
     }
 
     public void setStompHitground(boolean stompHitground) {
@@ -134,6 +145,7 @@ public class PlayerClass extends Sprite {
 
     public void update(float deltatime) {
         updatePosition(deltatime);
+        touchingTiles();
         checkGrounded();
         managePlayerInput(deltatime);
 
@@ -152,6 +164,18 @@ public class PlayerClass extends Sprite {
 
 
         renderTexture(deltatime);
+
+    }
+
+    private void touchingTiles() {
+        if (userData.equals("PlayerTwo")) {
+            isNotTouchingTiles = contactListener.isP2NotTouchingTile();
+        }
+
+       else if (userData.equals("PlayerOne")) {
+            isNotTouchingTiles = contactListener.isP1NotTouchingTile();
+
+        }
 
     }
 
@@ -236,6 +260,10 @@ public class PlayerClass extends Sprite {
 
     public int getIsFacingRightAxe() {
         return isFacingRightAxe;
+    }
+    
+    private void setTouchingGround(boolean touchingGround) {
+        this.touchingGround = touchingGround;
     }
 
     public float getRespawnDamping() {
@@ -496,7 +524,7 @@ public class PlayerClass extends Sprite {
     //Check if the player is touching the ground
     public void checkGrounded() {
         currentY = b2dbody.getPosition().y;
-        if (b2dbody.getLinearVelocity().y - getGravity() <= 0.1 && b2dbody.getLinearVelocity().y - getGravity() >= -0.1) {
+        if (b2dbody.getLinearVelocity().y - getGravity() <= 0.1 && b2dbody.getLinearVelocity().y - getGravity() >= -0.1 && !isNotTouchingTiles) {
 
             if (isStomping()) {
                 soundManager.playSound(stompSoundWav);
@@ -519,6 +547,7 @@ public class PlayerClass extends Sprite {
             isGrounded = false;
         }
         previousY = b2dbody.getLinearVelocity().y;
+       // System.out.println(isTouchingTiles);
 
 
     }

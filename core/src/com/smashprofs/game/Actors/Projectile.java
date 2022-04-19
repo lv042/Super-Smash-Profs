@@ -8,6 +8,7 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Matrix4;
 import com.badlogic.gdx.math.Vector;
@@ -98,16 +99,17 @@ public abstract class  Projectile extends Sprite{
 
         b2dbody.createFixture(fDef);
         //sprite.setOrigin(sprite.getWidth() / 2, sprite.getHeight() / 2);
-        sprite.setOrigin(b2dbody.getPosition().x, b2dbody.getPosition().y);
+        TextureRegion region = new TextureRegion(texture, 0, 0, texture.getWidth(), texture.getHeight());
+        //sprite.setRegion(region);
+        sprite.setPosition(199, 199);
 
     }
 
     public void update(float delta) {
         rotation += 1f;
+        batch.setProjectionMatrix(new OrthographicCamera().combined);
         batch.begin();
-        batch.setProjectionMatrix(cameraManager.getGameCamera().combined);
-
-        batch.draw(sprite, b2dbody.getPosition().x - texture.getWidth() / 2f / PPM / 2, b2dbody.getPosition().y- texture.getHeight() /2f / PPM / 2, 0 / PPM,0 /PPM, texture.getWidth() / 2 / PPM, texture.getHeight() / 2 / PPM, 1f, 1f, rotation);
+        sprite.draw(batch);
         batch.end();
     }
 
