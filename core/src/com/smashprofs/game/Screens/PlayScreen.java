@@ -184,18 +184,21 @@ public class PlayScreen implements Screen {
     @Override
     public void render(float delta) {
 
-
+        Gdx.gl.glClear(Gdx.gl.GL_COLOR_BUFFER_BIT);
         Gdx.gl.glClearColor(0, 0, 0, 1); //-> light blue
         //Gdx.gl.glClearColor(1, 1, 1, 1);
-        Gdx.gl.glClear(Gdx.gl.GL_COLOR_BUFFER_BIT);
-        update(delta);
+
         tiledMapRenderer.render();
+        update(delta);
+
+
         // Muss unter batch.end() stehen
         hud.stage.draw();
         hud.updateHud(delta, playerOne, playerTwo);
 
         //render our tiledmap debug outlines to screen
         box2DDebugRenderer.render(world, gamecamera.combined);
+
 
 
     }
