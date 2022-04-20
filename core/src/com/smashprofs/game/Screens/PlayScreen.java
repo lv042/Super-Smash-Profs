@@ -137,6 +137,7 @@ public class PlayScreen implements Screen {
         mapLoader = new TmxMapLoader();
         map = mapLoader.load("1/Map 1.tmx");
         tiledMapRenderer = new OrthoCachedTiledMapRenderer(map, 1 / PPM);
+        tiledMapRenderer.setBlending(true);
 
 
 
