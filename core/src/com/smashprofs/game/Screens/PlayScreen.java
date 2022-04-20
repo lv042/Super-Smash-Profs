@@ -29,6 +29,9 @@ import com.badlogic.gdx.utils.viewport.Viewport;
 import com.smashprofs.game.Helper.SoundManager;
 import com.smashprofs.game.Actors.PlayerClass;
 import com.smashprofs.game.Scenes.Hud;
+
+import java.io.IOException;
+
 import static com.smashprofs.game.Actors.PlayerClass.PPM;
 
 public class PlayScreen implements Screen {
@@ -82,7 +85,7 @@ public class PlayScreen implements Screen {
 
 
 
-    public void update(float deltatime){
+    public void update(float deltatime) throws IOException {
 
         tiledMapRenderer.setView(gamecamera);
 
@@ -190,7 +193,11 @@ public class PlayScreen implements Screen {
         //Gdx.gl.glClearColor(1, 1, 1, 1);
 
         tiledMapRenderer.render();
-        update(delta);
+        try {
+            update(delta);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
 
 
         // Muss unter batch.end() stehen
