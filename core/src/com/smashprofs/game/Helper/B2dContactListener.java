@@ -80,11 +80,7 @@ public class B2dContactListener implements ContactListener {
             System.out.println("P1 Touching Tile: " + P1NotTouchingTile);
             P1NotTouchingTile = false;
         }
-        try {
-            shutdown();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+
 
 
     }

@@ -7,6 +7,7 @@ import com.smashprofs.game.Actors.PlayerClass;
 import com.smashprofs.game.Actors.Projectile;
 import com.smashprofs.game.Helper.B2dContactListener;
 
+import java.io.IOException;
 import java.util.ArrayList;
 
 public class CombatManager {
@@ -31,7 +32,8 @@ public class CombatManager {
         return combatManager_INSTANCE;
     }
 
-    public void update(float deltatime, PlayerClass playerOne, PlayerClass playerTwo, World world) {
+    public void update(float deltatime, PlayerClass playerOne, PlayerClass playerTwo, World world) throws IOException {
+        B2dContactListener.shutdown();
         distanceBetweenPlayers = new Vector2(Math.abs(playerOne.getPosition().x - playerTwo.getPosition().x), Math.abs(playerOne.getPosition().y - playerTwo.getPosition().y));
         distanceBetweenPlayersLength = distanceBetweenPlayers.len();
         //System.out.println(distanceBetweenPlayersLength);
