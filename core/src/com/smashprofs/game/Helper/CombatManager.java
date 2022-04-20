@@ -33,13 +33,6 @@ public class CombatManager {
     }
 
     public void update(float deltatime, PlayerClass playerOne, PlayerClass playerTwo, World world) throws IOException {
-        try{
-            B2dContactListener.shutdown();
-
-        }
-        catch (Exception e){
-            System.out.println("B2dContactListener.shutdown()");
-        }
         distanceBetweenPlayers = new Vector2(Math.abs(playerOne.getPosition().x - playerTwo.getPosition().x), Math.abs(playerOne.getPosition().y - playerTwo.getPosition().y));
         distanceBetweenPlayersLength = distanceBetweenPlayers.len();
         //System.out.println(distanceBetweenPlayersLength);
