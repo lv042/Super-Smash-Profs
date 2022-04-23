@@ -54,12 +54,12 @@ public abstract class  Projectile extends Sprite{
         this.camera = camera;
         create();
 
-        //moveProjectile();
+        moveProjectile();
 
     }
 
     private void moveProjectile() {
-        b2dbody.setLinearVelocity(new Vector2(originPlayer.getIsFacingRightAxe() * 2f, 0));
+        b2dbody.setLinearVelocity(new Vector2(originPlayer.getIsFacingRightAxe() * 1.2f, 0));
     }
 
     public void create() {
