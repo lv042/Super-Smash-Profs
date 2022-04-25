@@ -3,6 +3,7 @@ package com.smashprofs.game.Helper;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.World;
 import com.smashprofs.game.Actors.Bullet;
+import com.smashprofs.game.Actors.HomingMissle;
 import com.smashprofs.game.Actors.PlayerClass;
 import com.smashprofs.game.Actors.Projectile;
 import com.smashprofs.game.Helper.B2dContactListener;
@@ -76,12 +77,12 @@ public class CombatManager {
         }
         if(playerOne.isShooting()){
             System.out.println("Bullet spawned ");
-            Bullet bullet = new Bullet(world, playerOne, CameraManager.getCameraManager_INSTANCE().getGameCamera());
+            HomingMissle bullet = new HomingMissle(world, playerOne, CameraManager.getCameraManager_INSTANCE().getGameCamera(), playerTwo);
             projectilesList.add(bullet);
         }
         if(playerTwo.isShooting() && !playerOne.isBlocking()){
             System.out.println("Bullet spawned");
-            Bullet bullet = new Bullet(world, playerTwo, CameraManager.getCameraManager_INSTANCE().getGameCamera());
+            HomingMissle bullet = new HomingMissle(world, playerTwo, CameraManager.getCameraManager_INSTANCE().getGameCamera(), playerOne);
             projectilesList.add(bullet);
         }
 

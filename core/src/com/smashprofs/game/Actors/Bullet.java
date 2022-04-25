@@ -7,12 +7,7 @@ import static com.smashprofs.game.Actors.PlayerClass.PPM;
 
 public class Bullet extends Projectile{
 
-    private BodyDef bdef;
 
-    private Body body;
-    private Body b2dbody;
-
-    World world;
 
 
 

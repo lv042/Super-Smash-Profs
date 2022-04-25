@@ -26,7 +26,7 @@ public abstract class  Projectile extends Sprite{
     private Batch batch = new SpriteBatch();
     private BodyDef bdef;
 
-    private Body b2dbody;
+    Body b2dbody;
 
     private CameraManager cameraManager = CameraManager.getCameraManager_INSTANCE();
 
@@ -58,7 +58,7 @@ public abstract class  Projectile extends Sprite{
 
     }
 
-    private void moveProjectile() {
+    void moveProjectile() {
         b2dbody.setLinearVelocity(new Vector2(originPlayer.getIsFacingRightAxe() * 1.2f, 0));
     }
 
