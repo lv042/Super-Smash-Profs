@@ -46,6 +46,6 @@ public class DesktopLauncher {
 		else if(useOwnResolution) config.setWindowedMode(getWidth(), getHeight());
 		else config.setMaximized(true);
 
-		new Lwjgl3Application(new GameClass(), config);
+		new Lwjgl3Application(new Game(), config);
 	}
 }

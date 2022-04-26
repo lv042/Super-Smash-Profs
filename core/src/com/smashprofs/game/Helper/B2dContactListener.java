@@ -1,14 +1,17 @@
 package com.smashprofs.game.Helper;
 
-import com.badlogic.gdx.physics.box2d.Contact;
-import com.badlogic.gdx.physics.box2d.ContactImpulse;
-import com.badlogic.gdx.physics.box2d.ContactListener;
-import com.badlogic.gdx.physics.box2d.Manifold;
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.physics.box2d.*;
+import com.badlogic.gdx.utils.Array;
+import com.smashprofs.game.Screens.PlayScreen;
 
 import java.io.IOException;
+import java.util.ArrayList;
 
 public class B2dContactListener implements ContactListener {
 
+    public Array<Body> bodiesToDestroy = new Array<Body>();
     boolean PlayerOneGotShoot = false;
     boolean PlayerTwoGotShoot = false;
     boolean BulletHit = false;
@@ -16,6 +19,13 @@ public class B2dContactListener implements ContactListener {
     boolean P1NotTouchingTile = false;
 
     boolean P2NotTouchingTile = false;
+
+    public void update() {
+        for (Body body : bodiesToDestroy) {
+            body.setActive(false);
+
+        }
+    }
 
     public boolean isP1NotTouchingTile() {
 
@@ -61,10 +71,18 @@ public class B2dContactListener implements ContactListener {
     @Override
     public void beginContact(Contact contact) {
         //System.out.println("beginContact");
-        if("PlayerOne".equals(contact.getFixtureA().getBody().getUserData()) && "Bullet".equals(contact.getFixtureB().getBody().getUserData()))
+        if("PlayerOne".equals(contact.getFixtureA().getBody().getUserData()) && "Bullet".equals(contact.getFixtureB().getBody().getUserData())) {
             PlayerOneGotShoot = true;
-        if("PlayerTwo".equals(contact.getFixtureA().getBody().getUserData()) && "Bullet".equals(contact.getFixtureB().getBody().getUserData()))
+            bodiesToDestroy.add(contact.getFixtureB().getBody());
+
+            // System.out.println("Fixture B: " + contact.getFixtureB().getBody().getUserData());
+        }
+
+        if("PlayerTwo".equals(contact.getFixtureA().getBody().getUserData()) && "Bullet".equals(contact.getFixtureB().getBody().getUserData())) {
             PlayerTwoGotShoot = true;
+            bodiesToDestroy.add(contact.getFixtureB().getBody());
+        }
+
 
         //if("Bullet".equals(contact.getFixtureB().getBody().getUserData())) BulletHit = true;
 //        System.out.println("PlayerOneGotShoot: " + PlayerOneGotShoot);
@@ -81,6 +99,18 @@ public class B2dContactListener implements ContactListener {
             P1NotTouchingTile = false;
         }
 
+
+        //final Body toRemove = contact.getFixtureA().getBody().getType() == BodyDef.BodyType.DynamicBody ? contact.getFixtureA().getBody()
+        //        : contact.getFixtureB().getBody();
+        if("Bullet".equals(contact.getFixtureB().getBody().getUserData())) {
+            final Body toRemove = contact.getFixtureB().getBody();
+            Gdx.app.postRunnable(new Runnable() {
+                @Override
+                public void run () {
+                    PlayScreen.getWorld().destroyBody(toRemove);
+                }
+            });
+        }
 
 
     }
@@ -111,6 +141,7 @@ public class B2dContactListener implements ContactListener {
     public void postSolve(Contact contact, ContactImpulse impulse) {
         return;
     }
+
 
 
 }

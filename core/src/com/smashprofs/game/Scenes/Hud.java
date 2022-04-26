@@ -9,8 +9,8 @@ import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
-import com.smashprofs.game.GameClass;
-import com.smashprofs.game.Actors.PlayerClass;
+import com.smashprofs.game.Game;
+import com.smashprofs.game.Actors.Player;
 
 public class  Hud{
     public Stage stage; //stage to hold all the actors -> A 2D scene graph containing hierarchies of actors. Stage handles the viewport and distributes input events.
@@ -27,11 +27,11 @@ public class  Hud{
     Label playerLabel; // label for the player
 
 
-    public Hud(SpriteBatch spriteBatch, PlayerClass playerOne, PlayerClass playerTwo){
+    public Hud(SpriteBatch spriteBatch, Player playerOne, Player playerTwo){
 
         timeCount = 0;
         score = 0;
-        this.viewport = new FitViewport(GameClass.V_WIDTH, GameClass.V_HEIGHT, new OrthographicCamera());
+        this.viewport = new FitViewport(Game.V_WIDTH, Game.V_HEIGHT, new OrthographicCamera());
         stage = new Stage(viewport, spriteBatch);
 
         Table table = new Table();
@@ -56,7 +56,7 @@ public class  Hud{
 
     }
 
-    public void updateHud(float delta, PlayerClass playerOne, PlayerClass playerTwo){
+    public void updateHud(float delta, Player playerOne, Player playerTwo){
             timeCount += delta;
         if(timeCount >= 1 && worldTimer > 0){
             worldTimer--;

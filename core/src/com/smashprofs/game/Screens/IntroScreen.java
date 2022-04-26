@@ -5,7 +5,7 @@ import com.badlogic.gdx.ScreenAdapter;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.smashprofs.game.GameClass;
+import com.smashprofs.game.Game;
 import com.smashprofs.game.Helper.SoundManager;
 
 public class IntroScreen extends ScreenAdapter {
@@ -19,12 +19,12 @@ public class IntroScreen extends ScreenAdapter {
     Texture texture = null;
     SpriteBatch batch = null;
 
-    GameClass game = null;
+    Game game = null;
 
 
     private String introSong = "music/introsong.mp3";
 
-    public IntroScreen(GameClass game) {
+    public IntroScreen(Game game) {
 
 
         soundManager.setupMusic(introSong);

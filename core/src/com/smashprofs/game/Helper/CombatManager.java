@@ -4,9 +4,8 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.World;
 import com.smashprofs.game.Actors.Bullet;
 import com.smashprofs.game.Actors.HomingMissle;
-import com.smashprofs.game.Actors.PlayerClass;
+import com.smashprofs.game.Actors.Player;
 import com.smashprofs.game.Actors.Projectile;
-import com.smashprofs.game.Helper.B2dContactListener;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -33,7 +32,7 @@ public class CombatManager {
         return combatManager_INSTANCE;
     }
 
-    public void update(float deltatime, PlayerClass playerOne, PlayerClass playerTwo, World world) throws IOException {
+    public void update(float deltatime, Player playerOne, Player playerTwo, World world) throws IOException {
         distanceBetweenPlayers = new Vector2(Math.abs(playerOne.getPosition().x - playerTwo.getPosition().x), Math.abs(playerOne.getPosition().y - playerTwo.getPosition().y));
         distanceBetweenPlayersLength = distanceBetweenPlayers.len();
         //System.out.println(distanceBetweenPlayersLength);
@@ -111,7 +110,7 @@ public class CombatManager {
         }
     }
 
-    public void attackPlayer(PlayerClass attacker, PlayerClass target, float attackKnockback ,float yAttackKnockback){
+    public void attackPlayer(Player attacker, Player target, float attackKnockback , float yAttackKnockback){
         Vector2 attackVector = new Vector2(0, yAttackKnockback);
         if(attacker.getPosition().x < target.getPosition().x) attackVector.x = 1 * attackKnockback;
         else attackVector.x = -1 * attackKnockback;

@@ -2,7 +2,6 @@ package com.smashprofs.game.Actors;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
-import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Batch;
@@ -11,16 +10,11 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Matrix4;
-import com.badlogic.gdx.math.Vector;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.*;
 import com.smashprofs.game.Helper.CameraManager;
-import com.smashprofs.game.Screens.PlayScreen;
 
-import java.util.WeakHashMap;
-
-import static com.smashprofs.game.Actors.PlayerClass.PPM;
-import static com.smashprofs.game.Screens.PlayScreen.debugRenderer;
+import static com.smashprofs.game.Actors.Player.PPM;
 
 public abstract class  Projectile extends Sprite{
     private Batch batch = new SpriteBatch();
@@ -30,7 +24,7 @@ public abstract class  Projectile extends Sprite{
 
     private CameraManager cameraManager = CameraManager.getCameraManager_INSTANCE();
 
-    private PlayerClass originPlayer;
+    private Player originPlayer;
 
     private Vector2 projectileSpawnpoint;
 
@@ -47,7 +41,7 @@ public abstract class  Projectile extends Sprite{
 
     World world;
 
-    public Projectile(World world, PlayerClass originPlayer, String userData, OrthographicCamera camera) {
+    public Projectile(World world, Player originPlayer, String userData, OrthographicCamera camera) {
         this.userData = userData;
         this.world = world;
         this.originPlayer = originPlayer;
@@ -111,6 +105,7 @@ public abstract class  Projectile extends Sprite{
         batch.begin();
         sprite.draw(batch);
         batch.end();
+
     }
 
     public static void DrawDebugLine(Vector2 start, Vector2 end, Matrix4 projectionMatrix)
@@ -125,6 +120,9 @@ public abstract class  Projectile extends Sprite{
         Gdx.gl.glLineWidth(1);
     }
 
+    public void destroy() {
+        world.destroyBody(b2dbody);
+    }
 
 
 

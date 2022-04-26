@@ -1,12 +1,10 @@
 package com.smashprofs.game;
 
-import com.badlogic.gdx.Game;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.smashprofs.game.Helper.Util;
 import com.smashprofs.game.Screens.IntroScreen;
 
-public class GameClass extends Game {
+public class Game extends com.badlogic.gdx.Game {
 	public static SpriteBatch batch;
 
 

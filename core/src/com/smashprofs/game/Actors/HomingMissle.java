@@ -3,13 +3,13 @@ package com.smashprofs.game.Actors;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.World;
-
+import com.smashprofs.game.Actors.Player;
 public class HomingMissle extends Projectile{
 
     Vector2 targetVector = new Vector2();
-    PlayerClass targetPlayer;
+    Player targetPlayer;
 
-    public HomingMissle(World world, PlayerClass playerOrigin, OrthographicCamera camera, PlayerClass playerTarget){
+    public HomingMissle(World world, Player playerOrigin, OrthographicCamera camera, Player playerTarget){
         super(world, playerOrigin, "Bullet" ,  camera);
         b2dbody.setFixedRotation(false);
         b2dbody.setAngularVelocity(10);

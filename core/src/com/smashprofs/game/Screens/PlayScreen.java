@@ -2,12 +2,10 @@ package com.smashprofs.game.Screens;
 
 
 import com.badlogic.gdx.graphics.Color;
-import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Matrix4;
-import com.badlogic.gdx.math.Vector3;
-import com.smashprofs.game.GameClass;
+import com.badlogic.gdx.utils.ScreenUtils;
+import com.smashprofs.game.Game;
 import com.smashprofs.game.Helper.B2dContactListener;
 import com.smashprofs.game.Helper.CameraManager;
 import com.smashprofs.game.Helper.CombatManager;
@@ -15,7 +13,6 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.OrthographicCamera;
-import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.maps.MapObject;
 import com.badlogic.gdx.maps.objects.RectangleMapObject;
 import com.badlogic.gdx.maps.tiled.TiledMap;
@@ -27,12 +24,12 @@ import com.badlogic.gdx.physics.box2d.*;
 import com.badlogic.gdx.utils.viewport.FillViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import com.smashprofs.game.Helper.SoundManager;
-import com.smashprofs.game.Actors.PlayerClass;
+import com.smashprofs.game.Actors.Player;
 import com.smashprofs.game.Scenes.Hud;
 
 import java.io.IOException;
 
-import static com.smashprofs.game.Actors.PlayerClass.PPM;
+import static com.smashprofs.game.Actors.Player.PPM;
 
 public class PlayScreen implements Screen {
 
@@ -42,7 +39,7 @@ public class PlayScreen implements Screen {
 
     private String gameSong = "music/beste music ever.wav";
 
-    private GameClass game;
+    private Game game;
 
     private float jumpForce = 3f;
 
@@ -59,8 +56,8 @@ public class PlayScreen implements Screen {
     private TmxMapLoader mapLoader;
     private TiledMap map;
     private OrthoCachedTiledMapRenderer tiledMapRenderer;
-    private PlayerClass playerOne;
-    private PlayerClass playerTwo;
+    private Player playerOne;
+    private Player playerTwo;
 
     private CombatManager combatManager;
 
@@ -68,7 +65,7 @@ public class PlayScreen implements Screen {
 
 
     //Box2D
-    private World world;
+    private static World world;
     private Box2DDebugRenderer box2DDebugRenderer; //renders outline of box2d bodies
 
 
@@ -100,6 +97,11 @@ public class PlayScreen implements Screen {
         //updates the physics 60 times per second
         world.step(1/60f, 6, 2); //higher iterations make physics more accurate but also way slower
 
+        contactListener.update();
+
+        if(contactListener.bodiesToDestroy.size > 0){
+            contactListener.bodiesToDestroy.clear();
+        }
 
         viewport.setScreenPosition(0, 0);
         //debug
@@ -124,14 +126,18 @@ public class PlayScreen implements Screen {
         return viewport;
     }
 
-    public PlayScreen(GameClass game) {
+    public static World getWorld(){
+        return world;
+    }
+
+    public PlayScreen(Game game) {
 
 
         soundManager.setupMusic(gameSong);
         this.combatManager = CombatManager.getCombatManager_INSTANCE();
         this.game = game;
         gamecamera = cameraManager.getGameCamera();
-        viewport = new FillViewport(GameClass.V_WIDTH / PPM, GameClass.V_HEIGHT / PPM, gamecamera);
+        viewport = new FillViewport(Game.V_WIDTH / PPM, Game.V_HEIGHT / PPM, gamecamera);
 
         //StretchViewport is a Viewport that stretches the screen to fill the window.
         //Screen Viewport is a Viewport that show as much of the world as possible on the screen -> makes the the world you see depend on the size of the window.
@@ -165,8 +171,8 @@ public class PlayScreen implements Screen {
             body.createFixture(fdef);
         }
 
-        playerOne = new PlayerClass(world, PlayerClass.InputState.WASD, playerOneSpawnPoint, "Alex Boss", "PlayerOne");
-        playerTwo = new PlayerClass(world, PlayerClass.InputState.ARROWS, playerTwoSpawnPoint, "Jens Huhn", "PlayerTwo");
+        playerOne = new Player(world, Player.InputState.WASD, playerOneSpawnPoint, "Alex Boss", "PlayerOne");
+        playerTwo = new Player(world, Player.InputState.ARROWS, playerTwoSpawnPoint, "Jens Huhn", "PlayerTwo");
 
         contactListener = B2dContactListener.getContactListener_INSTANCE();
         world.setContactListener(contactListener);

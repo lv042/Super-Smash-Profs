@@ -12,7 +12,7 @@ import com.smashprofs.game.Helper.SoundManager;
 import com.smashprofs.game.Helper.Util;
 import com.smashprofs.game.Screens.PlayScreen;
 
-public class PlayerClass extends Sprite {
+public class Player extends Sprite {
 
 
     public static final float PPM = 100;
@@ -75,7 +75,7 @@ public class PlayerClass extends Sprite {
     private int isFacingRightAxe = 0;
     private boolean touchingGround;
 
-    public PlayerClass(World world, InputState inputState, Vector2 spawnpoint, String playerName, String userData) {
+    public Player(World world, InputState inputState, Vector2 spawnpoint, String playerName, String userData) {
 
 
         this.userData = userData;
@@ -119,7 +119,7 @@ public class PlayerClass extends Sprite {
         return stompHitground;
     }
     
-    public PlayerClass getInstancePlayer(PlayerClass player) {
+    public Player getInstancePlayer(Player player) {
         return this;
     }
 

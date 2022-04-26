@@ -1,12 +1,10 @@
 package com.smashprofs.game.Helper;
 
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.math.Vector3;
-import com.smashprofs.game.Actors.PlayerClass;
+import com.smashprofs.game.Actors.Player;
 
-import static com.smashprofs.game.Actors.PlayerClass.PPM;
-import static com.smashprofs.game.Screens.PlayScreen.viewport;
+import static com.smashprofs.game.Actors.Player.PPM;
 
 public class CameraManager {
 
@@ -23,14 +21,14 @@ public class CameraManager {
         return cameraManager_INSTANCE;
     }
 
-    public void setCamera(PlayerClass playerOne, PlayerClass playerTwo) {
+    public void setCamera(Player playerOne, Player playerTwo) {
 
     }
 
     public OrthographicCamera getGameCamera() {
         return gameCamera;
     }
-    public void updateCameraManager(PlayerClass playerOne, PlayerClass playerTwo){
+    public void updateCameraManager(Player playerOne, Player playerTwo){
         gameCamera.update();
         //dynamic camera -> please someone implement this into CameraManager im to lazy to do it now
         Vector3 middleVector = new Vector3((playerOne.getPosition().x + playerTwo.getPosition().x)/2, 100 / PPM, 0);
