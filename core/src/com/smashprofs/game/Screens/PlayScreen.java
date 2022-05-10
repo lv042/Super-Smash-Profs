@@ -105,7 +105,7 @@ public class PlayScreen implements Screen {
 
         viewport.setScreenPosition(0, 0);
         //debug
-        DrawDebugLine(playerOne.getPosition(), playerTwo.getPosition(), gamecamera.combined);
+        //DrawDebugLine(playerOne.getPosition(), playerTwo.getPosition(), gamecamera.combined);
 
 
         cameraManager.updateCameraManager(playerOne, playerTwo);

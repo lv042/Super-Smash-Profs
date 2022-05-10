@@ -1,6 +1,7 @@
 package com.smashprofs.game.Screens;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input;
 import com.badlogic.gdx.ScreenAdapter;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
@@ -53,9 +54,9 @@ public class IntroScreen extends ScreenAdapter {
         batch.begin();
         batch.draw(texture, (camera.position.x / 2 - width / 2) / zoomFactor, (camera.position.y / 2 - height / 2) / zoomFactor, width / zoomFactor, height/ zoomFactor);
         batch.end();
-
-        if (Gdx.input.isKeyJustPressed(com.badlogic.gdx.Input.Keys.ANY_KEY)) {
-            game.setScreen(new PlayScreen(game));
+        //any keyboard button or left mousebutton
+        if (Gdx.input.isKeyJustPressed(com.badlogic.gdx.Input.Keys.ANY_KEY)|| Gdx.input.isButtonJustPressed(0)) {
+            game.setScreen(new MainMenuScreen(game));
 
         }
     }
