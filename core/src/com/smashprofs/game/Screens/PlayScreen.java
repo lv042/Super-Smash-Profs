@@ -2,6 +2,7 @@ package com.smashprofs.game.Screens;
 
 
 import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Matrix4;
 import com.badlogic.gdx.utils.ScreenUtils;
@@ -63,6 +64,8 @@ public class PlayScreen implements Screen {
 
     private CameraManager cameraManager = CameraManager.getCameraManager_INSTANCE();
 
+
+    public SpriteBatch batch;
 
     //Box2D
     private static World world;
@@ -148,7 +151,7 @@ public class PlayScreen implements Screen {
         tiledMapRenderer = new OrthoCachedTiledMapRenderer(map, 1 / PPM);
         tiledMapRenderer.setBlending(true);
 
-
+        this.batch = new SpriteBatch();
 
         world = new World(new Vector2(0, 0), true); //y value -> gravity -> now handled by the player class
         box2DDebugRenderer = new Box2DDebugRenderer();
@@ -205,13 +208,23 @@ public class PlayScreen implements Screen {
             e.printStackTrace();
         }
 
+        //render our tiledmap debug outlines to screen
+        box2DDebugRenderer.render(world, gamecamera.combined);
+
+        batch.setProjectionMatrix(cameraManager.getGameCamera().combined);
+        batch.begin();
+
+        playerOne.draw(batch);
+        playerTwo.draw(batch);
+
+        batch.end();
+
 
         // Muss unter batch.end() stehen
         hud.stage.draw();
         hud.updateHud(delta, playerOne, playerTwo);
 
-        //render our tiledmap debug outlines to screen
-        box2DDebugRenderer.render(world, gamecamera.combined);
+
 
 
 
