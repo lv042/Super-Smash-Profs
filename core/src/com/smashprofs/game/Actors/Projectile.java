@@ -27,16 +27,11 @@ public abstract class  Projectile extends Sprite{
     private Player originPlayer;
 
     private Vector2 projectileSpawnpoint;
-
-    private Texture texture;
-
     private int rotation = 0;
 
     String userData = "JOeMama";
 
     OrthographicCamera camera;
-
-    Sprite sprite;
 
 
     World world;
@@ -46,6 +41,15 @@ public abstract class  Projectile extends Sprite{
         this.world = world;
         this.originPlayer = originPlayer;
         this.camera = camera;
+
+        setTexture(new Texture("prettyplayer.png"));
+        //setTexture(new Texture(Gdx.files.internal("prettyplayer.png")));
+
+
+        setPosition(12, 12);
+        setBounds(0, 0, getWidth(), getHeight());
+        //scale(1/PPM);
+
         create();
 
         moveProjectile();
@@ -74,9 +78,7 @@ public abstract class  Projectile extends Sprite{
         //Implement the player textures and animations -> @Maurice @Alex
 
 
-        texture = new Texture("star.png");
-        batch = new SpriteBatch();
-        sprite = new Sprite(texture);
+
 
 
         fDef.shape = shape;
@@ -92,20 +94,25 @@ public abstract class  Projectile extends Sprite{
         //@Maurice @Alex Ihr könnte gerne mal mit diesen Werten rumspielen und schauen was am besten passt :D
 
         b2dbody.createFixture(fDef);
-        //sprite.setOrigin(sprite.getWidth() / 2, sprite.getHeight() / 2);
-        TextureRegion region = new TextureRegion(texture, 0, 0, texture.getWidth(), texture.getHeight());
-        //sprite.setRegion(region);
-        sprite.setPosition(199, 199);
+        setOrigin(getWidth() / 2, getHeight() / 2);
 
     }
 
     public void update(float delta) {
-        rotation += 1f;
-        batch.setProjectionMatrix(new OrthographicCamera().combined);
-        batch.begin();
-        sprite.draw(batch);
-        batch.end();
+        System.out.println("!!!! projectile update");
+        setPosition(b2dbody.getPosition().x - getWidth() / 2, b2dbody.getPosition().y - getHeight() / 2);
+        setRegion(getTexture());
 
+        rotation += 1f;
+
+    }
+
+    @Override
+    public void draw(Batch batch) {
+
+        System.out.println("projectile draw");
+        super.draw(batch);
+        this.update(Gdx.graphics.getDeltaTime());
     }
 
     public static void DrawDebugLine(Vector2 start, Vector2 end, Matrix4 projectionMatrix)
