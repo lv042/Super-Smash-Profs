@@ -37,7 +37,8 @@ public class CombatManager {
         distanceBetweenPlayersLength = distanceBetweenPlayers.len();
         //System.out.println(distanceBetweenPlayersLength);
 
-        updateAllProjectiles(deltatime, world);
+
+        //updateAllProjectiles(deltatime, world);
         if (distanceBetweenPlayersLength < playerOne.getAttackReach()) {
 
             float attackKnockback = 1.5f;
@@ -77,12 +78,15 @@ public class CombatManager {
         if(playerOne.isShooting()){
             System.out.println("Bullet spawned ");
             HomingMissle bullet = new HomingMissle(world, playerOne, CameraManager.getCameraManager_INSTANCE().getGameCamera(), playerTwo);
-            projectilesList.add(bullet);
+            //projectilesList.add(bullet);
+            playerOne.shoot(bullet);
+
         }
         if(playerTwo.isShooting() && !playerOne.isBlocking()){
             System.out.println("Bullet spawned");
             HomingMissle bullet = new HomingMissle(world, playerTwo, CameraManager.getCameraManager_INSTANCE().getGameCamera(), playerOne);
-            projectilesList.add(bullet);
+            //projectilesList.add(bullet);
+            playerTwo.shoot(bullet);
         }
 
         if (contactListener.isPlayerTwoGotShoot()) {
@@ -103,12 +107,12 @@ public class CombatManager {
 
     }
 
-    private void updateAllProjectiles(float deltatime, World world) {
+/*    private void updateAllProjectiles(float deltatime, World world) {
         for    (int i = 0; i < projectilesList.size(); i++) {
             projectilesList.get(i).update(deltatime);
 
         }
-    }
+    }*/
 
     public void attackPlayer(Player attacker, Player target, float attackKnockback , float yAttackKnockback){
         Vector2 attackVector = new Vector2(0, yAttackKnockback);

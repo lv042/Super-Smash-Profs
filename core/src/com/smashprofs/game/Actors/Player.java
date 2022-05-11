@@ -12,6 +12,8 @@ import com.smashprofs.game.Helper.SoundManager;
 import com.smashprofs.game.Helper.Util;
 import com.smashprofs.game.Screens.PlayScreen;
 
+import java.util.ArrayList;
+
 public class Player extends Sprite {
 
 
@@ -74,6 +76,7 @@ public class Player extends Sprite {
     private boolean facingRight = true;
     private int isFacingRightAxe = 0;
     private boolean touchingGround;
+    private ArrayList<Projectile> projectiles;
 
     public Player(World world, InputState inputState, Vector2 spawnpoint, String playerName, String userData) {
 
@@ -98,6 +101,7 @@ public class Player extends Sprite {
 
         this.currentState = State.STANDING;
 
+        projectiles = new ArrayList<Projectile>();
 
         //super(screen.getAtlas().findRegion("Alex_strip"));
         //alexStand = new TextureRegion(screen.getAtlas().findRegion("Alex_strip"),10,17, 128, 128);
@@ -144,6 +148,7 @@ public class Player extends Sprite {
     }
 
     public void update(float deltatime) {
+        System.out.println("Player update");
         updatePosition(deltatime);
         touchingTiles();
         checkGrounded();
@@ -162,9 +167,21 @@ public class Player extends Sprite {
         setAnimationState();
         setAnimationPosition();
 
+        System.out.println(projectiles.size());
+        for (Projectile projectile : projectiles) {
+            projectile.update(deltatime);
+            System.out.println("Projectile updated from ArrayList");
+        }
 
-        renderTexture(deltatime);
+    }
 
+    @Override
+    public void draw(Batch batch) {
+        super.draw(batch);
+        for (Projectile projectile : projectiles) {
+            projectile.draw(batch);
+            System.out.println("Projectile drawn from ArrayList");
+        }
     }
 
     private void touchingTiles() {
@@ -179,18 +196,6 @@ public class Player extends Sprite {
 
     }
 
-    private void renderTexture(float deltatime) {
-        batch.setProjectionMatrix(cameraManager.getGameCamera().combined);
-        batch.begin();
-
-
-        //contactListener.beginContact(new Contact(true, true, t));
-        draw(batch);
-
-
-        //playerTwo.draw(game.batch);
-        batch.end();
-    }
 
     private void setAnimationPosition() {
         this.setPosition(b2dbody.getPosition().x - getWidth() / 2, b2dbody.getPosition().y - getHeight() / 4); //set the position of the animation to the center of the body
@@ -619,5 +624,8 @@ public class Player extends Sprite {
         FALLING, JUMPING, STANDING, RUNNING
     }
 
+    public void shoot(HomingMissle bullet){
+        projectiles.add(bullet);
+    }
 
 }
