@@ -7,6 +7,7 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.smashprofs.game.Game;
 import com.smashprofs.game.Helper.SoundManager;
+import jdk.tools.jmod.Main;
 
 public class IntroScreen extends ScreenAdapter {
     int width = 1920;
@@ -55,7 +56,7 @@ public class IntroScreen extends ScreenAdapter {
         batch.end();
 
         if (Gdx.input.isKeyJustPressed(com.badlogic.gdx.Input.Keys.ANY_KEY)) {
-            game.setScreen(new PlayScreen(game));
+            game.setScreen(new MainMenuScreen(game));
 
         }
     }
