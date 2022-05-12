@@ -73,6 +73,7 @@ public class B2dContactListener implements ContactListener {
         //System.out.println("beginContact");
         if("PlayerOne".equals(contact.getFixtureA().getBody().getUserData()) && "Bullet".equals(contact.getFixtureB().getBody().getUserData())) {
             PlayerOneGotShoot = true;
+            contact.getFixtureB().getBody().getUserData().toString().startsWith("Bullet");
             bodiesToDestroy.add(contact.getFixtureB().getBody());
 
             // System.out.println("Fixture B: " + contact.getFixtureB().getBody().getUserData());
