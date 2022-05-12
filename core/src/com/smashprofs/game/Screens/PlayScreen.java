@@ -201,7 +201,8 @@ public class PlayScreen implements Screen {
         Gdx.gl.glClearColor(0, 0, 0, 1); //-> light blue
         //Gdx.gl.glClearColor(1, 1, 1, 1);
 
-        tiledMapRenderer.render();
+        //tiledMapRenderer.render();
+
         try {
             update(delta);
         } catch (IOException e) {
@@ -211,7 +212,9 @@ public class PlayScreen implements Screen {
         //render our tiledmap debug outlines to screen
         box2DDebugRenderer.render(world, gamecamera.combined);
 
-        batch.setProjectionMatrix(cameraManager.getGameCamera().combined);
+        //batch.setProjectionMatrix(cameraManager.getGameCamera().combined);
+        batch.setProjectionMatrix(gamecamera.combined);
+
         batch.begin();
 
         playerOne.draw(batch);
