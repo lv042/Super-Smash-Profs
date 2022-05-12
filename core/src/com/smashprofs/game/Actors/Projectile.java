@@ -37,12 +37,14 @@ public abstract class  Projectile extends Sprite{
     World world;
 
     public Projectile(World world, Player originPlayer, String userData, OrthographicCamera camera) {
+        super(new Texture(Gdx.files.internal("star.png")));
+
         this.userData = userData;
         this.world = world;
         this.originPlayer = originPlayer;
         this.camera = camera;
 
-        setTexture(new Texture("prettyplayer.png"));
+        //setTexture(new Texture("prettyplayer.png"));
         //setTexture(new Texture(Gdx.files.internal("prettyplayer.png")));
 
 
@@ -95,7 +97,7 @@ public abstract class  Projectile extends Sprite{
         //@Maurice @Alex Ihr könnte gerne mal mit diesen Werten rumspielen und schauen was am besten passt :D
 
         b2dbody.createFixture(fDef);
-        setOrigin(getWidth() / 2, getHeight() / 2);
+        setOrigin(getTexture().getWidth() / 2, getTexture().getHeight() / 2);
 
     }
 
@@ -107,16 +109,20 @@ public abstract class  Projectile extends Sprite{
         this.setRegion(getTexture());
 
         rotation += 1f;
-
+        setRotation(rotation);
+        System.out.println(rotation);
+        System.out.println("test");
     }
 
     @Override
     public void draw(Batch batch) {
 
+
         System.out.println("projectile draw");
         super.draw(batch);
         this.update(Gdx.graphics.getDeltaTime());
     }
+
 
     public static void DrawDebugLine(Vector2 start, Vector2 end, Matrix4 projectionMatrix)
     {

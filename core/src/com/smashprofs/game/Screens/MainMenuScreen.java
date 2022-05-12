@@ -76,7 +76,7 @@ public class MainMenuScreen implements Screen {
         batch.end();
 
         //Button Press
-        if (play && Gdx.input.isButtonJustPressed(0)) {
+        if (play && Gdx.input.isButtonJustPressed(0) || Gdx.input.isKeyJustPressed(66)) {
             game.setScreen(new PlayScreen(game));
 
         } else if (exit && Gdx.input.isButtonJustPressed(0)) {
