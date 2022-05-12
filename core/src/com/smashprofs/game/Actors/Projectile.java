@@ -20,7 +20,7 @@ public abstract class  Projectile extends Sprite{
     private Batch batch = new SpriteBatch();
     private BodyDef bdef;
 
-    Body b2dbody;
+    public Body b2dbody;
 
     private CameraManager cameraManager = CameraManager.getCameraManager_INSTANCE();
 
@@ -46,9 +46,10 @@ public abstract class  Projectile extends Sprite{
         //setTexture(new Texture(Gdx.files.internal("prettyplayer.png")));
 
 
-        setPosition(12, 12);
+        //setPosition(12, 12);
+
         setBounds(0, 0, getWidth(), getHeight());
-        //scale(1/PPM);
+        scale(1/PPM);
 
         create();
 
@@ -100,8 +101,10 @@ public abstract class  Projectile extends Sprite{
 
     public void update(float delta) {
         System.out.println("!!!! projectile update");
-        setPosition(b2dbody.getPosition().x - getWidth() / 2, b2dbody.getPosition().y - getHeight() / 2);
-        setRegion(getTexture());
+        //this.setPosition(b2dbody.getPosition().x - getWidth() / 2, b2dbody.getPosition().y - getHeight() / 2);
+        setBounds(b2dbody.getPosition().x - getWidth() / 2/PPM, b2dbody.getPosition().y - getHeight() / 2 /PPM, getWidth(), getHeight());
+
+        this.setRegion(getTexture());
 
         rotation += 1f;
 
@@ -127,6 +130,10 @@ public abstract class  Projectile extends Sprite{
         Gdx.gl.glLineWidth(1);
     }
 
+
+    public Body getBody() {
+        return b2dbody;
+    }
     public void destroy() {
         world.destroyBody(b2dbody);
     }

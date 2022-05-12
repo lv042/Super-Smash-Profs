@@ -169,7 +169,12 @@ public class Player extends Sprite {
 
         System.out.println(projectiles.size());
         for (Projectile projectile : projectiles) {
-            projectile.update(deltatime);
+            //projectile.update(deltatime);
+            // -> Geht irgendwie nicht. Wählt nicht den richtigen Body aus.
+            // Geht aber mit:
+            Body projectileBody = projectile.getBody();
+            //projectile.setOrigin(projectileBody.getPosition().x - projectile.getBoundingRectangle().getWidth()/2, projectileBody.getPosition().y - projectile.getBoundingRectangle().getHeight()/2);
+            projectile.setBounds(projectileBody.getPosition().x - getWidth() / 2/PPM, projectileBody.getPosition().y - getHeight() / 2 /PPM, getWidth(), getHeight());
             System.out.println("Projectile updated from ArrayList");
         }
 
