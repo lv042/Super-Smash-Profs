@@ -2,6 +2,8 @@ package com.smashprofs.game.Screens;
 
 
 import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Matrix4;
@@ -220,6 +222,21 @@ public class PlayScreen implements Screen {
         playerOne.draw(batch);
         playerTwo.draw(batch);
 
+        final Sprite sprite;
+        final Body body;
+
+        sprite = new Sprite(new Texture("star.png"));
+
+
+            sprite.setScale(0.3f);
+
+            sprite.setPosition(0, 100);
+            sprite.setRotation((float) Math.toDegrees(sprite.getRotation()));
+            sprite.scale(100f);
+
+
+
+        sprite.draw(batch);
         batch.end();
 
 
