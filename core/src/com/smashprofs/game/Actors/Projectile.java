@@ -33,26 +33,25 @@ public abstract class  Projectile extends Sprite{
 
     OrthographicCamera camera;
 
-    Texture texture;
 
     World world;
 
     public Projectile(World world, Player originPlayer, String userData, OrthographicCamera camera) {
+        super(new Texture(Gdx.files.internal("star.png")));
+
         this.userData = userData;
         this.world = world;
         this.originPlayer = originPlayer;
         this.camera = camera;
 
-        this.texture = new Texture("TEST.png");
-        setTexture(texture);
-        // setTexture(new Texture("icon.png"));
+        //setTexture(new Texture("prettyplayer.png"));
         //setTexture(new Texture(Gdx.files.internal("prettyplayer.png")));
 
 
         //setPosition(12, 12);
 
-        //setBounds(0, 0, getWidth()/PPM, getHeight()/PPM);
-        scale(1f);
+        setBounds(0, 0, getWidth(), getHeight());
+        scale(1/PPM);
 
         create();
 
@@ -98,28 +97,32 @@ public abstract class  Projectile extends Sprite{
         //@Maurice @Alex Ihr könnte gerne mal mit diesen Werten rumspielen und schauen was am besten passt :D
 
         b2dbody.createFixture(fDef);
-        //setOrigin(getWidth() / 2, getHeight() / 2);
+        setOrigin(getTexture().getWidth() / 2, getTexture().getHeight() / 2);
 
     }
 
     public void update(float delta) {
         System.out.println("!!!! projectile update");
         //this.setPosition(b2dbody.getPosition().x - getWidth() / 2, b2dbody.getPosition().y - getHeight() / 2);
-        //setBounds(b2dbody.getPosition().x - getWidth() / 2/PPM, b2dbody.getPosition().y - getHeight() / 2 /PPM, getWidth(), getHeight());
+        setBounds(b2dbody.getPosition().x - getWidth() / 2/PPM, b2dbody.getPosition().y - getHeight() / 2 /PPM, getWidth(), getHeight());
 
-        //this.setRegion(getTexture());
+        this.setRegion(getTexture());
 
         rotation += 1f;
-
+        setRotation(rotation);
+        System.out.println(rotation);
+        System.out.println("test");
     }
 
     @Override
     public void draw(Batch batch) {
 
+
         System.out.println("projectile draw");
         super.draw(batch);
         this.update(Gdx.graphics.getDeltaTime());
     }
+
 
     public static void DrawDebugLine(Vector2 start, Vector2 end, Matrix4 projectionMatrix)
     {
@@ -137,15 +140,6 @@ public abstract class  Projectile extends Sprite{
     public Body getBody() {
         return b2dbody;
     }
-
-    public Sprite getSprite() {
-        return this;
-    }
-
-    public Texture getTexture() {
-        return texture;
-    }
-
     public void destroy() {
         world.destroyBody(b2dbody);
     }
