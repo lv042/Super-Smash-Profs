@@ -225,18 +225,7 @@ public class PlayScreen implements Screen {
         final Sprite sprite;
         final Body body;
 
-        sprite = new Sprite(new Texture("star.png"));
 
-
-            sprite.setScale(0.3f);
-
-            sprite.setPosition(0, 100);
-            sprite.setRotation((float) Math.toDegrees(sprite.getRotation()));
-            sprite.scale(100f);
-
-
-
-        sprite.draw(batch);
         batch.end();
 
 
