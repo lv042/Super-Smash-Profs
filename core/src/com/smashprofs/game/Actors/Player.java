@@ -175,11 +175,20 @@ public class Player extends Sprite {
             Body projectileBody = projectile.getBody();
             Sprite projectileSprite = projectile.getSprite();
             Texture projectileTexture = projectile.getTexture();
-            
+
+            // setBounds funktioniert, der Rest nicht.
+
             //projectile.setOrigin(projectileBody.getPosition().x - projectile.getBoundingRectangle().getWidth()/2, projectileBody.getPosition().y - projectile.getBoundingRectangle().getHeight()/2);
-            projectile.setBounds(projectileBody.getPosition().x - ((projectileSprite.getBoundingRectangle().getWidth() / 2)*PPM)/PPM, projectileBody.getPosition().y - ((projectileSprite.getBoundingRectangle().getHeight() / 2)*PPM) /PPM, 32/PPM, 32/PPM);
+            //projectile.setBounds(projectileBody.getPosition().x - ((projectileSprite.getBoundingRectangle().getWidth() / 2)*PPM)/PPM, projectileBody.getPosition().y - ((projectileSprite.getBoundingRectangle().getHeight() / 2)*PPM) /PPM, 32/PPM, 32/PPM);
+            //projectile.setBounds(projectileBody.getPosition().x - getWidth() / 2/PPM, projectileBody.getPosition().y - getHeight() / 2 /PPM, getWidth(), getHeight());
+            projectile.setBounds(projectileBody.getPosition().x - projectileSprite.getWidth() / 2/PPM, projectileBody.getPosition().y - projectileSprite.getHeight() / 2 /PPM, projectileTexture.getWidth()/PPM, projectileTexture.getHeight()/PPM);
+            //projectile.setPosition(projectileBody.getPosition().x - projectileSprite.getWidth() / 2/PPM, projectileBody.getPosition().y - projectileSprite.getHeight() / 2 /PPM);
+
+            //projectile.setOrigin(projectile.getTexture().getWidth()/2f, projectile.getTexture().getHeight()/2f);
 
             System.out.println("Projectile updated from ArrayList");
+
+
         }
 
     }
