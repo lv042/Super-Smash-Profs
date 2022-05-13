@@ -16,7 +16,7 @@ import com.smashprofs.game.Helper.CameraManager;
 
 import static com.smashprofs.game.Actors.Player.PPM;
 
-public abstract class  Projectile extends Sprite{
+public class  Projectile extends Sprite{
     private Batch batch = new SpriteBatch();
     private BodyDef bdef;
 
@@ -37,7 +37,7 @@ public abstract class  Projectile extends Sprite{
     World world;
 
     public Projectile(World world, Player originPlayer, String userData, OrthographicCamera camera) {
-        super(new Texture(Gdx.files.internal("star.png")));
+        super(new Texture(Gdx.files.internal("fireball.png")));
 
         this.userData = userData;
         this.world = world;
@@ -104,14 +104,14 @@ public abstract class  Projectile extends Sprite{
     public void update(float delta) {
         System.out.println("!!!! projectile update");
         //this.setPosition(b2dbody.getPosition().x - getWidth() / 2, b2dbody.getPosition().y - getHeight() / 2);
-        setBounds(b2dbody.getPosition().x - getWidth() / 2/PPM, b2dbody.getPosition().y - getHeight() / 2 /PPM, getWidth(), getHeight());
+        setBounds(b2dbody.getPosition().x - getWidth() / 2/PPM, b2dbody.getPosition().y - getHeight() / 2 /PPM, getTexture().getWidth()/PPM, getTexture().getHeight()/PPM );
 
-        this.setRegion(getTexture());
+        //this.setRegion(getTexture());
 
         rotation += 1f;
         setRotation(rotation);
-        System.out.println(rotation);
-        System.out.println("test");
+        //System.out.println(rotation);
+        //System.out.println("test");
     }
 
     @Override
@@ -136,6 +136,9 @@ public abstract class  Projectile extends Sprite{
         Gdx.gl.glLineWidth(1);
     }
 
+    public Sprite getSprite() {
+        return this;
+    }
 
     public Body getBody() {
         return b2dbody;
