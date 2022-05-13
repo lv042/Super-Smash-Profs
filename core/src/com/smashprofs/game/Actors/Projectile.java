@@ -33,6 +33,7 @@ public abstract class  Projectile extends Sprite{
 
     OrthographicCamera camera;
 
+    Texture texture;
 
     World world;
 
@@ -42,14 +43,16 @@ public abstract class  Projectile extends Sprite{
         this.originPlayer = originPlayer;
         this.camera = camera;
 
-        setTexture(new Texture("prettyplayer.png"));
+        this.texture = new Texture("TEST.png");
+        setTexture(texture);
+        // setTexture(new Texture("icon.png"));
         //setTexture(new Texture(Gdx.files.internal("prettyplayer.png")));
 
 
         //setPosition(12, 12);
 
-        setBounds(0, 0, getWidth(), getHeight());
-        scale(1/PPM);
+        //setBounds(0, 0, getWidth()/PPM, getHeight()/PPM);
+        scale(1f);
 
         create();
 
@@ -95,16 +98,16 @@ public abstract class  Projectile extends Sprite{
         //@Maurice @Alex Ihr könnte gerne mal mit diesen Werten rumspielen und schauen was am besten passt :D
 
         b2dbody.createFixture(fDef);
-        setOrigin(getWidth() / 2, getHeight() / 2);
+        //setOrigin(getWidth() / 2, getHeight() / 2);
 
     }
 
     public void update(float delta) {
         System.out.println("!!!! projectile update");
         //this.setPosition(b2dbody.getPosition().x - getWidth() / 2, b2dbody.getPosition().y - getHeight() / 2);
-        setBounds(b2dbody.getPosition().x - getWidth() / 2/PPM, b2dbody.getPosition().y - getHeight() / 2 /PPM, getWidth(), getHeight());
+        //setBounds(b2dbody.getPosition().x - getWidth() / 2/PPM, b2dbody.getPosition().y - getHeight() / 2 /PPM, getWidth(), getHeight());
 
-        this.setRegion(getTexture());
+        //this.setRegion(getTexture());
 
         rotation += 1f;
 
@@ -134,6 +137,15 @@ public abstract class  Projectile extends Sprite{
     public Body getBody() {
         return b2dbody;
     }
+
+    public Sprite getSprite() {
+        return this;
+    }
+
+    public Texture getTexture() {
+        return texture;
+    }
+
     public void destroy() {
         world.destroyBody(b2dbody);
     }
