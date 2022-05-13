@@ -173,8 +173,12 @@ public class Player extends Sprite {
             // -> Geht irgendwie nicht. Wählt nicht den richtigen Body aus.
             // Geht aber mit:
             Body projectileBody = projectile.getBody();
+            Sprite projectileSprite = projectile.getSprite();
+            Texture projectileTexture = projectile.getTexture();
+            
             //projectile.setOrigin(projectileBody.getPosition().x - projectile.getBoundingRectangle().getWidth()/2, projectileBody.getPosition().y - projectile.getBoundingRectangle().getHeight()/2);
-            projectile.setBounds(projectileBody.getPosition().x - getWidth() / 2/PPM, projectileBody.getPosition().y - getHeight() / 2 /PPM, getWidth(), getHeight());
+            projectile.setBounds(projectileBody.getPosition().x - ((projectileSprite.getBoundingRectangle().getWidth() / 2)*PPM)/PPM, projectileBody.getPosition().y - ((projectileSprite.getBoundingRectangle().getHeight() / 2)*PPM) /PPM, 32/PPM, 32/PPM);
+
             System.out.println("Projectile updated from ArrayList");
         }
 
