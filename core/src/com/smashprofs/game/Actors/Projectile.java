@@ -33,7 +33,7 @@ public class  Projectile extends Sprite{
 
     OrthographicCamera camera;
 
-
+    public Boolean active = true;
     World world;
 
     public Projectile(World world, Player originPlayer, String userData, OrthographicCamera camera) {
@@ -106,6 +106,14 @@ public class  Projectile extends Sprite{
         //this.setPosition(b2dbody.getPosition().x - getWidth() / 2, b2dbody.getPosition().y - getHeight() / 2);
         setBounds(b2dbody.getPosition().x - getWidth() / 2/PPM, b2dbody.getPosition().y - getHeight() / 2 /PPM, getTexture().getWidth()/PPM, getTexture().getHeight()/PPM );
 
+        // Toggle Projectile activity state based on its body's active state
+        if(b2dbody.isActive()){
+            active = true;
+        }
+        else if (!b2dbody.isActive()){
+            active = false;
+        }
+
         //this.setRegion(getTexture());
 
         rotation += 1f;
@@ -134,6 +142,10 @@ public class  Projectile extends Sprite{
         debugRenderer.line(start, end);
         debugRenderer.end();
         Gdx.gl.glLineWidth(1);
+    }
+
+    public Boolean isActive() {
+        return active;
     }
 
     public Sprite getSprite() {
