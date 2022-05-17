@@ -4,6 +4,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.*;
+import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.*;
 import com.smashprofs.game.Helper.B2dContactListener;
@@ -14,7 +15,7 @@ import com.smashprofs.game.Screens.PlayScreen;
 
 import java.util.ArrayList;
 
-public class Player extends Sprite {
+public abstract class Player extends Sprite {
 
 
     public static final float PPM = 100;
@@ -25,9 +26,9 @@ public class Player extends Sprite {
     float playerCollisionBoxRadius = 5;
     boolean isGrounded = false;
     boolean standardAttackInput = false;
-    private final Texture alexStand;
-    private final Texture alexRun;
-    private final Texture alexJump;
+    private Texture playerStand;
+    private Texture playerRun;
+    private Texture playerJump;
     private final Animation<TextureRegion> stand;
     private final Animation<TextureRegion> run;
     private final Animation<TextureRegion> jump;
@@ -78,24 +79,28 @@ public class Player extends Sprite {
     private boolean touchingGround;
     private ArrayList<Projectile> projectiles;
 
-    public Player(World world, InputState inputState, Vector2 spawnpoint, String playerName, String userData) {
+    public Player(World world, InputState inputState, Vector2 spawnpoint, String playerName, String userData, Texture playerStandTex, Texture playerRunTex, Texture playerJumpTex) {
 
 
         this.userData = userData;
 
-        alexStand = new Texture("Sprites/Alex_stand.png");
-        alexRun = new Texture("Sprites/Alex_run.png");
-        alexJump = new Texture("Sprites/Alex_jump.png");
+        /*playerStand = new Texture("Sprites/Alex_stand.png");
+        playerRun = new Texture("Sprites/Alex_run.png");
+        playerJump = new Texture("Sprites/Alex_jump.png");*/
 
-        TextureRegion[] standing = TextureRegion.split(alexStand, 100, 100)[0];
+        this.playerStand = playerStandTex;
+        this.playerRun = playerRunTex;
+        this.playerJump = playerJumpTex;
+
+        TextureRegion[] standing = TextureRegion.split(playerStand, 100, 100)[0];
         stand = new Animation(0.15f, standing[0], standing[1], standing[2], standing[3]);
         stand.setPlayMode(Animation.PlayMode.LOOP);
 
-        TextureRegion[] running = TextureRegion.split(alexRun, 100, 100)[0];
+        TextureRegion[] running = TextureRegion.split(playerRun, 100, 100)[0];
         run = new Animation(0.15f, running[0], running[1], running[2], running[3], running[4], running[5]);
         run.setPlayMode(Animation.PlayMode.LOOP);
 
-        TextureRegion[] jumping = TextureRegion.split(alexJump, 100, 100)[0];
+        TextureRegion[] jumping = TextureRegion.split(playerJump, 100, 100)[0];
         jump = new Animation(1f, running[0], running[3]); //Originaly -> jump = new Animation(0.15f, running[0], jumping[1], jumping[2]); -> but jump animation looks like poop
         jump.setPlayMode(Animation.PlayMode.LOOP);
 
@@ -183,10 +188,19 @@ public class Player extends Sprite {
             //projectile.setBounds(projectileBody.getPosition().x - getWidth() / 2/PPM, projectileBody.getPosition().y - getHeight() / 2 /PPM, getWidth(), getHeight());
             projectile.setBounds(projectileBody.getPosition().x - projectileSprite.getWidth() / 2/PPM, projectileBody.getPosition().y - projectileSprite.getHeight() / 2 /PPM, projectileTexture.getWidth()/PPM, projectileTexture.getHeight()/PPM);
             //projectile.setPosition(projectileBody.getPosition().x - projectileSprite.getWidth() / 2/PPM, projectileBody.getPosition().y - projectileSprite.getHeight() / 2 /PPM);
-
+            //projectile.setRotation(projectileBody.getAngle() * MathUtils.radiansToDegrees);
+            //projectileSprite.setRotation(projectileBody.getAngle() * MathUtils.radiansToDegrees);
             //projectile.setOrigin(projectile.getTexture().getWidth()/2f, projectile.getTexture().getHeight()/2f);
 
             System.out.println("Projectile updated from ArrayList");
+
+            if(projectileBody.isActive()){
+                projectile.active = true;
+            }
+            else if (!projectileBody.isActive()){
+                projectile.active = false;
+                System.out.println("Set projectile to inactive");
+            }
 
 
         }
@@ -197,8 +211,11 @@ public class Player extends Sprite {
     public void draw(Batch batch) {
         super.draw(batch);
         for (Projectile projectile : projectiles) {
-            projectile.draw(batch);
-            System.out.println("Projectile drawn from ArrayList");
+            if(projectile.isActive()) {
+                projectile.draw(batch);
+                System.out.println("Projectile drawn from ArrayList");
+            }
+
         }
     }
 
@@ -505,18 +522,18 @@ public class Player extends Sprite {
         TextureRegion frame = null;
         switch (this.currentState) {
             case STANDING:
-                this.setRegion(alexStand);
+                this.setRegion(playerStand);
                 frame = stand.getKeyFrame(stateTime);
                 break;
 
             case RUNNING:
 
-                this.setRegion(alexRun);
+                this.setRegion(playerRun);
                 frame = run.getKeyFrame(stateTime);
                 break;
 
             case JUMPING:
-                this.setRegion(alexJump);
+                this.setRegion(playerJump);
                 frame = jump.getKeyFrame(stateTime);
                 break;
         }
