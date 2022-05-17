@@ -8,6 +8,7 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Matrix4;
 import com.badlogic.gdx.utils.ScreenUtils;
+import com.smashprofs.game.Actors.Alex;
 import com.smashprofs.game.Game;
 import com.smashprofs.game.Helper.B2dContactListener;
 import com.smashprofs.game.Helper.CameraManager;
@@ -176,8 +177,10 @@ public class PlayScreen implements Screen {
             body.createFixture(fdef);
         }
 
-        playerOne = new Player(world, Player.InputState.WASD, playerOneSpawnPoint, "Alex Boss", "PlayerOne");
-        playerTwo = new Player(world, Player.InputState.ARROWS, playerTwoSpawnPoint, "Jens Huhn", "PlayerTwo");
+        //playerOne = new Player(world, Player.InputState.WASD, playerOneSpawnPoint, "Alex Boss", "PlayerOne");
+        playerOne  = new Alex(world, Player.InputState.WASD, playerOneSpawnPoint, "Alex Nr 1", "PlayerOne");
+        //playerTwo = new Player(world, Player.InputState.ARROWS, playerTwoSpawnPoint, "Jens Huhn", "PlayerTwo");
+        playerTwo = new Alex(world, Player.InputState.ARROWS, playerTwoSpawnPoint, "Alex Nr 2", "PlayerTwo");
 
         contactListener = B2dContactListener.getContactListener_INSTANCE();
         world.setContactListener(contactListener);
@@ -203,7 +206,7 @@ public class PlayScreen implements Screen {
         Gdx.gl.glClearColor(0, 0, 0, 1); //-> light blue
         //Gdx.gl.glClearColor(1, 1, 1, 1);
 
-        //tiledMapRenderer.render();
+        tiledMapRenderer.render();
 
         try {
             update(delta);
