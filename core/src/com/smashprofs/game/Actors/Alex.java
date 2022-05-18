@@ -8,7 +8,7 @@ public class Alex extends Player {
 
 
     public Alex(World world, InputState inputState, Vector2 spawnpoint, String playerName, String userData) {
-        super(world, inputState, spawnpoint, playerName, userData, new Texture("Sprites/Alex_stand.png"), new Texture("Sprites/Alex_run.png"), new Texture("Sprites/Alex_jump.png"));
+        super(world, inputState, spawnpoint, playerName, userData, new Texture("Sprites/Alex_strip2.png"), new Texture("Sprites/Alex_run.png"), new Texture("Sprites/Alex_jump.png"));
 
 
     }
