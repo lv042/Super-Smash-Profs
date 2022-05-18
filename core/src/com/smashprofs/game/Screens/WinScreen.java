@@ -2,20 +2,28 @@ package com.smashprofs.game.Screens;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.scenes.scene2d.ui.Label;
+import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.smashprofs.game.Game;
+import org.w3c.dom.Text;
 
 public class WinScreen implements Screen {
-    private static final int BUTTON_WIDTH = 300, BUTTON_HEIGHT = 100, MENU_Y = 300;
+    private static final int BUTTON_WIDTH = 300, BUTTON_HEIGHT = 100, MENU_Y = 200;
 
     private float zoomFactor = 1.0f;
     private float timer = 0.0f;
+    private static String win;
 
     Texture menuButtonActive;
     Texture menuButtonInactive;
     Texture bgPicture;
     Texture pokal;
+    Texture player1;
+    Texture player2;
 
     Game game = null;
     SpriteBatch batch;
@@ -27,10 +35,13 @@ public class WinScreen implements Screen {
         menuButtonInactive = new Texture("winscreen/menuButtonInactive.png");
         bgPicture = new Texture("winscreen/winbg.png");
         pokal = new Texture("winscreen/pokal.png");
+        player1 = new Texture("winscreen/player1.png");
+        player2 = new Texture("winscreen/player2.png");
 
         this.batch = new SpriteBatch();
         this.game = game;
     }
+
 
     @Override
     public void show() {
@@ -61,6 +72,15 @@ public class WinScreen implements Screen {
             exit = false;
         }
 
+        if(win.equals("Player 1"))
+        {
+            batch.draw(player1, Gdx.graphics.getWidth() / 2f -150f / zoomFactor, 350f , 300f / zoomFactor, 100f / zoomFactor);
+        }
+        else if (win.equals("Player 2"))
+        {
+            batch.draw(player2, Gdx.graphics.getWidth() / 2f -150f / zoomFactor, 350f , 300f / zoomFactor, 100f / zoomFactor);
+        }
+
         batch.end();
 
         //Button Press
@@ -68,6 +88,11 @@ public class WinScreen implements Screen {
             game.setScreen(new MainMenuScreen(game));
         }
 
+    }
+
+    public static void setWinner(java.lang.String winner)
+    {
+    win= winner;
     }
 
     @Override

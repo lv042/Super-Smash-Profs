@@ -71,9 +71,16 @@ public class  Hud{
     {
         if(timeCount<0||playerOne.getHP()<0||playerTwo.getHP()<0)
         {
+            if(playerOne.getHP()>playerTwo.getHP()) {winner = "Player 1";}
+            else {winner= "Player 2";}
             return true;
         }
             return false;
+    }
+
+    public String getWinner()
+    {
+        return winner;
     }
 
 

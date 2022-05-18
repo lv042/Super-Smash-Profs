@@ -241,6 +241,7 @@ public class PlayScreen implements Screen {
        if(hud.testwin(playerOne,playerTwo))
        {
            game.setScreen(new WinScreen(game));
+           WinScreen.setWinner(hud.getWinner());
        }
 
 
