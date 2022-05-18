@@ -93,7 +93,7 @@ public abstract class Player extends Sprite {
         this.playerJump = playerJumpTex;
 
         TextureRegion[] standing = TextureRegion.split(playerStand, 100, 100)[0];
-        stand = new Animation(0.15f, standing[0], standing[1], standing[2], standing[3]);
+        stand = new Animation(0.25f, standing[0], standing[1], standing[2], standing[3]);
         stand.setPlayMode(Animation.PlayMode.LOOP);
 
         TextureRegion[] running = TextureRegion.split(playerRun, 100, 100)[0];
@@ -233,7 +233,7 @@ public abstract class Player extends Sprite {
 
 
     private void setAnimationPosition() {
-        this.setPosition(b2dbody.getPosition().x - getWidth() / 2, b2dbody.getPosition().y - getHeight() / 4); //set the position of the animation to the center of the body
+        this.setPosition(b2dbody.getPosition().x - getWidth() /2, b2dbody.getPosition().y - getHeight() / 4); //set the position of the animation to the center of the body
 
 
         this.setRegion(getRenderTexture(stateTime)); //set the texture to the current state of the movement
