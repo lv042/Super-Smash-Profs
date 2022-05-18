@@ -9,6 +9,7 @@ import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Matrix4;
 import com.badlogic.gdx.utils.ScreenUtils;
 import com.smashprofs.game.Actors.Alex;
+import com.smashprofs.game.Actors.Luca;
 import com.smashprofs.game.Game;
 import com.smashprofs.game.Helper.B2dContactListener;
 import com.smashprofs.game.Helper.CameraManager;
@@ -179,9 +180,9 @@ public class PlayScreen implements Screen {
         }
 
         //playerOne = new Player(world, Player.InputState.WASD, playerOneSpawnPoint, "Alex Boss", "PlayerOne");
-        playerOne  = new Alex(world, Player.InputState.WASD, playerOneSpawnPoint, "Alex Nr 1", "PlayerOne");
+        playerOne  = new Alex(world, Player.InputState.WASD, playerOneSpawnPoint, "Alex Boss", "PlayerOne");
         //playerTwo = new Player(world, Player.InputState.ARROWS, playerTwoSpawnPoint, "Jens Huhn", "PlayerTwo");
-        playerTwo = new Alex(world, Player.InputState.ARROWS, playerTwoSpawnPoint, "Alex Nr 2", "PlayerTwo");
+        playerTwo = new Luca(world, Player.InputState.ARROWS, playerTwoSpawnPoint, "Luca Kanne", "PlayerTwo");
 
         contactListener = B2dContactListener.getContactListener_INSTANCE();
         world.setContactListener(contactListener);
