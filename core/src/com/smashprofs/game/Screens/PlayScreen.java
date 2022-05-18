@@ -82,7 +82,8 @@ public class PlayScreen implements Screen {
 
         //exit game
         if(Gdx.input.isKeyPressed(Input.Keys.ESCAPE)){
-            Gdx.app.exit();
+           // Gdx.app.exit();
+            game.setScreen(new MainMenuScreen(game));
         }
     }
 
@@ -237,7 +238,10 @@ public class PlayScreen implements Screen {
         hud.updateHud(delta, playerOne, playerTwo);
 
 
-
+       if(hud.testwin(playerOne,playerTwo))
+       {
+           game.setScreen(new WinScreen(game));
+       }
 
 
     }

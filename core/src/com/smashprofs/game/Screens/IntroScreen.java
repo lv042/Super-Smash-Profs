@@ -55,7 +55,7 @@ public class IntroScreen extends ScreenAdapter {
         batch.draw(texture, (camera.position.x / 2 - width / 2) / zoomFactor, (camera.position.y / 2 - height / 2) / zoomFactor, width / zoomFactor, height/ zoomFactor);
         batch.end();
 
-        if (Gdx.input.isKeyJustPressed(com.badlogic.gdx.Input.Keys.ANY_KEY)) {
+        if (Gdx.input.isKeyJustPressed(com.badlogic.gdx.Input.Keys.ANY_KEY) || Gdx.input.isButtonJustPressed(0)) {
             game.setScreen(new MainMenuScreen(game));
 
         }

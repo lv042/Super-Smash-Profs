@@ -25,7 +25,7 @@ public class  Hud{
     Label playerOneHud; // label for the level
     Label modeLabel; // label for the world
     Label playerLabel; // label for the player
-
+    private String winner;
 
     public Hud(SpriteBatch spriteBatch, Player playerOne, Player playerTwo){
 
@@ -67,6 +67,14 @@ public class  Hud{
         playerTwoHud.setText(playerTwo.getPlayerName() + " " + (int)playerTwo.getHP() + "%");
     }
 
+    public boolean testwin(Player playerOne, Player playerTwo)
+    {
+        if(timeCount<0||playerOne.getHP()<0||playerTwo.getHP()<0)
+        {
+            return true;
+        }
+            return false;
+    }
 
 
     public void dispose() {
