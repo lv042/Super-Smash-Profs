@@ -17,7 +17,6 @@ import com.smashprofs.game.Helper.CameraManager;
 import static com.smashprofs.game.Actors.Player.PPM;
 
 public class  Projectile extends Sprite{
-    private Batch batch = new SpriteBatch();
     private BodyDef bdef;
 
     public Body b2dbody;
@@ -42,7 +41,7 @@ public class  Projectile extends Sprite{
         this.userData = userData;
         this.world = world;
         this.originPlayer = originPlayer;
-        this.camera = camera;
+        //this.camera = camera;
 
         //setTexture(new Texture("prettyplayer.png"));
         //setTexture(new Texture(Gdx.files.internal("prettyplayer.png")));
@@ -97,15 +96,22 @@ public class  Projectile extends Sprite{
         //@Maurice @Alex Ihr könnte gerne mal mit diesen Werten rumspielen und schauen was am besten passt :D
 
         b2dbody.createFixture(fDef);
-        setOrigin(getTexture().getWidth() / 2, getTexture().getHeight() / 2);
+        // !!!!!!!!!!!!!!!!!!!!!!
+        //setOrigin(getTexture().getWidth() / 2, getTexture().getHeight() / 2);
 
     }
 
     public void update(float delta) {
         System.out.println("!!!! projectile update");
         //this.setPosition(b2dbody.getPosition().x - getWidth() / 2, b2dbody.getPosition().y - getHeight() / 2);
+
         setBounds(b2dbody.getPosition().x - getWidth() / 2/PPM, b2dbody.getPosition().y - getHeight() / 2 /PPM, getTexture().getWidth()/PPM, getTexture().getHeight()/PPM );
 
+
+        //setPosition(b2dbody.getPosition().x - getWidth() / 2/PPM, b2dbody.getPosition().y - getHeight() / 2 /PPM);
+
+
+        //setRotation(rotation);
         // Toggle Projectile activity state based on its body's active state
         if(b2dbody.isActive()){
             active = true;
@@ -114,12 +120,11 @@ public class  Projectile extends Sprite{
             active = false;
         }
 
-        //this.setRegion(getTexture());
+        rotation += 0.8f;
+        //setPosition(b2dbody.getPosition().x - getWidth() / 2/PPM, b2dbody.getPosition().y - getHeight() / 2 /PPM);
+        //setRotation(rotation);
 
-        rotation += 1f;
-        setRotation(rotation);
-        //System.out.println(rotation);
-        //System.out.println("test");
+
     }
 
     @Override
@@ -128,7 +133,6 @@ public class  Projectile extends Sprite{
 
         System.out.println("projectile draw");
         super.draw(batch);
-        this.update(Gdx.graphics.getDeltaTime());
     }
 
 
@@ -158,9 +162,6 @@ public class  Projectile extends Sprite{
     public void destroy() {
         world.destroyBody(b2dbody);
     }
-
-
-
 
 }
 
