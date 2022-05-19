@@ -37,7 +37,7 @@ public class  Projectile extends Sprite{
     World world;
 
     public Projectile(World world, Player originPlayer, String userData, OrthographicCamera camera) {
-        super(new Texture(Gdx.files.internal("fireball.png")));
+        super(new Texture(Gdx.files.internal("missile.png")));
 
         this.userData = userData;
         this.world = world;
