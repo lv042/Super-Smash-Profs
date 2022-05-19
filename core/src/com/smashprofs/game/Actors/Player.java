@@ -77,7 +77,8 @@ public abstract class Player extends Sprite {
     private boolean facingRight = true;
     private int isFacingRightAxe = 0;
     private boolean touchingGround;
-    private ArrayList<Projectile> projectiles;
+    public ArrayList<Projectile> projectiles;
+    public ArrayList<LeosProjectile> leosProjectiles;
 
     public Player(World world, InputState inputState, Vector2 spawnpoint, String playerName, String userData, Texture playerStandTex, Texture playerRunTex, Texture playerJumpTex) {
 
@@ -107,20 +108,23 @@ public abstract class Player extends Sprite {
         this.currentState = State.STANDING;
 
         projectiles = new ArrayList<Projectile>();
+        leosProjectiles = new ArrayList<LeosProjectile>();
 
-        //super(screen.getAtlas().findRegion("Alex_strip"));
-        //alexStand = new TextureRegion(screen.getAtlas().findRegion("Alex_strip"),10,17, 128, 128);
+
         setBounds(0, 15, 25 / PPM, 25 / PPM);
         //this.setRegion(alexStand);
         this.world = world;
         this.currentInputState = inputState;
         this.spawnpoint = spawnpoint;
         this.playerName = playerName;
-        //this.batch =
 
         definePlayer();
 
         soundManager = SoundManager.getSoundManager_INSTANCE();
+        //LeosHomingMissle loli = new LeosHomingMissle(world, this);
+        //leosProjectiles.add(loli);
+
+        System.out.println("Player created:" + this.playerName);
 
     }
 
@@ -174,7 +178,7 @@ public abstract class Player extends Sprite {
 
         System.out.println(projectiles.size());
         for (Projectile projectile : projectiles) {
-            //projectile.update(deltatime);
+            projectile.update(deltatime);
             // -> Geht irgendwie nicht. Wählt nicht den richtigen Body aus.
             // Geht aber mit:
             Body projectileBody = projectile.getBody();
@@ -186,23 +190,28 @@ public abstract class Player extends Sprite {
             //projectile.setOrigin(projectileBody.getPosition().x - projectile.getBoundingRectangle().getWidth()/2, projectileBody.getPosition().y - projectile.getBoundingRectangle().getHeight()/2);
             //projectile.setBounds(projectileBody.getPosition().x - ((projectileSprite.getBoundingRectangle().getWidth() / 2)*PPM)/PPM, projectileBody.getPosition().y - ((projectileSprite.getBoundingRectangle().getHeight() / 2)*PPM) /PPM, 32/PPM, 32/PPM);
             //projectile.setBounds(projectileBody.getPosition().x - getWidth() / 2/PPM, projectileBody.getPosition().y - getHeight() / 2 /PPM, getWidth(), getHeight());
-            projectile.setBounds(projectileBody.getPosition().x - projectileSprite.getWidth() / 2/PPM, projectileBody.getPosition().y - projectileSprite.getHeight() / 2 /PPM, projectileTexture.getWidth()/PPM, projectileTexture.getHeight()/PPM);
+            //projectile.setBounds(projectileBody.getPosition().x - projectileSprite.getWidth() / 2/PPM, projectileBody.getPosition().y - projectileSprite.getHeight() / 2 /PPM, projectileTexture.getWidth()/PPM, projectileTexture.getHeight()/PPM);
             //projectile.setPosition(projectileBody.getPosition().x - projectileSprite.getWidth() / 2/PPM, projectileBody.getPosition().y - projectileSprite.getHeight() / 2 /PPM);
             //projectile.setRotation(projectileBody.getAngle() * MathUtils.radiansToDegrees);
             //projectileSprite.setRotation(projectileBody.getAngle() * MathUtils.radiansToDegrees);
             //projectile.setOrigin(projectile.getTexture().getWidth()/2f, projectile.getTexture().getHeight()/2f);
 
-            System.out.println("Projectile updated from ArrayList");
+            //System.out.println("Projectile updated from ArrayList");
 
-            if(projectileBody.isActive()){
+/*            if(projectileBody.isActive()){
                 projectile.active = true;
             }
             else if (!projectileBody.isActive()){
                 projectile.active = false;
                 System.out.println("Set projectile to inactive");
-            }
+            }*/
 
 
+        }
+
+        System.out.println(leosProjectiles.size());
+        for (LeosProjectile lProj : leosProjectiles) {
+            lProj.update(deltatime);
         }
 
     }
