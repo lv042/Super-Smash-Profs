@@ -15,6 +15,8 @@ import com.smashprofs.game.Screens.PlayScreen;
 
 import java.util.ArrayList;
 
+import static com.smashprofs.game.Actors.Player.PPM;
+
 public abstract class LeosProjectile extends GameObject {
 
 
@@ -22,6 +24,9 @@ public abstract class LeosProjectile extends GameObject {
     private final World world;
     float stateTime = 0;
     Player originPlayer;
+    private Vector2 projectileSpawnpoint;
+    private double rotation = 0;
+
 
     private Vector2 position;
 
@@ -35,14 +40,14 @@ public abstract class LeosProjectile extends GameObject {
     public Boolean isActive = true;
 
 
-    public LeosProjectile(World world, String userData, Texture projectileTex) {
+    public LeosProjectile(World world, Player originPlayer, String userData, Texture projectileTex) {
         super(world, userData);
 
         sprite.setTexture(projectileTex);
 
         this.userData = userData;
         this.originPlayer = originPlayer;
-        sprite.setBounds(0, 15, 32 / PPM, 32 / PPM);
+        sprite.setBounds(0, 15, 32f / PPM, 32f / PPM);
         this.world = world;
         defineProjectile();
         moveProjectile();
@@ -57,27 +62,23 @@ public abstract class LeosProjectile extends GameObject {
         return position;
     }
 
-    public void updatePosition(float deltatime) {
-        position = b2dbody.getPosition();
-    }
-
     @Override
     public void update(float deltatime) {
         System.out.println(" - - - - - - - LeosProjectile update");
-        updatePosition(deltatime);
-        applyForces(0, 10);
 
         if (deltatime == 0) return;
         if (deltatime > 0.1f) deltatime = 0.1f;
         stateTime += deltatime;
 
-        setAnimationPosition();
 
         if(!b2dbody.isActive()) {
           isActive = false;
         }
 
-        sprite.setRotation(b2dbody.getAngle());
+        sprite.setPosition(b2dbody.getPosition().x - sprite.getWidth() / 2f, b2dbody.getPosition().y - sprite.getHeight() / 2f);
+
+        rotation = b2dbody.getAngle()*2*Math.PI*4;
+        sprite.setRotation((float) rotation);
 
     }
 
@@ -86,10 +87,6 @@ public abstract class LeosProjectile extends GameObject {
         super.draw(batch);
     }
 
-
-    private void setAnimationPosition() {
-        sprite.setPosition(b2dbody.getPosition().x - sprite.getWidth() / 2, b2dbody.getPosition().y - sprite.getHeight() / 4); //set the position of the animation to the center of the body
-    }
 
 
     public float getStartingGravity() {
@@ -110,8 +107,9 @@ public abstract class LeosProjectile extends GameObject {
     //basically our constructor
     private void defineProjectile() {
         bdef = new BodyDef();
-        //bdef.position.set(spawnpoint.x / PPM, spawnpoint.y / PPM);
-        bdef.position.set(10 / PPM, 10 / PPM);
+        projectileSpawnpoint = new Vector2(originPlayer.getPosition().x + originPlayer.getIsFacingRightAxe() * originPlayer.getPlayerCollisionBoxRadius() * 2.1f / PPM, originPlayer.getPosition().y);
+        bdef.position.set(projectileSpawnpoint);
+        //bdef.position.set(10 / PPM, 10 / PPM);
 
         bdef.type = BodyDef.BodyType.DynamicBody;
         bdef.fixedRotation = false;
@@ -125,22 +123,18 @@ public abstract class LeosProjectile extends GameObject {
 
         fDef.shape = shape;
 
+        //filters collisions with other objects:
+        if (true) {
+            fDef.filter.groupIndex = 0;
+        }
+
         b2dbody.createFixture(fDef);
+        sprite.setOrigin(sprite.getWidth()*0.5f, sprite.getHeight()*0.5f);
 
     }
 
     void moveProjectile() {
-
         b2dbody.setLinearVelocity(new Vector2(originPlayer.getIsFacingRightAxe() * 1.2f, 0));
     }
-
-    public void applyForces(float x, float y) {
-
-        //all forces applied to the player should be done with this method
-        forcesCombined = new Vector2(0 + x, gravity + y);
-        getB2dbody().applyLinearImpulse(forcesCombined, getB2dbody().getWorldCenter(), true);
-        forcesCombined.setZero();
-    }
-
 
 }
