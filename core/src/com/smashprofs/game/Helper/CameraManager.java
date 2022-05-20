@@ -10,16 +10,23 @@ public class CameraManager {
 
     private OrthographicCamera  gameCamera = new OrthographicCamera();
 
+    // Für Alex 1
     private static final CameraManager cameraManager_INSTANCE = new CameraManager();
+    // Ende
 
+    // Für Alex 2
     //private constructor to avoid client applications to use constructor
     private CameraManager() {
 
     }
+    // Ende
 
+
+    // Für Alex 3
     public static CameraManager getCameraManager_INSTANCE() {
         return cameraManager_INSTANCE;
     }
+    // ENDE
 
     public void setCamera(Player playerOne, Player playerTwo) {
 
