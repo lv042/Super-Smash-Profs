@@ -18,11 +18,8 @@ import static com.smashprofs.game.Actors.Player.PPM;
 
 public class  Projectile extends Sprite{
     private BodyDef bdef;
-
     public Body b2dbody;
-
     private CameraManager cameraManager = CameraManager.getCameraManager_INSTANCE();
-
     private Player originPlayer;
 
     private Vector2 projectileSpawnpoint;
