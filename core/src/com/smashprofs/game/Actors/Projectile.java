@@ -26,7 +26,7 @@ public class  Projectile extends Sprite{
     private Player originPlayer;
 
     private Vector2 projectileSpawnpoint;
-    private int rotation = 0;
+    private double rotation = 0;
 
     String userData = "JOeMama";
 
@@ -36,7 +36,7 @@ public class  Projectile extends Sprite{
     World world;
 
     public Projectile(World world, Player originPlayer, String userData, OrthographicCamera camera) {
-        super(new Texture(Gdx.files.internal("missile.png")));
+        super(new Texture(Gdx.files.internal("fireball.png")));
 
         this.userData = userData;
         this.world = world;
@@ -49,8 +49,8 @@ public class  Projectile extends Sprite{
 
         //setPosition(12, 12);
 
-        setBounds(0, 0, getWidth(), getHeight());
-        scale(1/PPM);
+        setBounds(0, 0, getWidth()/PPM, getHeight()/PPM);
+        //scale(1/PPM);
 
         create();
 
@@ -97,7 +97,8 @@ public class  Projectile extends Sprite{
 
         b2dbody.createFixture(fDef);
         // !!!!!!!!!!!!!!!!!!!!!!
-        //setOrigin(getTexture().getWidth() / 2, getTexture().getHeight() / 2);
+        //setOrigin(0, 0);
+        setOrigin(getWidth()*0.5f, getHeight()*0.5f);
 
     }
 
@@ -105,10 +106,10 @@ public class  Projectile extends Sprite{
         System.out.println("!!!! projectile update");
         //this.setPosition(b2dbody.getPosition().x - getWidth() / 2, b2dbody.getPosition().y - getHeight() / 2);
 
-        setBounds(b2dbody.getPosition().x - getWidth() / 2/PPM, b2dbody.getPosition().y - getHeight() / 2 /PPM, getTexture().getWidth()/PPM, getTexture().getHeight()/PPM );
+        //setBounds(b2dbody.getPosition().x - getWidth() / 2/PPM, b2dbody.getPosition().y - getHeight() / 2 /PPM, getTexture().getWidth()/PPM, getTexture().getHeight()/PPM );
 
 
-        //setPosition(b2dbody.getPosition().x - getWidth() / 2/PPM, b2dbody.getPosition().y - getHeight() / 2 /PPM);
+        setPosition(b2dbody.getPosition().x - getWidth() / 2f, b2dbody.getPosition().y - getHeight() / 2f);
 
 
         //setRotation(rotation);
@@ -120,9 +121,10 @@ public class  Projectile extends Sprite{
             active = false;
         }
 
-        rotation += 0.8f;
+        //rotation += 0.8f;
         //setPosition(b2dbody.getPosition().x - getWidth() / 2/PPM, b2dbody.getPosition().y - getHeight() / 2 /PPM);
-        //setRotation(rotation);
+        rotation = b2dbody.getAngle()*2*Math.PI*4;
+        setRotation((float) rotation);
 
 
     }
