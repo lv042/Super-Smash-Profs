@@ -12,7 +12,7 @@ public class LeosHomingMissle extends LeosProjectile{
 
 
     public LeosHomingMissle(World world, Player playerOrigin){
-        super(world, "Bullet", new Texture("Fireball2.png"));
+        super(world,playerOrigin, "Bullet", new Texture("Fireball2.png"));
         b2dbody.setFixedRotation(false);
         b2dbody.setAngularVelocity(10);
 
