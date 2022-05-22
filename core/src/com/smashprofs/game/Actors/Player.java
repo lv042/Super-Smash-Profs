@@ -15,7 +15,7 @@ import com.smashprofs.game.Screens.PlayScreen;
 
 import java.util.ArrayList;
 
-public abstract class Player extends Sprite {
+public abstract class Player{
 
 
     public static final float PPM = 100;
@@ -77,8 +77,14 @@ public abstract class Player extends Sprite {
     private boolean facingRight = true;
     private int isFacingRightAxe = 0;
     private boolean touchingGround;
+
+    private Sprite playerSprite = new Sprite();
+
+    public Sprite getPlayerSprite() {
+        return playerSprite;
+    }
+
     public ArrayList<Projectile> projectiles;
-    public ArrayList<LeosProjectile> leosProjectiles;
 
     public Player(World world, InputState inputState, Vector2 spawnpoint, String playerName, String userData, Texture playerStandTex, Texture playerRunTex, Texture playerJumpTex) {
 
@@ -108,10 +114,9 @@ public abstract class Player extends Sprite {
         this.currentState = State.STANDING;
 
         projectiles = new ArrayList<Projectile>();
-        leosProjectiles = new ArrayList<LeosProjectile>();
 
 
-        setBounds(0, 15, 25 / PPM, 25 / PPM);
+        playerSprite.setBounds(0, 15, 25 / PPM, 25 / PPM);
         //this.setRegion(alexStand);
         this.world = world;
         this.currentInputState = inputState;
@@ -209,20 +214,22 @@ public abstract class Player extends Sprite {
 
         }
 
-        System.out.println(leosProjectiles.size());
-        for (LeosProjectile lProj : leosProjectiles) {
+        System.out.println(projectiles.size());
+        for (Projectile lProj : projectiles) {
             lProj.update(deltatime);
         }
 
     }
 
-    @Override
+
+
+
     public void draw(Batch batch) {
-        super.draw(batch);
+        playerSprite.draw(batch);
         for (Projectile projectile : projectiles) {
             if(projectile.isActive()) {
                 projectile.draw(batch);
-                System.out.println("Projectile drawn from ArrayList");
+                //System.out.println("Projectile drawn from ArrayList");
             }
 
         }
@@ -242,11 +249,11 @@ public abstract class Player extends Sprite {
 
 
     private void setAnimationPosition() {
-        this.setPosition(b2dbody.getPosition().x - getWidth() /2, b2dbody.getPosition().y - getHeight() / 4); //set the position of the animation to the center of the body
+        playerSprite.setPosition(b2dbody.getPosition().x - playerSprite.getWidth() /2, b2dbody.getPosition().y - playerSprite.getHeight() / 4); //set the position of the animation to the center of the body
 
 
-        this.setRegion(getRenderTexture(stateTime)); //set the texture to the current state of the movement
-        setFlip(facingRight, false); // lets the player face the correct direction
+        playerSprite.setRegion(getRenderTexture(stateTime)); //set the texture to the current state of the movement
+        playerSprite.setFlip(facingRight, false); // lets the player face the correct direction
     }
 
     private void setAnimationState() {
@@ -531,18 +538,18 @@ public abstract class Player extends Sprite {
         TextureRegion frame = null;
         switch (this.currentState) {
             case STANDING:
-                this.setRegion(playerStand);
+                playerSprite.setRegion(playerStand);
                 frame = stand.getKeyFrame(stateTime);
                 break;
 
             case RUNNING:
 
-                this.setRegion(playerRun);
+                playerSprite.setRegion(playerRun);
                 frame = run.getKeyFrame(stateTime);
                 break;
 
             case JUMPING:
-                this.setRegion(playerJump);
+                playerSprite.setRegion(playerJump);
                 frame = jump.getKeyFrame(stateTime);
                 break;
         }

@@ -46,10 +46,10 @@ public class  Projectile extends Sprite{
 
         //setPosition(12, 12);
 
-        setBounds(0, 0, getWidth()/PPM, getHeight()/PPM);
+        setBounds(originPlayer.getPlayerSprite().getX() / PPM, originPlayer.getPlayerSprite().getY() / PPM, getWidth()/PPM, getHeight()/PPM);
+        create();
         //scale(1/PPM);
 
-        create();
 
         moveProjectile();
 
@@ -100,7 +100,7 @@ public class  Projectile extends Sprite{
     }
 
     public void update(float delta) {
-        System.out.println("!!!! projectile update");
+        //System.out.println("!!!! projectile update");
         //this.setPosition(b2dbody.getPosition().x - getWidth() / 2, b2dbody.getPosition().y - getHeight() / 2);
 
         //setBounds(b2dbody.getPosition().x - getWidth() / 2/PPM, b2dbody.getPosition().y - getHeight() / 2 /PPM, getTexture().getWidth()/PPM, getTexture().getHeight()/PPM );

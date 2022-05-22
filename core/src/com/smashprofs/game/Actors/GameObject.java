@@ -34,7 +34,7 @@ public abstract class GameObject {
 
     }
 
-    // Sprite related methods:
+    // Sprite related methods:dw
     public void draw(Batch batch) {
         sprite.draw(batch);
     }

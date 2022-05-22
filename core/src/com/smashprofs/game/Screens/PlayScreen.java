@@ -2,16 +2,12 @@ package com.smashprofs.game.Screens;
 
 
 import com.badlogic.gdx.graphics.Color;
-import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Matrix4;
-import com.badlogic.gdx.utils.ScreenUtils;
 import com.smashprofs.game.Actors.Alex;
 import com.smashprofs.game.Actors.Luca;
-import com.smashprofs.game.Actors.LeosHomingMissle;
-import com.smashprofs.game.Actors.LeosProjectile;
 import com.smashprofs.game.Game;
 import com.smashprofs.game.Helper.B2dContactListener;
 import com.smashprofs.game.Helper.CameraManager;
