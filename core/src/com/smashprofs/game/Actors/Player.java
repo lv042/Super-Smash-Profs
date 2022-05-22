@@ -15,7 +15,7 @@ import com.smashprofs.game.Screens.PlayScreen;
 
 import java.util.ArrayList;
 
-public abstract class Player{
+public abstract class Player extends GameObject{
 
 
     public static final float PPM = 100;
@@ -62,7 +62,7 @@ public abstract class Player{
     private int jumpCount = 0;
     private BodyDef bdef;
     private final Vector2 spawnpoint;
-    private Body b2dbody;
+
     private final float maxVelocity = 1.6f;
     private boolean isExtraJumpReady;
     private final float jumpForce = 2.5f;
@@ -78,7 +78,7 @@ public abstract class Player{
     private int isFacingRightAxe = 0;
     private boolean touchingGround;
 
-    private Sprite playerSprite = new Sprite();
+    private Sprite playerSprite = sprite; //Sprite of the GameObject
 
     public Sprite getPlayerSprite() {
         return playerSprite;
@@ -87,6 +87,7 @@ public abstract class Player{
     public ArrayList<Projectile> projectiles;
 
     public Player(World world, InputState inputState, Vector2 spawnpoint, String playerName, String userData, Texture playerStandTex, Texture playerRunTex, Texture playerJumpTex) {
+        super(world, userData);
 
 
         this.userData = userData;
