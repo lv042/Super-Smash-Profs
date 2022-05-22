@@ -9,9 +9,7 @@ import com.badlogic.gdx.math.Matrix4;
 import com.smashprofs.game.Actors.Alex;
 import com.smashprofs.game.Actors.Luca;
 import com.smashprofs.game.Game;
-import com.smashprofs.game.Helper.B2dContactListener;
-import com.smashprofs.game.Helper.CameraManager;
-import com.smashprofs.game.Helper.CombatManager;
+import com.smashprofs.game.Helper.*;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.Screen;
@@ -26,7 +24,6 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.*;
 import com.badlogic.gdx.utils.viewport.FillViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
-import com.smashprofs.game.Helper.SoundManager;
 import com.smashprofs.game.Actors.Player;
 import com.smashprofs.game.Scenes.Hud;
 
@@ -48,9 +45,7 @@ public class PlayScreen implements Screen {
 
     private SoundManager soundManager = SoundManager.getSoundManager_INSTANCE();
 
-    private Vector2 playerOneSpawnPoint = new Vector2(90, 90);
 
-    private Vector2 playerTwoSpawnPoint = new Vector2(110, 90);
 
     private OrthographicCamera gamecamera;
     public static Viewport viewport; // Manages a Camera and determines how world coordinates are mapped to and from the screen.
@@ -70,8 +65,10 @@ public class PlayScreen implements Screen {
     public SpriteBatch batch;
 
     //Box2D
-    private static World world;
+    public static World world;
     private Box2DDebugRenderer box2DDebugRenderer; //renders outline of box2d bodies
+
+    private PlayerFactory playerFactory = null;
 
 
     public void checkInput(float deltatime){
@@ -138,6 +135,8 @@ public class PlayScreen implements Screen {
 
     public PlayScreen(Game game) {
 
+        playerFactory = PlayerFactory.getPlayerFactory_INSTANCE();
+        playerFactory.resetFactory();
 
         soundManager.setupMusic(gameSong);
         this.combatManager = CombatManager.getCombatManager_INSTANCE();
@@ -178,14 +177,15 @@ public class PlayScreen implements Screen {
         }
 
         //playerOne = new Player(world, Player.InputState.WASD, playerOneSpawnPoint, "Alex Boss", "PlayerOne");
-        playerOne  = new Alex(world, Player.InputState.WASD, playerOneSpawnPoint, "Alex Boss", "PlayerOne");
+        playerOne = playerFactory.getPlayer(PlayerTypes.Alex);
         //playerTwo = new Player(world, Player.InputState.ARROWS, playerTwoSpawnPoint, "Jens Huhn", "PlayerTwo");
-        playerTwo = new Luca(world, Player.InputState.ARROWS, playerTwoSpawnPoint, "Luca Kanne", "PlayerTwo");
-
+        playerTwo = playerFactory.getPlayer(PlayerTypes.Luca);
 
         contactListener = B2dContactListener.getContactListener_INSTANCE();
         world.setContactListener(contactListener);
 
+        System.out.println("playerOne: " + playerOne);
+        System.out.println("playerTwo: " + playerTwo);
         hud = new Hud(game.batch, playerOne, playerTwo);
 
 

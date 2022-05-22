@@ -1,10 +1,25 @@
 package com.smashprofs.game.Helper;
 
+import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.physics.box2d.World;
 import com.smashprofs.game.Actors.Alex;
 import com.smashprofs.game.Actors.Luca;
 import com.smashprofs.game.Actors.Player;
+import com.smashprofs.game.Screens.PlayScreen;
+import static com.smashprofs.game.Screens.PlayScreen.world;
 
 public class PlayerFactory {
+
+    private Vector2 playerOneSpawnPoint = new Vector2(90, 90);
+
+    private Vector2 playerTwoSpawnPoint = new Vector2(110, 90);
+
+    private Vector2 currentSpawnPoint = null;
+
+    private Player.InputState currentInputState = null;
+
+    private String userData = null;
 
     static final PlayerFactory PlayerFactory_INSTANCE = new PlayerFactory();
 
@@ -19,16 +34,35 @@ public class PlayerFactory {
 
     }
 
+    public void resetFactory() {
+        playersCreated = 0;
+    }
+
     public Player getPlayer  (PlayerTypes player){
+
+        if(playersCreated == 0){
+            currentSpawnPoint = playerOneSpawnPoint;
+            currentInputState = Player.InputState.WASD;
+            userData = "PlayerOne";
+
+        }
+        else if(playersCreated == 1){
+            currentSpawnPoint = playerTwoSpawnPoint;
+            currentInputState = Player.InputState.ARROWS;
+            userData = "PlayerTwo";
+        }
+
 
         switch (player){
             case Luca:
-
                 playersCreated++;
-                //return new Luca();
+                System.out.println("Created LucaPlayer");
+                return new Luca(PlayScreen.getWorld(), currentInputState, currentSpawnPoint, "Luca Kanne", userData);
+
             case Alex:
                 playersCreated++;
-                //return new Alex();
+                System.out.println("Created AlexPlayer");
+                return new Alex(PlayScreen.getWorld(), currentInputState, currentSpawnPoint, "Alex Boss", userData);
 //            case Leo:
 //                return new Leo(3);
 //            case Maurice:
