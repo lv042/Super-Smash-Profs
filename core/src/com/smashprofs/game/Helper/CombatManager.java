@@ -32,7 +32,7 @@ public class CombatManager {
         return combatManager_INSTANCE;
     }
 
-    public void update(float deltatime, Player playerOne, Player playerTwo, World world) throws IOException {
+    public void update(float deltatime, Player playerOne, Player playerTwo, World world)  {
         distanceBetweenPlayers = new Vector2(Math.abs(playerOne.getPosition().x - playerTwo.getPosition().x), Math.abs(playerOne.getPosition().y - playerTwo.getPosition().y));
         distanceBetweenPlayersLength = distanceBetweenPlayers.len();
         //System.out.println(distanceBetweenPlayersLength);
