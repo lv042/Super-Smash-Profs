@@ -4,14 +4,13 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.*;
-import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.*;
-import com.smashprofs.game.Helper.B2dContactListener;
-import com.smashprofs.game.Helper.CameraManager;
-import com.smashprofs.game.Helper.SoundManager;
-import com.smashprofs.game.Helper.Util;
+import com.badlogic.gdx.utils.Array;
+import com.smashprofs.game.Helper.*;
 import com.smashprofs.game.Screens.PlayScreen;
+import com.badlogic.gdx.controllers.Controllers;
+import com.badlogic.gdx.controllers.Controller;
 
 import java.util.ArrayList;
 
@@ -85,6 +84,8 @@ public abstract class Player extends GameObject{
     }
 
     public ArrayList<Projectile> projectiles;
+
+    public ArrayList<Controller> controllers;
 
     public Player(World world, InputState inputState, Vector2 spawnpoint, String playerName, String userData, Texture playerStandTex, Texture playerRunTex, Texture playerJumpTex) {
         super(world, userData);
@@ -163,7 +164,7 @@ public abstract class Player extends GameObject{
     }
 
     public void update(float deltatime) {
-        System.out.println("Player update");
+        //System.out.println("Player update");
         updatePosition(deltatime);
         touchingTiles();
         checkGrounded();
@@ -182,7 +183,7 @@ public abstract class Player extends GameObject{
         setAnimationState();
         setAnimationPosition();
 
-        System.out.println(projectiles.size());
+        //System.out.println(projectiles.size());
         for (Projectile projectile : projectiles) {
             projectile.update(deltatime);
             // -> Geht irgendwie nicht. Wählt nicht den richtigen Body aus.
@@ -215,7 +216,7 @@ public abstract class Player extends GameObject{
 
         }
 
-        System.out.println(projectiles.size());
+        //System.out.println(projectiles.size());
         for (Projectile lProj : projectiles) {
             lProj.update(deltatime);
         }
@@ -444,21 +445,42 @@ public abstract class Player extends GameObject{
     public void managePlayerInput(float dt) {
 
 
-        int upDownInput = 0;
-        int leftRightInput = 0;
+
+        Array<Controller> controllers2 = Controllers.getControllers();
+
+
+        float upDownInput = 0;
+        float leftRightInput = 0;
         boolean jumpInput = false;
         isBlocking = false;
         boolean stompInput = false;
 
 
         if (currentInputState == InputState.WASD) {
-            leftRightInput = Util.adAxis();
-            upDownInput = Util.wsAxis();
-            jumpInput = Gdx.input.isKeyJustPressed(Input.Keys.W);
-            standardAttackInput = Gdx.input.isKeyJustPressed(Input.Keys.V) || Gdx.input.isKeyJustPressed(Input.Keys.SPACE);
+
+            Controller p1Controller = controllers2.get(0);
+
+//            leftRightInput = Util.adAxis();
+//            upDownInput = Util.wsAxis();
+//            jumpInput = Gdx.input.isKeyJustPressed(Input.Keys.W);
+//            standardAttackInput = Gdx.input.isKeyJustPressed(Input.Keys.V) || Gdx.input.isKeyJustPressed(Input.Keys.SPACE);
+//            isBlocking = Gdx.input.isKeyPressed(Input.Keys.CONTROL_LEFT);
+//            stompInput = Gdx.input.isKeyJustPressed(Input.Keys.S);
+//            isShooting = Gdx.input.isKeyJustPressed(Input.Keys.F);
+
+            if(Math.abs(p1Controller.getAxis(Xbox360Pad.AXIS_LEFT_Y)) > Xbox360Pad.CONTROLLER_DEADZONE) {
+                leftRightInput = p1Controller.getAxis(Xbox360Pad.AXIS_LEFT_Y);
+            }
+            upDownInput = p1Controller.getAxis(Xbox360Pad.AXIS_RIGHT_X);
+            jumpInput = p1Controller.getButton(Xbox360Pad.BUTTON_A);
+            standardAttackInput = p1Controller.getButton(Xbox360Pad.BUTTON_B);
             isBlocking = Gdx.input.isKeyPressed(Input.Keys.CONTROL_LEFT);
-            stompInput = Gdx.input.isKeyJustPressed(Input.Keys.S);
-            isShooting = Gdx.input.isKeyJustPressed(Input.Keys.F);
+            stompInput = p1Controller.getButton(Xbox360Pad.BUTTON_Y);
+
+            //TODO: Rate limiter needed here!! Otherwise, a lot of projectiles will spawn at once!
+            isShooting = p1Controller.getButton(Xbox360Pad.BUTTON_X);
+
+            //System.out.println(p1Controller.getAxis(Xbox360Pad.AXIS_LEFT_X));
 
         }
         if (currentInputState == InputState.ARROWS) {
