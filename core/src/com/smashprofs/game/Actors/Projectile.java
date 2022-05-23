@@ -33,7 +33,7 @@ public class  Projectile extends Sprite{
     World world;
 
     public Projectile(World world, Player originPlayer, String userData, OrthographicCamera camera) {
-        super(new Texture(Gdx.files.internal("fireball.png")));
+        super(new Texture(Gdx.files.internal("star.png")));
 
         this.userData = userData;
         this.world = world;
@@ -49,6 +49,7 @@ public class  Projectile extends Sprite{
         setBounds(originPlayer.getPlayerSprite().getX() / PPM, originPlayer.getPlayerSprite().getY() / PPM, getWidth()/PPM, getHeight()/PPM);
         create();
         //scale(1/PPM);
+
 
 
         moveProjectile();
@@ -100,7 +101,7 @@ public class  Projectile extends Sprite{
     }
 
     public void update(float delta) {
-        //System.out.println("!!!! projectile update");
+        System.out.println("!!!! projectile update");
         //this.setPosition(b2dbody.getPosition().x - getWidth() / 2, b2dbody.getPosition().y - getHeight() / 2);
 
         //setBounds(b2dbody.getPosition().x - getWidth() / 2/PPM, b2dbody.getPosition().y - getHeight() / 2 /PPM, getTexture().getWidth()/PPM, getTexture().getHeight()/PPM );
@@ -120,7 +121,7 @@ public class  Projectile extends Sprite{
 
         //rotation += 0.8f;
         //setPosition(b2dbody.getPosition().x - getWidth() / 2/PPM, b2dbody.getPosition().y - getHeight() / 2 /PPM);
-        rotation = b2dbody.getAngle()*2*Math.PI*4;
+        rotation = -2.25*(b2dbody.getAngle()*2*Math.PI*4);
         setRotation((float) rotation);
 
 
@@ -130,7 +131,7 @@ public class  Projectile extends Sprite{
     public void draw(Batch batch) {
 
 
-        System.out.println("projectile draw");
+        //System.out.println("projectile draw");
         super.draw(batch);
     }
 
