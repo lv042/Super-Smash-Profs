@@ -494,7 +494,8 @@ public abstract class Player extends GameObject{
             jumpCount++;
 
 
-            getB2dbody().applyLinearImpulse(new Vector2(0, getJumpForce()), getB2dbody().getWorldCenter(), true);
+            getB2dbody().applyLinearImpulse(new Vector2(0, getB2dbody().getLinearVelocity().y*(-0.8f) + getJumpForce()), getB2dbody().getWorldCenter(), true);
+
 
             //System.out.println("Jumping");
             isExtraJumpReady = true;
