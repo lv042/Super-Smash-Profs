@@ -1,6 +1,8 @@
 package com.smashprofs.game.Screens;
 
 
+import com.badlogic.gdx.controllers.Controller;
+import com.badlogic.gdx.controllers.Controllers;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
@@ -85,7 +87,7 @@ public class PlayScreen implements Screen {
 
 
 
-    public void update(float deltatime) throws IOException {
+    public void update(float deltatime) {
 
         tiledMapRenderer.setView(gamecamera);
 
@@ -189,6 +191,10 @@ public class PlayScreen implements Screen {
         hud = new Hud(game.batch, playerOne, playerTwo);
 
 
+        for (Controller controller : Controllers.getControllers()) {
+            Gdx.app.log(controller.getUniqueId(), controller.getName());
+        }
+
     }
 
 
@@ -207,16 +213,13 @@ public class PlayScreen implements Screen {
         Gdx.gl.glClearColor(0, 0, 0, 1); //-> light blue
         //Gdx.gl.glClearColor(1, 1, 1, 1);
 
-        //tiledMapRenderer.render();
+        tiledMapRenderer.render();
 
-        try {
-            update(delta);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        update(delta);
+
 
         //render our tiledmap debug outlines to screen
-        box2DDebugRenderer.render(world, gamecamera.combined);
+        //box2DDebugRenderer.render(world, gamecamera.combined);
 
         //batch.setProjectionMatrix(cameraManager.getGameCamera().combined);
         batch.setProjectionMatrix(gamecamera.combined);
