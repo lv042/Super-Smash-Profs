@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.8" tiledversion="1.8.2" orientation="orthogonal" renderorder="right-down" width="55" height="28" tilewidth="8" tileheight="8" infinite="0" nextlayerid="9" nextobjectid="56">
+<map version="1.8" tiledversion="1.8.5" orientation="orthogonal" renderorder="right-down" width="55" height="28" tilewidth="8" tileheight="8" infinite="0" nextlayerid="9" nextobjectid="56">
  <tileset firstgid="1" source="../F1_light_blue_flag.svg.tsx"/>
  <tileset firstgid="12289" source="../Peaceful Nightfield.tsx"/>
  <tileset firstgid="12496" source="../clouds.tsx"/>
@@ -103,32 +103,29 @@
  </layer>
  <objectgroup id="5" name="Objektebene 1">
   <object id="13" x="152" y="208" width="128" height="16.25"/>
-  <object id="17" x="112.091" y="143.909" width="47.8182" height="32.1818"/>
-  <object id="18" x="80" y="151.818" width="32.0909" height="24.2727"/>
-  <object id="19" x="15.9091" y="167.818" width="32.0909" height="24.2727"/>
-  <object id="20" x="208" y="103.875" width="39.9375" height="16.1875"/>
-  <object id="21" x="264" y="104" width="40.0625" height="24.125"/>
+  <object id="17" x="111.997" y="144.003" width="47.9823" height="32.0881"/>
+  <object id="18" x="80.0234" y="152.006" width="32.3175" height="23.9993"/>
+  <object id="19" x="15.9869" y="167.951" width="32.0131" height="24.1394"/>
+  <object id="20" x="208.144" y="104.012" width="39.797" height="15.9188"/>
+  <object id="21" x="263.895" y="104.008" width="40.168" height="24.1172"/>
   <object id="29" x="224" y="32" width="96" height="16.1818"/>
-  <object id="30" x="376.091" y="56.0909">
-   <polygon points="0,0 24,0 24,7.81818 32,7.81818 32,24 23.9091,23.9091 23.9091,47.8182 31.9091,47.9091 31.9091,64.1818 23.8182,63.8182 23.9091,71.7273 7.81818,71.8182 7.81818,64 -0.181818,64 -0.0909091,43 -16.0909,42.8182 -16.0909,39.8182 -0.181818,39.8182"/>
-  </object>
   <object id="31" x="415.909" y="143.909" width="24.1818" height="16.1818"/>
-  <object id="33" x="247.957" y="103.957" width="16.0435" height="3.13043"/>
+  <object id="33" x="246.503" y="104.012" width="18.3028" height="2.97809"/>
   <object id="35" x="345" y="199.333" width="0.333333"/>
   <object id="41" x="344.063" y="175.938" width="48" height="32.0625"/>
-  <object id="42" x="360" y="208" width="32.0625" height="8.0625"/>
-  <object id="43" x="328" y="192" width="16" height="16"/>
-  <object id="44" x="320" y="199.938" width="8" height="3.125"/>
+  <object id="42" x="360" y="198.217" width="32.0625" height="17.8451"/>
+  <object id="43" x="328" y="192" width="16.8889" height="16"/>
+  <object id="44" x="320" y="199.938" width="8.86667" height="3.125"/>
   <object id="45" x="376" y="56" width="24" height="64"/>
   <object id="46" x="400" y="63.75" width="8.25" height="16.375"/>
-  <object id="47" x="400.25" y="103.875" width="7.75" height="16.25"/>
-  <object id="48" x="383.875" y="120.25" width="16.125" height="7.75"/>
-  <object id="49" x="360" y="95.875" width="15.875" height="3"/>
-  <object id="50" x="103.909" y="24.0909" width="16.1818" height="47.7273"/>
-  <object id="51" x="87.9091" y="39.9091" width="16" height="48.0909"/>
-  <object id="52" x="72" y="56.0909" width="16" height="31.9091"/>
-  <object id="53" x="56.0909" y="71.9091" width="24" height="24.2727"/>
-  <object id="54" x="0" y="111.909" width="16.0909" height="24.2727"/>
-  <object id="55" x="160" y="167.75" width="16" height="3.125"/>
+  <object id="47" x="399.506" y="103.964" width="8.49444" height="16.1611"/>
+  <object id="48" x="383.875" y="119.517" width="16.125" height="8.48333"/>
+  <object id="49" x="360" y="95.9861" width="16.8528" height="2.98889"/>
+  <object id="50" x="104.018" y="23.9965" width="16.0724" height="47.8217"/>
+  <object id="51" x="87.9091" y="39.9716" width="16.4219" height="48.0284"/>
+  <object id="52" x="72" y="55.9659" width="16" height="32.0341"/>
+  <object id="53" x="56.002" y="72.0202" width="24.0889" height="23.9171"/>
+  <object id="54" x="0" y="112.009" width="15.9798" height="24.0171"/>
+  <object id="55" x="159.724" y="167.997" width="16.2782" height="2.99044"/>
  </objectgroup>
 </map>
