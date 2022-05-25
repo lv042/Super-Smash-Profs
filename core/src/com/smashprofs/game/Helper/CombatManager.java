@@ -77,7 +77,7 @@ public class CombatManager {
         }
         if(playerOne.isShooting()){
             System.out.println("Bullet spawned ");
-            HomingMissle bullet = new HomingMissle(world, playerOne, CameraManager.getCameraManager_INSTANCE().getGameCamera(), playerTwo);
+            HomingMissle bullet = new HomingMissle(world, playerOne, playerTwo);
             //projectilesList.add(bullet);
             playerOne.shoot(bullet);
             //System.out.println("origin : " + playerOne);
@@ -86,7 +86,7 @@ public class CombatManager {
         }
         if(playerTwo.isShooting()){
             System.out.println("Bullet spawned");
-            HomingMissle bullet = new HomingMissle(world, playerTwo, CameraManager.getCameraManager_INSTANCE().getGameCamera(), playerOne);
+            HomingMissle bullet = new HomingMissle(world, playerTwo, playerOne);
             //projectilesList.add(bullet);
             playerTwo.shoot(bullet);
         }
