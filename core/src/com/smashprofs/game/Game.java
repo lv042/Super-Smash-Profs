@@ -24,7 +24,6 @@ public class Game extends com.badlogic.gdx.Game {
 
 		PropertiesReader propReader = new PropertiesReader();
 		String  result = propReader.readProperties();
-		System.out.println("This is what i read : " + result);
 
 		setScreen(new IntroScreen(this));
 
