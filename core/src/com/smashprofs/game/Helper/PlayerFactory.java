@@ -7,13 +7,15 @@ import com.smashprofs.game.Actors.Alex;
 import com.smashprofs.game.Actors.Luca;
 import com.smashprofs.game.Actors.Player;
 import com.smashprofs.game.Screens.PlayScreen;
+
+import static com.smashprofs.game.Actors.Player.PPM;
 import static com.smashprofs.game.Screens.PlayScreen.world;
 
 public class PlayerFactory {
 
-    private Vector2 playerOneSpawnPoint = new Vector2(90, 90);
+    private Vector2 playerOneSpawnPoint = new Vector2(3.4f * PPM, 0.85f * PPM);
 
-    private Vector2 playerTwoSpawnPoint = new Vector2(110, 90);
+    private Vector2 playerTwoSpawnPoint = new Vector2( 5.522669f * PPM,0.53562f * PPM);
 
     private Vector2 currentSpawnPoint = null;
 
