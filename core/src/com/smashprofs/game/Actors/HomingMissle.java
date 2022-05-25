@@ -24,8 +24,8 @@ public class HomingMissle extends Projectile{
     public void update(float delta){
         super.update(delta);
         System.out.println("target: " + targetPlayer);
-        Vector2 tartgetPlayPos = targetPlayer.getPosition();
-        Vector2 targetVector = new Vector2(tartgetPlayPos.x - b2dbody.getPosition().x, tartgetPlayPos.y - b2dbody.getPosition().y);
+        Vector2 targetPlayPos = targetPlayer.getPosition();
+        Vector2 targetVector = new Vector2(targetPlayPos.x - b2dbody.getPosition().x, targetPlayPos.y - b2dbody.getPosition().y);
         b2dbody.setLinearVelocity(targetVector.nor().scl(0.4f));
     }
 }
