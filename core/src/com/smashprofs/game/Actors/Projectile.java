@@ -32,11 +32,10 @@ public abstract class  Projectile extends GameObject{
     public Boolean active = true;
     World world;
 
-    public Projectile(World world, Player originPlayer, String userData) {
+    public Projectile(World world, Player originPlayer, String userData, Texture projectileTexture) {
         super(world, userData);
         //super(new Texture(Gdx.files.internal("star.png")));
-        sprite.setRegion(new Texture(Gdx.files.internal("star.png")));
-
+        sprite.setRegion(projectileTexture);
         this.userData = userData;
         this.world = world;
         this.originPlayer = originPlayer;
@@ -131,24 +130,10 @@ public abstract class  Projectile extends GameObject{
 
     @Override
     public void draw(Batch batch) {
-
-
         //System.out.println("projectile draw");
-        super.draw(batch);
+        sprite.draw(batch);
     }
 
-
-    public static void DrawDebugLine(Vector2 start, Vector2 end, Matrix4 projectionMatrix)
-    {
-        Gdx.gl.glLineWidth(2);
-        ShapeRenderer debugRenderer = new ShapeRenderer();
-        debugRenderer.setProjectionMatrix(projectionMatrix);
-        debugRenderer.begin(ShapeRenderer.ShapeType.Line);
-        debugRenderer.setColor(Color.WHITE);
-        debugRenderer.line(start, end);
-        debugRenderer.end();
-        Gdx.gl.glLineWidth(1);
-    }
 
     public Boolean isActive() {
         return active;
