@@ -16,7 +16,7 @@ import com.smashprofs.game.Helper.CameraManager;
 
 import static com.smashprofs.game.Actors.Player.PPM;
 
-public class  Projectile extends Sprite{
+public abstract class  Projectile extends GameObject{
     private BodyDef bdef;
     public Body b2dbody;
     private CameraManager cameraManager = CameraManager.getCameraManager_INSTANCE();
@@ -32,8 +32,10 @@ public class  Projectile extends Sprite{
     public Boolean active = true;
     World world;
 
-    public Projectile(World world, Player originPlayer, String userData, OrthographicCamera camera) {
-        super(new Texture(Gdx.files.internal("star.png")));
+    public Projectile(World world, Player originPlayer, String userData) {
+        super(world, userData);
+        //super(new Texture(Gdx.files.internal("star.png")));
+        sprite.setRegion(new Texture(Gdx.files.internal("star.png")));
 
         this.userData = userData;
         this.world = world;
@@ -46,7 +48,7 @@ public class  Projectile extends Sprite{
 
         //setPosition(12, 12);
 
-        setBounds(originPlayer.getPlayerSprite().getX() / PPM, originPlayer.getPlayerSprite().getY() / PPM, getWidth()/PPM, getHeight()/PPM);
+        sprite.setBounds(originPlayer.getPlayerSprite().getX() / PPM, originPlayer.getPlayerSprite().getY() / PPM, sprite.getWidth()/PPM, sprite.getHeight()/PPM);
         create();
         //scale(1/PPM);
 
@@ -96,7 +98,7 @@ public class  Projectile extends Sprite{
         b2dbody.createFixture(fDef);
         // !!!!!!!!!!!!!!!!!!!!!!
         //setOrigin(0, 0);
-        setOrigin(getWidth()*0.5f, getHeight()*0.5f);
+        sprite.setOrigin(sprite.getWidth()*0.5f, sprite.getHeight()*0.5f);
 
     }
 
@@ -107,7 +109,7 @@ public class  Projectile extends Sprite{
         //setBounds(b2dbody.getPosition().x - getWidth() / 2/PPM, b2dbody.getPosition().y - getHeight() / 2 /PPM, getTexture().getWidth()/PPM, getTexture().getHeight()/PPM );
 
 
-        setPosition(b2dbody.getPosition().x - getWidth() / 2f, b2dbody.getPosition().y - getHeight() / 2f);
+        sprite.setPosition(b2dbody.getPosition().x - sprite.getWidth() / 2f, b2dbody.getPosition().y - sprite.getHeight() / 2f);
 
 
         //setRotation(rotation);
@@ -122,7 +124,7 @@ public class  Projectile extends Sprite{
         //rotation += 0.8f;
         //setPosition(b2dbody.getPosition().x - getWidth() / 2/PPM, b2dbody.getPosition().y - getHeight() / 2 /PPM);
         rotation = -2.25*(b2dbody.getAngle()*2*Math.PI*4);
-        setRotation((float) rotation);
+        sprite.setRotation((float) rotation);
 
 
     }
@@ -153,7 +155,7 @@ public class  Projectile extends Sprite{
     }
 
     public Sprite getSprite() {
-        return this;
+        return this.sprite;
     }
 
     public Body getBody() {
