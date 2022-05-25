@@ -2,6 +2,7 @@ package com.smashprofs.game;
 
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.smashprofs.game.Helper.PropertiesReader;
 import com.smashprofs.game.Screens.IntroScreen;
 import com.smashprofs.game.Screens.MainMenuScreen;
 import jdk.tools.jmod.Main;
@@ -20,6 +21,11 @@ public class Game extends com.badlogic.gdx.Game {
 
 		batch = new SpriteBatch();
 		//setScreen(new MainMenuScreen(this));
+
+		PropertiesReader propReader = new PropertiesReader();
+		String  result = propReader.readProperties();
+		System.out.println("This is what i read : " + result);
+
 		setScreen(new IntroScreen(this));
 
 		//setScreen(new PlayScreen(this)); // passes game to set screen on its own -> now started by intro screen
