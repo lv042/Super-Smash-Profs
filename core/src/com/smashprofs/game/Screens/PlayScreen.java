@@ -222,7 +222,7 @@ public class PlayScreen implements Screen {
 
 
         //render our tiledmap debug outlines to screen
-        //box2DDebugRenderer.render(world, gamecamera.combined);
+        box2DDebugRenderer.render(world, gamecamera.combined);
 
         //batch.setProjectionMatrix(cameraManager.getGameCamera().combined);
         batch.setProjectionMatrix(gamecamera.combined);
