@@ -184,7 +184,6 @@ public abstract class Player extends GameObject {
             // Geht aber mit:
             Body projectileBody = projectile.getBody();
             Sprite projectileSprite = projectile.getSprite();
-            Texture projectileTexture = projectile.getTexture();
 
             // setBounds funktioniert, der Rest nicht.
 
@@ -689,14 +688,15 @@ public abstract class Player extends GameObject {
         //sets player velocity to 0 if they are at the edge of the map
         float pushBack = 1f;
 
+        System.out.println(getB2dbody().getPosition());
+        if (getB2dbody().getPosition().x  > 7.5) {
 
-        if (getB2dbody().getPosition().x > PlayScreen.getViewport().getWorldWidth()) {
             getB2dbody().setLinearVelocity(new Vector2(-pushBack, getB2dbody().getLinearVelocity().y + 0.1f));
-            //lower gravity for some seconds :)
+            //lower gravity for some seconds :)g
             setGravity(startingGravity * 0.3f);
             return;
         }
-        if (getB2dbody().getPosition().x < 0) {
+        if (getB2dbody().getPosition().x < 1) {
             getB2dbody().setLinearVelocity(new Vector2(pushBack, getB2dbody().getLinearVelocity().y + 0.1f));
             //lower gravity for some seconds :)
             setGravity(startingGravity * 0.3f);
