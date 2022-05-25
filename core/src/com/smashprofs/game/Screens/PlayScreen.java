@@ -7,6 +7,7 @@ import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
+import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
 import com.badlogic.gdx.math.Matrix4;
 import com.smashprofs.game.Actors.Alex;
 import com.smashprofs.game.Actors.Luca;
@@ -35,41 +36,42 @@ import static com.smashprofs.game.Actors.Player.PPM;
 
 public class PlayScreen implements Screen {
 
-    private final B2dContactListener contactListener;
-
-    public static ShapeRenderer debugRenderer = new ShapeRenderer();
-
-    private String gameSong = "music/beste music ever.wav";
-
     private Game game;
-
-    private float jumpForce = 3f;
-
-    private SoundManager soundManager = SoundManager.getSoundManager_INSTANCE();
-
-
-
-    private OrthographicCamera gamecamera;
     public static Viewport viewport; // Manages a Camera and determines how world coordinates are mapped to and from the screen.
     private Hud hud;
 
+
+    //tiled map
+    public static ShapeRenderer debugRenderer = new ShapeRenderer();
     private TmxMapLoader mapLoader;
     private TiledMap map;
-    private OrthoCachedTiledMapRenderer tiledMapRenderer;
+    private OrthogonalTiledMapRenderer tiledMapRenderer;
     private Player playerOne;
     private Player playerTwo;
 
+
+    //managers
+    private final B2dContactListener contactListener;
+    private SoundManager soundManager = SoundManager.getSoundManager_INSTANCE();
+
+    private String gameSong = "music/beste music ever.wav";
     private CombatManager combatManager;
 
     private CameraManager cameraManager = CameraManager.getCameraManager_INSTANCE();
 
+    private OrthographicCamera gamecamera; //set by camera manager
 
+    //batch and game world
     public SpriteBatch batch;
 
     //Box2D
     public static World world;
+
+    //debug
     private Box2DDebugRenderer box2DDebugRenderer; //renders outline of box2d bodies
 
+
+    //factories
     private PlayerFactory playerFactory = null;
 
 
@@ -150,33 +152,7 @@ public class PlayScreen implements Screen {
         //Screen Viewport is a Viewport that show as much of the world as possible on the screen -> makes the the world you see depend on the size of the window.
         //FitViewport is a Viewport that maintains the aspect ratio of the world and fills the window. -> Probalby the best option.
 
-        mapLoader = new TmxMapLoader();
-        map = mapLoader.load("1/Map1New2.tmx");
-        tiledMapRenderer = new OrthoCachedTiledMapRenderer(map, 1 / PPM);
-        tiledMapRenderer.setBlending(true);
-
-        this.batch = new SpriteBatch();
-
-        world = new World(new Vector2(0, 0), true); //y value -> gravity -> now handled by the player class
-        box2DDebugRenderer = new Box2DDebugRenderer();
-
-
-        //define body
-        BodyDef bdef = new BodyDef();
-        PolygonShape shape = new PolygonShape();
-        FixtureDef fdef = new FixtureDef();
-        Body body;
-
-        for(MapObject object : map.getLayers().get(3).getObjects().getByType(RectangleMapObject.class)){
-            Rectangle rect = ((RectangleMapObject) object).getRectangle();
-            bdef.type = BodyDef.BodyType.StaticBody;
-            bdef.position.set((rect.getX() + rect.getWidth() / 2 ) / PPM, (rect.getY() + rect.getHeight() / 2 ) / PPM);
-            body = world.createBody(bdef);
-            body.setUserData("Tile");
-            shape.setAsBox(rect.getWidth() / 2 / PPM, rect.getHeight() / 2 / PPM);
-            fdef.shape = shape;
-            body.createFixture(fdef);
-        }
+        createTileMap();
 
         //playerOne = new Player(world, Player.InputState.WASD, playerOneSpawnPoint, "Alex Boss", "PlayerOne");
         playerOne = playerFactory.getPlayer(PlayerTypes.Alex);
@@ -197,8 +173,35 @@ public class PlayScreen implements Screen {
 
     }
 
+    private void createTileMap() {
+        mapLoader = new TmxMapLoader();
+        map = mapLoader.load("1/Map1New2.tmx");
+        tiledMapRenderer = new OrthogonalTiledMapRenderer(map, 1 / PPM);
+        //tiledMapRenderer.setBlending(true);
+
+        this.batch = new SpriteBatch();
+
+        world = new World(new Vector2(0, 0), true); //y value -> gravity -> now handled by the player class
+        box2DDebugRenderer = new Box2DDebugRenderer();
 
 
+        //define body
+        BodyDef bdef = new BodyDef();
+        PolygonShape shape = new PolygonShape();
+        FixtureDef fdef = new FixtureDef();
+        Body body;
+
+        for(MapObject object : map.getLayers().get("obj").getObjects().getByType(RectangleMapObject.class)){
+            Rectangle rect = ((RectangleMapObject) object).getRectangle();
+            bdef.type = BodyDef.BodyType.StaticBody;
+            bdef.position.set((rect.getX() + rect.getWidth() / 2 ) / PPM, (rect.getY() + rect.getHeight() / 2 ) / PPM);
+            body = world.createBody(bdef);
+            body.setUserData("Tile");
+            shape.setAsBox(rect.getWidth() / 2 / PPM, rect.getHeight() / 2 / PPM);
+            fdef.shape = shape;
+            body.createFixture(fdef);
+        }
+    }
 
 
     @Override
