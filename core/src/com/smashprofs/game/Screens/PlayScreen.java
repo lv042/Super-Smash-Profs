@@ -7,6 +7,7 @@ import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
+import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
 import com.badlogic.gdx.math.Matrix4;
 import com.smashprofs.game.Actors.Alex;
 import com.smashprofs.game.Actors.Luca;
@@ -35,41 +36,42 @@ import static com.smashprofs.game.Actors.Player.PPM;
 
 public class PlayScreen implements Screen {
 
-    private final B2dContactListener contactListener;
-
-    public static ShapeRenderer debugRenderer = new ShapeRenderer();
-
-    private String gameSong = "music/beste music ever.wav";
-
     private Game game;
-
-    private float jumpForce = 3f;
-
-    private SoundManager soundManager = SoundManager.getSoundManager_INSTANCE();
-
-
-
-    private OrthographicCamera gamecamera;
     public static Viewport viewport; // Manages a Camera and determines how world coordinates are mapped to and from the screen.
     private Hud hud;
 
+
+    //tiled map
+    public static ShapeRenderer debugRenderer = new ShapeRenderer();
     private TmxMapLoader mapLoader;
     private TiledMap map;
-    private OrthoCachedTiledMapRenderer tiledMapRenderer;
+    private OrthogonalTiledMapRenderer tiledMapRenderer;
     private Player playerOne;
     private Player playerTwo;
 
+
+    //managers
+    private final B2dContactListener contactListener;
+    private SoundManager soundManager = SoundManager.getSoundManager_INSTANCE();
+
+    private String gameSong = "music/beste music ever.wav";
     private CombatManager combatManager;
 
     private CameraManager cameraManager = CameraManager.getCameraManager_INSTANCE();
 
+    private OrthographicCamera gamecamera; //set by camera manager
 
+    //batch and game world
     public SpriteBatch batch;
 
     //Box2D
     public static World world;
+
+    //debug
     private Box2DDebugRenderer box2DDebugRenderer; //renders outline of box2d bodies
 
+
+    //factories
     private PlayerFactory playerFactory = null;
 
 
@@ -150,10 +152,32 @@ public class PlayScreen implements Screen {
         //Screen Viewport is a Viewport that show as much of the world as possible on the screen -> makes the the world you see depend on the size of the window.
         //FitViewport is a Viewport that maintains the aspect ratio of the world and fills the window. -> Probalby the best option.
 
+        createTileMap();
+
+        //playerOne = new Player(world, Player.InputState.WASD, playerOneSpawnPoint, "Alex Boss", "PlayerOne");
+        playerOne = playerFactory.getPlayer(PlayerTypes.Alex);
+        //playerTwo = new Player(world, Player.InputState.ARROWS, playerTwoSpawnPoint, "Jens Huhn", "PlayerTwo");
+        playerTwo = playerFactory.getPlayer(PlayerTypes.Luca);
+
+        contactListener = B2dContactListener.getContactListener_INSTANCE();
+        world.setContactListener(contactListener);
+
+        System.out.println("playerOne: " + playerOne);
+        System.out.println("playerTwo: " + playerTwo);
+        hud = new Hud(game.batch, playerOne, playerTwo);
+
+
+        for (Controller controller : Controllers.getControllers()) {
+            Gdx.app.log(controller.getUniqueId(), controller.getName());
+        }
+
+    }
+
+    private void createTileMap() {
         mapLoader = new TmxMapLoader();
         map = mapLoader.load("1/Map1New2.tmx");
-        tiledMapRenderer = new OrthoCachedTiledMapRenderer(map, 1 / PPM);
-        tiledMapRenderer.setBlending(true);
+        tiledMapRenderer = new OrthogonalTiledMapRenderer(map, 1 / PPM);
+        //tiledMapRenderer.setBlending(true);
 
         this.batch = new SpriteBatch();
 
@@ -177,28 +201,7 @@ public class PlayScreen implements Screen {
             fdef.shape = shape;
             body.createFixture(fdef);
         }
-
-        //playerOne = new Player(world, Player.InputState.WASD, playerOneSpawnPoint, "Alex Boss", "PlayerOne");
-        playerOne = playerFactory.getPlayer(PlayerTypes.Alex);
-        //playerTwo = new Player(world, Player.InputState.ARROWS, playerTwoSpawnPoint, "Jens Huhn", "PlayerTwo");
-        playerTwo = playerFactory.getPlayer(PlayerTypes.Luca);
-
-        contactListener = B2dContactListener.getContactListener_INSTANCE();
-        world.setContactListener(contactListener);
-
-        System.out.println("playerOne: " + playerOne);
-        System.out.println("playerTwo: " + playerTwo);
-        hud = new Hud(game.batch, playerOne, playerTwo);
-
-
-        for (Controller controller : Controllers.getControllers()) {
-            Gdx.app.log(controller.getUniqueId(), controller.getName());
-        }
-
     }
-
-
-
 
 
     @Override
