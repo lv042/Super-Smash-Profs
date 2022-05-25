@@ -31,15 +31,24 @@ public class ProjectileFactory {
         projectilesCreated = 0;
     }
 
-    public Projectile getProjectile(ProjectileTypes projectile) {
+    public Projectile getProjectile(ProjectileTypes projectile, Player originPlayer, Player targetPlayer) {
 
         switch(projectile) {
             case HomingMissile:
                 projectilesCreated++;
                 System.out.println("Created HomingMissile");
-                //return new HomingMissle(PlayScreen.getWorld(), originPlayer, targetPlayer);
+                return new HomingMissle(PlayScreen.getWorld(), originPlayer, targetPlayer);
+            case Fireball:
+                projectilesCreated++;
+                System.out.println("Created Fireball");
+                return new Bullet(PlayScreen.getWorld(), originPlayer);
+            case Landmine:
+                projectilesCreated++;
+                System.out.println("Created Landmine");
+                return new Landmine(PlayScreen.getWorld(), originPlayer);
         }
 
         return null;
     }
+
 }
