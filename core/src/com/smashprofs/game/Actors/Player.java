@@ -444,8 +444,9 @@ public abstract class Player extends GameObject {
         isBlocking = false;
         boolean stompInput = false;
 
-
+        // Falls Player den InputState "WASD" hat
         if (currentInputState == InputState.WASD) {
+            // Prüfe, ob mindestens 1 Controller angeschlossen ist
             if (controllers2.size > 0) {
                 Controller p1Controller = controllers2.get(0);
                 if (Math.abs(p1Controller.getAxis(Xbox360Pad.AXIS_LEFT_Y)) > Xbox360Pad.CONTROLLER_DEADZONE) {
@@ -459,17 +460,15 @@ public abstract class Player extends GameObject {
                     //TODO: Rate limiter needed here!! Otherwise, a lot of projectiles will spawn at once!
                     isShooting = p1Controller.getButton(Xbox360Pad.BUTTON_X);
                     System.out.println(p1Controller.getAxis(Xbox360Pad.AXIS_LEFT_X));
-                } else {
-                    leftRightInput = Util.adAxis();
-                    upDownInput = Util.wsAxis();
-                    jumpInput = Gdx.input.isKeyJustPressed(Input.Keys.W);
-                    standardAttackInput = Gdx.input.isKeyJustPressed(Input.Keys.V) || Gdx.input.isKeyJustPressed(Input.Keys.SPACE);
-                    isBlocking = Gdx.input.isKeyPressed(Input.Keys.CONTROL_LEFT);
-                    stompInput = Gdx.input.isKeyJustPressed(Input.Keys.S);
-                    isShooting = Gdx.input.isKeyJustPressed(Input.Keys.F);
-
-
                 }
+            } else {
+                leftRightInput = Util.adAxis();
+                upDownInput = Util.wsAxis();
+                jumpInput = Gdx.input.isKeyJustPressed(Input.Keys.W);
+                standardAttackInput = Gdx.input.isKeyJustPressed(Input.Keys.V) || Gdx.input.isKeyJustPressed(Input.Keys.SPACE);
+                isBlocking = Gdx.input.isKeyPressed(Input.Keys.CONTROL_LEFT);
+                stompInput = Gdx.input.isKeyJustPressed(Input.Keys.S);
+                isShooting = Gdx.input.isKeyJustPressed(Input.Keys.F);
 
             }
         }
@@ -477,14 +476,34 @@ public abstract class Player extends GameObject {
 
 
         if (currentInputState == InputState.ARROWS) {
-            leftRightInput = Util.leftrightAxis();
-            upDownInput = Util.updownAxis();
-            jumpInput = Gdx.input.isKeyJustPressed(Input.Keys.UP);
-            standardAttackInput = Gdx.input.isKeyJustPressed(Input.Keys.ENTER) || Gdx.input.isKeyJustPressed(Input.Keys.CONTROL_RIGHT);
-            isBlocking = Gdx.input.isKeyPressed(Input.Keys.ALT_RIGHT);
-            stompInput = Gdx.input.isKeyJustPressed(Input.Keys.DOWN);
-            isShooting = Gdx.input.isKeyJustPressed(Input.Keys.P);
+
+            if(controllers2.size > 1) {
+                Controller p2Controller = controllers2.get(1);
+                if (Math.abs(p2Controller.getAxis(Xbox360Pad.AXIS_LEFT_Y)) > Xbox360Pad.CONTROLLER_DEADZONE) {
+                    leftRightInput = p2Controller.getAxis(Xbox360Pad.AXIS_LEFT_Y);
+                    upDownInput = p2Controller.getAxis(Xbox360Pad.AXIS_RIGHT_X);
+                    jumpInput = p2Controller.getButton(Xbox360Pad.BUTTON_A);
+                    standardAttackInput = p2Controller.getButton(Xbox360Pad.BUTTON_B);
+                    isBlocking = Gdx.input.isKeyPressed(Input.Keys.CONTROL_LEFT);
+                    stompInput = p2Controller.getButton(Xbox360Pad.BUTTON_Y);
+
+                    //TODO: Rate limiter needed here!! Otherwise, a lot of projectiles will spawn at once!
+                    isShooting = p2Controller.getButton(Xbox360Pad.BUTTON_X);
+                    System.out.println(p2Controller.getAxis(Xbox360Pad.AXIS_LEFT_X));
+                }
+            } else {
+                leftRightInput = Util.leftrightAxis();
+                upDownInput = Util.updownAxis();
+                jumpInput = Gdx.input.isKeyJustPressed(Input.Keys.UP);
+                standardAttackInput = Gdx.input.isKeyJustPressed(Input.Keys.ENTER) || Gdx.input.isKeyJustPressed(Input.Keys.CONTROL_RIGHT);
+                isBlocking = Gdx.input.isKeyPressed(Input.Keys.ALT_RIGHT);
+                stompInput = Gdx.input.isKeyJustPressed(Input.Keys.DOWN);
+                isShooting = Gdx.input.isKeyJustPressed(Input.Keys.P);
+            }
         }
+
+
+
         if (standardAttackInput) {
             soundManager.playSound(punchSoundMp3);
         }
