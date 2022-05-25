@@ -10,7 +10,7 @@ public class HomingMissle extends Projectile{
     Player targetPlayer;
 
     public HomingMissle(World world, Player playerOrigin, OrthographicCamera camera, Player playerTarget){
-        super(world, playerOrigin, "Bullet" ,  camera);
+        super(world, playerOrigin, "Bullet");
         b2dbody.setFixedRotation(false);
         b2dbody.setAngularVelocity(10);
         this.targetPlayer = playerTarget;
