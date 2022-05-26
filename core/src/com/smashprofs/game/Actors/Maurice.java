@@ -8,7 +8,7 @@ public class Maurice extends Player {
 
 
     public Maurice(World world, InputState inputState, Vector2 spawnpoint, String playerName, String userData) {
-        super(world, inputState, spawnpoint, playerName, userData, new Texture("Sprites/Momo/momo_strip.png"), new Texture("Sprites/Momo/momo_run.png"), new Texture("Sprites/Alex_jump.png"));
+        super(world, inputState, spawnpoint, playerName, userData, new Texture("Sprites/Momo/momo_strip.png"), new Texture("Sprites/Momo/momo_run.png"), new Texture("Sprites/Momo/momo_run.png"));
 
 
     }
