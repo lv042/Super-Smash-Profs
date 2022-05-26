@@ -2,89 +2,80 @@ package com.smashprofs.game.Actors;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
+import com.badlogic.gdx.controllers.Controller;
+import com.badlogic.gdx.controllers.Controllers;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.*;
-import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.*;
-import com.smashprofs.game.Helper.B2dContactListener;
-import com.smashprofs.game.Helper.CameraManager;
-import com.smashprofs.game.Helper.SoundManager;
-import com.smashprofs.game.Helper.Util;
+import com.badlogic.gdx.utils.Array;
+import com.smashprofs.game.Helper.*;
 import com.smashprofs.game.Screens.PlayScreen;
 
 import java.util.ArrayList;
 
-public abstract class Player extends GameObject{
+public abstract class Player extends GameObject {
 
 
     public static final float PPM = 100;
     private final World world;
+    private final Animation<TextureRegion> stand;
+    private final Animation<TextureRegion> run;
+    private final Animation<TextureRegion> jump;
+    private final float stompSpeed = -5f;
+    private final String deathSoundMp3 = "death.mp3";
+    private final String punchSoundMp3 = "punch.mp3";
+    private final String stompSoundWav = "stomp.wav";
+    private final String damageSoundMp3 = "damage.mp3";
+    private final CameraManager cameraManager = CameraManager.getCameraManager_INSTANCE();
+    private final B2dContactListener contactListener = B2dContactListener.getContactListener_INSTANCE();
+    private final float attackReach = 0.2f;
+    private final Batch batch = new SpriteBatch();
+    private final float respawnDamping = 0.1f;
+    private final int attackDamage = 10;
+    private final boolean collideWithOtherPlayers = false;
+    private final int maxExtraJumps = 1; //currently, only works with one extra jump
+    private final Vector2 spawnpoint;
+    private final float maxVelocity = 1.6f;
+    private final float jumpForce = 2.5f;
+    private final float walkingSpeedMultiplier = 1.3f;
+    private final SoundManager soundManager;
+    private final String userData;
     public float damping = 0.9995f; //the closer this value is to zero the more the player will slow down
+    public ArrayList<Projectile> projectiles;
+    public ArrayList<Controller> controllers;
     InputState currentInputState;
     float stateTime = 0;
     float playerCollisionBoxRadius = 5;
     boolean isGrounded = false;
     boolean standardAttackInput = false;
-    private Texture playerStand;
-    private Texture playerRun;
-    private Texture playerJump;
-    private final Animation<TextureRegion> stand;
-    private final Animation<TextureRegion> run;
-    private final Animation<TextureRegion> jump;
+    private final Texture playerStand;
+    private final Texture playerRun;
+    private final Texture playerJump;
     private String playerName;
     private Vector2 poistion;
     private float timeCount;
     private float worldTimer;
-    private final float stompSpeed = -5f;
-    private final String deathSoundMp3 = "death.mp3";
-    private final String punchSoundMp3 = "punch.mp3";
-    private final String stompSoundWav = "stomp.wav";
     private boolean isStomping;
     private boolean isDead = false;
-    private final String damageSoundMp3 = "damage.mp3";
     private boolean stompHitground;
     private float previousY = 0;
     private float currentY = 0;
-    private final CameraManager cameraManager = CameraManager.getCameraManager_INSTANCE();
-    
-    private final B2dContactListener contactListener = B2dContactListener.getContactListener_INSTANCE();
-    private final float attackReach = 0.2f;
-    private final Batch batch = new SpriteBatch();
-    private final float respawnDamping = 0.1f;
-
     private boolean isNotTouchingTiles = true;
     private float HP = 100;
     private boolean isBlocking = false;
-    private final int attackDamage = 10;
-    private final boolean collideWithOtherPlayers = false;
-    private final int maxExtraJumps = 1; //currently, only works with one extra jump
     private int jumpCount = 0;
     private BodyDef bdef;
-    private final Vector2 spawnpoint;
-
-    private final float maxVelocity = 1.6f;
     private boolean isExtraJumpReady;
-    private final float jumpForce = 2.5f;
-    private final float walkingSpeedMultiplier = 1.3f;
     private State currentState;
-    private final SoundManager soundManager;
-    private final String userData;
     private float gravity = -0.098f;
-    private Vector2 forcesCombined = new Vector2(0, 0);
     private final float startingGravity = gravity;
+    private Vector2 forcesCombined = new Vector2(0, 0);
     private boolean isShooting = false;
     private boolean facingRight = true;
     private int isFacingRightAxe = 0;
     private boolean touchingGround;
-
-    private Sprite playerSprite = sprite; //Sprite of the GameObject
-
-    public Sprite getPlayerSprite() {
-        return playerSprite;
-    }
-
-    public ArrayList<Projectile> projectiles;
+    private final Sprite playerSprite = sprite; //Sprite of the GameObject
 
     public Player(World world, InputState inputState, Vector2 spawnpoint, String playerName, String userData, Texture playerStandTex, Texture playerRunTex, Texture playerJumpTex) {
         super(world, userData);
@@ -134,16 +125,20 @@ public abstract class Player extends GameObject{
 
     }
 
+    public Sprite getPlayerSprite() {
+        return playerSprite;
+    }
+
     public boolean isStompHitground() {
         return stompHitground;
-    }
-    
-    public Player getInstancePlayer(Player player) {
-        return this;
     }
 
     public void setStompHitground(boolean stompHitground) {
         this.stompHitground = stompHitground;
+    }
+
+    public Player getInstancePlayer(Player player) {
+        return this;
     }
 
     public String getDamageSoundMp3() {
@@ -163,7 +158,7 @@ public abstract class Player extends GameObject{
     }
 
     public void update(float deltatime) {
-        System.out.println("Player update");
+        //System.out.println("Player update");
         updatePosition(deltatime);
         touchingTiles();
         checkGrounded();
@@ -182,14 +177,13 @@ public abstract class Player extends GameObject{
         setAnimationState();
         setAnimationPosition();
 
-        System.out.println(projectiles.size());
+        //System.out.println(projectiles.size());
         for (Projectile projectile : projectiles) {
             projectile.update(deltatime);
             // -> Geht irgendwie nicht. Wählt nicht den richtigen Body aus.
             // Geht aber mit:
             Body projectileBody = projectile.getBody();
             Sprite projectileSprite = projectile.getSprite();
-            Texture projectileTexture = projectile.getTexture();
 
             // setBounds funktioniert, der Rest nicht.
 
@@ -215,7 +209,7 @@ public abstract class Player extends GameObject{
 
         }
 
-        System.out.println(projectiles.size());
+        //System.out.println(projectiles.size());
         for (Projectile lProj : projectiles) {
             lProj.update(deltatime);
         }
@@ -223,12 +217,10 @@ public abstract class Player extends GameObject{
     }
 
 
-
-
     public void draw(Batch batch) {
         playerSprite.draw(batch);
         for (Projectile projectile : projectiles) {
-            if(projectile.isActive()) {
+            if (projectile.isActive()) {
                 projectile.draw(batch);
                 //System.out.println("Projectile drawn from ArrayList");
             }
@@ -239,9 +231,7 @@ public abstract class Player extends GameObject{
     private void touchingTiles() {
         if (userData.equals("PlayerTwo")) {
             isNotTouchingTiles = contactListener.isP2NotTouchingTile();
-        }
-
-       else if (userData.equals("PlayerOne")) {
+        } else if (userData.equals("PlayerOne")) {
             isNotTouchingTiles = contactListener.isP1NotTouchingTile();
 
         }
@@ -250,7 +240,7 @@ public abstract class Player extends GameObject{
 
 
     private void setAnimationPosition() {
-        playerSprite.setPosition(b2dbody.getPosition().x - playerSprite.getWidth() /2, b2dbody.getPosition().y - playerSprite.getHeight() / 4); //set the position of the animation to the center of the body
+        playerSprite.setPosition(b2dbody.getPosition().x - playerSprite.getWidth() / 2, b2dbody.getPosition().y - playerSprite.getHeight() / 4); //set the position of the animation to the center of the body
 
 
         playerSprite.setRegion(getRenderTexture(stateTime)); //set the texture to the current state of the movement
@@ -318,7 +308,7 @@ public abstract class Player extends GameObject{
     public int getIsFacingRightAxe() {
         return isFacingRightAxe;
     }
-    
+
     private void setTouchingGround(boolean touchingGround) {
         this.touchingGround = touchingGround;
     }
@@ -444,32 +434,75 @@ public abstract class Player extends GameObject{
     public void managePlayerInput(float dt) {
 
 
-        int upDownInput = 0;
-        int leftRightInput = 0;
+        Array<Controller> controllers2 = Controllers.getControllers();
+
+
+        float upDownInput = 0;
+        float leftRightInput = 0;
         boolean jumpInput = false;
         isBlocking = false;
         boolean stompInput = false;
 
-
+        // Falls Player den InputState "WASD" hat
         if (currentInputState == InputState.WASD) {
-            leftRightInput = Util.adAxis();
-            upDownInput = Util.wsAxis();
-            jumpInput = Gdx.input.isKeyJustPressed(Input.Keys.W);
-            standardAttackInput = Gdx.input.isKeyJustPressed(Input.Keys.V) || Gdx.input.isKeyJustPressed(Input.Keys.SPACE);
-            isBlocking = Gdx.input.isKeyPressed(Input.Keys.CONTROL_LEFT);
-            stompInput = Gdx.input.isKeyJustPressed(Input.Keys.S);
-            isShooting = Gdx.input.isKeyJustPressed(Input.Keys.F);
+            // Prüfe, ob mindestens 1 Controller angeschlossen ist
+            if (controllers2.size > 0) {
+                Controller p1Controller = controllers2.get(0);
+                if (Math.abs(p1Controller.getAxis(Xbox360Pad.AXIS_LEFT_Y)) > Xbox360Pad.CONTROLLER_DEADZONE) {
+                    leftRightInput = p1Controller.getAxis(Xbox360Pad.AXIS_LEFT_Y);
+                    upDownInput = p1Controller.getAxis(Xbox360Pad.AXIS_RIGHT_X);
+                    jumpInput = p1Controller.getButton(Xbox360Pad.BUTTON_A);
+                    standardAttackInput = p1Controller.getButton(Xbox360Pad.BUTTON_B);
+                    isBlocking = Gdx.input.isKeyPressed(Input.Keys.CONTROL_LEFT);
+                    stompInput = p1Controller.getButton(Xbox360Pad.BUTTON_Y);
 
+                    //TODO: Rate limiter needed here!! Otherwise, a lot of projectiles will spawn at once!
+                    isShooting = p1Controller.getButton(Xbox360Pad.BUTTON_X);
+                    System.out.println(p1Controller.getAxis(Xbox360Pad.AXIS_LEFT_X));
+                }
+            } else {
+                leftRightInput = Util.adAxis();
+                upDownInput = Util.wsAxis();
+                jumpInput = Gdx.input.isKeyJustPressed(Input.Keys.W);
+                standardAttackInput = Gdx.input.isKeyJustPressed(Input.Keys.V) || Gdx.input.isKeyJustPressed(Input.Keys.SPACE);
+                isBlocking = Gdx.input.isKeyPressed(Input.Keys.CONTROL_LEFT);
+                stompInput = Gdx.input.isKeyJustPressed(Input.Keys.S);
+                isShooting = Gdx.input.isKeyJustPressed(Input.Keys.F);
+
+            }
         }
+
+
+
         if (currentInputState == InputState.ARROWS) {
-            leftRightInput = Util.leftrightAxis();
-            upDownInput = Util.updownAxis();
-            jumpInput = Gdx.input.isKeyJustPressed(Input.Keys.UP);
-            standardAttackInput = Gdx.input.isKeyJustPressed(Input.Keys.ENTER) || Gdx.input.isKeyJustPressed(Input.Keys.CONTROL_RIGHT);
-            isBlocking = Gdx.input.isKeyPressed(Input.Keys.ALT_RIGHT);
-            stompInput = Gdx.input.isKeyJustPressed(Input.Keys.DOWN);
-            isShooting = Gdx.input.isKeyJustPressed(Input.Keys.P);
+
+            if(controllers2.size > 1) {
+                Controller p2Controller = controllers2.get(1);
+                if (Math.abs(p2Controller.getAxis(Xbox360Pad.AXIS_LEFT_Y)) > Xbox360Pad.CONTROLLER_DEADZONE) {
+                    leftRightInput = p2Controller.getAxis(Xbox360Pad.AXIS_LEFT_Y);
+                    upDownInput = p2Controller.getAxis(Xbox360Pad.AXIS_RIGHT_X);
+                    jumpInput = p2Controller.getButton(Xbox360Pad.BUTTON_A);
+                    standardAttackInput = p2Controller.getButton(Xbox360Pad.BUTTON_B);
+                    isBlocking = Gdx.input.isKeyPressed(Input.Keys.CONTROL_LEFT);
+                    stompInput = p2Controller.getButton(Xbox360Pad.BUTTON_Y);
+
+                    //TODO: Rate limiter needed here!! Otherwise, a lot of projectiles will spawn at once!
+                    isShooting = p2Controller.getButton(Xbox360Pad.BUTTON_X);
+                    System.out.println(p2Controller.getAxis(Xbox360Pad.AXIS_LEFT_X));
+                }
+            } else {
+                leftRightInput = Util.leftrightAxis();
+                upDownInput = Util.updownAxis();
+                jumpInput = Gdx.input.isKeyJustPressed(Input.Keys.UP);
+                standardAttackInput = Gdx.input.isKeyJustPressed(Input.Keys.ENTER) || Gdx.input.isKeyJustPressed(Input.Keys.CONTROL_RIGHT);
+                isBlocking = Gdx.input.isKeyPressed(Input.Keys.ALT_RIGHT);
+                stompInput = Gdx.input.isKeyJustPressed(Input.Keys.DOWN);
+                isShooting = Gdx.input.isKeyJustPressed(Input.Keys.P);
+            }
         }
+
+
+
         if (standardAttackInput) {
             soundManager.playSound(punchSoundMp3);
         }
@@ -494,7 +527,7 @@ public abstract class Player extends GameObject{
             jumpCount++;
 
 
-            getB2dbody().applyLinearImpulse(new Vector2(0, getB2dbody().getLinearVelocity().y*(-0.8f) + getJumpForce()), getB2dbody().getWorldCenter(), true);
+            getB2dbody().applyLinearImpulse(new Vector2(0, getB2dbody().getLinearVelocity().y * (-0.8f) + getJumpForce()), getB2dbody().getWorldCenter(), true);
 
 
             //System.out.println("Jumping");
@@ -605,7 +638,7 @@ public abstract class Player extends GameObject{
             isGrounded = false;
         }
         previousY = b2dbody.getLinearVelocity().y;
-       // System.out.println(isTouchingTiles);
+        // System.out.println(isTouchingTiles);
 
 
     }
@@ -655,18 +688,23 @@ public abstract class Player extends GameObject{
         //sets player velocity to 0 if they are at the edge of the map
         float pushBack = 1f;
 
+        System.out.println(getB2dbody().getPosition());
+        if (getB2dbody().getPosition().x  > 7.5) {
 
-        if (getB2dbody().getPosition().x > PlayScreen.getViewport().getWorldWidth()) {
             getB2dbody().setLinearVelocity(new Vector2(-pushBack, getB2dbody().getLinearVelocity().y + 0.1f));
-            //lower gravity for some seconds :)
+            //lower gravity for some seconds :)g
             setGravity(startingGravity * 0.3f);
             return;
         }
-        if (getB2dbody().getPosition().x < 0) {
+        if (getB2dbody().getPosition().x < 1) {
             getB2dbody().setLinearVelocity(new Vector2(pushBack, getB2dbody().getLinearVelocity().y + 0.1f));
             //lower gravity for some seconds :)
             setGravity(startingGravity * 0.3f);
         }
+    }
+
+    public void shoot(HomingMissle bullet) {
+        projectiles.add(bullet);
     }
 
     public enum InputState {
@@ -675,10 +713,6 @@ public abstract class Player extends GameObject{
 
     public enum State {
         FALLING, JUMPING, STANDING, RUNNING
-    }
-
-    public void shoot(HomingMissle bullet){
-        projectiles.add(bullet);
     }
 
 }

@@ -16,7 +16,7 @@ import com.smashprofs.game.Helper.CameraManager;
 
 import static com.smashprofs.game.Actors.Player.PPM;
 
-public class  Projectile extends Sprite{
+public abstract class  Projectile extends GameObject{
     private BodyDef bdef;
     public Body b2dbody;
     private CameraManager cameraManager = CameraManager.getCameraManager_INSTANCE();
@@ -32,9 +32,10 @@ public class  Projectile extends Sprite{
     public Boolean active = true;
     World world;
 
-    public Projectile(World world, Player originPlayer, String userData, OrthographicCamera camera) {
-        super(new Texture(Gdx.files.internal("fireball.png")));
-
+    public Projectile(World world, Player originPlayer, String userData, Texture projectileTexture) {
+        super(world, userData);
+        //super(new Texture(Gdx.files.internal("star.png")));
+        sprite.setRegion(projectileTexture);
         this.userData = userData;
         this.world = world;
         this.originPlayer = originPlayer;
@@ -46,9 +47,10 @@ public class  Projectile extends Sprite{
 
         //setPosition(12, 12);
 
-        setBounds(originPlayer.getPlayerSprite().getX() / PPM, originPlayer.getPlayerSprite().getY() / PPM, getWidth()/PPM, getHeight()/PPM);
+        sprite.setBounds(originPlayer.getPlayerSprite().getX() / PPM, originPlayer.getPlayerSprite().getY() / PPM, sprite.getWidth()/PPM, sprite.getHeight()/PPM);
         create();
         //scale(1/PPM);
+
 
 
         moveProjectile();
@@ -95,18 +97,18 @@ public class  Projectile extends Sprite{
         b2dbody.createFixture(fDef);
         // !!!!!!!!!!!!!!!!!!!!!!
         //setOrigin(0, 0);
-        setOrigin(getWidth()*0.5f, getHeight()*0.5f);
+        sprite.setOrigin(sprite.getWidth()*0.5f, sprite.getHeight()*0.5f);
 
     }
 
     public void update(float delta) {
-        //System.out.println("!!!! projectile update");
+        System.out.println("!!!! projectile update");
         //this.setPosition(b2dbody.getPosition().x - getWidth() / 2, b2dbody.getPosition().y - getHeight() / 2);
 
         //setBounds(b2dbody.getPosition().x - getWidth() / 2/PPM, b2dbody.getPosition().y - getHeight() / 2 /PPM, getTexture().getWidth()/PPM, getTexture().getHeight()/PPM );
 
 
-        setPosition(b2dbody.getPosition().x - getWidth() / 2f, b2dbody.getPosition().y - getHeight() / 2f);
+        sprite.setPosition(b2dbody.getPosition().x - sprite.getWidth() / 2f, b2dbody.getPosition().y - sprite.getHeight() / 2f);
 
 
         //setRotation(rotation);
@@ -120,39 +122,25 @@ public class  Projectile extends Sprite{
 
         //rotation += 0.8f;
         //setPosition(b2dbody.getPosition().x - getWidth() / 2/PPM, b2dbody.getPosition().y - getHeight() / 2 /PPM);
-        rotation = b2dbody.getAngle()*2*Math.PI*4;
-        setRotation((float) rotation);
+        rotation = -2.25*(b2dbody.getAngle()*2*Math.PI*4);
+        sprite.setRotation((float) rotation);
 
 
     }
 
     @Override
     public void draw(Batch batch) {
-
-
-        System.out.println("projectile draw");
-        super.draw(batch);
+        //System.out.println("projectile draw");
+        sprite.draw(batch);
     }
 
-
-    public static void DrawDebugLine(Vector2 start, Vector2 end, Matrix4 projectionMatrix)
-    {
-        Gdx.gl.glLineWidth(2);
-        ShapeRenderer debugRenderer = new ShapeRenderer();
-        debugRenderer.setProjectionMatrix(projectionMatrix);
-        debugRenderer.begin(ShapeRenderer.ShapeType.Line);
-        debugRenderer.setColor(Color.WHITE);
-        debugRenderer.line(start, end);
-        debugRenderer.end();
-        Gdx.gl.glLineWidth(1);
-    }
 
     public Boolean isActive() {
         return active;
     }
 
     public Sprite getSprite() {
-        return this;
+        return this.sprite;
     }
 
     public Body getBody() {
