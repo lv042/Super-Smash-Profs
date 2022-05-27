@@ -24,7 +24,7 @@ public class CombatManager {
 
     private static final CombatManager combatManager_INSTANCE = new CombatManager();
 
-    private ArrayList<Projectile> projectileArrayList = new ArrayList<Projectile>();
+    public static ArrayList<Projectile> projectileArrayList = new ArrayList<Projectile>();
 
 
     //private constructor to avoid client applications to use constructor

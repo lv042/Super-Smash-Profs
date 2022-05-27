@@ -151,6 +151,7 @@ public class  Projectile extends GameObject {
     public Body getBody() {
         return b2dbody;
     }
+
     public void destroy() {
         world.destroyBody(b2dbody);
 

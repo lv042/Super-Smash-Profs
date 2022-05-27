@@ -7,6 +7,8 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.World;
 import com.smashprofs.game.Actors.Players.Player;
 
+import java.util.Random;
+
 public class Landmine extends Projectile {
 
     private final Animation<TextureRegion> mineExplode;
@@ -37,8 +39,8 @@ public class Landmine extends Projectile {
         this.mineWaiting = new Texture("landmine.png");
         this.mineExploding = new Texture("explosions/explosion-2.png");
 
-        TextureRegion[] exploding = TextureRegion.split(mineExploding, 100, 100)[0];
-        mineExplode = new Animation(0.25f, exploding[0], exploding[1], exploding[2], exploding[3]);
+        TextureRegion[] exploding = TextureRegion.split(mineExploding, 64, 64)[0];
+        mineExplode = new Animation(0.1f, exploding[0], exploding[1], exploding[2], exploding[3], exploding[4], exploding[5], exploding[6], exploding[7]);
         mineExplode.setPlayMode(Animation.PlayMode.NORMAL);
 
         TextureRegion[] waiting = TextureRegion.split(mineWaiting, 32, 32)[0];

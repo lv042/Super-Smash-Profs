@@ -4,6 +4,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.*;
 import com.badlogic.gdx.utils.Array;
+import com.smashprofs.game.Actors.Projectiles.Projectile;
 import com.smashprofs.game.Screens.PlayScreen;
 
 import java.io.IOException;
@@ -66,6 +67,8 @@ public class B2dContactListener implements ContactListener {
         return contactListener;
     }
 
+    public Array<Body> bodiesToDestroy;
+
 
 
     @Override
@@ -73,19 +76,30 @@ public class B2dContactListener implements ContactListener {
         //System.out.println("beginContact");
         if("PlayerOne".equals(contact.getFixtureA().getBody().getUserData()) && "Bullet".equals(contact.getFixtureB().getBody().getUserData())) {
             PlayerOneGotShoot = true;
-            contact.getFixtureB().getBody().getUserData().toString().startsWith("Bullet");
+            //contact.getFixtureB().getBody().getUserData().toString().startsWith("Bullet");
             //bodiesToDestroy.add(contact.getFixtureB().getBody());
 
-            // System.out.println("Fixture B: " + contact.getFixtureB().getBody().getUserData());
+            // Add body which had contact with PlayerOne to bodiesToDestroy
+            bodiesToDestroy.add(contact.getFixtureB().getBody());
+
+            System.out.println("Fixture B: " + contact.getFixtureB().getUserData());
+            System.out.println("UserData of Fixture B starts with Bullet: " + contact.getFixtureB().getBody().getUserData().toString().startsWith("Bullet"));
         }
 
         if("PlayerTwo".equals(contact.getFixtureA().getBody().getUserData()) && "Bullet".equals(contact.getFixtureB().getBody().getUserData())) {
             PlayerTwoGotShoot = true;
-           // bodiesToDestroy.add(contact.getFixtureB().getBody());
+            // bodiesToDestroy.add(contact.getFixtureB().getBody());
+            //contact.getFixtureB().getBody().getUserData().toString().startsWith("Bullet");
+
+            // Add body which had contact with PlayerTwo to bodiesToDestroy
+            bodiesToDestroy.add(contact.getFixtureB().getBody());
+
+            System.out.println("Fixture B: " + contact.getFixtureB().getUserData());
+            System.out.println("UserData of Fixture B starts with Bullet: " + contact.getFixtureB().getBody().getUserData().toString().startsWith("Bullet"));
         }
 
 
-        //if("Bullet".equals(contact.getFixtureB().getBody().getUserData())) BulletHit = true;
+//        if("Bullet".equals(contact.getFixtureB().getBody().getUserData())) BulletHit = true;
 //        System.out.println("PlayerOneGotShoot: " + PlayerOneGotShoot);
 //        System.out.println("PlayerTwoGotShoot: " + PlayerTwoGotShoot);
 //        System.out.println("BulletHit: " + BulletHit);
@@ -103,8 +117,29 @@ public class B2dContactListener implements ContactListener {
 
         //final Body toRemove = contact.getFixtureA().getBody().getType() == BodyDef.BodyType.DynamicBody ? contact.getFixtureA().getBody()
         //        : contact.getFixtureB().getBody();
-        if("Bullet".equals(contact.getFixtureB().getBody().getUserData())) {
-            final Body toRemove = contact.getFixtureB().getBody();
+
+
+
+
+        // Destroys every body in bodiesToDestroy
+        System.out.println("BodiesToDestroy Size: " + bodiesToDestroy.size);
+        for (Body bodyToDestroy: bodiesToDestroy) {
+
+            final Body toRemove = bodyToDestroy;
+
+            // Destroy projectile with the same userData as bodyToDestroy
+            for(Projectile projectile: CombatManager.projectileArrayList) {
+                if(projectile.userData.equals(bodyToDestroy.getUserData())) {
+                    Gdx.app.postRunnable(new Runnable() {
+                        @Override
+                        public void run () {
+                            //projectile.destroy();  -> Bringt nichts, siehe Implementierung von .destroy()
+                            CombatManager.projectileArrayList.remove(projectile);
+                        }
+                    });
+                }
+            }
+
             Gdx.app.postRunnable(new Runnable() {
                 @Override
                 public void run () {
@@ -112,6 +147,17 @@ public class B2dContactListener implements ContactListener {
                 }
             });
         }
+
+        // Previously implemented way to remove all the colliding bodies
+/*        if("Bullet".equals(contact.getFixtureB().getBody().getUserData())) {
+            final Body toRemove = contact.getFixtureB().getBody();
+            Gdx.app.postRunnable(new Runnable() {
+                @Override
+                public void run () {
+                    PlayScreen.getWorld().destroyBody(toRemove);
+                }
+            });
+        }*/
 
 
     }
