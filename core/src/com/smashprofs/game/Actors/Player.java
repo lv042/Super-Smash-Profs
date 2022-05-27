@@ -75,7 +75,8 @@ public abstract class Player extends GameObject {
     private boolean facingRight = true;
     private int isFacingRightAxe = 0;
     private boolean touchingGround;
-    private final Sprite playerSprite = sprite; //Sprite of the GameObject
+    
+    private final Sprite sprite = new Sprite(); //Sprite of the GameObject
 
     public Player(World world, InputState inputState, Vector2 spawnpoint, String playerName, String userData, Texture playerStandTex, Texture playerRunTex, Texture playerJumpTex) {
         super(world, userData);
@@ -108,7 +109,7 @@ public abstract class Player extends GameObject {
         projectiles = new ArrayList<Projectile>();
 
 
-        playerSprite.setBounds(0, 15, 25 / PPM, 25 / PPM);
+        sprite.setBounds(0, 15, 25 / PPM, 25 / PPM);
         //this.setRegion(alexStand);
         this.world = world;
         this.currentInputState = inputState;
@@ -126,7 +127,7 @@ public abstract class Player extends GameObject {
     }
 
     public Sprite getPlayerSprite() {
-        return playerSprite;
+        return sprite;
     }
 
     public boolean isStompHitground() {
@@ -218,7 +219,7 @@ public abstract class Player extends GameObject {
 
 
     public void draw(Batch batch) {
-        playerSprite.draw(batch);
+        sprite.draw(batch);
         for (Projectile projectile : projectiles) {
             if (projectile.isActive()) {
                 projectile.draw(batch);
@@ -240,11 +241,11 @@ public abstract class Player extends GameObject {
 
 
     private void setAnimationPosition() {
-        playerSprite.setPosition(b2dbody.getPosition().x - playerSprite.getWidth() / 2, b2dbody.getPosition().y - playerSprite.getHeight() / 4); //set the position of the animation to the center of the body
+        sprite.setPosition(b2dbody.getPosition().x - sprite.getWidth() / 2, b2dbody.getPosition().y - sprite.getHeight() / 4); //set the position of the animation to the center of the body
 
 
-        playerSprite.setRegion(getRenderTexture(stateTime)); //set the texture to the current state of the movement
-        playerSprite.setFlip(facingRight, false); // lets the player face the correct direction
+        sprite.setRegion(getRenderTexture(stateTime)); //set the texture to the current state of the movement
+        sprite.setFlip(facingRight, false); // lets the player face the correct direction
     }
 
     private void setAnimationState() {
@@ -573,18 +574,18 @@ public abstract class Player extends GameObject {
         TextureRegion frame = null;
         switch (this.currentState) {
             case STANDING:
-                playerSprite.setRegion(playerStand);
+                sprite.setRegion(playerStand);
                 frame = stand.getKeyFrame(stateTime);
                 break;
 
             case RUNNING:
 
-                playerSprite.setRegion(playerRun);
+                sprite.setRegion(playerRun);
                 frame = run.getKeyFrame(stateTime);
                 break;
 
             case JUMPING:
-                playerSprite.setRegion(playerJump);
+                sprite.setRegion(playerJump);
                 frame = jump.getKeyFrame(stateTime);
                 break;
         }

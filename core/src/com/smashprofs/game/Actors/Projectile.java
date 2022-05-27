@@ -16,7 +16,7 @@ import com.smashprofs.game.Helper.CameraManager;
 
 import static com.smashprofs.game.Actors.Player.PPM;
 
-public abstract class  Projectile extends GameObject{
+public class  Projectile extends GameObject{
     private BodyDef bdef;
     public Body b2dbody;
     private CameraManager cameraManager = CameraManager.getCameraManager_INSTANCE();
@@ -32,10 +32,9 @@ public abstract class  Projectile extends GameObject{
     public Boolean active = true;
     World world;
 
-    public Projectile(World world, Player originPlayer, String userData) {
+    public Projectile(World world, Player originPlayer, String userData, OrthographicCamera camera) {
         super(world, userData);
-        //super(new Texture(Gdx.files.internal("star.png")));
-        sprite.setRegion(new Texture(Gdx.files.internal("star.png")));
+        sprite = new Sprite(new Texture("star.png"));
 
         this.userData = userData;
         this.world = world;
@@ -88,6 +87,8 @@ public abstract class  Projectile extends GameObject{
         //filters collisions with other objects
         if (true) {
             fDef.filter.groupIndex = 0;
+
+            System.out.println("Group index: " + fDef.filter.groupIndex);
         }
 
         //fDef.density = 0.1f;
@@ -155,7 +156,7 @@ public abstract class  Projectile extends GameObject{
     }
 
     public Sprite getSprite() {
-        return this.sprite;
+        return sprite;
     }
 
     public Body getBody() {
@@ -166,9 +167,6 @@ public abstract class  Projectile extends GameObject{
     }
 
 }
-
-
-
 
 
 

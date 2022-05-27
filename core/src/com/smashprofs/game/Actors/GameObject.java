@@ -5,13 +5,13 @@ import com.badlogic.gdx.physics.box2d.*;
 
 public abstract class GameObject {
     public Body b2dbody;
-    final public Sprite sprite;
+    public Sprite sprite;
     final public String userData;
 
 
     public GameObject(World world, String userData) {
         this.b2dbody = null; // cant be final because other classes cant change body
-        this.sprite = new Sprite();
+        this.sprite = null;
         this.userData = userData;
     }
 

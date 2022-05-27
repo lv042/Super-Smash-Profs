@@ -10,7 +10,7 @@ public class HomingMissle extends Projectile{
     Player targetPlayer;
 
     public HomingMissle(World world, Player playerOrigin, OrthographicCamera camera, Player playerTarget){
-        super(world, playerOrigin, "Bullet");
+        super(world, playerOrigin, "Bullet" ,  camera);
         b2dbody.setFixedRotation(false);
         b2dbody.setAngularVelocity(10);
         this.targetPlayer = playerTarget;
@@ -24,8 +24,8 @@ public class HomingMissle extends Projectile{
     public void update(float delta){
         super.update(delta);
         System.out.println("target: " + targetPlayer);
-        Vector2 targetPlayPos = targetPlayer.getPosition();
-        Vector2 targetVector = new Vector2(targetPlayPos.x - b2dbody.getPosition().x, targetPlayPos.y - b2dbody.getPosition().y);
+        Vector2 tartgetPlayPos = targetPlayer.getPosition();
+        Vector2 targetVector = new Vector2(tartgetPlayPos.x - b2dbody.getPosition().x, tartgetPlayPos.y - b2dbody.getPosition().y);
         b2dbody.setLinearVelocity(targetVector.nor().scl(0.4f));
     }
 }
