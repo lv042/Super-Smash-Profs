@@ -1,4 +1,4 @@
-package com.smashprofs.game.Actors;
+package com.smashprofs.game.Actors.Projectiles;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
@@ -11,6 +11,7 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.*;
 import com.smashprofs.game.Actors.GameObject;
 import com.smashprofs.game.Helper.CameraManager;
+import com.smashprofs.game.Actors.Players.Player;
 
 import static com.smashprofs.game.Actors.Players.Player.PPM;
 
@@ -28,9 +29,9 @@ public class  Projectile extends GameObject {
     public Boolean active = true;
     World world;
 
-    public Projectile(World world, Player originPlayer, String userData, OrthographicCamera camera) {
-        super(world, userData);
-        sprite = new Sprite(new Texture("star.png"));
+    public Projectile(World world, Player originPlayer, String userData, Texture projectileTexture) {
+        super(userData);
+        sprite = new Sprite(projectileTexture);
 
         this.userData = userData;
         this.world = world;
@@ -59,7 +60,7 @@ public class  Projectile extends GameObject {
     public void create() {
 
         bdef = new BodyDef();
-        projectileSpawnpoint = new Vector2(originPlayer.getPosition().x + originPlayer.getIsFacingRightAxe() * originPlayer.getPlayerCollisionBoxRadius() * 2.1f / PPM, originPlayer.getPosition().y);
+        projectileSpawnpoint = new Vector2(originPlayer.getPosition().x + (originPlayer.getIsFacingRightAxe() * originPlayer.getPlayerCollisionBoxRadius() * 3f / PPM), originPlayer.getPosition().y);
         bdef.position.set(projectileSpawnpoint);
         bdef.type = BodyDef.BodyType.DynamicBody;
         bdef.fixedRotation = false;
@@ -70,11 +71,6 @@ public class  Projectile extends GameObject {
         CircleShape shape = new CircleShape(); // circle shape is better for player characters so that it can be easily hit walls and other objects
 
         shape.setRadius(3 / PPM);
-
-        //Implement the player textures and animations -> @Maurice @Alex
-
-
-
 
 
         fDef.shape = shape;
@@ -92,8 +88,6 @@ public class  Projectile extends GameObject {
         //@Maurice @Alex Ihr könnte gerne mal mit diesen Werten rumspielen und schauen was am besten passt :D
 
         b2dbody.createFixture(fDef);
-        // !!!!!!!!!!!!!!!!!!!!!!
-        //setOrigin(0, 0);
         sprite.setOrigin(sprite.getWidth()*0.5f, sprite.getHeight()*0.5f);
 
     }
@@ -107,8 +101,6 @@ public class  Projectile extends GameObject {
 
         sprite.setPosition(b2dbody.getPosition().x - sprite.getWidth() / 2f, b2dbody.getPosition().y - sprite.getHeight() / 2f);
 
-
-        //setRotation(rotation);
         // Toggle Projectile activity state based on its body's active state
         if(b2dbody.isActive()){
             active = true;

@@ -1,5 +1,8 @@
-package com.smashprofs.game.Actors;
+package com.smashprofs.game.Actors.Players;
 
+
+import com.smashprofs.game.Actors.GameObject;
+import com.smashprofs.game.Actors.Projectiles.Projectile;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.controllers.Controller;
@@ -11,6 +14,7 @@ import com.badlogic.gdx.physics.box2d.*;
 import com.badlogic.gdx.utils.Array;
 import com.smashprofs.game.Helper.*;
 import com.smashprofs.game.Screens.PlayScreen;
+
 
 import java.util.ArrayList;
 
