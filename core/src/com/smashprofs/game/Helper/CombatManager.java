@@ -115,7 +115,10 @@ public class CombatManager {
 
     private void updateProjectiles(float deltatime) {
         for (Projectile projectile: projectileArrayList) {
-            projectile.update(deltatime);
+            if(projectile.active) {
+                projectile.update(deltatime);
+            }
+
         }
         //System.out.println(projectileArrayList.size());
     }
@@ -136,15 +139,11 @@ public class CombatManager {
     public void drawProjectiles(SpriteBatch batch){
         for (Projectile projectile: projectileArrayList) {
             // VORSICHT!! Könnte mit dem FATAL ERROR zusammenhängen!
-//            if(projectile.active) {
-//                projectile.draw(batch);
-//            }
-            projectile.draw(batch);
-
-            //if(projectilesToDestroy.contains(projectile)) {
-            //    projectile.sprite.setPosition(10000f, 10000f);
-            //}
-
+            if(projectile.active) {
+                projectile.draw(batch);
+            }
+            // projectile.draw(batch);
+            System.out.println("Drawing projectile: " + projectile.isActive());
         }
     }
 }

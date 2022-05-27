@@ -73,6 +73,9 @@ public class B2dContactListener implements ContactListener {
 
     @Override
     public void beginContact(Contact contact) {
+
+
+
         //System.out.println("beginContact");
         if("PlayerOne".equals(contact.getFixtureA().getBody().getUserData()) && contact.getFixtureB().getBody().getUserData().toString().startsWith("Bullet")) {
             PlayerOneGotShoot = true;
@@ -120,6 +123,9 @@ public class B2dContactListener implements ContactListener {
         }
 
 
+
+
+
         //final Body toRemove = contact.getFixtureA().getBody().getType() == BodyDef.BodyType.DynamicBody ? contact.getFixtureA().getBody()
         //        : contact.getFixtureB().getBody();
 
@@ -127,7 +133,6 @@ public class B2dContactListener implements ContactListener {
 
 
         // Destroys every body in bodiesToDestroy
-        System.out.println("BodiesToDestroy Size: " + bodiesToDestroy.size());
         if(bodiesToDestroy.size() > 0) {
             for (Body bodyToDestroy : bodiesToDestroy) {
 
@@ -149,6 +154,7 @@ public class B2dContactListener implements ContactListener {
                                 System.out.println("Removed projectile from projectile ArrayList");
                             }
                         });
+                        projectile.b2dbody.setUserData("Destroyed");
                     }
                 }
 

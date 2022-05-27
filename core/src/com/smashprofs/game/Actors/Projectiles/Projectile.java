@@ -161,6 +161,9 @@ public class  Projectile extends GameObject {
         //sprite.getTexture().dispose();
     }
 
+    public void setActive(boolean b) {
+        active = b;
+    }
 }
 
 

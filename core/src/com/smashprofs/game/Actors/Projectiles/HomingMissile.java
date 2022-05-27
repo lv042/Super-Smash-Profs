@@ -13,6 +13,8 @@ public class HomingMissile extends Projectile {
     Player targetPlayer;
     Random rand = new Random();
 
+    float speed = 0.7f;
+
     public HomingMissile(World world, Player playerOrigin, Player playerTarget){
         super(world, playerOrigin, "Bullet" ,  new Texture("missile.png"));
         userData = "Bullet#" + rand.nextInt(9999);
@@ -37,7 +39,7 @@ public class HomingMissile extends Projectile {
         super.update(delta);
         Vector2 tartgetPlayPos = targetPlayer.getPosition();
         Vector2 targetVector = new Vector2(tartgetPlayPos.x - b2dbody.getPosition().x, tartgetPlayPos.y - b2dbody.getPosition().y);
-        b2dbody.setLinearVelocity(targetVector.nor().scl(0.1f));
+        b2dbody.setLinearVelocity(targetVector.nor().scl(0.5f));
         sprite.setRotation(targetVector.angleDeg());
     }
 }
