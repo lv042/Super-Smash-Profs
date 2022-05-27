@@ -54,7 +54,7 @@ public class  Projectile extends GameObject {
     }
 
     void initialMovement() {
-        b2dbody.setLinearVelocity(new Vector2(originPlayer.getIsFacingRightAxe() * 1.2f, 0));
+        b2dbody.setLinearVelocity(new Vector2(originPlayer.getIsFacingRightAxe() * 0.1f, 0));
     }
 
     public void create() {
@@ -90,6 +90,8 @@ public class  Projectile extends GameObject {
         b2dbody.createFixture(fDef);
         sprite.setOrigin(sprite.getWidth()*0.5f, sprite.getHeight()*0.5f);
 
+
+        System.out.println("projectile address: " + this);
     }
 
     public void update(float delta) {
@@ -151,6 +153,9 @@ public class  Projectile extends GameObject {
     }
     public void destroy() {
         world.destroyBody(b2dbody);
+
+        //destroy sprite
+        //sprite.getTexture().dispose();
     }
 
 }

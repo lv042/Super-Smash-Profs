@@ -115,7 +115,7 @@ public class CombatManager {
         for (Projectile projectile: projectileArrayList) {
             projectile.update(deltatime);
         }
-        System.out.println(projectileArrayList.size());
+        //System.out.println(projectileArrayList.size());
     }
 
 

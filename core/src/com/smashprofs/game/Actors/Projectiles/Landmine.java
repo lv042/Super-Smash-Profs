@@ -17,13 +17,20 @@ public class Landmine extends Projectile {
     
     boolean playerInDetonationRadius = false;
     private State currentState;
+    Random rand = new Random();
 
     public enum State {
         WAITING, EXPLODING
     }
 
     public Landmine(World world, Player originPlayer) {
-        super(world, originPlayer, "Landmine", new Texture("landmine.png"));
+        super(world, originPlayer, "Null", new Texture("landmine.png"));
+
+        // Create random user data
+
+        userData = "Mine " + rand.nextInt(9999);
+        b2dbody.setUserData("Mine " + rand.nextInt(9999));
+
         b2dbody.setFixedRotation(false);
         this.currentState = State.WAITING;
 

@@ -180,42 +180,6 @@ public abstract class Player extends GameObject {
         setAnimationState();
         setAnimationPosition();
 
-        //System.out.println(projectiles.size());
-//        for (Projectile projectile : projectiles) {
-//            projectile.update(deltatime);
-//            // -> Geht irgendwie nicht. Wählt nicht den richtigen Body aus.
-//            // Geht aber mit:
-//            Body projectileBody = projectile.getBody();
-//            Sprite projectileSprite = projectile.getSprite();
-//
-//            // setBounds funktioniert, der Rest nicht.
-
-            //projectile.setOrigin(projectileBody.getPosition().x - projectile.getBoundingRectangle().getWidth()/2, projectileBody.getPosition().y - projectile.getBoundingRectangle().getHeight()/2);
-            //projectile.setBounds(projectileBody.getPosition().x - ((projectileSprite.getBoundingRectangle().getWidth() / 2)*PPM)/PPM, projectileBody.getPosition().y - ((projectileSprite.getBoundingRectangle().getHeight() / 2)*PPM) /PPM, 32/PPM, 32/PPM);
-            //projectile.setBounds(projectileBody.getPosition().x - getWidth() / 2/PPM, projectileBody.getPosition().y - getHeight() / 2 /PPM, getWidth(), getHeight());
-            //projectile.setBounds(projectileBody.getPosition().x - projectileSprite.getWidth() / 2/PPM, projectileBody.getPosition().y - projectileSprite.getHeight() / 2 /PPM, projectileTexture.getWidth()/PPM, projectileTexture.getHeight()/PPM);
-            //projectile.setPosition(projectileBody.getPosition().x - projectileSprite.getWidth() / 2/PPM, projectileBody.getPosition().y - projectileSprite.getHeight() / 2 /PPM);
-            //projectile.setRotation(projectileBody.getAngle() * MathUtils.radiansToDegrees);
-            //projectileSprite.setRotation(projectileBody.getAngle() * MathUtils.radiansToDegrees);
-            //projectile.setOrigin(projectile.getTexture().getWidth()/2f, projectile.getTexture().getHeight()/2f);
-
-            //System.out.println("Projectile updated from ArrayList");
-
-/*            if(projectileBody.isActive()){
-                projectile.active = true;
-            }
-            else if (!projectileBody.isActive()){
-                projectile.active = false;
-                System.out.println("Set projectile to inactive");
-            }*/
-
-
-
-
-        //System.out.println(projectiles.size());
-//        for (Projectile lProj : projectiles) {
-//            lProj.update(deltatime);
-//        }
 
     }
 
@@ -528,17 +492,7 @@ public abstract class Player extends GameObject {
 
             //System.out.println("Jumping");
             isExtraJumpReady = true;
-/*
-            final Timer timer = new Timer();
 
-            final TimerTask task = new TimerTask() {
-                @Override
-                public void run() {
-                                isExtraJumpReady = true;
-
-                }
-            };
-            timer.schedule(task, 100); // delay in milliseconds*/
 
         }
 
@@ -587,18 +541,6 @@ public abstract class Player extends GameObject {
         //System.out.println(getCurrentState());
         //System.out.println(isGrounded());
         return frame;
-/*
-        Batch batch = getBatch();
-        batch.begin();
-        if(isFacingRight()) {
-            batch.draw(frame, getX(), getY(), getWidth(), getHeight());
-        }
-        else {
-            batch.draw(frame, getX() + getWidth(), getY() + getHeight(), -getWidth(), getHeight());
-
-        }
-        */
-        // batch.end();
 
 
     }
