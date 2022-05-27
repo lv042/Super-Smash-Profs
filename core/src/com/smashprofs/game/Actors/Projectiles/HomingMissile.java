@@ -24,6 +24,7 @@ public class HomingMissile extends Projectile {
         // Deactivated for performance benefits
         //b2dbody.setAngularVelocity(10);
         this.targetPlayer = playerTarget;
+        sprite.flip(true, false);
     }
     @Override
     void initialMovement() {
@@ -37,5 +38,6 @@ public class HomingMissile extends Projectile {
         Vector2 tartgetPlayPos = targetPlayer.getPosition();
         Vector2 targetVector = new Vector2(tartgetPlayPos.x - b2dbody.getPosition().x, tartgetPlayPos.y - b2dbody.getPosition().y);
         b2dbody.setLinearVelocity(targetVector.nor().scl(0.1f));
+        sprite.setRotation(targetVector.angleDeg());
     }
 }
