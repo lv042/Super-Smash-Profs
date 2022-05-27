@@ -153,8 +153,10 @@ public class  Projectile extends GameObject {
     }
 
     public void destroy() {
-        world.destroyBody(b2dbody);
-
+        //world.destroyBody(b2dbody);
+        //sprite.setPosition(100000f, 100000f);
+        active = false;
+        sprite.getTexture().dispose();
         //destroy sprite
         //sprite.getTexture().dispose();
     }
