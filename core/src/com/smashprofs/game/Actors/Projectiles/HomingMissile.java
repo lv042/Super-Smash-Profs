@@ -5,13 +5,21 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.World;
 import com.smashprofs.game.Actors.Players.Player;
 
+import java.util.Random;
+
 public class HomingMissile extends Projectile {
 
     Vector2 targetVector = new Vector2();
     Player targetPlayer;
+    Random rand = new Random();
 
     public HomingMissile(World world, Player playerOrigin, Player playerTarget){
         super(world, playerOrigin, "Bullet" ,  new Texture("missile.png"));
+        userData = "Bullet#" + rand.nextInt(0,9999);
+
+        b2dbody.setUserData("Bullet#" + rand.nextInt(0, 9999));
+
+
         b2dbody.setFixedRotation(false);
         // Deactivated for performance benefits
         //b2dbody.setAngularVelocity(10);

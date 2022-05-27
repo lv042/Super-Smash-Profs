@@ -4,7 +4,7 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.physics.box2d.World;
 import com.smashprofs.game.Actors.Players.Player;
 
-import static jdk.nashorn.internal.runtime.regexp.joni.Syntax.Java;
+//import static jdk.nashorn.internal.runtime.regexp.joni.Syntax.Java;
 
 public class ThrowingStar extends Projectile {
     Random rand = new Random();
@@ -13,8 +13,8 @@ public class ThrowingStar extends Projectile {
     public ThrowingStar(World world, Player playerOrigin) {
         super(world, playerOrigin, "Null", new Texture("star.png"));
 
-        userData = "Star " + rand.nextInt(9999);
-        b2dbody.setUserData("Star " + rand.nextInt(9999));
+        userData = "Star#" + rand.nextInt(9999);
+        b2dbody.setUserData("Star#" + rand.nextInt(9999));
     }
 
     @Override
