@@ -26,6 +26,8 @@ public class CombatManager {
 
     public static ArrayList<Projectile> projectileArrayList = new ArrayList<Projectile>();
 
+    public static ArrayList<Projectile> projectilesToDestroy = new ArrayList<Projectile>();
+
 
     //private constructor to avoid client applications to use constructor
     private CombatManager() {
@@ -133,7 +135,16 @@ public class CombatManager {
 
     public void drawProjectiles(SpriteBatch batch){
         for (Projectile projectile: projectileArrayList) {
+            // VORSICHT!! Könnte mit dem FATAL ERROR zusammenhängen!
+//            if(projectile.active) {
+//                projectile.draw(batch);
+//            }
             projectile.draw(batch);
+
+            //if(projectilesToDestroy.contains(projectile)) {
+            //    projectile.sprite.setPosition(10000f, 10000f);
+            //}
+
         }
     }
 }
