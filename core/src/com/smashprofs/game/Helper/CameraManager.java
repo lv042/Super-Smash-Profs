@@ -38,6 +38,6 @@ public class CameraManager {
     public void updateCameraManager(Player playerOne, Player playerTwo){
         gameCamera.update();
         //dynamic camera -> please someone implement this into CameraManager im to lazy to do it now
-        Vector3 middleVector = new Vector3((playerOne.getPosition().x + playerTwo.getPosition().x)/2, 100 / PPM, 0);
+        Vector3 middleVector = new Vector3((playerOne.getPosition().x + playerTwo.getPosition().x)/2, 110 / PPM, 0);
         gameCamera.position.set(middleVector);}
 }
