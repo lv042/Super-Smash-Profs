@@ -9,8 +9,8 @@ public abstract class GameObject {
     public String userData; // <> userData is a string to identify the object in the game
 
 
-    public GameObject(World world, String userData) {
-        this.b2dbody = null; // cant be final because other classes cant change body
+    public GameObject(String userData) {
+        this.b2dbody = null; // can't be final because then other classes can't change body
         this.sprite = null;
         this.userData = userData;
     }
