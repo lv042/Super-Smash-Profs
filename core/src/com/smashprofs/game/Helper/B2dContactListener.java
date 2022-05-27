@@ -67,12 +67,13 @@ public class B2dContactListener implements ContactListener {
         return contactListener;
     }
 
-    public ArrayList<Body> bodiesToDestroy = new ArrayList<>();
+    public ArrayList<Body> bodiesToDestroy = new ArrayList<Body>();
 
 
 
     @Override
     public void beginContact(Contact contact) {
+
 
 
 

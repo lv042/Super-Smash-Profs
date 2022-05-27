@@ -52,7 +52,7 @@ public class MainMenuScreen implements Screen {
         batch.begin();
 
         batch.draw(bgPicture, 0, 0, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
-        batch.draw(logo, Gdx.graphics.getWidth() / 2f - 614f / zoomFactor, 700f / zoomFactor, 1228f / zoomFactor, 104f / zoomFactor);
+        batch.draw(logo, Gdx.graphics.getWidth() / 2f - 614f / zoomFactor, 630f / zoomFactor, 1228f / zoomFactor, 104f * 2.3f/ zoomFactor);
 
         // Button Area
         int x = Gdx.graphics.getWidth() / 2 - BUTTON_WIDTH / 2;

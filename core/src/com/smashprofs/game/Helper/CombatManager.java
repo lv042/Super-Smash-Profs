@@ -89,8 +89,9 @@ public class CombatManager {
         }
         if(playerTwo.isShooting()) {
             System.out.println("Bullet spawned");
-            ThrowingStar proj = new ThrowingStar(world, playerTwo);
-            //HomingMissle proj = new HomingMissle(world, playerTwo, playerOne);
+            //ThrowingStar proj = new ThrowingStar(world, playerTwo);
+            HomingMissile proj = new HomingMissile(world, playerTwo, playerOne);
+
 
             projectileArrayList.add(proj);
         }
@@ -115,7 +116,7 @@ public class CombatManager {
 
     private void updateProjectiles(float deltatime) {
         for (Projectile projectile: projectileArrayList) {
-            if(projectile.active) {
+            if(projectile.active && projectile.b2dbody.isActive() && projectile.isActive()) {
                 projectile.update(deltatime);
             }
 
@@ -139,11 +140,10 @@ public class CombatManager {
     public void drawProjectiles(SpriteBatch batch){
         for (Projectile projectile: projectileArrayList) {
             // VORSICHT!! Könnte mit dem FATAL ERROR zusammenhängen!
-            if(projectile.active) {
+            if(projectile.active && projectile.b2dbody.isActive() && projectile.isActive()) {
                 projectile.draw(batch);
             }
             // projectile.draw(batch);
-            System.out.println("Drawing projectile: " + projectile.isActive());
         }
     }
 }
