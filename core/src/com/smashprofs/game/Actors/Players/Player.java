@@ -627,14 +627,14 @@ public abstract class Player extends GameObject {
         float pushBack = 1f;
 
         //System.out.println(getB2dbody().getPosition());
-        if (getB2dbody().getPosition().x  > 7.5) {
+        if (getB2dbody().getPosition().x  > 8.5) {
 
             getB2dbody().setLinearVelocity(new Vector2(-pushBack, getB2dbody().getLinearVelocity().y + 0.1f));
             //lower gravity for some seconds :)g
             setGravity(startingGravity * 0.3f);
             return;
         }
-        if (getB2dbody().getPosition().x < 1) {
+        if (getB2dbody().getPosition().x < 3) {
             getB2dbody().setLinearVelocity(new Vector2(pushBack, getB2dbody().getLinearVelocity().y + 0.1f));
             //lower gravity for some seconds :)
             setGravity(startingGravity * 0.3f);
