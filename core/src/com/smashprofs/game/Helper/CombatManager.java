@@ -1,13 +1,16 @@
 package com.smashprofs.game.Helper;
 
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.World;
-import com.smashprofs.game.Actors.Bullet;
-import com.smashprofs.game.Actors.HomingMissle;
-import com.smashprofs.game.Actors.Player;
-import com.smashprofs.game.Actors.Projectile;
 
-import java.io.IOException;
+import com.smashprofs.game.Actors.Projectiles.HomingMissile;
+
+import com.smashprofs.game.Actors.Players.Player;
+import com.smashprofs.game.Actors.Projectiles.HomingMissile;
+import com.smashprofs.game.Actors.Projectiles.Projectile;
+import com.smashprofs.game.Actors.Projectiles.ThrowingStar;
+
 import java.util.ArrayList;
 
 public class CombatManager {
@@ -21,7 +24,7 @@ public class CombatManager {
 
     private static final CombatManager combatManager_INSTANCE = new CombatManager();
 
-    private ArrayList<Projectile> projectilesList = new ArrayList<Projectile>();
+    private ArrayList<Projectile> projectileArrayList = new ArrayList<Projectile>();
 
 
     //private constructor to avoid client applications to use constructor
@@ -38,7 +41,7 @@ public class CombatManager {
         //System.out.println(distanceBetweenPlayersLength);
 
 
-        //updateAllProjectiles(deltatime, world);
+        updateProjectiles(deltatime);
         if (distanceBetweenPlayersLength < playerOne.getAttackReach()) {
 
             float attackKnockback = 1.5f;
@@ -77,18 +80,17 @@ public class CombatManager {
         }
         if(playerOne.isShooting()){
             System.out.println("Bullet spawned ");
-            HomingMissle bullet = new HomingMissle(world, playerOne, playerTwo);
-            //projectilesList.add(bullet);
-            playerOne.shoot(bullet);
-            //System.out.println("origin : " + playerOne);
-            //System.out.println("target: " + playerTwo);
+            HomingMissile proj = new HomingMissile(world, playerOne, playerTwo);
+
+            projectileArrayList.add(proj);
 
         }
-        if(playerTwo.isShooting()){
+        if(playerTwo.isShooting()) {
             System.out.println("Bullet spawned");
-            HomingMissle bullet = new HomingMissle(world, playerTwo, playerOne);
-            //projectilesList.add(bullet);
-            playerTwo.shoot(bullet);
+            ThrowingStar proj = new ThrowingStar(world, playerTwo);
+            //HomingMissle proj = new HomingMissle(world, playerTwo, playerOne);
+
+            projectileArrayList.add(proj);
         }
 
         if (contactListener.isPlayerTwoGotShoot()) {
@@ -109,12 +111,14 @@ public class CombatManager {
 
     }
 
-/*    private void updateAllProjectiles(float deltatime, World world) {
-        for    (int i = 0; i < projectilesList.size(); i++) {
-            projectilesList.get(i).update(deltatime);
-
+    private void updateProjectiles(float deltatime) {
+        for (Projectile projectile: projectileArrayList) {
+            projectile.update(deltatime);
         }
-    }*/
+        System.out.println(projectileArrayList.size());
+    }
+
+
 
     public void attackPlayer(Player attacker, Player target, float attackKnockback , float yAttackKnockback){
         Vector2 attackVector = new Vector2(0, yAttackKnockback);
@@ -125,5 +129,11 @@ public class CombatManager {
         target.applyForces(attackVector.x, attackVector.y );
         target.setHP(target.getHP() - target.getAttackDamage());
         soundManager.playSound(target.getDamageSoundMp3());
+    }
+
+    public void drawProjectiles(SpriteBatch batch){
+        for (Projectile projectile: projectileArrayList) {
+            projectile.draw(batch);
+        }
     }
 }

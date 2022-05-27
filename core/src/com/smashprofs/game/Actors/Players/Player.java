@@ -42,7 +42,6 @@ public abstract class Player extends GameObject {
     private final SoundManager soundManager;
     private final String userData;
     public float damping = 0.9995f; //the closer this value is to zero the more the player will slow down
-    public ArrayList<Projectile> projectiles;
     public ArrayList<Controller> controllers;
     InputState currentInputState;
     float stateTime = 0;
@@ -79,7 +78,7 @@ public abstract class Player extends GameObject {
     private final Sprite sprite = new Sprite(); //Sprite of the GameObject
 
     public Player(World world, InputState inputState, Vector2 spawnpoint, String playerName, String userData, Texture playerStandTex, Texture playerRunTex, Texture playerJumpTex) {
-        super(world, userData);
+        super(userData);
 
 
         this.userData = userData;
@@ -101,12 +100,11 @@ public abstract class Player extends GameObject {
         run.setPlayMode(Animation.PlayMode.LOOP);
 
         TextureRegion[] jumping = TextureRegion.split(playerJump, 100, 100)[0];
-        jump = new Animation(1f, running[0], running[3]); //Originaly -> jump = new Animation(0.15f, running[0], jumping[1], jumping[2]); -> but jump animation looks like poop
+        jump = new Animation(1f, running[0], running[3]); //Originally -> jump = new Animation(0.15f, running[0], jumping[1], jumping[2]); -> but jump animation looks like poop
         jump.setPlayMode(Animation.PlayMode.LOOP);
 
         this.currentState = State.STANDING;
 
-        projectiles = new ArrayList<Projectile>();
 
 
         sprite.setBounds(0, 15, 25 / PPM, 25 / PPM);
@@ -179,14 +177,14 @@ public abstract class Player extends GameObject {
         setAnimationPosition();
 
         //System.out.println(projectiles.size());
-        for (Projectile projectile : projectiles) {
-            projectile.update(deltatime);
-            // -> Geht irgendwie nicht. Wählt nicht den richtigen Body aus.
-            // Geht aber mit:
-            Body projectileBody = projectile.getBody();
-            Sprite projectileSprite = projectile.getSprite();
-
-            // setBounds funktioniert, der Rest nicht.
+//        for (Projectile projectile : projectiles) {
+//            projectile.update(deltatime);
+//            // -> Geht irgendwie nicht. Wählt nicht den richtigen Body aus.
+//            // Geht aber mit:
+//            Body projectileBody = projectile.getBody();
+//            Sprite projectileSprite = projectile.getSprite();
+//
+//            // setBounds funktioniert, der Rest nicht.
 
             //projectile.setOrigin(projectileBody.getPosition().x - projectile.getBoundingRectangle().getWidth()/2, projectileBody.getPosition().y - projectile.getBoundingRectangle().getHeight()/2);
             //projectile.setBounds(projectileBody.getPosition().x - ((projectileSprite.getBoundingRectangle().getWidth() / 2)*PPM)/PPM, projectileBody.getPosition().y - ((projectileSprite.getBoundingRectangle().getHeight() / 2)*PPM) /PPM, 32/PPM, 32/PPM);
@@ -208,25 +206,18 @@ public abstract class Player extends GameObject {
             }*/
 
 
-        }
+
 
         //System.out.println(projectiles.size());
-        for (Projectile lProj : projectiles) {
-            lProj.update(deltatime);
-        }
+//        for (Projectile lProj : projectiles) {
+//            lProj.update(deltatime);
+//        }
 
     }
 
 
     public void draw(Batch batch) {
         sprite.draw(batch);
-        for (Projectile projectile : projectiles) {
-            if (projectile.isActive()) {
-                projectile.draw(batch);
-                //System.out.println("Projectile drawn from ArrayList");
-            }
-
-        }
     }
 
     private void touchingTiles() {
@@ -689,7 +680,7 @@ public abstract class Player extends GameObject {
         //sets player velocity to 0 if they are at the edge of the map
         float pushBack = 1f;
 
-        System.out.println(getB2dbody().getPosition());
+        //System.out.println(getB2dbody().getPosition());
         if (getB2dbody().getPosition().x  > 7.5) {
 
             getB2dbody().setLinearVelocity(new Vector2(-pushBack, getB2dbody().getLinearVelocity().y + 0.1f));
@@ -704,9 +695,7 @@ public abstract class Player extends GameObject {
         }
     }
 
-    public void shoot(HomingMissle bullet) {
-        projectiles.add(bullet);
-    }
+
 
     public enum InputState {
         WASD, ARROWS

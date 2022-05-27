@@ -1,16 +1,13 @@
 package com.smashprofs.game.Helper;
 
-import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.math.Vector2;
-import com.badlogic.gdx.physics.box2d.World;
-import com.smashprofs.game.Actors.Alex;
-import com.smashprofs.game.Actors.Luca;
-import com.smashprofs.game.Actors.Maurice;
-import com.smashprofs.game.Actors.Player;
+import com.smashprofs.game.Actors.Players.Player;
+import com.smashprofs.game.Actors.Players.Alex;
+import com.smashprofs.game.Actors.Players.Luca;
+import com.smashprofs.game.Actors.Players.Maurice;
 import com.smashprofs.game.Screens.PlayScreen;
 
-import static com.smashprofs.game.Actors.Player.PPM;
-import static com.smashprofs.game.Screens.PlayScreen.world;
+import static com.smashprofs.game.Actors.Players.Player.PPM;
 
 public class PlayerFactory {
 

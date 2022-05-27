@@ -9,8 +9,7 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
 import com.badlogic.gdx.math.Matrix4;
-import com.smashprofs.game.Actors.Alex;
-import com.smashprofs.game.Actors.Luca;
+import com.smashprofs.game.Actors.Players.Player;
 import com.smashprofs.game.Game;
 import com.smashprofs.game.Helper.*;
 import com.badlogic.gdx.Gdx;
@@ -21,18 +20,14 @@ import com.badlogic.gdx.maps.MapObject;
 import com.badlogic.gdx.maps.objects.RectangleMapObject;
 import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.maps.tiled.TmxMapLoader;
-import com.badlogic.gdx.maps.tiled.renderers.OrthoCachedTiledMapRenderer;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.*;
 import com.badlogic.gdx.utils.viewport.FillViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
-import com.smashprofs.game.Actors.Player;
 import com.smashprofs.game.Scenes.Hud;
 
-import java.io.IOException;
-
-import static com.smashprofs.game.Actors.Player.PPM;
+import static com.smashprofs.game.Actors.Players.Player.PPM;
 
 public class PlayScreen implements Screen {
 
@@ -62,7 +57,7 @@ public class PlayScreen implements Screen {
     private OrthographicCamera gamecamera; //set by camera manager
 
     //batch and game world
-    public SpriteBatch batch;
+    public static SpriteBatch batch;
 
     //Box2D
     public static World world;
@@ -88,6 +83,9 @@ public class PlayScreen implements Screen {
     }
 
 
+    public static SpriteBatch getBatch() {
+        return batch;
+    }
 
     public void update(float deltatime) {
 
@@ -104,11 +102,11 @@ public class PlayScreen implements Screen {
         //updates the physics 60 times per second
         world.step(1/60f, 6, 2); //higher iterations make physics more accurate but also way slower
 
-        contactListener.update();
-
-        if(contactListener.bodiesToDestroy.size > 0){
-            contactListener.bodiesToDestroy.clear();
-        }
+//        //contactListener.update();
+//
+//        if(contactListener.bodiesToDestroy.size > 0){
+//            contactListener.bodiesToDestroy.clear();
+//        }
 
         viewport.setScreenPosition(0, 0);
         //debug
@@ -231,6 +229,7 @@ public class PlayScreen implements Screen {
 
         playerOne.draw(batch);
         playerTwo.draw(batch);
+        combatManager.drawProjectiles(batch);
 
         final Sprite sprite;
         final Body body;

@@ -2,9 +2,9 @@ package com.smashprofs.game.Helper;
 
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.math.Vector3;
-import com.smashprofs.game.Actors.Player;
+import com.smashprofs.game.Actors.Players.Player;
 
-import static com.smashprofs.game.Actors.Player.PPM;
+import static com.smashprofs.game.Actors.Players.Player.PPM;
 
 public class CameraManager {
 

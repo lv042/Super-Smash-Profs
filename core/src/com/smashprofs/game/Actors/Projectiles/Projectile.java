@@ -2,32 +2,28 @@ package com.smashprofs.game.Actors;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
-import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.Sprite;
-import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Matrix4;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.*;
+import com.smashprofs.game.Actors.GameObject;
 import com.smashprofs.game.Helper.CameraManager;
 
-import static com.smashprofs.game.Actors.Player.PPM;
+import static com.smashprofs.game.Actors.Players.Player.PPM;
 
-public class  Projectile extends GameObject{
+public class  Projectile extends GameObject {
     private BodyDef bdef;
     public Body b2dbody;
     private CameraManager cameraManager = CameraManager.getCameraManager_INSTANCE();
-    private Player originPlayer;
+    private com.smashprofs.game.Actors.Players.Player originPlayer;
 
     private Vector2 projectileSpawnpoint;
-    private double rotation = 0;
+    public double rotation = 0;
 
-    String userData = "JOeMama";
 
-    OrthographicCamera camera;
 
     public Boolean active = true;
     World world;
@@ -39,7 +35,6 @@ public class  Projectile extends GameObject{
         this.userData = userData;
         this.world = world;
         this.originPlayer = originPlayer;
-        //this.camera = camera;
 
         //setTexture(new Texture("prettyplayer.png"));
         //setTexture(new Texture(Gdx.files.internal("prettyplayer.png")));
@@ -53,11 +48,11 @@ public class  Projectile extends GameObject{
 
 
 
-        moveProjectile();
+        initialMovement();
 
     }
 
-    void moveProjectile() {
+    void initialMovement() {
         b2dbody.setLinearVelocity(new Vector2(originPlayer.getIsFacingRightAxe() * 1.2f, 0));
     }
 
@@ -104,7 +99,7 @@ public class  Projectile extends GameObject{
     }
 
     public void update(float delta) {
-        System.out.println("!!!! projectile update");
+        //System.out.println("!!!! projectile update");
         //this.setPosition(b2dbody.getPosition().x - getWidth() / 2, b2dbody.getPosition().y - getHeight() / 2);
 
         //setBounds(b2dbody.getPosition().x - getWidth() / 2/PPM, b2dbody.getPosition().y - getHeight() / 2 /PPM, getTexture().getWidth()/PPM, getTexture().getHeight()/PPM );

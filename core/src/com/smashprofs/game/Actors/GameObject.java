@@ -4,9 +4,9 @@ import com.badlogic.gdx.physics.box2d.*;
 
 
 public abstract class GameObject {
-    public Body b2dbody;
-    public Sprite sprite;
-    final public String userData;
+    public Body b2dbody;    // Can't be final because of the change in child classes
+    public Sprite sprite;   // <>
+    public String userData; // <> userData is a string to identify the object in the game
 
 
     public GameObject(World world, String userData) {
@@ -16,8 +16,7 @@ public abstract class GameObject {
     }
 
     public void update(float delta) {
-        System.out.println("GameObject updated");
-
+        System.out.println("GameObject updated"); // TODO: alex
     }
 
     // Sprite related methods:dw

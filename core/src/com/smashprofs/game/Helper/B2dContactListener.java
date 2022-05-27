@@ -11,7 +11,7 @@ import java.util.ArrayList;
 
 public class B2dContactListener implements ContactListener {
 
-    public Array<Body> bodiesToDestroy = new Array<Body>();
+    //public Array<Body> bodiesToDestroy = new Array<Body>();
     boolean PlayerOneGotShoot = false;
     boolean PlayerTwoGotShoot = false;
     boolean BulletHit = false;
@@ -20,12 +20,12 @@ public class B2dContactListener implements ContactListener {
 
     boolean P2NotTouchingTile = false;
 
-    public void update() {
-        for (Body body : bodiesToDestroy) {
-            body.setActive(false);
-
-        }
-    }
+//    public void update() {
+//        for (Body body : bodiesToDestroy) {
+//            body.setActive(false);
+//
+//        }
+//    }
 
     public boolean isP1NotTouchingTile() {
 
@@ -74,14 +74,14 @@ public class B2dContactListener implements ContactListener {
         if("PlayerOne".equals(contact.getFixtureA().getBody().getUserData()) && "Bullet".equals(contact.getFixtureB().getBody().getUserData())) {
             PlayerOneGotShoot = true;
             contact.getFixtureB().getBody().getUserData().toString().startsWith("Bullet");
-            bodiesToDestroy.add(contact.getFixtureB().getBody());
+            //bodiesToDestroy.add(contact.getFixtureB().getBody());
 
             // System.out.println("Fixture B: " + contact.getFixtureB().getBody().getUserData());
         }
 
         if("PlayerTwo".equals(contact.getFixtureA().getBody().getUserData()) && "Bullet".equals(contact.getFixtureB().getBody().getUserData())) {
             PlayerTwoGotShoot = true;
-            bodiesToDestroy.add(contact.getFixtureB().getBody());
+           // bodiesToDestroy.add(contact.getFixtureB().getBody());
         }
 
 
