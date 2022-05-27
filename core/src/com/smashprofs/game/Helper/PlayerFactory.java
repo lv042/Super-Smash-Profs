@@ -5,6 +5,7 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.World;
 import com.smashprofs.game.Actors.Alex;
 import com.smashprofs.game.Actors.Luca;
+import com.smashprofs.game.Actors.Maurice;
 import com.smashprofs.game.Actors.Player;
 import com.smashprofs.game.Screens.PlayScreen;
 
@@ -67,8 +68,10 @@ public class PlayerFactory {
                 return new Alex(PlayScreen.getWorld(), currentInputState, currentSpawnPoint, "Alex Boss", userData);
 //            case Leo:
 //                return new Leo(3);
-//            case Maurice:
-//                return new Maurice(4);
+            case Maurice:
+                playersCreated++;
+                System.out.println("Created MauricePlayer");
+                return new Maurice(PlayScreen.getWorld(), currentInputState, currentSpawnPoint, "Maurice Boss", userData);
 //            case Jens:
 //                return new Jens(5);
 //            case Martin:

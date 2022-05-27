@@ -157,7 +157,7 @@ public class PlayScreen implements Screen {
         //playerOne = new Player(world, Player.InputState.WASD, playerOneSpawnPoint, "Alex Boss", "PlayerOne");
         playerOne = playerFactory.getPlayer(PlayerTypes.Alex);
         //playerTwo = new Player(world, Player.InputState.ARROWS, playerTwoSpawnPoint, "Jens Huhn", "PlayerTwo");
-        playerTwo = playerFactory.getPlayer(PlayerTypes.Luca);
+        playerTwo = playerFactory.getPlayer(PlayerTypes.Maurice);
 
         contactListener = B2dContactListener.getContactListener_INSTANCE();
         world.setContactListener(contactListener);
@@ -222,7 +222,7 @@ public class PlayScreen implements Screen {
 
 
         //render our tiledmap debug outlines to screen
-        //box2DDebugRenderer.render(world, gamecamera.combined);
+        box2DDebugRenderer.render(world, gamecamera.combined);
 
         //batch.setProjectionMatrix(cameraManager.getGameCamera().combined);
         batch.setProjectionMatrix(gamecamera.combined);
