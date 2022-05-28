@@ -1,93 +1,125 @@
 package com.smashprofs.game.Screens;
 
+
+import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
+import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.smashprofs.game.Game;
+import com.badlogic.gdx.scenes.scene2d.Actor;
+import com.badlogic.gdx.scenes.scene2d.InputEvent;
+import com.badlogic.gdx.scenes.scene2d.InputListener;
+import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.scenes.scene2d.ui.Image;
+import com.badlogic.gdx.scenes.scene2d.ui.Table;
+import com.badlogic.gdx.scenes.scene2d.utils.SpriteDrawable;
+import com.badlogic.gdx.utils.ScreenUtils;
+import com.badlogic.gdx.utils.viewport.FitViewport;
+import com.badlogic.gdx.utils.viewport.Viewport;
 
 public class MainMenuScreen implements Screen {
-    private static final int BUTTON_WIDTH = 300, BUTTON_HEIGHT = 100, PLAY_Y = 400, EXIT_Y = 200;
 
-    private float zoomFactor = 1.0f;
-    private float timer = 0.0f;
-
-    Texture playButtonActive;
-    Texture playButtonInactive;
-    Texture exitButtonActive;
-    Texture exitButtonInactive;
-    Texture bgPicture;
-    Texture logo;
-
-    Game game = null;
-    SpriteBatch batch;
-
+    private Game game;
+    private SpriteBatch batch;
+    private Viewport viewport;
+    private Stage stage;
+    private OrthographicCamera camera;
+    private Image playButton, exitButton, logo;
+    private Texture playButtonInactive, playButtonActive, exitButtonInactive, exitButtonActive;
+    private Table mainTable;
 
     public MainMenuScreen(Game game) {
-        playButtonActive = new Texture("mainmenu/buttons/playButtonActive.png");
-        playButtonInactive = new Texture("mainmenu/buttons/playButtonInactive.png");
-        exitButtonActive = new Texture("mainmenu/buttons/exitButtonActive.png");
-        exitButtonInactive = new Texture("mainmenu/buttons/exitButtonInactive.png");
-        bgPicture = new Texture("mainmenu/bgmenu.png");
-        logo = new Texture("mainmenu/ssp.png");
-
-        this.batch = new SpriteBatch();
         this.game = game;
+        this.batch = new SpriteBatch();
+        this.camera = new OrthographicCamera();
+        this.viewport = new FitViewport(1920, 1080, camera);
+        this.stage = new Stage(this.viewport, this.batch);
+
+        playButtonInactive = new Texture("mainmenu/buttons/playButtonInactive.png");
+        playButtonActive = new Texture("mainmenu/buttons/playButtonActive.png");
+        exitButtonInactive = new Texture("mainmenu/buttons/exitButtonInactive.png");
+        exitButtonActive = new Texture("mainmenu/buttons/exitButtonActive.png");
+        mainTable = new Table();
     }
 
     @Override
     public void show() {
+        Gdx.input.setInputProcessor(stage);
 
+        //Create Table
+        //Set table to fill stage
+        mainTable.setFillParent(true);
+        //Set alignment of contents in the table.
+        mainTable.top();
+
+        //Create buttons
+        playButton = new Image(playButtonInactive);
+        exitButton = new Image(exitButtonInactive);
+        logo = new Image(new Texture("mainmenu/ssp.png"));
+
+        //Add listeners to buttons
+        playButton.addListener(new InputListener() {
+            @Override
+            public void enter(InputEvent event, float x, float y, int pointer, Actor actor) {
+
+                //playButton = new Image(playButtonActive);
+                playButton.setDrawable(new SpriteDrawable(new Sprite(playButtonActive)));
+                if (Gdx.input.isButtonJustPressed(0)) {
+                    game.setScreen(new PlayScreen((com.smashprofs.game.Game) game));
+                }
+            }
+
+            @Override
+            public void exit(InputEvent event, float x, float y, int pointer, Actor actor) {
+                playButton.setDrawable(new SpriteDrawable(new Sprite(playButtonInactive)));
+            }
+        });
+
+        exitButton.addListener(new InputListener() {
+            @Override
+            public void enter(InputEvent event, float x, float y, int pointer, Actor actor) {
+                exitButton.setDrawable(new SpriteDrawable(new Sprite(exitButtonActive)));
+                if (Gdx.input.isButtonJustPressed(0)) {
+                    Gdx.app.exit();
+                }
+            }
+
+            @Override
+            public void exit(InputEvent event, float x, float y, int pointer, Actor actor) {
+                exitButton.setDrawable(new SpriteDrawable(new Sprite(exitButtonInactive)));
+            }
+        });
+
+        mainTable.add(logo).maxSize(1228 , 104).pad(200).padBottom(200);
+        mainTable.row();
+        mainTable.add(playButton).padBottom(100).maxSize(300, 100);
+        mainTable.row();
+        mainTable.add(exitButton).padBottom(100).maxSize(300, 100);
+
+        //Add table to stage
+        mainTable.setDebug(false);
+        stage.addActor(mainTable);
     }
 
     @Override
     public void render(float delta) {
-        Gdx.gl.glClearColor(0, 0, 0, 1);
-        Gdx.gl.glClear(Gdx.gl.GL_COLOR_BUFFER_BIT);
-
-        timer += 0.05f;
-        zoomFactor = 1 + (float) Math.cos(timer) / 50;
-
-        boolean play = false, exit = false;
-        batch.begin();
-
-        batch.draw(bgPicture, 0, 0, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
-        batch.draw(logo, Gdx.graphics.getWidth() / 2f - 614f / zoomFactor, 632f / zoomFactor, 1228f / zoomFactor, 104f * 2.3f/ zoomFactor);
-
-        // Button Area
-        int x = Gdx.graphics.getWidth() / 2 - BUTTON_WIDTH / 2;
-        if (Gdx.input.getX() < x + BUTTON_WIDTH && Gdx.input.getX() > x && Gdx.graphics.getHeight() - Gdx.input.getY() < PLAY_Y + BUTTON_HEIGHT && Gdx.graphics.getHeight() - Gdx.input.getY() > PLAY_Y) {
-            batch.draw(playButtonActive, x, PLAY_Y, BUTTON_WIDTH, BUTTON_HEIGHT);
-            play = true;
-        } else {
-            batch.draw(playButtonInactive, x, PLAY_Y, BUTTON_WIDTH, BUTTON_HEIGHT);
-            play = false;
-        }
-
-        if (Gdx.input.getX() < x + BUTTON_WIDTH && Gdx.input.getX() > x && Gdx.graphics.getHeight() - Gdx.input.getY() < EXIT_Y + BUTTON_HEIGHT && Gdx.graphics.getHeight() - Gdx.input.getY() > EXIT_Y) {
-            batch.draw(exitButtonActive, x, EXIT_Y, BUTTON_WIDTH, BUTTON_HEIGHT);
-            exit = true;
-        } else {
-            batch.draw(exitButtonInactive, x, EXIT_Y, BUTTON_WIDTH, BUTTON_HEIGHT);
-            exit = false;
-        }
-
-
-        batch.end();
-
-        //Button Press
-        if (play && Gdx.input.isButtonJustPressed(0) || Gdx.input.isKeyJustPressed(66)) {
-            game.setScreen(new PlayScreen(game));
-
-        } else if (exit && Gdx.input.isButtonJustPressed(0)) {
-            Gdx.app.exit();
-        }
+        ScreenUtils.clear(Color.CLEAR);
+        this.stage.getBatch().begin();
+        this.stage.getBatch().draw(new Texture("mainmenu/bgmenu.png"), 0, 0, 1920, 1080);
+        this.stage.getBatch().end();
+        this.stage.act();
+        this.stage.draw();
 
     }
 
     @Override
     public void resize(int width, int height) {
-
+        this.viewport.update(width, height);
+        camera.position.set(camera.viewportWidth / 2, camera.viewportHeight / 2, 0);
+        camera.update();
     }
 
     @Override
@@ -107,8 +139,7 @@ public class MainMenuScreen implements Screen {
 
     @Override
     public void dispose() {
-
-
+        this.stage.dispose();
+        this.batch.dispose();
     }
-
 }

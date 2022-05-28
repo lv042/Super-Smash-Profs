@@ -1,103 +1,125 @@
 package com.smashprofs.game.Screens;
-
+import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.g2d.BitmapFont;
+import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.scenes.scene2d.ui.Label;
+import com.badlogic.gdx.scenes.scene2d.Actor;
+import com.badlogic.gdx.scenes.scene2d.InputEvent;
+import com.badlogic.gdx.scenes.scene2d.InputListener;
+import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
-import com.smashprofs.game.Game;
-import org.w3c.dom.Text;
+import com.badlogic.gdx.scenes.scene2d.utils.SpriteDrawable;
+import com.badlogic.gdx.utils.ScreenUtils;
+import com.badlogic.gdx.utils.viewport.FitViewport;
+import com.badlogic.gdx.utils.viewport.Viewport;
 
 public class WinScreen implements Screen {
-    private static final int BUTTON_WIDTH = 300, BUTTON_HEIGHT = 100, MENU_Y = 200;
 
-    private float zoomFactor = 1.0f;
-    private float timer = 0.0f;
+    private Game game;
+    private SpriteBatch batch;
+    private Viewport viewport;
+    private Stage stage;
+    private OrthographicCamera camera;
+    private Image menuButton, pokal, winner;
+    private Texture menuButtonInactive, menuButtonActive, player1,player2;
+    private Table mainTable;
     private static String win;
 
-    Texture menuButtonActive;
-    Texture menuButtonInactive;
-    Texture bgPicture;
-    Texture pokal;
-    Texture player1;
-    Texture player2;
-
-    Game game = null;
-    SpriteBatch batch;
-
-
     public WinScreen(Game game) {
-
-        menuButtonActive = new Texture("winscreen/menuButtonActive.png");
-        menuButtonInactive = new Texture("winscreen/menuButtonInactive.png");
-        bgPicture = new Texture("winscreen/winbg.png");
-        pokal = new Texture("winscreen/pokal.png");
-        player1 = new Texture("winscreen/player1.png");
-        player2 = new Texture("winscreen/player2.png");
-
-        this.batch = new SpriteBatch();
         this.game = game;
-    }
+        this.batch = new SpriteBatch();
+        this.camera = new OrthographicCamera();
+        this.viewport = new FitViewport(1920, 1080, camera);
+        this.stage = new Stage(this.viewport, this.batch);
 
+        menuButtonInactive = new Texture("winscreen/menuButtonInactive.png");
+        menuButtonActive = new Texture("winscreen/menuButtonActive.png");
+        player1= new Texture("winscreen/player1.png");
+        player2 = new Texture("winscreen/player2.png");
+        mainTable = new Table();
+    }
 
     @Override
     public void show() {
+        Gdx.input.setInputProcessor(stage);
 
+        //Create Table
+        //Set table to fill stage
+        mainTable.setFillParent(true);
+        //Set alignment of contents in the table.
+        mainTable.top();
+
+        //Create buttons
+        menuButton = new Image(menuButtonInactive);
+        pokal = new Image(new Texture("winscreen/pokal.png"));
+        //default winner
+        winner = new Image(player2);
+
+        //Add listeners to buttons
+        menuButton.addListener(new InputListener() {
+            @Override
+            public void enter(InputEvent event, float x, float y, int pointer, Actor actor) {
+
+                menuButton.setDrawable(new SpriteDrawable(new Sprite(menuButtonActive)));
+                if (Gdx.input.isButtonJustPressed(0)) {
+                    game.setScreen(new MainMenuScreen(game));
+                }
+            }
+
+            @Override
+            public void exit(InputEvent event, float x, float y, int pointer, Actor actor) {
+                menuButton.setDrawable(new SpriteDrawable(new Sprite(menuButtonInactive)));
+            }
+        });
+
+        //if p1 wins
+       if ("Player 2".equals(win))
+        {
+            winner.setDrawable(new SpriteDrawable(new Sprite(player1)));
+        }
+
+
+        mainTable.add(pokal).maxSize(290 , 360 ).pad(100).padBottom(50);
+        mainTable.row();
+        mainTable.add(winner).padBottom(100).maxSize(600, 200);
+        mainTable.row();
+        mainTable.add(menuButton).padBottom(100).maxSize(300, 100);
+
+        //Add table to stage
+        mainTable.setDebug(false);
+        stage.addActor(mainTable);
     }
 
-    @Override
-    public void render(float delta) {
-        Gdx.gl.glClearColor(0, 0, 0, 1);
-        Gdx.gl.glClear(Gdx.gl.GL_COLOR_BUFFER_BIT);
-
-        timer += 0.05f;
-        zoomFactor = 1 + (float) Math.cos(timer) / 50;
-
-        boolean exit = false;
-        batch.begin();
-
-        batch.draw(bgPicture, 0, 0, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
-        batch.draw(pokal, Gdx.graphics.getWidth() / 2f -320f / zoomFactor, 400f , 740f / zoomFactor, 580f / zoomFactor);
-
-        // Button Area
-        int x = Gdx.graphics.getWidth() / 2 - BUTTON_WIDTH / 2;
-        if (Gdx.input.getX() < x + BUTTON_WIDTH && Gdx.input.getX() > x && Gdx.graphics.getHeight() - Gdx.input.getY() < MENU_Y + BUTTON_HEIGHT && Gdx.graphics.getHeight() - Gdx.input.getY() > MENU_Y) {
-            batch.draw(menuButtonActive, x, MENU_Y, BUTTON_WIDTH, BUTTON_HEIGHT);
-            exit = true;
-        } else {
-            batch.draw(menuButtonInactive, x, MENU_Y, BUTTON_WIDTH, BUTTON_HEIGHT);
-            exit = false;
-        }
-
-        if(win.equals("Player 1"))
-        {
-            batch.draw(player1, Gdx.graphics.getWidth() / 2f -150f / zoomFactor, 350f , 300f / zoomFactor, 100f / zoomFactor);
-        }
-        else if (win.equals("Player 2"))
-        {
-            batch.draw(player2, Gdx.graphics.getWidth() / 2f -150f / zoomFactor, 350f , 300f / zoomFactor, 100f / zoomFactor);
-        }
-
-        batch.end();
-
-        //Button Press
-        if (exit && Gdx.input.isButtonJustPressed(0)) {
-            game.setScreen(new MainMenuScreen(game));
-        }
-
-    }
 
     public static void setWinner(java.lang.String winner)
     {
-    win= winner;
+        win= winner;
+    }
+
+
+
+    @Override
+    public void render(float delta) {
+        ScreenUtils.clear(Color.CLEAR);
+        this.stage.getBatch().begin();
+        this.stage.getBatch().draw(new Texture("winscreen/winbg.png"), 0, 0, 1920, 1080);
+        this.stage.getBatch().end();
+        this.stage.act();
+        this.stage.draw();
+
+
     }
 
     @Override
     public void resize(int width, int height) {
-
+        this.viewport.update(width, height);
+        camera.position.set(camera.viewportWidth / 2, camera.viewportHeight / 2, 0);
+        camera.update();
     }
 
     @Override
@@ -117,8 +139,10 @@ public class WinScreen implements Screen {
 
     @Override
     public void dispose() {
-
-
+        this.stage.dispose();
+        this.batch.dispose();
     }
-
 }
+
+
+
