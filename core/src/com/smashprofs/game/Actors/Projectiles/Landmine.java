@@ -80,14 +80,15 @@ public class Landmine extends Projectile {
         return frame;
     }
 
-    private void setCurrentState() {
+    public void setCurrentState(State state) {
         // TODO: Implement logic when to set 
-        if(!playerInDetonationRadius) {
-            this.currentState = State.WAITING;
-        }
-        else if(playerInDetonationRadius) {
-            this.currentState = State.EXPLODING;
-        }
+//        if(!playerInDetonationRadius) {
+//            this.currentState = State.WAITING;
+//        }
+//        else if(playerInDetonationRadius) {
+//            this.currentState = State.EXPLODING;
+//        }
+        this.currentState = state;
     }
 
 }
