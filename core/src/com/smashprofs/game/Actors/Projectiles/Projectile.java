@@ -12,12 +12,13 @@ import com.badlogic.gdx.physics.box2d.*;
 import com.smashprofs.game.Actors.GameObject;
 import com.smashprofs.game.Helper.CameraManager;
 import com.smashprofs.game.Actors.Players.Player;
+import com.smashprofs.game.Screens.PlayScreen;
 
 import static com.smashprofs.game.Actors.Players.Player.PPM;
 
 public class  Projectile extends GameObject {
     private BodyDef bdef;
-    public Body b2dbody;
+    // public Body b2dbody;
     private CameraManager cameraManager = CameraManager.getCameraManager_INSTANCE();
     private com.smashprofs.game.Actors.Players.Player originPlayer;
 
@@ -26,17 +27,16 @@ public class  Projectile extends GameObject {
 
 
 
-    public Boolean active = true;
+    public Boolean active;
     World world;
 
     public Projectile(World world, Player originPlayer, String userData, Texture projectileTexture) {
         super(userData);
         sprite = new Sprite(projectileTexture);
-
+        this.active = true;
         this.userData = userData;
         this.world = world;
         this.originPlayer = originPlayer;
-
         //setTexture(new Texture("prettyplayer.png"));
         //setTexture(new Texture(Gdx.files.internal("prettyplayer.png")));
 
@@ -103,13 +103,6 @@ public class  Projectile extends GameObject {
 
         sprite.setPosition(b2dbody.getPosition().x - sprite.getWidth() / 2f, b2dbody.getPosition().y - sprite.getHeight() / 2f);
 
-        // Toggle Projectile activity state based on its body's active state
-        if(b2dbody.isActive()){
-            active = true;
-        }
-        else if (!b2dbody.isActive()){
-            active = false;
-        }
 
         //rotation += 0.8f;
         //setPosition(b2dbody.getPosition().x - getWidth() / 2/PPM, b2dbody.getPosition().y - getHeight() / 2 /PPM);
@@ -117,6 +110,7 @@ public class  Projectile extends GameObject {
         sprite.setRotation((float) rotation);
 
 
+        System.out.println("Projectile b2dBody userData: " + b2dbody.getUserData());
     }
 
     @Override
@@ -149,14 +143,16 @@ public class  Projectile extends GameObject {
     }
 
     public Body getBody() {
-        return b2dbody;
+        return this.b2dbody;
     }
 
     public void destroy() {
         //world.destroyBody(b2dbody);
         //sprite.setPosition(100000f, 100000f);
-        active = false;
+        //active = false;
+
         sprite.getTexture().dispose();
+        System.out.println("Disposed projectile texture via .destroy()");
         //destroy sprite
         //sprite.getTexture().dispose();
     }

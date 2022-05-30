@@ -17,9 +17,10 @@ public class HomingMissile extends Projectile {
 
     public HomingMissile(World world, Player playerOrigin, Player playerTarget){
         super(world, playerOrigin, "Bullet" ,  new Texture("missile.png"));
-        userData = "Bullet#" + rand.nextInt(9999);
 
-        b2dbody.setUserData("Bullet#" + rand.nextInt(9999));
+        int randInt = rand.nextInt(9999);
+        userData = "Bullet#" + randInt;
+        b2dbody.setUserData("Bullet#" + randInt);
 
 
         b2dbody.setFixedRotation(false);

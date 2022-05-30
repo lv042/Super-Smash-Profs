@@ -4,12 +4,14 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.World;
 
+import com.badlogic.gdx.utils.DelayedRemovalArray;
 import com.smashprofs.game.Actors.Projectiles.HomingMissile;
 
 import com.smashprofs.game.Actors.Players.Player;
 import com.smashprofs.game.Actors.Projectiles.HomingMissile;
 import com.smashprofs.game.Actors.Projectiles.Projectile;
 import com.smashprofs.game.Actors.Projectiles.ThrowingStar;
+import com.smashprofs.game.Screens.PlayScreen;
 
 import java.util.ArrayList;
 
@@ -24,9 +26,8 @@ public class CombatManager {
 
     private static final CombatManager combatManager_INSTANCE = new CombatManager();
 
-    public static ArrayList<Projectile> projectileArrayList = new ArrayList<Projectile>();
+    public static DelayedRemovalArray<Projectile> projectileArrayList = new DelayedRemovalArray<>();
 
-    public static ArrayList<Projectile> projectilesToDestroy = new ArrayList<Projectile>();
 
 
     //private constructor to avoid client applications to use constructor
@@ -116,10 +117,21 @@ public class CombatManager {
 
     private void updateProjectiles(float deltatime) {
         for (Projectile projectile: projectileArrayList) {
-            if(projectile.active && projectile.b2dbody.isActive() && projectile.isActive()) {
-                projectile.update(deltatime);
-            }
 
+            projectile.update(deltatime);
+            System.out.println("Is active before loop: " + projectile.active);
+            if(!projectile.active) {
+                System.out.println("Trying to remove body");
+                projectile.destroyBody();
+                projectileArrayList.removeValue(projectile, true);
+            }
+            else if(projectile.getBody().getUserData().equals("Destroyed")){
+
+                projectile.active = false;
+                System.out.println("Projectile was set to inactive");
+                System.out.println("Is active: " + projectile.active);
+
+            }
         }
         //System.out.println(projectileArrayList.size());
     }
