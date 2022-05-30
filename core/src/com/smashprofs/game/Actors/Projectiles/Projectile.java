@@ -25,13 +25,14 @@ public class  Projectile extends GameObject {
     private Vector2 projectileSpawnpoint;
     public double rotation = 0;
 
-
+    public final int damageOnHit;
 
     public Boolean active;
     World world;
 
-    public Projectile(World world, Player originPlayer, String userData, Texture projectileTexture) {
+    public Projectile(World world, Player originPlayer, String userData, Texture projectileTexture, int damageOnHit) {
         super(userData);
+        this.damageOnHit = damageOnHit;
         sprite = new Sprite(projectileTexture);
         this.active = true;
         this.userData = userData;
