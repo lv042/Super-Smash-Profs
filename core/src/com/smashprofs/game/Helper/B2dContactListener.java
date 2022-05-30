@@ -3,6 +3,7 @@ package com.smashprofs.game.Helper;
 import com.badlogic.gdx.physics.box2d.*;
 import com.badlogic.gdx.utils.DelayedRemovalArray;
 import com.smashprofs.game.Screens.PlayScreen;
+import com.smashprofs.game.Helper.explosionType;
 
 import java.util.ArrayList;
 
@@ -16,6 +17,8 @@ public class B2dContactListener implements ContactListener {
     boolean P1NotTouchingTile = false;
 
     boolean P2NotTouchingTile = false;
+
+    private VFXManager vfxManager = VFXManager.getVFXManager_INSTANCE();
 
 //    public void update() {
 //        for (Body body : bodiesToDestroy) {
@@ -123,15 +126,70 @@ public class B2dContactListener implements ContactListener {
             P1NotTouchingTile = false;
         }
 
+        //BULLETS
 
         if(contact.getFixtureB().getBody().getUserData().toString().startsWith("Bullet")){
+            bodiesToDestroy.add(contact.getFixtureB().getBody());
+            contact.getFixtureB().getBody().setUserData("Destroyed");
+
+            vfxManager.spawnExplosion(explosionType.rocketExplosion, contact.getFixtureB().getBody().getPosition());
+            //PlayScreen.getWorld().destroyBody(contact.getFixtureB().getBody());
+            //contact.getFixtureB().getFilterData().categoryBits
+
+        }
+        if(contact.getFixtureA().getBody().getUserData().toString().startsWith("Bullet")){
+            bodiesToDestroy.add(contact.getFixtureA().getBody());
+            contact.getFixtureA().getBody().setUserData("Destroyed");
+
+            vfxManager.spawnExplosion(explosionType.rocketExplosion, contact.getFixtureA().getBody().getPosition());
+
+            //contact.getFixtureB().getFilterData().categoryBits
+        }
+
+        //STAR
+
+        if(contact.getFixtureB().getBody().getUserData().toString().startsWith("Star")){
             bodiesToDestroy.add(contact.getFixtureB().getBody());
             contact.getFixtureB().getBody().setUserData("Destroyed");
             //PlayScreen.getWorld().destroyBody(contact.getFixtureB().getBody());
             //contact.getFixtureB().getFilterData().categoryBits
 
         }
-        if(contact.getFixtureA().getBody().getUserData().toString().startsWith("Bullet")){
+        if(contact.getFixtureA().getBody().getUserData().toString().startsWith("Star")){
+            bodiesToDestroy.add(contact.getFixtureA().getBody());
+            contact.getFixtureA().getBody().setUserData("Destroyed");
+
+            //contact.getFixtureB().getFilterData().categoryBits
+        }
+
+        //LANDMINE
+
+        //should not explode when contacting with ground
+
+        if(!("Tile".equals(contact.getFixtureA().getBody().getUserData())) && contact.getFixtureB().getBody().getUserData().toString().startsWith("Mine")){
+            bodiesToDestroy.add(contact.getFixtureB().getBody());
+            contact.getFixtureB().getBody().setUserData("Destroyed");
+            //PlayScreen.getWorld().destroyBody(contact.getFixtureB().getBody());
+            //contact.getFixtureB().getFilterData().categoryBits
+
+        }
+        if(!("Tile".equals(contact.getFixtureB().getBody().getUserData())) && contact.getFixtureA().getBody().getUserData().toString().startsWith("Mine")){
+            bodiesToDestroy.add(contact.getFixtureA().getBody());
+            contact.getFixtureA().getBody().setUserData("Destroyed");
+
+            //contact.getFixtureB().getFilterData().categoryBits
+        }
+
+        //MINEBALL
+
+        if(contact.getFixtureB().getBody().getUserData().toString().startsWith("Fire")){
+            bodiesToDestroy.add(contact.getFixtureB().getBody());
+            contact.getFixtureB().getBody().setUserData("Destroyed");
+            //PlayScreen.getWorld().destroyBody(contact.getFixtureB().getBody());
+            //contact.getFixtureB().getFilterData().categoryBits
+
+        }
+        if(contact.getFixtureA().getBody().getUserData().toString().startsWith("Fire")){
             bodiesToDestroy.add(contact.getFixtureA().getBody());
             contact.getFixtureA().getBody().setUserData("Destroyed");
 
