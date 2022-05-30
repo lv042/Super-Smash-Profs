@@ -32,7 +32,7 @@ public class Landmine extends Projectile {
     }
 
     public Landmine(World world, Player originPlayer) {
-        super(world, originPlayer, "Null", new Texture("landmine.png"));
+        super(world, originPlayer, "Null", new Texture("landmine.png"), 25);
 
         // Create random user data
 

@@ -16,7 +16,7 @@ public class HomingMissile extends Projectile {
     float speed = 0.7f;
 
     public HomingMissile(World world, Player playerOrigin, Player playerTarget){
-        super(world, playerOrigin, "Bullet" ,  new Texture("missile.png"));
+        super(world, playerOrigin, "Bullet" ,  new Texture("missile.png"), 10);
 
         int randInt = rand.nextInt(9999);
         userData = "Bullet#" + randInt;

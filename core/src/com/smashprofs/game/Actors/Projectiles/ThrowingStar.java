@@ -11,7 +11,7 @@ public class ThrowingStar extends Projectile {
 
 
     public ThrowingStar(World world, Player playerOrigin) {
-        super(world, playerOrigin, "Null", new Texture("star.png"));
+        super(world, playerOrigin, "Null", new Texture("star.png"), 15);
 
         userData = "Star#" + rand.nextInt(9999);
         b2dbody.setUserData("Star#" + rand.nextInt(9999));
