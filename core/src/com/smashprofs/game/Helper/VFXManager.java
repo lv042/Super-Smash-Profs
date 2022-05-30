@@ -31,15 +31,20 @@ public class VFXManager {
 
     public void spawnExplosion(explosionType explosionType, Vector2 spawnpoint) {
         Texture VFXTexture = null;
+        boolean centered = false;
 
         switch (explosionType) {
-            case rocketExplosion: VFXTexture = new Texture("explosions/explosion-6.png");
+            case rocketExplosion:
+                VFXTexture = new Texture("explosions/explosion-6.png");
+                centered = true;
             break;
-            case landMineExplosion: VFXTexture = new Texture("explosions/explosion-2.png");
+            case landMineExplosion:
+                VFXTexture = new Texture("explosions/explosion-2.png");
+                centered = false;
             break;
         }
 
-        VFXObjectList.add(new VFXObj("test", spawnpoint, VFXTexture));
+        VFXObjectList.add(new VFXObj("test", spawnpoint, VFXTexture, centered));
     }
 
 
