@@ -102,6 +102,23 @@ public class CombatManager {
             projectileArrayList.add(proj);
         }
 
+        //BULLETS
+
+        if (contactListener.isPlayerTwoGotShoot()) {
+            attackPlayer(playerOne, playerTwo, 1.5f, 2f);
+            contactListener.setPlayerTwoGotShoot(false);
+            contactListener.setBulletHit(false);
+            System.out.println("abracadabra");
+        }
+        if (contactListener.isPlayerOneGotShoot()) {
+            attackPlayer(playerTwo, playerOne, 1.5f, 2f);
+            contactListener.setPlayerOneGotShoot(false);
+            contactListener.setBulletHit(false);
+            System.out.println("adadadadada");
+        }
+
+        //LANDMINES
+
         if (contactListener.isPlayerTwoGotShoot()) {
             attackPlayer(playerOne, playerTwo, 1.5f, 2f);
             contactListener.setPlayerTwoGotShoot(false);
@@ -118,7 +135,36 @@ public class CombatManager {
 
 
 
+
     }
+
+
+    //Projectile attack
+
+    public void attackPlayer(Vector2 damageOrigin, int damage, Player target, float attackKnockback , float yAttackKnockback){
+        Vector2 attackVector = new Vector2(0, yAttackKnockback);
+        if(damageOrigin.x < target.getPosition().x) attackVector.x = 1 * attackKnockback;
+        else attackVector.x = -1 * attackKnockback;
+
+
+        target.applyForces(attackVector.x, attackVector.y );
+        target.setHP(target.getHP() - damage);
+        soundManager.playSound("stomp.wav");
+    }
+
+    //Melee attack
+
+    public void attackPlayer(Player attacker, Player target, float attackKnockback , float yAttackKnockback){
+        Vector2 attackVector = new Vector2(0, yAttackKnockback);
+        if(attacker.getPosition().x < target.getPosition().x) attackVector.x = 1 * attackKnockback;
+        else attackVector.x = -1 * attackKnockback;
+
+
+        target.applyForces(attackVector.x, attackVector.y );
+        target.setHP(target.getHP() - target.getAttackDamage());
+        soundManager.playSound(target.getDamageSoundMp3());
+    }
+
 
     private void updateProjectiles(float deltatime) {
         for (Projectile projectile: projectileArrayList) {
@@ -141,17 +187,6 @@ public class CombatManager {
     }
 
 
-
-    public void attackPlayer(Player attacker, Player target, float attackKnockback , float yAttackKnockback){
-        Vector2 attackVector = new Vector2(0, yAttackKnockback);
-        if(attacker.getPosition().x < target.getPosition().x) attackVector.x = 1 * attackKnockback;
-        else attackVector.x = -1 * attackKnockback;
-
-
-        target.applyForces(attackVector.x, attackVector.y );
-        target.setHP(target.getHP() - target.getAttackDamage());
-        soundManager.playSound(target.getDamageSoundMp3());
-    }
 
     public void drawProjectiles(SpriteBatch batch){
         for (Projectile projectile: projectileArrayList) {
