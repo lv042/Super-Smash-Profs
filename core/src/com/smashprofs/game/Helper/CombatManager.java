@@ -5,12 +5,10 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.World;
 
 import com.badlogic.gdx.utils.DelayedRemovalArray;
-import com.smashprofs.game.Actors.Projectiles.HomingMissile;
+import com.smashprofs.game.Actors.Projectiles.*;
 
 import com.smashprofs.game.Actors.Players.Player;
 import com.smashprofs.game.Actors.Projectiles.HomingMissile;
-import com.smashprofs.game.Actors.Projectiles.Projectile;
-import com.smashprofs.game.Actors.Projectiles.ThrowingStar;
 import com.smashprofs.game.Screens.PlayScreen;
 
 import java.util.ArrayList;
@@ -91,7 +89,12 @@ public class CombatManager {
         if(playerTwo.isShooting()) {
             System.out.println("Bullet spawned");
             //ThrowingStar proj = new ThrowingStar(world, playerTwo);
-            HomingMissile proj = new HomingMissile(world, playerTwo, playerOne);
+            //HomingMissile proj = new HomingMissile(world, playerTwo, playerOne);
+            Landmine proj = new Landmine(world, playerTwo);
+            //proj.setCurrentState(Landmine.State.EXPLODING);
+
+            //
+            // vfxManager.spawnExplosion(VFXManager.explosionType.rocketExplosion, playerTwo.getPosition());
 
 
             projectileArrayList.add(proj);
@@ -117,23 +120,22 @@ public class CombatManager {
 
     private void updateProjectiles(float deltatime) {
         for (Projectile projectile: projectileArrayList) {
-
+            //TODO: @Alex Bitte die auskommentierten sout's als log.debug übernehmen :)
             projectile.update(deltatime);
-            System.out.println("Is active before loop: " + projectile.active);
+            //System.out.println("Is active before loop: " + projectile.active);
             if(!projectile.active) {
-                System.out.println("Trying to remove body");
+                //System.out.println("Trying to remove body");
                 projectile.destroyBody();
                 projectileArrayList.removeValue(projectile, true);
             }
             else if(projectile.getBody().getUserData().equals("Destroyed")){
 
                 projectile.active = false;
-                System.out.println("Projectile was set to inactive");
-                System.out.println("Is active: " + projectile.active);
+                //System.out.println("Projectile was set to inactive");
+                //System.out.println("Is active: " + projectile.active);
 
             }
         }
-        //System.out.println(projectileArrayList.size());
     }
 
 
@@ -151,7 +153,8 @@ public class CombatManager {
 
     public void drawProjectiles(SpriteBatch batch){
         for (Projectile projectile: projectileArrayList) {
-            
+
+            // TODO: Gehört das so?
             if(projectile.active && projectile.b2dbody.isActive() && projectile.isActive()) {
                 projectile.draw(batch);
             }
