@@ -1,20 +1,15 @@
 package com.smashprofs.game.Helper;
 
-import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.DelayedRemovalArray;
-import com.smashprofs.game.Helper.explosionType;
-import com.smashprofs.game.Actors.Projectiles.Projectile;
-
-
-
+import com.smashprofs.game.Actors.VFXObject;
 
 
 public class VFXManager {
 
-    public static DelayedRemovalArray<VFXObj> VFXObjectList = new DelayedRemovalArray<>();
+    public static DelayedRemovalArray<VFXObject> VFXObjectList = new DelayedRemovalArray<>();
 
     //implements singelton sound manager
 
@@ -44,12 +39,12 @@ public class VFXManager {
             break;
         }
 
-        VFXObjectList.add(new VFXObj("test", spawnpoint, VFXTexture, centered));
+        VFXObjectList.add(new VFXObject("test", spawnpoint, VFXTexture, centered));
     }
 
 
     public void update(float deltatime) {
-        for (VFXObj explosion: VFXObjectList) {
+        for (VFXObject explosion: VFXObjectList) {
             //TODO: @Alex Bitte die auskommentierten sout's als log.debug übernehmen :)
             explosion.update(deltatime);
             //System.out.println("Is active before loop: " + explosion.active);
@@ -67,7 +62,7 @@ public class VFXManager {
     }
 
     public void drawVFX(SpriteBatch batch) {
-        for(VFXObj explosion : VFXObjectList) {
+        for(VFXObject explosion : VFXObjectList) {
             explosion.draw(batch);
         }
     }

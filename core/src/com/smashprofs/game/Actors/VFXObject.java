@@ -1,16 +1,14 @@
-package com.smashprofs.game.Helper;
+package com.smashprofs.game.Actors;
 
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Vector2;
-import com.smashprofs.game.Actors.GameObject;
-import com.sun.org.apache.xpath.internal.operations.Bool;
 
 import static com.smashprofs.game.Actors.Players.Player.PPM;
 
-public class VFXObj extends GameObject {
+public class VFXObject extends GameObject {
 
     public Boolean active;
     public Vector2 spawnpoint;
@@ -21,7 +19,7 @@ public class VFXObj extends GameObject {
     float centeringFactor = 0f;
 
 
-    public VFXObj(String userData, Vector2 Spawnpoint, Texture texture, Boolean centered) {
+    public VFXObject(String userData, Vector2 Spawnpoint, Texture texture, Boolean centered) {
         super(userData);
         sprite = new Sprite(texture);
         this.active = true;
