@@ -25,6 +25,12 @@ public class Landmine extends Projectile {
         WAITING, EXPLODING
     }
 
+    @Override
+
+    void initialMovement() {
+        //No initial velocity for the landmine
+    }
+
     public Landmine(World world, Player originPlayer) {
         super(world, originPlayer, "Null", new Texture("landmine.png"));
 
@@ -54,12 +60,18 @@ public class Landmine extends Projectile {
     @Override
     public void update(float delta){
         super.update(delta);
-
-
+        applyGravity(delta);
+        stateTime += delta;
 
         rotation = -2.25*(b2dbody.getAngle()*2*Math.PI*4);
         sprite.setRotation( (float) rotation);
         sprite.setRegion(getRenderTexture(stateTime)); //set the texture to the current state of the movement
+
+    }
+
+    private void applyGravity(float delta) {
+
+        b2dbody.applyLinearImpulse(gravityVector, b2dbody.getWorldCenter(), true);
 
     }
 
