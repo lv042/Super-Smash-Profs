@@ -151,11 +151,11 @@ public class CombatManager {
 
     public void drawProjectiles(SpriteBatch batch){
         for (Projectile projectile: projectileArrayList) {
-            // VORSICHT!! Könnte mit dem FATAL ERROR zusammenhängen!
+            
             if(projectile.active && projectile.b2dbody.isActive() && projectile.isActive()) {
                 projectile.draw(batch);
             }
-            // projectile.draw(batch);
+
         }
     }
 }

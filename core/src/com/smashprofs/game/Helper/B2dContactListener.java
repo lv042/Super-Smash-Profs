@@ -1,7 +1,5 @@
 package com.smashprofs.game.Helper;
 
-import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.*;
 import com.badlogic.gdx.utils.DelayedRemovalArray;
 import com.smashprofs.game.Screens.PlayScreen;
@@ -72,6 +70,9 @@ public class B2dContactListener implements ContactListener {
 
     @Override
     public void beginContact(Contact contact) {
+
+
+
 
 
 

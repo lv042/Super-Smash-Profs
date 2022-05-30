@@ -95,6 +95,7 @@ public class  Projectile extends GameObject {
     }
 
     public void update(float delta) {
+
         //System.out.println("!!!! projectile update");
         //this.setPosition(b2dbody.getPosition().x - getWidth() / 2, b2dbody.getPosition().y - getHeight() / 2);
 
@@ -144,6 +145,11 @@ public class  Projectile extends GameObject {
 
     public Body getBody() {
         return this.b2dbody;
+    }
+
+    public void destroyBody() {
+        System.out.println("Deleting Projectile body" + b2dbody.getUserData());
+        PlayScreen.getWorld().destroyBody(this.b2dbody);
     }
 
     public void destroy() {
