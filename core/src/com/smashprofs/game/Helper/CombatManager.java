@@ -26,6 +26,8 @@ public class CombatManager {
 
     public static DelayedRemovalArray<Projectile> projectileArrayList = new DelayedRemovalArray<>();
 
+    private VFXManager vfxManager = VFXManager.getVFXManager_INSTANCE();
+
 
 
     //private constructor to avoid client applications to use constructor
