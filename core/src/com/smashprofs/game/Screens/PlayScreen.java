@@ -54,6 +54,8 @@ public class PlayScreen implements Screen {
 
     private CameraManager cameraManager = CameraManager.getCameraManager_INSTANCE();
 
+    private VFXManager vfxManager = VFXManager.getVFXManager_INSTANCE();
+
     private OrthographicCamera gamecamera; //set by camera manager
 
     //batch and game world
@@ -96,6 +98,7 @@ public class PlayScreen implements Screen {
         checkInput(deltatime);
         //combatManager
         combatManager.update(deltatime, playerOne, playerTwo, world);
+        vfxManager.update(deltatime);
 
 
 
@@ -230,6 +233,7 @@ public class PlayScreen implements Screen {
         playerOne.draw(batch);
         playerTwo.draw(batch);
         combatManager.drawProjectiles(batch);
+        vfxManager.drawVFX(batch);
 
         final Sprite sprite;
         final Body body;
