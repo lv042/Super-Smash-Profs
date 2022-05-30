@@ -40,6 +40,8 @@ public class  Projectile extends GameObject {
         this.originPlayer = originPlayer;
         //setTexture(new Texture("prettyplayer.png"));
         //setTexture(new Texture(Gdx.files.internal("prettyplayer.png")));
+        projectileSpawnpoint = new Vector2(originPlayer.getPosition().x + (originPlayer.getIsFacingRightAxe() * originPlayer.getPlayerCollisionBoxRadius() * 3f / PPM), originPlayer.getPosition().y);
+
 
 
         //setPosition(12, 12);
@@ -54,6 +56,28 @@ public class  Projectile extends GameObject {
 
     }
 
+    public Projectile(World world, Vector2 originPosition, String userData, Texture projectileTexture, int damageOnHit) {
+        super(userData);
+        this.damageOnHit = damageOnHit;
+        sprite = new Sprite(projectileTexture);
+        this.active = true;
+        this.userData = userData;
+        this.world = world;
+
+        //add ppm offset
+        projectileSpawnpoint = new Vector2(originPosition.x, originPosition.y );
+
+
+
+        sprite.setBounds(originPosition.x / PPM, originPosition.y / PPM, sprite.getWidth()/PPM, sprite.getHeight()/PPM);
+        create();
+
+
+        initialMovement();
+    }
+
+
+
     void initialMovement() {
         b2dbody.setLinearVelocity(new Vector2(originPlayer.getIsFacingRightAxe() * 0.1f, 0));
     }
@@ -61,7 +85,6 @@ public class  Projectile extends GameObject {
     public void create() {
 
         bdef = new BodyDef();
-        projectileSpawnpoint = new Vector2(originPlayer.getPosition().x + (originPlayer.getIsFacingRightAxe() * originPlayer.getPlayerCollisionBoxRadius() * 3f / PPM), originPlayer.getPosition().y);
         bdef.position.set(projectileSpawnpoint);
         bdef.type = BodyDef.BodyType.DynamicBody;
         bdef.fixedRotation = false;

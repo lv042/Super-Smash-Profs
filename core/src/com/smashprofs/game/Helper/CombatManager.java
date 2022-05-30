@@ -85,14 +85,16 @@ public class CombatManager {
             System.out.println("Bullet spawned ");
             HomingMissile proj = new HomingMissile(world, playerOne, playerTwo);
 
+
             projectileArrayList.add(proj);
 
         }
         if(playerTwo.isShooting()) {
             System.out.println("Bullet spawned");
             //ThrowingStar proj = new ThrowingStar(world, playerTwo);
+            ThrowingStar proj = new ThrowingStar(world, playerTwo.getPosition());
             //HomingMissile proj = new HomingMissile(world, playerTwo, playerOne);
-            Landmine proj = new Landmine(world, playerTwo);
+            //Landmine proj = new Landmine(world, playerTwo);
             //proj.setCurrentState(Landmine.State.EXPLODING);
 
             //
