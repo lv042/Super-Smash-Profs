@@ -16,6 +16,9 @@ import com.smashprofs.game.Screens.PlayScreen;
 
 import static com.smashprofs.game.Actors.Players.Player.PPM;
 
+/**
+ * A basic projectile
+ */
 public class  Projectile extends GameObject {
     private BodyDef bdef;
     // public Body b2dbody;
@@ -30,6 +33,19 @@ public class  Projectile extends GameObject {
     public Boolean active;
     World world;
 
+    /**
+     *
+     * @param world
+     * The world in which the Projectile will exist (b2d)
+     * @param originPlayer
+     * The player whose position will be used as spawnpoint for the projectile
+     * @param userData
+     * The userData of the Projectile
+     * @param projectileTexture
+     * The texture which gets rendered for the projectile
+     * @param damageOnHit
+     * The amount of damage the projectile will do to a player
+     */
     public Projectile(World world, Player originPlayer, String userData, Texture projectileTexture, int damageOnHit) {
         super(userData);
         this.damageOnHit = damageOnHit;
