@@ -9,15 +9,29 @@ import com.smashprofs.game.Actors.Players.Player;
 
 import java.util.Random;
 
+/**
+ * A placeable landmine which falls to the ground and explodes on contact with anything other than the ground.
+ */
 public class Landmine extends Projectile {
 
+    /**
+     * The explosion animation
+     */
     private final Animation<TextureRegion> mineExplode;
+    /**
+     * The idle "animation"
+     */
     private final Animation<TextureRegion> mineWait;
+    /**
+     * The idle texture
+     */
     private final Texture mineWaiting;
+    /**
+     * The explosion texture stripe
+     */
     private final Texture mineExploding;
     float stateTime = 0;
     
-    boolean playerInDetonationRadius = false;
     private State currentState;
     Random rand = new Random();
 
@@ -31,6 +45,13 @@ public class Landmine extends Projectile {
         //No initial velocity for the landmine
     }
 
+    /**
+     * Creates a Landmine in front of the originPlayer
+     * @param world
+     * The world the Landmine exists in
+     * @param originPlayer
+     * The player the mine will spawn in front of
+     */
     public Landmine(World world, Player originPlayer) {
         super(world, originPlayer, "Null", new Texture("landmine.png"), 25);
 
@@ -57,6 +78,11 @@ public class Landmine extends Projectile {
     }
 
 
+    /**
+     * Updates the Landmine gravity, stateTime, spriteRotation and animation state
+     * @param delta
+     * The game delta time
+     */
     @Override
     public void update(float delta){
         super.update(delta);
@@ -69,6 +95,11 @@ public class Landmine extends Projectile {
 
     }
 
+    /**
+     * Applies gravity as a linear impulse to the world center
+     * @param delta
+     * The game delta time
+     */
     private void applyGravity(float delta) {
 
         b2dbody.applyLinearImpulse(gravityVector, b2dbody.getWorldCenter(), true);

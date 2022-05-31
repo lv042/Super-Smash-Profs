@@ -12,7 +12,13 @@ import java.util.Random;
  */
 public class HomingMissile extends Projectile {
 
+    /**
+     * The vector pointing to the target position
+     */
     Vector2 targetVector = new Vector2();
+    /**
+     * The targetPlayer the missile will try to hit
+     */
     Player targetPlayer;
     Random rand = new Random();
 
@@ -26,6 +32,15 @@ public class HomingMissile extends Projectile {
      */
     float missileInertia = 0.05f;
 
+    /**
+     * Create a homing missile which will try to hit its targetPlayer
+     * @param world
+     * The world the missile will exist in
+     * @param playerOrigin
+     * The player who fired the missile
+     * @param playerTarget
+     * The player the missile should fly to
+     */
     public HomingMissile(World world, Player playerOrigin, Player playerTarget){
         super(world, playerOrigin, "Bullet" ,  new Texture("missile.png"), 10);
 
