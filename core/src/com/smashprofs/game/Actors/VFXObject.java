@@ -19,16 +19,22 @@ public class VFXObject extends GameObject {
     float centeringFactor = 0f;
 
 
-    public VFXObject(String userData, Vector2 Spawnpoint, Texture texture, Boolean centered) {
+    public VFXObject(String userData, Vector2 Spawnpoint, Texture texture, Boolean centered, Boolean spriteIsSquare) {
         super(userData);
         sprite = new Sprite(texture);
         this.active = true;
         this.spawnpoint = Spawnpoint;
         this.rawTexture = texture;
 
+        TextureRegion[] exploding;
 
+        if(spriteIsSquare) {
+            exploding = TextureRegion.split(rawTexture, rawTexture.getHeight(), rawTexture.getHeight())[0];
+        }
+        else{
+            exploding = TextureRegion.split(rawTexture, rawTexture.getWidth()/8, rawTexture.getHeight())[0];
+        }
 
-        TextureRegion[] exploding = TextureRegion.split(rawTexture, rawTexture.getHeight(), rawTexture.getHeight())[0];
         explode = new Animation(0.1f, exploding[0], exploding[1], exploding[2], exploding[3], exploding[4], exploding[5], exploding[6], exploding[7]);
         explode.setPlayMode(Animation.PlayMode.NORMAL);
 
@@ -37,20 +43,36 @@ public class VFXObject extends GameObject {
         //sprite.setRegion(rawTexture);
         this.active = true;
         this.userData = userData;
-        sprite.setBounds(Spawnpoint.x/PPM, (Spawnpoint.y)/PPM, sprite.getHeight()/PPM, sprite.getHeight()/PPM);
+
+        if(spriteIsSquare) {
+            sprite.setBounds(Spawnpoint.x/PPM, (Spawnpoint.y)/PPM, sprite.getHeight()/PPM, sprite.getHeight()/PPM);
+        }
+        else {
+            sprite.setBounds(Spawnpoint.x/PPM, (Spawnpoint.y)/PPM, sprite.getWidth()/8/PPM, sprite.getHeight()/PPM);
+        }
+
         //sprite.setPosition(Spawnpoint.x - sprite.getHeight()/2f, Spawnpoint.y - sprite.getHeight()/2f);
 
 
         //This part must be after set bounds otherwise the
         if(centered) {
             this.centeringFactor = sprite.getHeight()/2f;
-        } else {
+        } else if(rawTexture.getHeight() == 64) {
             this.centeringFactor = 5f/PPM;
+        } else if(rawTexture.getHeight() == 256) {
+            this.centeringFactor = 40f/PPM;
         }
+
         System.out.println("centering factor: "+ centeringFactor);
 
 
-        sprite.setPosition(Spawnpoint.x - sprite.getHeight()/2f, Spawnpoint.y - centeringFactor);
+
+        if(spriteIsSquare) {
+            sprite.setPosition(Spawnpoint.x - sprite.getHeight()/2f, Spawnpoint.y - centeringFactor);
+        }
+        else {
+            sprite.setPosition(Spawnpoint.x - sprite.getWidth()/8/2f, Spawnpoint.y - centeringFactor);
+        }
         //sprite.setOrigin(0, -1000f);
         sprite.setScale(1f);
 
