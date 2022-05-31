@@ -13,6 +13,8 @@ import com.smashprofs.game.Screens.PlayScreen;
 
 import java.util.ArrayList;
 
+import static com.smashprofs.game.Actors.Players.Player.PPM;
+
 public class CombatManager {
     private Vector2 distanceBetweenPlayers = new Vector2(0, 0);
 
@@ -92,7 +94,26 @@ public class CombatManager {
         if(playerTwo.isShooting()) {
             System.out.println("Bullet spawned");
             //ThrowingStar proj = new ThrowingStar(world, playerTwo);
-            ThrowingStar proj = new ThrowingStar(world, playerTwo.getPosition());
+            ThrowingStar proj = new ThrowingStar(world, new Vector2(playerTwo.getPosition().x + 10 / PPM, playerTwo.getPosition().y) , new Vector2(1,0));
+            projectileArrayList.add(proj);
+
+            ThrowingStar proj1 = new ThrowingStar(world, new Vector2(playerTwo.getPosition().x - 10 / PPM, playerTwo.getPosition().y), new Vector2(-1,0));
+            projectileArrayList.add(proj1);
+
+            ThrowingStar proj2 = new ThrowingStar(world, new Vector2(playerTwo.getPosition().x, playerTwo.getPosition().y + 10 / PPM), new Vector2(0,1));
+            projectileArrayList.add(proj2);
+
+            ThrowingStar proj3 = new ThrowingStar(world, new Vector2(playerTwo.getPosition().x, playerTwo.getPosition().y - 10 / PPM), new Vector2(0,-1));
+            projectileArrayList.add(proj3);
+
+
+
+
+
+
+
+
+
             //HomingMissile proj = new HomingMissile(world, playerTwo, playerOne);
             //Landmine proj = new Landmine(world, playerTwo);
             //proj.setCurrentState(Landmine.State.EXPLODING);
@@ -101,7 +122,6 @@ public class CombatManager {
             // vfxManager.spawnExplosion(VFXManager.explosionType.rocketExplosion, playerTwo.getPosition());
 
 
-            projectileArrayList.add(proj);
         }
 
         //BULLETS

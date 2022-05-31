@@ -12,6 +12,10 @@ public class ThrowingStar extends Projectile {
     private float projectileSpeed = 10;
     private float projectileRotationSpeed = -12f;
 
+    Vector2 projectileDirection;
+
+
+
 
     public ThrowingStar(World world, Player playerOrigin) {
         super(world, playerOrigin, "Star", new Texture("star.png"), 15);
@@ -30,7 +34,7 @@ public class ThrowingStar extends Projectile {
 
     }
 
-    public ThrowingStar(World world, Vector2 originPosition) {
+    public ThrowingStar(World world, Vector2 originPosition, Vector2 direction) {
         super(world, originPosition, "Star", new Texture("star.png"), 15);
 
         int randInt = rand.nextInt(9999);
@@ -43,19 +47,22 @@ public class ThrowingStar extends Projectile {
         b2dbody.setAngularVelocity(projectileRotationSpeed);
         sprite.flip(true, false);
         sprite.setScale(0.5f, 0.5f);
-        sprite.setScale(5f, 5f);
 
-
+        projectileDirection = direction;
     }
     @Override
     void initialMovement() {
-        //No movement
-        // init movement is handled in update
+
+    }
+
+    public void moveProjectile(){
+        b2dbody.setLinearVelocity(projectileDirection);
     }
 
     @Override
     public void update(float delta){
         super.update(delta);
+        moveProjectile();
 
     }
 

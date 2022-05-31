@@ -159,7 +159,7 @@ public class B2dContactListener implements ContactListener {
 
         //STAR
 
-        if(contact.getFixtureB().getBody().getUserData().toString().startsWith("asdf")){ //should be Star
+        if(contact.getFixtureB().getBody().getUserData().toString().startsWith("Star")){ //should be Star
             bodiesToDestroy.add(contact.getFixtureB().getBody());
             contact.getFixtureB().getBody().setUserData("Destroyed");
             //PlayScreen.getWorld().destroyBody(contact.getFixtureB().getBody());
