@@ -34,7 +34,7 @@ public class  Projectile extends GameObject {
     World world;
 
     /**
-     *
+     * Constructor for creating a projectile that spawns at the position of the originPlayer
      * @param world
      * The world in which the Projectile will exist (b2d)
      * @param originPlayer
@@ -72,6 +72,19 @@ public class  Projectile extends GameObject {
 
     }
 
+    /**
+     * Constructor for creating a projectile that spawns at the given originPosition
+     * @param world
+     * The world in which the Projectile will exist (b2d)
+     * @param originPosition
+     * The position at which the projectile will spawn
+     * @param userData
+     * The userData of the Projectile
+     * @param projectileTexture
+     * The texture which gets rendered for the projectile
+     * @param damageOnHit
+     * The amount of damage the projectile will do to a player
+     */
     public Projectile(World world, Vector2 originPosition, String userData, Texture projectileTexture, int damageOnHit) {
         super(userData);
         this.damageOnHit = damageOnHit;
@@ -93,11 +106,18 @@ public class  Projectile extends GameObject {
     }
 
 
-
+    /**
+     * Applies a horizontal linearVelocity to the Projectile
+     */
     void initialMovement() {
         b2dbody.setLinearVelocity(new Vector2(originPlayer.getIsFacingRightAxe() * 0.1f, 0));
     }
 
+    /**
+     * Creates BodyDef(), b2dBody and FixtureDef.
+     * Sets the group of bodies the Projectile can collide with.
+     * Sets the sprite origin.
+     */
     public void create() {
 
         bdef = new BodyDef();
@@ -134,6 +154,12 @@ public class  Projectile extends GameObject {
         System.out.println("projectile address: " + this);
     }
 
+    /**
+     * Sets the position of the sprite to the current position of the b2dBody.
+     * Sets the rotation of the sprite to the current rotation of the b2dBody.
+     * @param delta
+     * The game delta time
+     */
     public void update(float delta) {
 
         //System.out.println("!!!! projectile update");
@@ -154,6 +180,11 @@ public class  Projectile extends GameObject {
         System.out.println("Projectile b2dBody userData: " + b2dbody.getUserData());
     }
 
+    /**
+     * Draws the projectile
+     * @param batch
+     * Batch in which the projectile will get drawn
+     */
     @Override
     public void draw(Batch batch) {
 
@@ -175,6 +206,11 @@ public class  Projectile extends GameObject {
         Gdx.gl.glLineWidth(1);
     }
 
+    /**
+     * Returns if the projectile is active
+     * @return
+     * true if projectile is active, false if projectile is inactive
+     */
     public Boolean isActive() {
         return active;
     }
@@ -187,11 +223,17 @@ public class  Projectile extends GameObject {
         return this.b2dbody;
     }
 
+    /**
+     * Destroys the b2dBody of the projectile
+     */
     public void destroyBody() {
         System.out.println("Deleting Projectile body" + b2dbody.getUserData());
         PlayScreen.getWorld().destroyBody(this.b2dbody);
     }
 
+    /**
+     * Disposes the texture of the projectile sprite
+     */
     public void destroy() {
         //world.destroyBody(b2dbody);
         //sprite.setPosition(100000f, 100000f);
@@ -203,6 +245,11 @@ public class  Projectile extends GameObject {
         //sprite.getTexture().dispose();
     }
 
+    /**
+     * Sets the activity state of the projectile
+     * @param b
+     * The value to set active to
+     */
     public void setActive(boolean b) {
         active = b;
     }
