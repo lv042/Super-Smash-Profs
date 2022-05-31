@@ -85,8 +85,8 @@ public class CombatManager {
         }
         if(playerOne.isShooting()){
             System.out.println("Bullet spawned ");
-            HomingMissile proj = new HomingMissile(world, playerOne, playerTwo);
-
+            //HomingMissile proj = new HomingMissile(world, playerOne, playerTwo);
+            CircleStar proj = new CircleStar(world, playerOne);
 
             projectileArrayList.add(proj);
 

@@ -15,25 +15,6 @@ public class ThrowingStar extends Projectile {
     Vector2 projectileDirection;
 
 
-
-
-    public ThrowingStar(World world, Player playerOrigin) {
-        super(world, playerOrigin, "Star", new Texture("star.png"), 15);
-
-        int randInt = rand.nextInt(9999);
-        userData = "Star#" + randInt;
-        b2dbody.setUserData("Star#" + randInt);
-
-
-        b2dbody.setFixedRotation(false);
-        // Deactivated for performance benefits
-        b2dbody.setAngularVelocity(projectileRotationSpeed);
-        sprite.flip(true, false);
-        sprite.setScale(0.5f, 0.5f);
-
-
-    }
-
     public ThrowingStar(World world, Vector2 originPosition, Vector2 direction) {
         super(world, originPosition, "Star", new Texture("star.png"), 15);
 
@@ -65,6 +46,8 @@ public class ThrowingStar extends Projectile {
         moveProjectile();
 
     }
+
+
 
 
 }
