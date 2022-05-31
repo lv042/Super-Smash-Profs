@@ -42,7 +42,7 @@ public class HomingMissile extends Projectile {
      * The player the missile should fly to
      */
     public HomingMissile(World world, Player playerOrigin, Player playerTarget){
-        super(world, playerOrigin, "Bullet" ,  new Texture("missile.png"), 10);
+        super(world, playerOrigin, "Bullet" ,  new Texture("projectiles/missile.png"), 10);
 
         int randInt = rand.nextInt(9999);
         userData = "Bullet#" + randInt;

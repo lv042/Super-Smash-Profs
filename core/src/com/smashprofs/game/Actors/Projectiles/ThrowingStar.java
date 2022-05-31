@@ -18,7 +18,7 @@ public class ThrowingStar extends Projectile {
 
 
     public ThrowingStar(World world, Player playerOrigin) {
-        super(world, playerOrigin, "Star", new Texture("star.png"), 15);
+        super(world, playerOrigin, "Star", new Texture("projectiles/star.png"), 15);
 
         int randInt = rand.nextInt(9999);
         userData = "Star#" + randInt;

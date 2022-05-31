@@ -18,6 +18,9 @@ import com.smashprofs.game.Screens.PlayScreen;
 
 import java.util.ArrayList;
 
+/**
+ * A controllable Player
+ */
 public abstract class Player extends GameObject {
 
 
@@ -27,10 +30,10 @@ public abstract class Player extends GameObject {
     private final Animation<TextureRegion> run;
     private final Animation<TextureRegion> jump;
     private final float stompSpeed = -5f;
-    private final String deathSoundMp3 = "death.mp3";
-    private final String punchSoundMp3 = "punch.mp3";
-    private final String stompSoundWav = "stomp.wav";
-    private final String damageSoundMp3 = "damage.mp3";
+    private final String deathSoundMp3 = "sounds/death.mp3";
+    private final String punchSoundMp3 = "sounds/punch.mp3";
+    private final String stompSoundWav = "sounds/stomp.wav";
+    private final String damageSoundMp3 = "sounds/damage.mp3";
     private final CameraManager cameraManager = CameraManager.getCameraManager_INSTANCE();
     private final B2dContactListener contactListener = B2dContactListener.getContactListener_INSTANCE();
     private final float attackReach = 0.2f;

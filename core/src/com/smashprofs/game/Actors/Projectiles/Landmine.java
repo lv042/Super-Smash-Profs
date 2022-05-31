@@ -53,7 +53,7 @@ public class Landmine extends Projectile {
      * The player the mine will spawn in front of
      */
     public Landmine(World world, Player originPlayer) {
-        super(world, originPlayer, "Null", new Texture("landmine.png"), 25);
+        super(world, originPlayer, "Null", new Texture("projectiles/landmine.png"), 25);
 
         // Create random user data
 
@@ -63,7 +63,7 @@ public class Landmine extends Projectile {
         b2dbody.setFixedRotation(false);
         this.currentState = State.WAITING;
 
-        this.mineWaiting = new Texture("landmine.png");
+        this.mineWaiting = new Texture("projectiles/landmine.png");
         this.mineExploding = new Texture("explosions/explosion-2.png");
 
         TextureRegion[] exploding = TextureRegion.split(mineExploding, 64, 64)[0];
