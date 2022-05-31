@@ -6,7 +6,7 @@ import com.badlogic.gdx.audio.Sound;
 
 public class SoundManager {
 
-    private boolean turnOnMusic= true;
+    private boolean turnOnMusic= false;
 
     private Music currenMusic;
 
