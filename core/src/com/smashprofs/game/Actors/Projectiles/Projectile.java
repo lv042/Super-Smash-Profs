@@ -27,9 +27,11 @@ public class  Projectile extends GameObject {
 
     private Vector2 projectileSpawnpoint;
     public double rotation = 0;
+    public float spawnOffset;
 
     public final int damageOnHit;
 
+    public final Shape bodyShape;
     public Boolean active;
     World world;
 
@@ -41,12 +43,14 @@ public class  Projectile extends GameObject {
      * The player whose position will be used as spawnpoint for the projectile
      * @param userData
      * The userData of the Projectile
+     * @param bodyShape
+     * The shape definition to control the body shape
      * @param projectileTexture
      * The texture which gets rendered for the projectile
      * @param damageOnHit
      * The amount of damage the projectile will do to a player
      */
-    public Projectile(World world, Player originPlayer, String userData, Texture projectileTexture, int damageOnHit) {
+    public Projectile(World world, Player originPlayer, String userData, Shape bodyShape, float spawnOffset, Texture projectileTexture, int damageOnHit) {
         super(userData);
         this.damageOnHit = damageOnHit;
         sprite = new Sprite(projectileTexture);
@@ -54,9 +58,11 @@ public class  Projectile extends GameObject {
         this.userData = userData;
         this.world = world;
         this.originPlayer = originPlayer;
+        this.bodyShape = bodyShape;
+        this.spawnOffset = spawnOffset;
         //setTexture(new Texture("prettyplayer.png"));
         //setTexture(new Texture(Gdx.files.internal("prettyplayer.png")));
-        projectileSpawnpoint = new Vector2(originPlayer.getPosition().x + (originPlayer.getIsFacingRightAxe() * originPlayer.getPlayerCollisionBoxRadius() * 3f / PPM), originPlayer.getPosition().y);
+        projectileSpawnpoint = new Vector2(originPlayer.getPosition().x + (originPlayer.getIsFacingRightAxe() * spawnOffset / PPM), originPlayer.getPosition().y);
 
 
 
@@ -80,19 +86,22 @@ public class  Projectile extends GameObject {
      * The position at which the projectile will spawn
      * @param userData
      * The userData of the Projectile
+     * @param bodyShape
+     * The shape definition to control the body shape
      * @param projectileTexture
      * The texture which gets rendered for the projectile
      * @param damageOnHit
      * The amount of damage the projectile will do to a player
      */
-    public Projectile(World world, Vector2 originPosition, String userData, Texture projectileTexture, int damageOnHit) {
+    public Projectile(World world, Vector2 originPosition, String userData, Shape bodyShape, float spawnOffset, Texture projectileTexture, int damageOnHit) {
         super(userData);
         this.damageOnHit = damageOnHit;
         sprite = new Sprite(projectileTexture);
         this.active = true;
         this.userData = userData;
         this.world = world;
-
+        this.bodyShape = bodyShape;
+        this.spawnOffset = spawnOffset;
         //add ppm offset
         projectileSpawnpoint = new Vector2(originPosition.x, originPosition.y );
 
@@ -128,12 +137,13 @@ public class  Projectile extends GameObject {
         b2dbody.setUserData(userData);
 
         FixtureDef fDef = new FixtureDef();
-        CircleShape shape = new CircleShape(); // circle shape is better for player characters so that it can be easily hit walls and other objects
+        //CircleShape shape = new CircleShape(); // circle shape is better for player characters so that it can be easily hit walls and other objects
 
-        shape.setRadius(3 / PPM);
+        //shape.setRadius(3 / PPM);
 
 
-        fDef.shape = shape;
+        //fDef.shape = shape;
+        fDef.shape = bodyShape;
 
         //filters collisions with other objects
         if (true) {

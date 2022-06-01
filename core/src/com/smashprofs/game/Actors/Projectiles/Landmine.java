@@ -6,6 +6,7 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.World;
 import com.smashprofs.game.Actors.Players.Player;
+import com.smashprofs.game.Helper.ShapeCreator;
 
 import java.util.Random;
 
@@ -53,7 +54,7 @@ public class Landmine extends Projectile {
      * The player the mine will spawn in front of
      */
     public Landmine(World world, Player originPlayer) {
-        super(world, originPlayer, "Null", new Texture("projectiles/landmine.png"), 25);
+        super(world, originPlayer, "Null", ShapeCreator.getPolygonShape(9, 3.5f), 25f, new Texture("projectiles/landmine.png"), 25);
 
         // Create random user data
 
