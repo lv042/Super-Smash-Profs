@@ -39,6 +39,7 @@ public class PlayScreen implements Screen {
     private Game game;
     public static Viewport viewport; // Manages a Camera and determines how world coordinates are mapped to and from the screen.
     private Hud hud;
+    private WinScreen winScreen;
 
 
     //tiled map
@@ -179,6 +180,8 @@ public class PlayScreen implements Screen {
             Gdx.app.log(controller.getUniqueId(), controller.getName());
         }
 
+        winScreen=new WinScreen(game,playerOne,playerTwo);
+
     }
 
     private void createTileMap() {
@@ -256,8 +259,7 @@ public class PlayScreen implements Screen {
 
        if(hud.testwin(playerOne,playerTwo))
        {
-           game.setScreen(new WinScreen(game));
-           WinScreen.setWinner(hud.getWinner());
+           game.setScreen(winScreen);
        }
 
 

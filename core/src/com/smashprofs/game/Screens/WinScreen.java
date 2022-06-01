@@ -17,6 +17,8 @@ import com.badlogic.gdx.scenes.scene2d.utils.SpriteDrawable;
 import com.badlogic.gdx.utils.ScreenUtils;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
+import com.smashprofs.game.Actors.Players.Player;
+import com.smashprofs.game.Scenes.Hud;
 
 public class WinScreen implements Screen {
 
@@ -28,14 +30,16 @@ public class WinScreen implements Screen {
     private Image menuButton, pokal, winner;
     private Texture menuButtonInactive, menuButtonActive, player1,player2;
     private Table mainTable;
-    private static String win;
+    private Player playerOne,playerTwo;
 
-    public WinScreen(Game game) {
+    public WinScreen(Game game,Player playerOne,Player playerTwo) {
         this.game = game;
         this.batch = new SpriteBatch();
         this.camera = new OrthographicCamera();
         this.viewport = new FitViewport(1920, 1080, camera);
         this.stage = new Stage(this.viewport, this.batch);
+        this.playerOne=playerOne;
+        this.playerTwo=playerTwo;
 
         menuButtonInactive = new Texture("winscreen/menuButtonInactive.png");
         menuButtonActive = new Texture("winscreen/menuButtonActive.png");
@@ -57,8 +61,14 @@ public class WinScreen implements Screen {
         //Create buttons
         menuButton = new Image(menuButtonInactive);
         pokal = new Image(new Texture("winscreen/pokal.png"));
-        //default winner
-        winner = new Image(player2);
+
+        // winner
+        if(playerOne.getHP()>=playerTwo.getHP()) {
+            winner = new Image(player1);
+        }
+        else {
+            winner=new Image(player2);
+        }
 
         //Add listeners to buttons
         menuButton.addListener(new InputListener() {
@@ -77,11 +87,6 @@ public class WinScreen implements Screen {
             }
         });
 
-        //if p1 wins
-       if ("Player 2".equals(win))
-        {
-            winner.setDrawable(new SpriteDrawable(new Sprite(player1)));
-        }
 
 
         mainTable.add(pokal).maxSize(290 , 360 ).pad(100).padBottom(50);
@@ -96,10 +101,7 @@ public class WinScreen implements Screen {
     }
 
 
-    public static void setWinner(java.lang.String winner)
-    {
-        win= winner;
-    }
+
 
 
 
