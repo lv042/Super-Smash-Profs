@@ -14,6 +14,7 @@ import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.utils.SpriteDrawable;
+import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.badlogic.gdx.utils.ScreenUtils;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
@@ -94,6 +95,7 @@ public class WinScreen implements Screen {
         mainTable.add(winner).padBottom(100).maxSize(600, 200);
         mainTable.row();
         mainTable.add(menuButton).padBottom(100).maxSize(300, 100);
+        mainTable.background(new TextureRegionDrawable(new Texture("winscreen/winbg.png")));
 
         //Add table to stage
         mainTable.setDebug(false);
@@ -108,9 +110,6 @@ public class WinScreen implements Screen {
     @Override
     public void render(float delta) {
         ScreenUtils.clear(Color.CLEAR);
-        this.stage.getBatch().begin();
-        this.stage.getBatch().draw(new Texture("winscreen/winbg.png"), 0, 0, 1920, 1080);
-        this.stage.getBatch().end();
         this.stage.act();
         this.stage.draw();
 
