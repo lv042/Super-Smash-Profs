@@ -107,18 +107,8 @@ public class B2dContactListener implements ContactListener {
 
         if("PlayerTwo".equals(contact.getFixtureA().getBody().getUserData()) && contact.getFixtureB().getBody().getUserData().toString().startsWith("Bullet")) {
             PlayerTwoGotShoot = true;
-            // bodiesToDestroy.add(contact.getFixtureB().getBody());
-            //contact.getFixtureB().getBody().getUserData().toString().startsWith("Bullet");
 
-            // Add body which had contact with PlayerTwo to bodiesToDestroy
-            //if(!bodiesToDestroy.contains(contact.getFixtureB().getBody())) {
-            //    bodiesToDestroy.add(contact.getFixtureB().getBody());
-            //}
-
-
-            //System.out.println("Fixture B: " + contact.getFixtureB().getUserData());
             logger.info("Fixture B: " + contact.getFixtureB().getUserData());
-            //System.out.println("UserData of Fixture B starts with Bullet: " + contact.getFixtureB().getBody().getUserData().toString().startsWith("Bullet"));
             logger.info("UserData of Fixture B starts with Bullet: " + contact.getFixtureB().getBody().getUserData().toString().startsWith("Bullet"));
         }
 
@@ -219,6 +209,10 @@ public class B2dContactListener implements ContactListener {
 
 
         }
+
+    public void resetContactListener(){
+        bodiesToDestroy.clear();
+    }
 
     @Override
     public void endContact(Contact contact) {
