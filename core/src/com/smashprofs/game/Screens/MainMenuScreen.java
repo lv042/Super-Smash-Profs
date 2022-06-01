@@ -9,6 +9,7 @@ import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.InputListener;
@@ -16,6 +17,7 @@ import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.utils.SpriteDrawable;
+import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.badlogic.gdx.utils.ScreenUtils;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
@@ -98,7 +100,7 @@ public class MainMenuScreen implements Screen {
         mainTable.add(playButton).padBottom(100).maxSize(300, 100);
         mainTable.row();
         mainTable.add(exitButton).padBottom(100).maxSize(300, 100);
-
+        mainTable.background(new TextureRegionDrawable(new Texture("mainmenu/bgmenu.png")));
         //Add table to stage
         mainTable.setDebug(false);
         stage.addActor(mainTable);
@@ -107,9 +109,6 @@ public class MainMenuScreen implements Screen {
     @Override
     public void render(float delta) {
         ScreenUtils.clear(Color.CLEAR);
-        this.stage.getBatch().begin();
-        this.stage.getBatch().draw(new Texture("mainmenu/bgmenu.png"), 0, 0, 1920, 1080);
-        this.stage.getBatch().end();
         this.stage.act();
         this.stage.draw();
 

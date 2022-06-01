@@ -256,7 +256,7 @@ public class PlayScreen implements Screen {
         hud.stage.draw();
         hud.updateHud(delta, playerOne, playerTwo);
 
-
+        //Test for win and set to win screen
        if(hud.testwin(playerOne,playerTwo))
        {
            game.setScreen(winScreen);
