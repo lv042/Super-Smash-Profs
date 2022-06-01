@@ -17,12 +17,14 @@ import com.smashprofs.game.Screens.PlayScreen;
 
 
 import java.util.ArrayList;
+import java.util.logging.Logger;
 
 /**
  * A controllable Player
  */
 public abstract class Player extends GameObject {
 
+    static final Logger logger = Logger.getLogger("Player");
 
     public static final float PPM = 100;
     private final World world;
@@ -127,7 +129,8 @@ public abstract class Player extends GameObject {
         //LeosHomingMissle loli = new LeosHomingMissle(world, this);
         //leosProjectiles.add(loli);
 
-        System.out.println("Player created:" + this.playerName);
+        //System.out.println("Player created:" + this.playerName);
+        logger.fine("Player created:" + this.playerName);
 
     }
 
@@ -422,6 +425,7 @@ public abstract class Player extends GameObject {
                     //TODO: Rate limiter needed here!! Otherwise, a lot of projectiles will spawn at once!
                     isShooting = p1Controller.getButton(Xbox360Pad.BUTTON_X);
                     System.out.println(p1Controller.getAxis(Xbox360Pad.AXIS_LEFT_X));
+                    //logger.info(p1Controller.getAxis(Xbox360Pad.AXIS_LEFT_X));
                 }
             } else {
                 leftRightInput = Util.adAxis();
@@ -452,6 +456,7 @@ public abstract class Player extends GameObject {
                     //TODO: Rate limiter needed here!! Otherwise, a lot of projectiles will spawn at once!
                     isShooting = p2Controller.getButton(Xbox360Pad.BUTTON_X);
                     System.out.println(p2Controller.getAxis(Xbox360Pad.AXIS_LEFT_X));
+                    //logger.info(p2Controller.getAxis(Xbox360Pad.AXIS_LEFT_X));
                 }
             } else {
                 leftRightInput = Util.leftrightAxis();
@@ -516,7 +521,8 @@ public abstract class Player extends GameObject {
 
         if (stompInput && !isGrounded) {
             applyForces(0, stompSpeed);
-            System.out.println("Stomping");
+            //System.out.println("Stomping");
+            logger.fine("Stomping");
             isStomping = true;
             setHP(getHP() - 0.1f);
         }

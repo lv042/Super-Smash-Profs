@@ -8,6 +8,7 @@ import com.smashprofs.game.Screens.PlayScreen;
 import com.smashprofs.game.Helper.explosionType;
 
 import java.util.ArrayList;
+import java.util.logging.Logger;
 
 public class B2dContactListener implements ContactListener {
 
@@ -15,7 +16,7 @@ public class B2dContactListener implements ContactListener {
     boolean PlayerOneGotShoot = false;
     boolean PlayerTwoGotShoot = false;
 
-
+    static final Logger logger = Logger.getLogger("B2dContactListener");
 
     boolean BulletHit = false;
 
@@ -98,8 +99,10 @@ public class B2dContactListener implements ContactListener {
             //    bodiesToDestroy.add(contact.getFixtureB().getBody());
             //}
 
-            System.out.println("Fixture B: " + contact.getFixtureB().getUserData());
-            System.out.println("UserData of Fixture B starts with Bullet: " + contact.getFixtureB().getBody().getUserData().toString().startsWith("Bullet"));
+            //System.out.println("Fixture B: " + contact.getFixtureB().getUserData());
+            logger.info("Fixture B: " + contact.getFixtureB().getUserData());
+            //System.out.println("UserData of Fixture B starts with Bullet: " + contact.getFixtureB().getBody().getUserData().toString().startsWith("Bullet"));
+            logger.info("UserData of Fixture B starts with Bullet: " + contact.getFixtureB().getBody().getUserData().toString().startsWith("Bullet"));
         }
 
         if("PlayerTwo".equals(contact.getFixtureA().getBody().getUserData()) && contact.getFixtureB().getBody().getUserData().toString().startsWith("Bullet")) {
@@ -113,8 +116,10 @@ public class B2dContactListener implements ContactListener {
             //}
 
 
-            System.out.println("Fixture B: " + contact.getFixtureB().getUserData());
-            System.out.println("UserData of Fixture B starts with Bullet: " + contact.getFixtureB().getBody().getUserData().toString().startsWith("Bullet"));
+            //System.out.println("Fixture B: " + contact.getFixtureB().getUserData());
+            logger.info("Fixture B: " + contact.getFixtureB().getUserData());
+            //System.out.println("UserData of Fixture B starts with Bullet: " + contact.getFixtureB().getBody().getUserData().toString().startsWith("Bullet"));
+            logger.info("UserData of Fixture B starts with Bullet: " + contact.getFixtureB().getBody().getUserData().toString().startsWith("Bullet"));
         }
 
 
@@ -124,12 +129,14 @@ public class B2dContactListener implements ContactListener {
 //        System.out.println("BulletHit: " + BulletHit);
 
         if ("Tile".equals(contact.getFixtureA().getBody().getUserData()) && "PlayerTwo".equals(contact.getFixtureB().getBody().getUserData())){
-            System.out.println("P2 Touching Tile:" + P2NotTouchingTile);
+            //System.out.println("P2 Touching Tile:" + P2NotTouchingTile);
+            logger.info("P2 Touching Tile:" + P2NotTouchingTile);
             P2NotTouchingTile = false;
         }
 
         if ("Tile".equals(contact.getFixtureA().getBody().getUserData()) && "PlayerOne".equals(contact.getFixtureB().getBody().getUserData())){
-            System.out.println("P1 Touching Tile: " + P1NotTouchingTile);
+            //System.out.println("P1 Touching Tile: " + P1NotTouchingTile);
+            logger.info("P1 Touching Tile: " + P1NotTouchingTile);
             P1NotTouchingTile = false;
         }
 
@@ -217,12 +224,14 @@ public class B2dContactListener implements ContactListener {
     public void endContact(Contact contact) {
 
         if("Tile".equals(contact.getFixtureA().getBody().getUserData()) && "PlayerOne".equals(contact.getFixtureB().getBody().getUserData())){
-            System.out.println("P1 Touching Tile: " + P1NotTouchingTile);
+            //System.out.println("P1 Touching Tile: " + P1NotTouchingTile);
+            logger.info("P1 Touching Tile: " + P1NotTouchingTile);
             P1NotTouchingTile = true;
         }
         if("Tile".equals(contact.getFixtureA().getBody().getUserData()) && "PlayerTwo".equals(contact.getFixtureB().getBody().getUserData())) // null because not touching anything
         {
-            System.out.println("P2 Touching Tile:" + P2NotTouchingTile);
+            //System.out.println("P2 Touching Tile:" + P2NotTouchingTile);
+            logger.info("P2 Touching Tile:" + P2NotTouchingTile);
             P2NotTouchingTile = true;
         }
 

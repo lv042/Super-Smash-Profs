@@ -12,6 +12,7 @@ import com.smashprofs.game.Actors.Projectiles.HomingMissile;
 import com.smashprofs.game.Screens.PlayScreen;
 
 import java.util.ArrayList;
+import java.util.logging.Logger;
 
 import static com.smashprofs.game.Actors.Players.Player.PPM;
 
@@ -29,6 +30,8 @@ public class CombatManager {
     public static DelayedRemovalArray<Projectile> projectileArrayList = new DelayedRemovalArray<>();
 
     private VFXManager vfxManager = VFXManager.getVFXManager_INSTANCE();
+
+    static final Logger logger = Logger.getLogger("CombatManager");
 
 
 
@@ -84,7 +87,8 @@ public class CombatManager {
 
         }
         if(playerOne.isShooting()){
-            System.out.println("Bullet spawned ");
+            //System.out.println("Bullet spawned ");
+            logger.info("Bullet spawned");
             //HomingMissile proj = new HomingMissile(world, playerOne, playerTwo);
             CircleStar proj = new CircleStar(world, playerOne);
 
@@ -92,7 +96,8 @@ public class CombatManager {
 
         }
         if(playerTwo.isShooting()) {
-            System.out.println("Bullet spawned");
+            //System.out.println("Bullet spawned");
+            logger.info("Bullet spawned");
             //ThrowingStar proj = new ThrowingStar(world, playerTwo);
             ThrowingStar proj = new ThrowingStar(world, new Vector2(playerTwo.getPosition().x + 10 / PPM, playerTwo.getPosition().y) , new Vector2(1,0));
             projectileArrayList.add(proj);

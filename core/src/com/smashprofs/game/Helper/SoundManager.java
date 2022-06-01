@@ -4,6 +4,8 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.audio.Sound;
 
+import java.util.logging.Logger;
+
 public class SoundManager {
 
     private boolean turnOnMusic= false;
@@ -13,6 +15,8 @@ public class SoundManager {
     //implements singelton sound manager
 
     private static final SoundManager soundManager_INSTANCE = new SoundManager();
+
+    static final Logger logger = Logger.getLogger("SoundManager");
 
 
     //private constructor to avoid client applications to use constructor
@@ -35,12 +39,14 @@ public class SoundManager {
             currenMusic.setLooping(false);
         }
         catch(Exception e) {
-            System.out.println("No music declared");
+            //System.out.println("No music declared");
+            logger.fine("No music declared");
         }
 
 
         currenMusic = Gdx.audio.newMusic(Gdx.files.internal(musicPath));
         System.out.println("SoundManager: setupMusic: musicPath: " + musicPath);
+        logger.info("SoundManager: setupMusic: musicPath: " + musicPath);
 
 
         if(turnOnMusic){
@@ -63,7 +69,8 @@ public class SoundManager {
             mp3Sound.play();
         }
         else {
-            System.out.println("SoundManager: updateSounds: unknown sound format");
+            //System.out.println("SoundManager: updateSounds: unknown sound format");
+            logger.info("SoundManager: updateSounds: unknown sound format");
             return;
         }
     }

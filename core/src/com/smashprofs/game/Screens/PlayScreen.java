@@ -27,9 +27,14 @@ import com.badlogic.gdx.utils.viewport.FillViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import com.smashprofs.game.Scenes.Hud;
 
+
+import java.util.logging.Logger;
+
 import static com.smashprofs.game.Actors.Players.Player.PPM;
 
 public class PlayScreen implements Screen {
+
+    static final Logger logger = Logger.getLogger("Playscreen");
 
     private Game game;
     public static Viewport viewport; // Manages a Camera and determines how world coordinates are mapped to and from the screen.
@@ -163,8 +168,10 @@ public class PlayScreen implements Screen {
         contactListener = B2dContactListener.getContactListener_INSTANCE();
         world.setContactListener(contactListener);
 
-        System.out.println("playerOne: " + playerOne);
-        System.out.println("playerTwo: " + playerTwo);
+        //System.out.println("playerOne: " + playerOne);
+        logger.info("playerOne:" + playerOne);
+        //System.out.println("playerTwo: " + playerTwo);
+        logger.info("playerTwo:" + playerTwo);
         hud = new Hud(game.batch, playerOne, playerTwo);
 
 

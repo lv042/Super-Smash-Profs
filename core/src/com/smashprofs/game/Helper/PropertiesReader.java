@@ -6,8 +6,12 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.Properties;
+import java.util.logging.Logger;
 
 public class PropertiesReader {
+
+    static final Logger logger = Logger.getLogger("Test");
+
 
     public String readProperties() {
 
@@ -21,8 +25,10 @@ public class PropertiesReader {
             prop.load(input);
 
             // get the property value and print it out
-            System.out.println(prop.getProperty("name"));
-            System.out.println(prop.getProperty("lang"));
+            //System.out.println(prop.getProperty("name"));
+            logger.info(prop.getProperty("name"));
+            //System.out.println(prop.getProperty("lang"));
+            logger.info(prop.getProperty("lang"));
 
             //result += prop.getProperty("name");
 
