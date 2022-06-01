@@ -89,8 +89,8 @@ public class CombatManager {
         if(playerOne.isShooting()){
             //System.out.println("Bullet spawned ");
             logger.info("Bullet spawned");
-            //HomingMissile proj = new HomingMissile(world, playerOne, playerTwo);
-            CircleStar proj = new CircleStar(world, playerOne);
+            HomingMissile proj = new HomingMissile(world, playerOne, playerTwo);
+            //CircleStar proj = new CircleStar(world, playerOne);
 
             projectileArrayList.add(proj);
 
@@ -98,19 +98,19 @@ public class CombatManager {
         if(playerTwo.isShooting()) {
             //System.out.println("Bullet spawned");
             logger.info("Bullet spawned");
-            //ThrowingStar proj = new ThrowingStar(world, playerTwo);
-            ThrowingStar proj = new ThrowingStar(world, new Vector2(playerTwo.getPosition().x + 10 / PPM, playerTwo.getPosition().y) , new Vector2(1,0));
-            projectileArrayList.add(proj);
-
-            ThrowingStar proj1 = new ThrowingStar(world, new Vector2(playerTwo.getPosition().x - 10 / PPM, playerTwo.getPosition().y), new Vector2(-1,0));
-            projectileArrayList.add(proj1);
-
-            ThrowingStar proj2 = new ThrowingStar(world, new Vector2(playerTwo.getPosition().x, playerTwo.getPosition().y + 10 / PPM), new Vector2(0,1));
-            projectileArrayList.add(proj2);
-
-            ThrowingStar proj3 = new ThrowingStar(world, new Vector2(playerTwo.getPosition().x, playerTwo.getPosition().y - 10 / PPM), new Vector2(0,-1));
-            projectileArrayList.add(proj3);
-
+//            //ThrowingStar proj = new ThrowingStar(world, playerTwo);
+//            ThrowingStar proj = new ThrowingStar(world, new Vector2(playerTwo.getPosition().x + 10 / PPM, playerTwo.getPosition().y) , new Vector2(1,0));
+//            projectileArrayList.add(proj);
+//
+//            ThrowingStar proj1 = new ThrowingStar(world, new Vector2(playerTwo.getPosition().x - 10 / PPM, playerTwo.getPosition().y), new Vector2(-1,0));
+//            projectileArrayList.add(proj1);
+//
+//            ThrowingStar proj2 = new ThrowingStar(world, new Vector2(playerTwo.getPosition().x, playerTwo.getPosition().y + 10 / PPM), new Vector2(0,1));
+//            projectileArrayList.add(proj2);
+//
+//            ThrowingStar proj3 = new ThrowingStar(world, new Vector2(playerTwo.getPosition().x, playerTwo.getPosition().y - 10 / PPM), new Vector2(0,-1));
+//            projectileArrayList.add(proj3);
+//
 
 
 
@@ -120,13 +120,12 @@ public class CombatManager {
 
 
             //HomingMissile proj = new HomingMissile(world, playerTwo, playerOne);
-            //Landmine proj = new Landmine(world, playerTwo);
+            Landmine proj = new Landmine(world, playerTwo);
             //proj.setCurrentState(Landmine.State.EXPLODING);
 
             //
             // vfxManager.spawnExplosion(VFXManager.explosionType.rocketExplosion, playerTwo.getPosition());
-
-
+            projectileArrayList.add(proj);
         }
 
         //BULLETS
@@ -164,7 +163,9 @@ public class CombatManager {
 
 
     }
-
+    public void resetCombatManager(){
+        projectileArrayList.clear();
+    }
 
     //Projectile attack
 
