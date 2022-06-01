@@ -83,7 +83,7 @@ public class CombatManager {
             if(playerOne.isStompHitground())attackPlayer(playerOne, playerTwo, attackKnockback, 2f);
             if(playerTwo.isStompHitground())attackPlayer(playerTwo, playerOne, attackKnockback, 2f);
 
-
+            //Landmine proj = new Landmine(world,playerOne);
 
         }
         if(playerOne.isShooting()){
