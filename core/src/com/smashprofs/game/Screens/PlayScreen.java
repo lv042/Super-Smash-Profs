@@ -147,7 +147,7 @@ public class PlayScreen implements Screen {
     public PlayScreen(Game game) {
 
         playerFactory = PlayerFactory.getPlayerFactory_INSTANCE();
-        playerFactory.resetFactory();
+
 
         soundManager.setupMusic(gameSong);
         this.combatManager = CombatManager.getCombatManager_INSTANCE();
@@ -181,6 +181,10 @@ public class PlayScreen implements Screen {
         }
 
         winScreen=new WinScreen(game,playerOne,playerTwo);
+
+        playerFactory.resetFactory();
+        combatManager.resetCombatManager();
+        contactListener.resetContactListener();
 
     }
 
