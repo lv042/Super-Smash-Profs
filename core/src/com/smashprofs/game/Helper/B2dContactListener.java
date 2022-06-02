@@ -26,6 +26,11 @@ public class B2dContactListener implements ContactListener {
 
     private VFXManager vfxManager = VFXManager.getVFXManager_INSTANCE();
 
+    SoundManager soundManager = SoundManager.getSoundManager_INSTANCE();
+
+    private final String explosionSoundWav = "sounds/stomp.wav";
+
+
     private CombatManager combatManager = CombatManager.getCombatManager_INSTANCE();
 
 //    public void update() {
@@ -137,7 +142,9 @@ public class B2dContactListener implements ContactListener {
 
         if(contact.getFixtureB().getBody().getUserData().toString().startsWith("Bullet")){
             bodiesToDestroy.add(contact.getFixtureB().getBody());
+            soundManager.playSound(explosionSoundWav);
             contact.getFixtureB().getBody().setUserData("Destroyed");
+
 
             vfxManager.spawnExplosion(explosionType.rocketExplosion, contact.getFixtureB().getBody().getPosition());
             //PlayScreen.getWorld().destroyBody(contact.getFixtureB().getBody());
@@ -146,6 +153,7 @@ public class B2dContactListener implements ContactListener {
         }
         if(contact.getFixtureA().getBody().getUserData().toString().startsWith("Bullet")){
             bodiesToDestroy.add(contact.getFixtureA().getBody());
+            soundManager.playSound(explosionSoundWav);
             contact.getFixtureA().getBody().setUserData("Destroyed");
 
             vfxManager.spawnExplosion(explosionType.rocketExplosion, contact.getFixtureA().getBody().getPosition());
@@ -177,6 +185,7 @@ public class B2dContactListener implements ContactListener {
         if(!("Tile".equals(contact.getFixtureA().getBody().getUserData())) && contact.getFixtureB().getBody().getUserData().toString().startsWith("Mine")){
             bodiesToDestroy.add(contact.getFixtureB().getBody());
             contact.getFixtureB().getBody().setUserData("Destroyed");
+            soundManager.playSound(explosionSoundWav);
             vfxManager.spawnExplosion(explosionType.landMineExplosion, contact.getFixtureB().getBody().getPosition());
             //PlayScreen.getWorld().destroyBody(contact.getFixtureB().getBody());
             //contact.getFixtureB().getFilterData().categoryBits
@@ -185,6 +194,7 @@ public class B2dContactListener implements ContactListener {
         if(!("Tile".equals(contact.getFixtureB().getBody().getUserData())) && contact.getFixtureA().getBody().getUserData().toString().startsWith("Mine")){
             bodiesToDestroy.add(contact.getFixtureA().getBody());
             contact.getFixtureA().getBody().setUserData("Destroyed");
+            soundManager.playSound(explosionSoundWav);
             vfxManager.spawnExplosion(explosionType.landMineExplosion, contact.getFixtureA().getBody().getPosition());
 
             //contact.getFixtureB().getFilterData().categoryBits
