@@ -110,7 +110,7 @@ public class MainMenuScreen implements Screen {
         mainTable.add(exitButton).padBottom(100).maxSize(300, 100);
         mainTable.background(new TextureRegionDrawable(new Texture("mainmenu/bgmenu.png")));
         //Add table to stage
-        mainTable.setDebug(true);
+        mainTable.setDebug(false);
         stage.addActor(mainTable);
     }
 
@@ -126,8 +126,6 @@ public class MainMenuScreen implements Screen {
         spriteBatch.begin();
         spriteBatch.draw(logoTexture, screenWidth / 2f - 614f / zoomFactor, 700f / zoomFactor, 1228f / zoomFactor, 104f / zoomFactor);
         //spriteBatch.draw(logoTexture, screenWidth / 2 - 614f, 104f );
-        System.out.println(screenWidth);
-
         spriteBatch.end();
 
     }

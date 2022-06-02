@@ -29,19 +29,25 @@ public class WinScreen implements Screen {
     private Viewport viewport;
     private Stage stage;
     private OrthographicCamera camera;
-    private Image menuButton, pokal, winner;
-    private Texture menuButtonInactive, menuButtonActive, player1,player2;
+    private Image menuButton,  winner;
+    private Texture menuButtonInactive, menuButtonActive, player1,player2,pokal;
     private Table mainTable;
     private Player playerOne,playerTwo;
+    private float timer;
+    private float zoomFactor;
+    int screenWidth = 1920;
+    int height = 1080;
+
 
     public WinScreen(Game game,Player playerOne,Player playerTwo) {
         this.game = game;
         this.batch = new SpriteBatch();
         this.camera = new OrthographicCamera();
-        this.viewport = new FillViewport(1920, 1080, camera);
+        this.viewport = new FillViewport(screenWidth, height, camera);
         this.stage = new Stage(this.viewport, this.batch);
         this.playerOne=playerOne;
         this.playerTwo=playerTwo;
+
 
         menuButtonInactive = new Texture("winscreen/menuButtonInactive.png");
         menuButtonActive = new Texture("winscreen/menuButtonActive.png");
@@ -62,7 +68,7 @@ public class WinScreen implements Screen {
 
         //Create buttons
         menuButton = new Image(menuButtonInactive);
-        pokal = new Image(new Texture("winscreen/pokal.png"));
+        pokal = new Texture("winscreen/pokal.png");
 
         // winner
         if(playerOne.getHP()>=playerTwo.getHP()) {
@@ -91,9 +97,7 @@ public class WinScreen implements Screen {
 
 
 
-        mainTable.add(pokal).maxSize(290 , 360 ).pad(100).padBottom(50);
-        mainTable.row();
-        mainTable.add(winner).padBottom(100).maxSize(600, 200);
+        mainTable.add(winner).padBottom(100).maxSize(600, 200).padTop(500);
         mainTable.row();
         mainTable.add(menuButton).padBottom(100).maxSize(300, 100);
         mainTable.background(new TextureRegionDrawable(new Texture("winscreen/winbg.png")));
@@ -114,7 +118,12 @@ public class WinScreen implements Screen {
         this.stage.act();
         this.stage.draw();
 
+        timer += 0.06f;
+        zoomFactor = 1 + (float) Math.cos(timer) / 50;
 
+        batch.begin();
+        batch.draw(pokal, screenWidth / 2f - 145f / zoomFactor, 600f / zoomFactor, 290f / zoomFactor, 360f / zoomFactor);
+        batch.end();
     }
 
     @Override
