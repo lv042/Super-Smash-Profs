@@ -24,6 +24,7 @@ import com.crashinvaders.vfx.VfxManager;
 import com.crashinvaders.vfx.effects.*;
 import com.crashinvaders.vfx.effects.util.MixEffect;
 import com.smashprofs.game.Actors.Players.Player;
+import com.smashprofs.game.Helper.PostProcessingSettings;
 import com.smashprofs.game.Scenes.Hud;
 
 public class WinScreen implements Screen {
@@ -60,20 +61,9 @@ public class WinScreen implements Screen {
         mainTable = new Table();
 
 
-        postProcessingManager = new VfxManager(Pixmap.Format.RGBA8888);
-        FilmGrainEffect filmGrainEffect = new FilmGrainEffect();
-        filmGrainEffect.setNoiseAmount(0.08f);
-        OldTvEffect oldTvEffect = new OldTvEffect();
-        VignettingEffect vignettingEffect = new VignettingEffect(false);
-        vignettingEffect.setIntensity(0.5f);
-        MotionBlurEffect motionBlurEffect = new MotionBlurEffect(Pixmap.Format.RGBA8888, MixEffect.Method.MIX, 0.2f);
-        BloomEffect bloomEffect = new BloomEffect();
-
-        postProcessingManager.addEffect(bloomEffect);
-        postProcessingManager.addEffect(motionBlurEffect);
-        postProcessingManager.addEffect(vignettingEffect);
-        postProcessingManager.addEffect(filmGrainEffect);
-        postProcessingManager.addEffect(oldTvEffect);
+        //add pre configured settings to PostProcessingManager
+        PostProcessingSettings ppSetUpHandler = new PostProcessingSettings();
+        this.postProcessingManager = ppSetUpHandler.getPostProcessingManager();
     }
 
     @Override

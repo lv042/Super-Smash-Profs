@@ -157,14 +157,9 @@ public class PlayScreen implements Screen {
 
     public PlayScreen(Game game) {
 
-        postProcessingManager = new VfxManager(Pixmap.Format.RGBA8888);
-        filmGrainEffect = new FilmGrainEffect();
-        filmGrainEffect.setNoiseAmount(0.08f);
-        oldTvEffect = new OldTvEffect();
-        vignettingEffect = new VignettingEffect(false);
-        vignettingEffect.setIntensity(0.5f);
-        MotionBlurEffect motionBlurEffect = new MotionBlurEffect(Pixmap.Format.RGBA8888, MixEffect.Method.MIX, 0.2f);
-        BloomEffect bloomEffect = new BloomEffect();
+        //add pre configured settings to PostProcessingManager
+        PostProcessingSettings ppSetUpHandler = new PostProcessingSettings();
+        this.postProcessingManager = ppSetUpHandler.getPostProcessingManager();
 
         postProcessingManager.addEffect(bloomEffect);
         postProcessingManager.addEffect(motionBlurEffect);

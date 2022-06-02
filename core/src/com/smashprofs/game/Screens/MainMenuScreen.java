@@ -24,6 +24,7 @@ import com.badlogic.gdx.utils.viewport.Viewport;
 import com.crashinvaders.vfx.VfxManager;
 import com.crashinvaders.vfx.effects.*;
 import com.crashinvaders.vfx.effects.util.MixEffect;
+import com.smashprofs.game.Helper.PostProcessingSettings;
 
 public class MainMenuScreen implements Screen {
 
@@ -46,6 +47,7 @@ public class MainMenuScreen implements Screen {
     Texture logoTexture = new Texture("mainmenu/ssp.png");
 
     public MainMenuScreen(Game game) {
+
         this.game = game;
         this.spriteBatch = new SpriteBatch();
         this.camera = new OrthographicCamera();
@@ -58,21 +60,10 @@ public class MainMenuScreen implements Screen {
         exitButtonActive = new Texture("mainmenu/buttons/exitButtonActive.png");
         mainTable = new Table();
 
+        //add pre configured settings to PostProcessingManager
+        PostProcessingSettings ppSetUpHandler = new PostProcessingSettings();
+        this.postProcessingManager = ppSetUpHandler.getPostProcessingManager();
 
-       postProcessingManager = new VfxManager(Pixmap.Format.RGBA8888);
-        FilmGrainEffect filmGrainEffect = new FilmGrainEffect();
-        filmGrainEffect.setNoiseAmount(0.08f);
-        OldTvEffect oldTvEffect = new OldTvEffect();
-        VignettingEffect vignettingEffect = new VignettingEffect(false);
-        vignettingEffect.setIntensity(0.5f);
-        MotionBlurEffect motionBlurEffect = new MotionBlurEffect(Pixmap.Format.RGBA8888, MixEffect.Method.MIX, 0.2f);
-        BloomEffect bloomEffect = new BloomEffect();
-
-        postProcessingManager.addEffect(bloomEffect);
-        postProcessingManager.addEffect(motionBlurEffect);
-        postProcessingManager.addEffect(vignettingEffect);
-        postProcessingManager.addEffect(filmGrainEffect);
-        postProcessingManager.addEffect(oldTvEffect);
     }
 
     @Override
@@ -154,9 +145,7 @@ public class MainMenuScreen implements Screen {
         spriteBatch.end();
 
         postProcessingManager.endInputCapture();
-
         postProcessingManager.applyEffects();
-
         postProcessingManager.renderToScreen();
 
     }
