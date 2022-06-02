@@ -82,12 +82,6 @@ public class PlayScreen implements Screen {
     private PlayerFactory playerFactory = null;
 
     private VfxManager postProcessingManager;
-    private FilmGrainEffect filmGrainEffect;
-
-    private OldTvEffect oldTvEffect;
-
-    private VignettingEffect vignettingEffect;
-
 
     public void checkInput(float deltatime){
 
@@ -161,11 +155,6 @@ public class PlayScreen implements Screen {
         PostProcessingSettings ppSetUpHandler = new PostProcessingSettings();
         this.postProcessingManager = ppSetUpHandler.getPostProcessingManager();
 
-        postProcessingManager.addEffect(bloomEffect);
-        postProcessingManager.addEffect(motionBlurEffect);
-        postProcessingManager.addEffect(vignettingEffect);
-        postProcessingManager.addEffect(filmGrainEffect);
-        postProcessingManager.addEffect(oldTvEffect);
 
         playerFactory = PlayerFactory.getPlayerFactory_INSTANCE();
 
