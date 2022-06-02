@@ -9,7 +9,6 @@ import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.InputListener;
@@ -20,13 +19,12 @@ import com.badlogic.gdx.scenes.scene2d.utils.SpriteDrawable;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.badlogic.gdx.utils.ScreenUtils;
 import com.badlogic.gdx.utils.viewport.FillViewport;
-import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 
 public class MainMenuScreen implements Screen {
 
     private Game game;
-    private SpriteBatch batch;
+    private SpriteBatch spriteBatch;
     private Viewport viewport;
     private Stage stage;
     private OrthographicCamera camera;
@@ -39,10 +37,10 @@ public class MainMenuScreen implements Screen {
 
     public MainMenuScreen(Game game) {
         this.game = game;
-        this.batch = new SpriteBatch();
+        this.spriteBatch = new SpriteBatch();
         this.camera = new OrthographicCamera();
         this.viewport = new FillViewport(1920, 1080, camera);
-        this.stage = new Stage(this.viewport, this.batch);
+        this.stage = new Stage(this.viewport, this.spriteBatch);
 
         playButtonInactive = new Texture("mainmenu/buttons/playButtonInactive.png");
         playButtonActive = new Texture("mainmenu/buttons/playButtonActive.png");
@@ -143,6 +141,6 @@ public class MainMenuScreen implements Screen {
     @Override
     public void dispose() {
         this.stage.dispose();
-        this.batch.dispose();
+        this.spriteBatch.dispose();
     }
 }
