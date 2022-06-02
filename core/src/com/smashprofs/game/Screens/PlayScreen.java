@@ -26,15 +26,15 @@ import com.badlogic.gdx.physics.box2d.*;
 import com.badlogic.gdx.utils.viewport.FillViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import com.smashprofs.game.Scenes.Hud;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
-
-import java.util.logging.Logger;
 
 import static com.smashprofs.game.Actors.Players.Player.PPM;
 
 public class PlayScreen implements Screen {
 
-    static final Logger logger = Logger.getLogger("Playscreen");
+    private static Logger log = LogManager.getLogger(PlayScreen.class);
 
     private Game game;
     public static Viewport viewport; // Manages a Camera and determines how world coordinates are mapped to and from the screen.
@@ -170,9 +170,9 @@ public class PlayScreen implements Screen {
         world.setContactListener(contactListener);
 
         //System.out.println("playerOne: " + playerOne);
-        logger.info("playerOne:" + playerOne);
+        log.info("playerOne:" + playerOne);
         //System.out.println("playerTwo: " + playerTwo);
-        logger.info("playerTwo:" + playerTwo);
+        log.info("playerTwo:" + playerTwo);
         hud = new Hud(game.batch, playerOne, playerTwo);
 
 

@@ -3,8 +3,8 @@ package com.smashprofs.game.Helper;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.audio.Sound;
-
-import java.util.logging.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 public class SoundManager {
 
@@ -16,7 +16,7 @@ public class SoundManager {
 
     private static final SoundManager soundManager_INSTANCE = new SoundManager();
 
-    static final Logger logger = Logger.getLogger("SoundManager");
+    private static Logger log = LogManager.getLogger(SoundManager.class);
 
 
     //private constructor to avoid client applications to use constructor
@@ -40,13 +40,13 @@ public class SoundManager {
         }
         catch(Exception e) {
             //System.out.println("No music declared");
-            logger.fine("No music declared");
+            log.error("No music declared");
         }
 
 
         currenMusic = Gdx.audio.newMusic(Gdx.files.internal(musicPath));
         System.out.println("SoundManager: setupMusic: musicPath: " + musicPath);
-        logger.info("SoundManager: setupMusic: musicPath: " + musicPath);
+        log.info("SoundManager: setupMusic: musicPath: " + musicPath);
 
 
         if(turnOnMusic){
@@ -70,7 +70,7 @@ public class SoundManager {
         }
         else {
             //System.out.println("SoundManager: updateSounds: unknown sound format");
-            logger.info("SoundManager: updateSounds: unknown sound format");
+            log.info("SoundManager: updateSounds: unknown sound format");
             return;
         }
     }

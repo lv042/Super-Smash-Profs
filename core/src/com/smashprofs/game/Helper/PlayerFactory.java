@@ -6,14 +6,15 @@ import com.smashprofs.game.Actors.Players.Alex;
 import com.smashprofs.game.Actors.Players.Luca;
 import com.smashprofs.game.Actors.Players.Maurice;
 import com.smashprofs.game.Screens.PlayScreen;
-
-import java.util.logging.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import static com.smashprofs.game.Actors.Players.Player.PPM;
 
 public class PlayerFactory {
 
-    static final Logger logger = Logger.getLogger("PlayerFactory");
+    private static Logger log = LogManager.getLogger(PlayerFactory.class);
+
 
     private Vector2 playerOneSpawnPoint = new Vector2(3.4f * PPM, 0.85f * PPM);
 
@@ -61,25 +62,25 @@ public class PlayerFactory {
             case Luca:
                 playersCreated++;
                 //System.out.println("Created LucaPlayer");
-                logger.info("Created LucaPlayer");
+                log.info("Created LucaPlayer");
                 return new Luca(PlayScreen.getWorld(), currentInputState, currentSpawnPoint, "Luca Kanne", userData);
 
             case Alex:
                 playersCreated++;
                 //System.out.println("Created AlexPlayer");
-                logger.info("Created AlexPlayer");
+                log.info("Created AlexPlayer");
                 return new Alex(PlayScreen.getWorld(), currentInputState, currentSpawnPoint, "Alex Boss", userData);
 //            case Leo:
 //                return new Leo(3);
             case Maurice:
                 playersCreated++;
                 //System.out.println("Created MauricePlayer");
-                logger.info("Created MauricePlayer");
+                log.info("Created MauricePlayer");
                 return new Maurice(PlayScreen.getWorld(), currentInputState, currentSpawnPoint, "Maurice Boi", userData);
             case Leo:
                 playersCreated++;
                 //System.out.println("Created MauricePlayer");
-                logger.info("Created LeoPlayer");
+                log.info("Created LeoPlayer");
                 //return new Leo(PlayScreen.getWorld(), currentInputState, currentSpawnPoint, "Leo The Miner", userData);
 //            case Jens:
 //                return new Jens(5);

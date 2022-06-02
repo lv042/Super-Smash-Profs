@@ -10,9 +10,12 @@ import com.badlogic.gdx.math.Matrix4;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.*;
 import com.smashprofs.game.Actors.GameObject;
+import com.smashprofs.game.Helper.B2dContactListener;
 import com.smashprofs.game.Helper.CameraManager;
 import com.smashprofs.game.Actors.Players.Player;
 import com.smashprofs.game.Screens.PlayScreen;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import static com.smashprofs.game.Actors.Players.Player.PPM;
 
@@ -20,6 +23,9 @@ import static com.smashprofs.game.Actors.Players.Player.PPM;
  * A basic projectile
  */
 public class  Projectile extends GameObject {
+
+    private static Logger log = LogManager.getLogger(Projectile.class);
+
     private BodyDef bdef;
     // public Body b2dbody;
     private CameraManager cameraManager = CameraManager.getCameraManager_INSTANCE();
@@ -149,7 +155,8 @@ public class  Projectile extends GameObject {
         if (true) {
             fDef.filter.groupIndex = 0;
 
-            System.out.println("Group index: " + fDef.filter.groupIndex);
+            //System.out.println("Group index: " + fDef.filter.groupIndex);
+            log.info("Group index: " + fDef.filter.groupIndex);
         }
 
         //fDef.density = 0.1f;
@@ -161,7 +168,8 @@ public class  Projectile extends GameObject {
         sprite.setOrigin(sprite.getWidth()*0.5f, sprite.getHeight()*0.5f);
 
 
-        System.out.println("projectile address: " + this);
+        //System.out.println("projectile address: " + this);
+        log.debug("projectile address: " + this);
     }
 
     /**
@@ -187,7 +195,8 @@ public class  Projectile extends GameObject {
         sprite.setRotation((float) rotation);
 
 
-        System.out.println("Projectile b2dBody userData: " + b2dbody.getUserData());
+        //System.out.println("Projectile b2dBody userData: " + b2dbody.getUserData());
+        log.info("Projectile b2dBody userData: " + b2dbody.getUserData());
     }
 
     /**
@@ -200,6 +209,7 @@ public class  Projectile extends GameObject {
 
 
         //System.out.println("projectile draw");
+        log.info("projectile draw");
         super.draw(batch);
     }
 
@@ -237,7 +247,8 @@ public class  Projectile extends GameObject {
      * Destroys the b2dBody of the projectile
      */
     public void destroyBody() {
-        System.out.println("Deleting Projectile body" + b2dbody.getUserData());
+        //System.out.println("Deleting Projectile body" + b2dbody.getUserData());
+        log.debug("Deleting Projectile body" + b2dbody.getUserData());
         PlayScreen.getWorld().destroyBody(this.b2dbody);
     }
 
@@ -250,7 +261,8 @@ public class  Projectile extends GameObject {
         //active = false;
 
         sprite.getTexture().dispose();
-        System.out.println("Disposed projectile texture via .destroy()");
+        //System.out.println("Disposed projectile texture via .destroy()");
+        log.info("Disposed projectile texture via .destroy()");
         //destroy sprite
         //sprite.getTexture().dispose();
     }

@@ -5,9 +5,13 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.DelayedRemovalArray;
 import com.smashprofs.game.Actors.VFXObject;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 
 public class VFXManager {
+
+    private static Logger log = LogManager.getLogger(VFXManager.class);
 
     public static DelayedRemovalArray<VFXObject> VFXObjectList = new DelayedRemovalArray<>();
 
@@ -56,6 +60,8 @@ public class VFXManager {
             //TODO: @Alex Bitte die auskommentierten sout's als log.debug übernehmen :)
             explosion.update(deltatime);
             //System.out.println("Is active before loop: " + explosion.active);
+            log.debug("Is active before loop: " + explosion.active);
+
             if(!explosion.active) {
                 VFXObjectList.removeValue(explosion, true);
             }
@@ -63,7 +69,9 @@ public class VFXManager {
 
                 explosion.active = false;
                 //System.out.println("Explosion was set to inactive");
+                log.debug("Explosion was set to inactive");
                 //System.out.println("Is active: " + explosion.active);
+                log.debug("Is active: " + explosion.active);
 
             }
         }

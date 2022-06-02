@@ -14,17 +14,18 @@ import com.badlogic.gdx.physics.box2d.*;
 import com.badlogic.gdx.utils.Array;
 import com.smashprofs.game.Helper.*;
 import com.smashprofs.game.Screens.PlayScreen;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 
 import java.util.ArrayList;
-import java.util.logging.Logger;
 
 /**
  * A controllable Player
  */
 public abstract class Player extends GameObject {
 
-    static final Logger logger = Logger.getLogger("Player");
+    private static Logger log = LogManager.getLogger(Player.class);
 
     public static final float PPM = 100;
     private final World world;
@@ -130,7 +131,7 @@ public abstract class Player extends GameObject {
         //leosProjectiles.add(loli);
 
         //System.out.println("Player created:" + this.playerName);
-        logger.fine("Player created:" + this.playerName);
+        log.debug("Player created:" + this.playerName);
 
     }
 
@@ -424,8 +425,9 @@ public abstract class Player extends GameObject {
 
                     //TODO: Rate limiter needed here!! Otherwise, a lot of projectiles will spawn at once!
                     isShooting = p1Controller.getButton(Xbox360Pad.BUTTON_X);
-                    System.out.println(p1Controller.getAxis(Xbox360Pad.AXIS_LEFT_X));
-                    //logger.info(p1Controller.getAxis(Xbox360Pad.AXIS_LEFT_X));
+                    //System.out.println(p1Controller.getAxis(Xbox360Pad.AXIS_LEFT_X));
+                    log.debug(p1Controller.getAxis(Xbox360Pad.AXIS_LEFT_X));
+
                 }
             } else {
                 leftRightInput = Util.adAxis();
@@ -455,8 +457,9 @@ public abstract class Player extends GameObject {
 
                     //TODO: Rate limiter needed here!! Otherwise, a lot of projectiles will spawn at once!
                     isShooting = p2Controller.getButton(Xbox360Pad.BUTTON_X);
-                    System.out.println(p2Controller.getAxis(Xbox360Pad.AXIS_LEFT_X));
-                    //logger.info(p2Controller.getAxis(Xbox360Pad.AXIS_LEFT_X));
+                    //System.out.println(p2Controller.getAxis(Xbox360Pad.AXIS_LEFT_X));
+                    log.debug(p2Controller.getAxis(Xbox360Pad.AXIS_LEFT_X));
+
                 }
             } else {
                 leftRightInput = Util.leftrightAxis();
@@ -522,7 +525,7 @@ public abstract class Player extends GameObject {
         if (stompInput && !isGrounded) {
             applyForces(0, stompSpeed);
             //System.out.println("Stomping");
-            logger.fine("Stomping");
+            log.debug("Stomping");
             isStomping = true;
             setHP(getHP() - 0.1f);
         }
@@ -549,6 +552,7 @@ public abstract class Player extends GameObject {
         }
         //System.out.println(getCurrentState());
         //System.out.println(isGrounded());
+        log.debug(isGrounded());
         return frame;
 
 
@@ -636,6 +640,7 @@ public abstract class Player extends GameObject {
         float pushBack = 1f;
 
         //System.out.println(getB2dbody().getPosition());
+        log.debug(getB2dbody().getPosition());
         if (getB2dbody().getPosition().x  > 8.5) {
 
             getB2dbody().setLinearVelocity(new Vector2(-pushBack, getB2dbody().getLinearVelocity().y + 0.1f));
