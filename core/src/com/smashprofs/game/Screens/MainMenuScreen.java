@@ -106,7 +106,7 @@ public class MainMenuScreen implements Screen {
         mainTable.add(exitButton).padBottom(100).maxSize(300, 100);
         mainTable.background(new TextureRegionDrawable(new Texture("mainmenu/bgmenu.png")));
         //Add table to stage
-        mainTable.setDebug(false);
+        mainTable.setDebug(true);
         stage.addActor(mainTable);
     }
 
