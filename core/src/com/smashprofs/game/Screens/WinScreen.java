@@ -46,7 +46,7 @@ public class WinScreen implements Screen {
         menuButtonInactive = new Texture("winscreen/menuButtonInactive.png");
         menuButtonActive = new Texture("winscreen/menuButtonActive.png");
         player1= new Texture("winscreen/player1.png");
-        player2 = new Texture("winsc    reen/player2.png");
+        player2 = new Texture("winscreen/player2.png");
         mainTable = new Table();
     }
 
