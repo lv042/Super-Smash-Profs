@@ -16,6 +16,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.utils.SpriteDrawable;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.badlogic.gdx.utils.ScreenUtils;
+import com.badlogic.gdx.utils.viewport.FillViewport;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import com.smashprofs.game.Actors.Players.Player;
@@ -37,7 +38,7 @@ public class WinScreen implements Screen {
         this.game = game;
         this.batch = new SpriteBatch();
         this.camera = new OrthographicCamera();
-        this.viewport = new FitViewport(1920, 1080, camera);
+        this.viewport = new FillViewport(1920, 1080, camera);
         this.stage = new Stage(this.viewport, this.batch);
         this.playerOne=playerOne;
         this.playerTwo=playerTwo;
