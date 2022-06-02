@@ -29,7 +29,7 @@ public class CombatManager {
 
     public static DelayedRemovalArray<Projectile> projectileArrayList = new DelayedRemovalArray<>();
 
-    private VFXManager vfxManager = VFXManager.getVFXManager_INSTANCE();
+    private VAFXManager vfxManager = VAFXManager.getVFXManager_INSTANCE();
 
     static final Logger logger = Logger.getLogger("CombatManager");
 
@@ -89,8 +89,8 @@ public class CombatManager {
         if(playerOne.isShooting()){
             //System.out.println("Bullet spawned ");
             logger.info("Bullet spawned");
-            //HomingMissile proj = new HomingMissile(world, playerOne, playerTwo);
-            CircleStar proj = new CircleStar(world, playerOne);
+            HomingMissile proj = new HomingMissile(world, playerOne, playerTwo);
+            // CircleStar proj = new CircleStar(world, playerOne);
 
             projectileArrayList.add(proj);
 
@@ -224,5 +224,9 @@ public class CombatManager {
             }
 
         }
+    }
+
+    public void resetCombatManager() {
+        projectileArrayList.clear();
     }
 }

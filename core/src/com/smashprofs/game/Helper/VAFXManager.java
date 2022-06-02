@@ -11,7 +11,7 @@ import org.apache.logging.log4j.Logger;
 
 public class VAFXManager {
 
-    private static Logger log = LogManager.getLogger(VFXManager.class);
+    private static Logger log = LogManager.getLogger(VAFXManager.class);
 
     public static DelayedRemovalArray<VFXObject> VFXObjectList = new DelayedRemovalArray<>();
 
