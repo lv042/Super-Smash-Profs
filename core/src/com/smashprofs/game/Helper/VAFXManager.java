@@ -7,20 +7,20 @@ import com.badlogic.gdx.utils.DelayedRemovalArray;
 import com.smashprofs.game.Actors.VFXObject;
 
 
-public class VFXManager {
+public class VAFXManager {
 
     public static DelayedRemovalArray<VFXObject> VFXObjectList = new DelayedRemovalArray<>();
 
     //implements singelton sound manager
 
-    private static final VFXManager VFXManager_INSTANCE = new VFXManager();
+    private static final VAFXManager VAFX_MANAGER___INSTANCE = new VAFXManager();
 
 
     //private constructor to avoid client applications to use constructor
-    private VFXManager() {
+    private VAFXManager() {
     }
 
-    public static VFXManager getVFXManager_INSTANCE() {return VFXManager_INSTANCE;}
+    public static VAFXManager getVFXManager_INSTANCE() {return VAFX_MANAGER___INSTANCE;}
 
 
 
