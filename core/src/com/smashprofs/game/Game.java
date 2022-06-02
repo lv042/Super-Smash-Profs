@@ -1,21 +1,30 @@
 package com.smashprofs.game;
 
-import com.badlogic.gdx.Game;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.smashprofs.game.Helper.Util;
+import com.smashprofs.game.Helper.PropertiesReader;
 import com.smashprofs.game.Screens.IntroScreen;
+import com.smashprofs.game.Screens.MainMenuScreen;
+import jdk.tools.jmod.Main;
 
-public class GameClass extends Game {
-	public SpriteBatch batch;
+public class Game extends com.badlogic.gdx.Game {
+	public static SpriteBatch batch;
+
+
 	Texture img;
 	public static final int V_WIDTH = 400;
 	public static final int V_HEIGHT = 208;
 	
 	@Override
 	public void create () {
-		Util.setupMusic();
+
+
 		batch = new SpriteBatch();
+		//setScreen(new MainMenuScreen(this));
+
+		PropertiesReader propReader = new PropertiesReader();
+		String  result = propReader.readProperties();
+
 		setScreen(new IntroScreen(this));
 
 		//setScreen(new PlayScreen(this)); // passes game to set screen on its own -> now started by intro screen
@@ -34,6 +43,6 @@ public class GameClass extends Game {
 	@Override
 	public void dispose () {
 		batch.dispose();
-		img.dispose();
+
 	}
 }

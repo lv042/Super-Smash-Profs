@@ -1,121 +1,128 @@
 package com.smashprofs.game.Screens;
 
 
+import com.badlogic.gdx.controllers.Controller;
+import com.badlogic.gdx.controllers.Controllers;
 import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.graphics.g2d.Sprite;
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
+import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
 import com.badlogic.gdx.math.Matrix4;
-import com.smashprofs.game.GameClass;
-import com.smashprofs.game.Helper.CombatManager;
+import com.smashprofs.game.Actors.Players.Player;
+import com.smashprofs.game.Game;
+import com.smashprofs.game.Helper.*;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.OrthographicCamera;
-import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.maps.MapObject;
 import com.badlogic.gdx.maps.objects.RectangleMapObject;
 import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.maps.tiled.TmxMapLoader;
-import com.badlogic.gdx.maps.tiled.renderers.OrthoCachedTiledMapRenderer;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.*;
 import com.badlogic.gdx.utils.viewport.FillViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
-import com.smashprofs.game.Sprites.PlayerClass;
 import com.smashprofs.game.Scenes.Hud;
-import static com.smashprofs.game.Sprites.PlayerClass.PPM;
+
+
+import java.util.logging.Logger;
+
+import static com.smashprofs.game.Actors.Players.Player.PPM;
 
 public class PlayScreen implements Screen {
 
-    private static ShapeRenderer debugRenderer = new ShapeRenderer();
+    static final Logger logger = Logger.getLogger("Playscreen");
 
-    private GameClass game;
-
-    private float jumpForce = 3f;
-
-    private Vector2 playerOneSpawnPoint = new Vector2(90, 90);
-
-    private Vector2 playerTwoSpawnPoint = new Vector2(110, 90);
-
-    Texture texture;
-    private OrthographicCamera cameragame;
+    private Game game;
     public static Viewport viewport; // Manages a Camera and determines how world coordinates are mapped to and from the screen.
     private Hud hud;
+    private WinScreen winScreen;
 
+
+    //tiled map
+    public static ShapeRenderer debugRenderer = new ShapeRenderer();
     private TmxMapLoader mapLoader;
     private TiledMap map;
-    private OrthoCachedTiledMapRenderer tiledMapRenderer;
-    private PlayerClass playerOne;
-    private PlayerClass playerTwo;
+    private OrthogonalTiledMapRenderer tiledMapRenderer;
+    private Player playerOne;
+    private Player playerTwo;
 
+
+    //managers
+    private final B2dContactListener contactListener;
+    private SoundManager soundManager = SoundManager.getSoundManager_INSTANCE();
+
+    private String gameSong = "music/beste music ever.wav";
     private CombatManager combatManager;
 
+    private CameraManager cameraManager = CameraManager.getCameraManager_INSTANCE();
+
+    private VFXManager vfxManager = VFXManager.getVFXManager_INSTANCE();
+
+    private OrthographicCamera gamecamera; //set by camera manager
+
+    //batch and game world
+    public static SpriteBatch batch;
 
     //Box2D
-    private World world;
+    public static World world;
+
+    //debug
     private Box2DDebugRenderer box2DDebugRenderer; //renders outline of box2d bodies
 
-    public void updateCamera(){
-        cameragame.update();
-    }
+
+    //factories
+    private PlayerFactory playerFactory = null;
+
+
     public void checkInput(float deltatime){
 
-        playerOne.managePlayerInput(deltatime);
-        playerTwo.managePlayerInput(deltatime);
+        //Player input is now handeled in the PlayerClass
+        //Only external input is handled here
 
         //exit game
         if(Gdx.input.isKeyPressed(Input.Keys.ESCAPE)){
-            Gdx.app.exit();
+           // Gdx.app.exit();
+            game.setScreen(new MainMenuScreen(game));
         }
     }
 
 
+    public static SpriteBatch getBatch() {
+        return batch;
+    }
 
-    public void update(float deltatime){
-        tiledMapRenderer.setView(cameragame);
+    public void update(float deltatime) {
 
-        //input
+        tiledMapRenderer.setView(gamecamera);
+
+        playerOne.update(deltatime); // Most of the code above should go in this method
+        playerTwo.update(deltatime); // update method must be before most of the code below otherwise some values are null;
         checkInput(deltatime);
-
-        playerOne.updatePosition(deltatime);
-        playerTwo.updatePosition(deltatime);
-
         //combatManager
-        combatManager.update(deltatime, playerOne, playerTwo);
+        combatManager.update(deltatime, playerOne, playerTwo, world);
+        vfxManager.update(deltatime);
 
 
 
         //updates the physics 60 times per second
         world.step(1/60f, 6, 2); //higher iterations make physics more accurate but also way slower
 
-        updateCamera();
+//        //contactListener.update();
+//
+//        if(contactListener.bodiesToDestroy.size > 0){
+//            contactListener.bodiesToDestroy.clear();
+//        }
+
         viewport.setScreenPosition(0, 0);
-
-        //player
-        playerOne.respawnPlayers();
-        playerTwo.respawnPlayers();
-
-        playerOne.limitPlayersToEdge();
-        playerTwo.limitPlayersToEdge();
-
-        playerOne.checkGrounded();
-        playerTwo.checkGrounded();
-
-
-
-        playerOne.update(deltatime); // Most of the code above should go in this method
-        playerTwo.update(deltatime);
-
-
-
-
-
         //debug
-        DrawDebugLine(new Vector2(0,0), new Vector2(100,100), cameragame.combined);
-
-        //System.out.println("finished update");
+        //DrawDebugLine(playerOne.getPosition(), playerTwo.getPosition(), gamecamera.combined);
 
 
+        cameraManager.updateCameraManager(playerOne, playerTwo);
     }
 
     public static void DrawDebugLine(Vector2 start, Vector2 end, Matrix4 projectionMatrix)
@@ -133,25 +140,63 @@ public class PlayScreen implements Screen {
         return viewport;
     }
 
-    public PlayScreen(GameClass game) {
+    public static World getWorld(){
+        return world;
+    }
 
+    public PlayScreen(Game game) {
+
+        playerFactory = PlayerFactory.getPlayerFactory_INSTANCE();
+
+
+        soundManager.setupMusic(gameSong);
         this.combatManager = CombatManager.getCombatManager_INSTANCE();
         this.game = game;
-        cameragame = new OrthographicCamera();
-        viewport = new FillViewport(GameClass.V_WIDTH / PPM, GameClass.V_HEIGHT / PPM, cameragame);
+        gamecamera = cameraManager.getGameCamera();
+        viewport = new FillViewport(Game.V_WIDTH / PPM, Game.V_HEIGHT / PPM, gamecamera);
 
         //StretchViewport is a Viewport that stretches the screen to fill the window.
         //Screen Viewport is a Viewport that show as much of the world as possible on the screen -> makes the the world you see depend on the size of the window.
         //FitViewport is a Viewport that maintains the aspect ratio of the world and fills the window. -> Probalby the best option.
 
+        createTileMap();
+
+        //playerOne = new Player(world, Player.InputState.WASD, playerOneSpawnPoint, "Alex Boss", "PlayerOne");
+        playerOne = playerFactory.getPlayer(PlayerTypes.Alex);
+        //playerTwo = new Player(world, Player.InputState.ARROWS, playerTwoSpawnPoint, "Jens Huhn", "PlayerTwo");
+        playerTwo = playerFactory.getPlayer(PlayerTypes.Maurice);
+
+        contactListener = B2dContactListener.getContactListener_INSTANCE();
+        world.setContactListener(contactListener);
+
+        //System.out.println("playerOne: " + playerOne);
+        logger.info("playerOne:" + playerOne);
+        //System.out.println("playerTwo: " + playerTwo);
+        logger.info("playerTwo:" + playerTwo);
+        hud = new Hud(game.batch, playerOne, playerTwo);
+
+
+        for (Controller controller : Controllers.getControllers()) {
+            Gdx.app.log(controller.getUniqueId(), controller.getName());
+        }
+
+        winScreen=new WinScreen(game,playerOne,playerTwo);
+
+        playerFactory.resetFactory();
+        combatManager.resetCombatManager();
+        contactListener.resetContactListener();
+
+    }
+
+    private void createTileMap() {
         mapLoader = new TmxMapLoader();
-        map = mapLoader.load("1/Map 1.tmx");
-        tiledMapRenderer = new OrthoCachedTiledMapRenderer(map, 1 / PPM);
+        map = mapLoader.load("1/Map1New2.tmx");
+        tiledMapRenderer = new OrthogonalTiledMapRenderer(map, 1 / PPM);
+        //tiledMapRenderer.setBlending(true);
 
-        cameragame.position.set((viewport.getWorldWidth() / 2), (viewport.getWorldHeight() / 2) , 0); // sets the position of the camera to the center of the screen -> later you can use the util class
+        this.batch = new SpriteBatch();
 
-
-        world = new World(new Vector2(0, -9.8f), true); //y value -> gravity
+        world = new World(new Vector2(0, 0), true); //y value -> gravity -> now handled by the player class
         box2DDebugRenderer = new Box2DDebugRenderer();
 
 
@@ -161,25 +206,17 @@ public class PlayScreen implements Screen {
         FixtureDef fdef = new FixtureDef();
         Body body;
 
-        for(MapObject object : map.getLayers().get(0).getObjects().getByType(RectangleMapObject.class)){
+        for(MapObject object : map.getLayers().get("obj").getObjects().getByType(RectangleMapObject.class)){
             Rectangle rect = ((RectangleMapObject) object).getRectangle();
             bdef.type = BodyDef.BodyType.StaticBody;
             bdef.position.set((rect.getX() + rect.getWidth() / 2 ) / PPM, (rect.getY() + rect.getHeight() / 2 ) / PPM);
-
             body = world.createBody(bdef);
+            body.setUserData("Tile");
             shape.setAsBox(rect.getWidth() / 2 / PPM, rect.getHeight() / 2 / PPM);
             fdef.shape = shape;
             body.createFixture(fdef);
         }
-
-        playerOne = new PlayerClass(world, PlayerClass.InputState.WASD, playerOneSpawnPoint);
-        playerTwo = new PlayerClass(world, PlayerClass.InputState.ARROWS, playerTwoSpawnPoint);
-
-        hud = new Hud(game.batch, playerOne, playerTwo);
-
-
     }
-
 
 
     @Override
@@ -189,20 +226,45 @@ public class PlayScreen implements Screen {
 
     @Override
     public void render(float delta) {
-        update(delta);
 
-        Gdx.gl.glClearColor(0, 1, 1, 1); //-> light blue
-        //Gdx.gl.glClearColor(1, 1, 1, 1);
         Gdx.gl.glClear(Gdx.gl.GL_COLOR_BUFFER_BIT);
-        game.batch.setProjectionMatrix(hud.stage.getCamera().combined);
-        hud.stage.draw();
-        hud.updateHud(delta, playerOne, playerTwo);
+        Gdx.gl.glClearColor(0, 0, 0, 1); //-> light blue
+        //Gdx.gl.glClearColor(1, 1, 1, 1);
+
         tiledMapRenderer.render();
 
+        update(delta);
 
 
         //render our tiledmap debug outlines to screen
-        box2DDebugRenderer.render(world, cameragame.combined);
+        box2DDebugRenderer.render(world, gamecamera.combined);
+
+        //batch.setProjectionMatrix(cameraManager.getGameCamera().combined);
+        batch.setProjectionMatrix(gamecamera.combined);
+
+        batch.begin();
+
+        playerOne.draw(batch);
+        playerTwo.draw(batch);
+        combatManager.drawProjectiles(batch);
+        vfxManager.drawVFX(batch);
+
+        final Sprite sprite;
+        final Body body;
+
+
+        batch.end();
+
+
+        // Muss unter batch.end() stehen
+        hud.stage.draw();
+        hud.updateHud(delta, playerOne, playerTwo);
+
+        //Test for win and set to win screen
+       if(hud.testwin(playerOne,playerTwo))
+       {
+           game.setScreen(winScreen);
+       }
 
 
     }
@@ -210,7 +272,6 @@ public class PlayScreen implements Screen {
     @Override
     public void resize(int width, int height) {
         viewport.update(width, height);
-
     }
 
     @Override

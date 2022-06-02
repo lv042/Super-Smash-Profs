@@ -5,12 +5,28 @@ import com.badlogic.gdx.backends.lwjgl3.Lwjgl3ApplicationConfiguration;
 
 // Please note that on macOS your application needs to be started with the -XstartOnFirstThread JVM argument
 public class DesktopLauncher {
+
+	static int width = 1920;
+	static int height = 1080;
+
+	public static int getWidth() {
+		return width;
+	}
+
+	public static int getHeight() {
+		return height;
+	}
+
 	public static void main (String[] arg) {
+		int width = 1920;
+		int height = 1080;
+
 		Lwjgl3ApplicationConfiguration config = new Lwjgl3ApplicationConfiguration();
 
 		String iconPath = "icon.png";
-		int width = 1920;
-		int height = 1080;
+
+
+
 		boolean useFullScreenMode = false;
 		boolean useOwnResolution = false;
 		boolean useVSync = false;
@@ -27,9 +43,9 @@ public class DesktopLauncher {
 
 		if(useFullScreenMode) config.setFullscreenMode(Lwjgl3ApplicationConfiguration.getDisplayMode());
 
-		else if(useOwnResolution) config.setWindowedMode(width, height);
+		else if(useOwnResolution) config.setWindowedMode(getWidth(), getHeight());
 		else config.setMaximized(true);
 
-		new Lwjgl3Application(new GameClass(), config);
+		new Lwjgl3Application(new Game(), config);
 	}
 }
