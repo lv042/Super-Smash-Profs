@@ -32,8 +32,13 @@ public class MainMenuScreen implements Screen {
     private Texture playButtonInactive, playButtonActive, exitButtonInactive, exitButtonActive;
     private Table mainTable;
 
+    private float timer;
+    private float zoomFactor;
+
     int width = 1920;
     int height = 1080;
+
+    Texture logoTexture = new Texture("mainmenu/ssp.png");
 
     public MainMenuScreen(Game game) {
         this.game = game;
@@ -97,9 +102,10 @@ public class MainMenuScreen implements Screen {
             }
         });
 
-        mainTable.add(logo).maxSize(1228 , 104).pad(200).padBottom(200);
-        mainTable.row();
-        mainTable.add(playButton).padBottom(100).maxSize(300, 100);
+        //mainTable.add(logo).maxSize(1228 , 104).pad(200).padBottom(200);
+
+
+        mainTable.add(playButton).padBottom(100).maxSize(300, 100).padTop(500);
         mainTable.row();
         mainTable.add(exitButton).padBottom(100).maxSize(300, 100);
         mainTable.background(new TextureRegionDrawable(new Texture("mainmenu/bgmenu.png")));
@@ -113,6 +119,14 @@ public class MainMenuScreen implements Screen {
         ScreenUtils.clear(Color.CLEAR);
         this.stage.act();
         this.stage.draw();
+
+        timer += 0.06f;
+        zoomFactor = 1 + (float) Math.cos(timer) / 50;
+
+        System.out.println(zoomFactor);
+        spriteBatch.begin();
+        spriteBatch.draw(logoTexture, Gdx.graphics.getWidth() / 2f - 614f / zoomFactor, 700f / zoomFactor, 1228f / zoomFactor, 104f / zoomFactor);
+        spriteBatch.end();
 
     }
 
