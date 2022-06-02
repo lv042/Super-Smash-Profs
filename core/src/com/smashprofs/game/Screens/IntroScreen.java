@@ -57,6 +57,7 @@ public class IntroScreen extends ScreenAdapter {
 
         if (Gdx.input.isKeyJustPressed(com.badlogic.gdx.Input.Keys.ANY_KEY) || Gdx.input.isButtonJustPressed(0)) {
             game.setScreen(new MainMenuScreen(game));
+            //game.setScreen(new CharacterSelectScreen(game));
 
         }
     }
