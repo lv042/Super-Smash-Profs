@@ -4,6 +4,7 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.World;
 import com.smashprofs.game.Actors.Players.Player;
+import com.smashprofs.game.Helper.ShapeCreator;
 
 //import static jdk.nashorn.internal.runtime.regexp.joni.Syntax.Java;
 
@@ -16,7 +17,9 @@ public class ThrowingStar extends Projectile {
 
 
     public ThrowingStar(World world, Vector2 originPosition, Vector2 direction) {
-        super(world, originPosition, "Star", new Texture("projectiles/star.png"), 15);
+        super(world, originPosition, "Star", ShapeCreator.getCircleShape(3f), 3f, new Texture("projectiles/star.png"), 15);
+
+
 
         int randInt = rand.nextInt(9999);
         userData = "Star#" + randInt;
