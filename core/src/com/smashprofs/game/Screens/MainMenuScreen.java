@@ -35,7 +35,7 @@ public class MainMenuScreen implements Screen {
     private float timer;
     private float zoomFactor;
 
-    int width = 1920;
+    int screenWidth = 1920;
     int height = 1080;
 
     Texture logoTexture = new Texture("mainmenu/ssp.png");
@@ -44,7 +44,7 @@ public class MainMenuScreen implements Screen {
         this.game = game;
         this.spriteBatch = new SpriteBatch();
         this.camera = new OrthographicCamera();
-        this.viewport = new FillViewport(width, height, camera);
+        this.viewport = new FillViewport(screenWidth, height, camera);
         this.stage = new Stage(this.viewport, this.spriteBatch);
 
         playButtonInactive = new Texture("mainmenu/buttons/playButtonInactive.png");
@@ -123,9 +123,11 @@ public class MainMenuScreen implements Screen {
         timer += 0.06f;
         zoomFactor = 1 + (float) Math.cos(timer) / 50;
 
-        System.out.println(zoomFactor);
         spriteBatch.begin();
-        spriteBatch.draw(logoTexture, Gdx.graphics.getWidth() / 2f - 614f / zoomFactor, 700f / zoomFactor, 1228f / zoomFactor, 104f / zoomFactor);
+        spriteBatch.draw(logoTexture, screenWidth / 2f - 614f / zoomFactor, 700f / zoomFactor, 1228f / zoomFactor, 104f / zoomFactor);
+        //spriteBatch.draw(logoTexture, screenWidth / 2 - 614f, 104f );
+        System.out.println(screenWidth);
+
         spriteBatch.end();
 
     }
@@ -134,6 +136,8 @@ public class MainMenuScreen implements Screen {
     public void resize(int width, int height) {
         this.viewport.update(width, height);
         camera.position.set(camera.viewportWidth / 2, camera.viewportHeight / 2, 0);
+        //this.width = width / 2;
+
         camera.update();
     }
 
