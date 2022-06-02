@@ -9,6 +9,7 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
 import com.badlogic.gdx.math.Matrix4;
+import com.badlogic.gdx.utils.Timer;
 import com.smashprofs.game.Actors.Players.Player;
 import com.smashprofs.game.Game;
 import com.smashprofs.game.Helper.*;
@@ -263,6 +264,7 @@ public class PlayScreen implements Screen {
         //Test for win and set to win screen
        if(hud.testwin(playerOne,playerTwo))
        {
+           soundManager.playSound("sounds/death.mp3");
            game.setScreen(winScreen);
        }
 
