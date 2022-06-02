@@ -17,6 +17,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.utils.SpriteDrawable;
 import com.badlogic.gdx.utils.ScreenUtils;
+import com.badlogic.gdx.utils.viewport.FillViewport;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 
@@ -31,11 +32,14 @@ public class MainMenuScreen implements Screen {
     private Texture playButtonInactive, playButtonActive, exitButtonInactive, exitButtonActive;
     private Table mainTable;
 
+    int width = 1920;
+    int height = 1080;
+
     public MainMenuScreen(Game game) {
         this.game = game;
         this.batch = new SpriteBatch();
         this.camera = new OrthographicCamera();
-        this.viewport = new FitViewport(1920, 1080, camera);
+        this.viewport = new FillViewport(1920, 1080, camera);
         this.stage = new Stage(this.viewport, this.batch);
 
         playButtonInactive = new Texture("mainmenu/buttons/playButtonInactive.png");
