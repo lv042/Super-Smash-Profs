@@ -5,6 +5,7 @@ import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Vector2;
+import com.smashprofs.game.Helper.SoundManager;
 
 import static com.smashprofs.game.Actors.Players.Player.PPM;
 
@@ -14,12 +15,13 @@ public class VFXObject extends GameObject {
     public Vector2 spawnpoint;
     public Texture rawTexture;
     private final Animation<TextureRegion> explode;
+    SoundManager soundManager = SoundManager.getSoundManager_INSTANCE();
     float stateTime = 0;
 
     float centeringFactor = 0f;
 
 
-    public VFXObject(String userData, Vector2 Spawnpoint, Texture texture, Boolean centered, Boolean spriteIsSquare) {
+    public VFXObject(String userData, Vector2 Spawnpoint, Texture texture, String sound, Boolean centered, Boolean spriteIsSquare) {
         super(userData);
         sprite = new Sprite(texture);
         this.active = true;
@@ -37,7 +39,7 @@ public class VFXObject extends GameObject {
 
         explode = new Animation(0.1f, exploding[0], exploding[1], exploding[2], exploding[3], exploding[4], exploding[5], exploding[6], exploding[7]);
         explode.setPlayMode(Animation.PlayMode.NORMAL);
-
+        soundManager.playSound(sound);
 
 
         //sprite.setRegion(rawTexture);

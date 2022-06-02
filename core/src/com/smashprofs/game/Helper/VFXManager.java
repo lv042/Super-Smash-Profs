@@ -26,28 +26,32 @@ public class VFXManager {
 
     public void spawnExplosion(explosionType explosionType, Vector2 spawnpoint) {
         Texture VFXTexture = null;
+        String sound = null;
         boolean centered = false;
         boolean spriteIsSquare = false;
 
         switch (explosionType) {
             case rocketExplosion:
                 VFXTexture = new Texture("explosions/explosion-6.png");
+                sound = "sounds/stomp.wav";
                 centered = true;
                 spriteIsSquare = true;
             break;
             case landMineExplosion:
                 VFXTexture = new Texture("explosions/explosion-2.png");
+                sound = "sounds/stomp.wav";
                 centered = false;
                 spriteIsSquare = true;
             break;
             case lightningStrike:
                 VFXTexture = new Texture("explosions/lightning.png");
+                sound = "sounds/stomp.wav";
                 centered = false;
                 spriteIsSquare = false;
                 break;
         }
 
-        VFXObjectList.add(new VFXObject("test", spawnpoint, VFXTexture, centered, spriteIsSquare));
+        VFXObjectList.add(new VFXObject("test", spawnpoint, VFXTexture, sound, centered, spriteIsSquare));
     }
 
 
