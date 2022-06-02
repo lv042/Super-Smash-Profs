@@ -9,12 +9,8 @@ import com.smashprofs.game.Actors.Projectiles.*;
 
 import com.smashprofs.game.Actors.Players.Player;
 import com.smashprofs.game.Actors.Projectiles.HomingMissile;
-import com.smashprofs.game.Screens.PlayScreen;
 
-import java.util.ArrayList;
 import java.util.logging.Logger;
-
-import static com.smashprofs.game.Actors.Players.Player.PPM;
 
 public class CombatManager {
     private Vector2 distanceBetweenPlayers = new Vector2(0, 0);
@@ -29,7 +25,7 @@ public class CombatManager {
 
     public static DelayedRemovalArray<Projectile> projectileArrayList = new DelayedRemovalArray<>();
 
-    private VFXManager vfxManager = VFXManager.getVFXManager_INSTANCE();
+    private VAFXManager vafxManager = VAFXManager.getVFXManager_INSTANCE();
 
     static final Logger logger = Logger.getLogger("CombatManager");
 

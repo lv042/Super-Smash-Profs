@@ -4,11 +4,15 @@ package com.smashprofs.game.Screens;
 import com.badlogic.gdx.controllers.Controller;
 import com.badlogic.gdx.controllers.Controllers;
 import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
 import com.badlogic.gdx.math.Matrix4;
+import com.crashinvaders.vfx.VfxManager;
+import com.crashinvaders.vfx.effects.*;
+import com.crashinvaders.vfx.effects.util.MixEffect;
 import com.smashprofs.game.Actors.Players.Player;
 import com.smashprofs.game.Game;
 import com.smashprofs.game.Helper.*;
@@ -60,7 +64,7 @@ public class PlayScreen implements Screen {
 
     private CameraManager cameraManager = CameraManager.getCameraManager_INSTANCE();
 
-    private VFXManager vfxManager = VFXManager.getVFXManager_INSTANCE();
+    private VAFXManager vafxManager = VAFXManager.getVFXManager_INSTANCE();
 
     private OrthographicCamera gamecamera; //set by camera manager
 
@@ -76,6 +80,13 @@ public class PlayScreen implements Screen {
 
     //factories
     private PlayerFactory playerFactory = null;
+
+    private VfxManager postProcessingManager;
+    private FilmGrainEffect filmGrainEffect;
+
+    private OldTvEffect oldTvEffect;
+
+    private VignettingEffect vignettingEffect;
 
 
     public void checkInput(float deltatime){
@@ -104,7 +115,7 @@ public class PlayScreen implements Screen {
         checkInput(deltatime);
         //combatManager
         combatManager.update(deltatime, playerOne, playerTwo, world);
-        vfxManager.update(deltatime);
+        vafxManager.update(deltatime);
 
 
 
@@ -145,6 +156,19 @@ public class PlayScreen implements Screen {
     }
 
     public PlayScreen(Game game) {
+
+        postProcessingManager = new VfxManager(Pixmap.Format.RGBA8888);
+        filmGrainEffect = new FilmGrainEffect();
+        oldTvEffect = new OldTvEffect();
+        vignettingEffect = new VignettingEffect(false);
+        MotionBlurEffect motionBlurEffect = new MotionBlurEffect(Pixmap.Format.RGBA8888, MixEffect.Method.MIX, 0.2f);
+        BloomEffect bloomEffect = new BloomEffect();
+
+        postProcessingManager.addEffect(bloomEffect);
+        postProcessingManager.addEffect(motionBlurEffect);
+        postProcessingManager.addEffect(vignettingEffect);
+        postProcessingManager.addEffect(filmGrainEffect);
+        postProcessingManager.addEffect(oldTvEffect);
 
         playerFactory = PlayerFactory.getPlayerFactory_INSTANCE();
 
@@ -230,6 +254,10 @@ public class PlayScreen implements Screen {
         Gdx.gl.glClear(Gdx.gl.GL_COLOR_BUFFER_BIT);
         Gdx.gl.glClearColor(0, 0, 0, 1); //-> light blue
         //Gdx.gl.glClearColor(1, 1, 1, 1);
+        postProcessingManager.cleanUpBuffers();
+
+        // Begin render to an off-screen buffer.
+        postProcessingManager.beginInputCapture();
 
         tiledMapRenderer.render();
 
@@ -247,7 +275,7 @@ public class PlayScreen implements Screen {
         playerOne.draw(batch);
         playerTwo.draw(batch);
         combatManager.drawProjectiles(batch);
-        vfxManager.drawVFX(batch);
+        vafxManager.drawVFX(batch);
 
         final Sprite sprite;
         final Body body;
@@ -259,6 +287,12 @@ public class PlayScreen implements Screen {
         // Muss unter batch.end() stehen
         hud.stage.draw();
         hud.updateHud(delta, playerOne, playerTwo);
+
+        postProcessingManager.endInputCapture();
+
+        postProcessingManager.applyEffects();
+
+        postProcessingManager.renderToScreen();
 
         //Test for win and set to win screen
        if(hud.testwin(playerOne,playerTwo))
