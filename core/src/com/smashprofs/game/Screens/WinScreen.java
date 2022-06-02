@@ -4,6 +4,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.OrthographicCamera;
+import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
@@ -19,6 +20,9 @@ import com.badlogic.gdx.utils.ScreenUtils;
 import com.badlogic.gdx.utils.viewport.FillViewport;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
+import com.crashinvaders.vfx.VfxManager;
+import com.crashinvaders.vfx.effects.*;
+import com.crashinvaders.vfx.effects.util.MixEffect;
 import com.smashprofs.game.Actors.Players.Player;
 import com.smashprofs.game.Scenes.Hud;
 
@@ -37,7 +41,7 @@ public class WinScreen implements Screen {
     private float zoomFactor;
     int screenWidth = 1920;
     int height = 1080;
-
+    private VfxManager postProcessingManager;
 
     public WinScreen(Game game,Player playerOne,Player playerTwo) {
         this.game = game;
@@ -54,6 +58,22 @@ public class WinScreen implements Screen {
         player1= new Texture("winscreen/player1.png");
         player2 = new Texture("winscreen/player2.png");
         mainTable = new Table();
+
+
+        postProcessingManager = new VfxManager(Pixmap.Format.RGBA8888);
+        FilmGrainEffect filmGrainEffect = new FilmGrainEffect();
+        filmGrainEffect.setNoiseAmount(0.08f);
+        OldTvEffect oldTvEffect = new OldTvEffect();
+        VignettingEffect vignettingEffect = new VignettingEffect(false);
+        vignettingEffect.setIntensity(0.5f);
+        MotionBlurEffect motionBlurEffect = new MotionBlurEffect(Pixmap.Format.RGBA8888, MixEffect.Method.MIX, 0.2f);
+        BloomEffect bloomEffect = new BloomEffect();
+
+        postProcessingManager.addEffect(bloomEffect);
+        postProcessingManager.addEffect(motionBlurEffect);
+        postProcessingManager.addEffect(vignettingEffect);
+        postProcessingManager.addEffect(filmGrainEffect);
+        postProcessingManager.addEffect(oldTvEffect);
     }
 
     @Override
@@ -115,6 +135,10 @@ public class WinScreen implements Screen {
     @Override
     public void render(float delta) {
         ScreenUtils.clear(Color.CLEAR);
+        postProcessingManager.cleanUpBuffers();
+
+        // Begin render to an off-screen buffer.
+        postProcessingManager.beginInputCapture();
         this.stage.act();
         this.stage.draw();
 
@@ -124,6 +148,12 @@ public class WinScreen implements Screen {
         batch.begin();
         batch.draw(pokal, screenWidth / 2f - 145f / zoomFactor, 600f / zoomFactor, 290f / zoomFactor, 360f / zoomFactor);
         batch.end();
+
+        postProcessingManager.endInputCapture();
+
+        postProcessingManager.applyEffects();
+
+        postProcessingManager.renderToScreen();
     }
 
     @Override

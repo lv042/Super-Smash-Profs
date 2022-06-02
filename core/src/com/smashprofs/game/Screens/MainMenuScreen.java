@@ -6,6 +6,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.OrthographicCamera;
+import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
@@ -20,6 +21,9 @@ import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.badlogic.gdx.utils.ScreenUtils;
 import com.badlogic.gdx.utils.viewport.FillViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
+import com.crashinvaders.vfx.VfxManager;
+import com.crashinvaders.vfx.effects.*;
+import com.crashinvaders.vfx.effects.util.MixEffect;
 
 public class MainMenuScreen implements Screen {
 
@@ -31,6 +35,7 @@ public class MainMenuScreen implements Screen {
     private Image playButton, exitButton, logo;
     private Texture playButtonInactive, playButtonActive, exitButtonInactive, exitButtonActive;
     private Table mainTable;
+    private VfxManager postProcessingManager;
 
     private float timer;
     private float zoomFactor;
@@ -52,6 +57,22 @@ public class MainMenuScreen implements Screen {
         exitButtonInactive = new Texture("mainmenu/buttons/exitButtonInactive.png");
         exitButtonActive = new Texture("mainmenu/buttons/exitButtonActive.png");
         mainTable = new Table();
+
+
+       postProcessingManager = new VfxManager(Pixmap.Format.RGBA8888);
+        FilmGrainEffect filmGrainEffect = new FilmGrainEffect();
+        filmGrainEffect.setNoiseAmount(0.08f);
+        OldTvEffect oldTvEffect = new OldTvEffect();
+        VignettingEffect vignettingEffect = new VignettingEffect(false);
+        vignettingEffect.setIntensity(0.5f);
+        MotionBlurEffect motionBlurEffect = new MotionBlurEffect(Pixmap.Format.RGBA8888, MixEffect.Method.MIX, 0.2f);
+        BloomEffect bloomEffect = new BloomEffect();
+
+        postProcessingManager.addEffect(bloomEffect);
+        postProcessingManager.addEffect(motionBlurEffect);
+        postProcessingManager.addEffect(vignettingEffect);
+        postProcessingManager.addEffect(filmGrainEffect);
+        postProcessingManager.addEffect(oldTvEffect);
     }
 
     @Override
@@ -117,6 +138,10 @@ public class MainMenuScreen implements Screen {
     @Override
     public void render(float delta) {
         ScreenUtils.clear(Color.CLEAR);
+        postProcessingManager.cleanUpBuffers();
+
+        // Begin render to an off-screen buffer.
+        postProcessingManager.beginInputCapture();
         this.stage.act();
         this.stage.draw();
 
@@ -127,6 +152,12 @@ public class MainMenuScreen implements Screen {
         spriteBatch.draw(logoTexture, screenWidth / 2f - 614f / zoomFactor, 700f / zoomFactor, 1228f / zoomFactor, 104f / zoomFactor);
         //spriteBatch.draw(logoTexture, screenWidth / 2 - 614f, 104f );
         spriteBatch.end();
+
+        postProcessingManager.endInputCapture();
+
+        postProcessingManager.applyEffects();
+
+        postProcessingManager.renderToScreen();
 
     }
 
