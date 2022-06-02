@@ -10,10 +10,9 @@ import com.smashprofs.game.Actors.Projectiles.*;
 import com.smashprofs.game.Actors.Players.Player;
 import com.smashprofs.game.Actors.Projectiles.HomingMissile;
 import com.smashprofs.game.Screens.PlayScreen;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 
 import java.util.ArrayList;
+import java.util.logging.Logger;
 
 import static com.smashprofs.game.Actors.Players.Player.PPM;
 
@@ -32,8 +31,7 @@ public class CombatManager {
 
     private VFXManager vfxManager = VFXManager.getVFXManager_INSTANCE();
 
-    private static Logger log = LogManager.getLogger(CombatManager.class);
-
+    static final Logger logger = Logger.getLogger("CombatManager");
 
 
 
@@ -90,7 +88,7 @@ public class CombatManager {
         }
         if(playerOne.isShooting()){
             //System.out.println("Bullet spawned ");
-            log.info("Bullet spawned");
+            logger.info("Bullet spawned");
             //HomingMissile proj = new HomingMissile(world, playerOne, playerTwo);
             CircleStar proj = new CircleStar(world, playerOne);
 
@@ -99,7 +97,7 @@ public class CombatManager {
         }
         if(playerTwo.isShooting()) {
             //System.out.println("Bullet spawned");
-            log.info("Bullet spawned");
+            logger.info("Bullet spawned");
             //ThrowingStar proj = new ThrowingStar(world, playerTwo);
             ThrowingStar proj = new ThrowingStar(world, new Vector2(playerTwo.getPosition().x + 10 / PPM, playerTwo.getPosition().y) , new Vector2(1,0));
             projectileArrayList.add(proj);
@@ -137,13 +135,13 @@ public class CombatManager {
             attackPlayer(playerOne, playerTwo, 1.5f, 2f);
             contactListener.setPlayerTwoGotShoot(false);
             contactListener.setBulletHit(false);
-            //System.out.println("abracadabra");
+            System.out.println("abracadabra");
         }
         if (contactListener.isPlayerOneGotShoot()) {
             attackPlayer(playerTwo, playerOne, 1.5f, 2f);
             contactListener.setPlayerOneGotShoot(false);
             contactListener.setBulletHit(false);
-            //System.out.println("adadadadada");
+            System.out.println("adadadadada");
         }
 
         //LANDMINES
@@ -152,13 +150,13 @@ public class CombatManager {
             attackPlayer(playerOne, playerTwo, 1.5f, 2f);
             contactListener.setPlayerTwoGotShoot(false);
             contactListener.setBulletHit(false);
-            //System.out.println("abracadabra");
+            System.out.println("abracadabra");
         }
         if (contactListener.isPlayerOneGotShoot()) {
             attackPlayer(playerTwo, playerOne, 1.5f, 2f);
             contactListener.setPlayerOneGotShoot(false);
             contactListener.setBulletHit(false);
-            //System.out.println("adadadadada");
+            System.out.println("adadadadada");
         }
 
 
@@ -200,10 +198,8 @@ public class CombatManager {
             //TODO: @Alex Bitte die auskommentierten sout's als log.debug übernehmen :)
             projectile.update(deltatime);
             //System.out.println("Is active before loop: " + projectile.active);
-            log.debug("Is active before loop: " + projectile.active);
             if(!projectile.active) {
                 //System.out.println("Trying to remove body");
-                log.debug("Trying to remove body");
                 projectile.destroyBody();
                 projectileArrayList.removeValue(projectile, true);
             }
@@ -211,9 +207,7 @@ public class CombatManager {
 
                 projectile.active = false;
                 //System.out.println("Projectile was set to inactive");
-                log.debug("Projectile was set to inactive");
                 //System.out.println("Is active: " + projectile.active);
-                log.debug("Is active: " + projectile.active);
 
             }
         }

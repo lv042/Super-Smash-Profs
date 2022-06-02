@@ -22,6 +22,7 @@ public class CircleStar extends Projectile {
     public CircleStar(World world, Player playerOrigin) {
         super(world, playerOrigin, "Circle", ShapeCreator.getCircleShape(3f), 3f, new Texture("projectiles/star.png"), 15);
 
+
         int randInt = rand.nextInt(9999);
         userData = "Circle#" + randInt;
         b2dbody.setUserData("Circle#" + randInt);

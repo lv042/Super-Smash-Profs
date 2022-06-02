@@ -9,7 +9,7 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 
-public class VFXManager {
+public class VAFXManager {
 
     private static Logger log = LogManager.getLogger(VFXManager.class);
 
@@ -17,41 +17,45 @@ public class VFXManager {
 
     //implements singelton sound manager
 
-    private static final VFXManager VFXManager_INSTANCE = new VFXManager();
+    private static final VAFXManager VAFX_MANAGER___INSTANCE = new VAFXManager();
 
 
     //private constructor to avoid client applications to use constructor
-    private VFXManager() {
+    private VAFXManager() {
     }
 
-    public static VFXManager getVFXManager_INSTANCE() {return VFXManager_INSTANCE;}
+    public static VAFXManager getVFXManager_INSTANCE() {return VAFX_MANAGER___INSTANCE;}
 
 
 
     public void spawnExplosion(explosionType explosionType, Vector2 spawnpoint) {
         Texture VFXTexture = null;
+        String sound = null;
         boolean centered = false;
         boolean spriteIsSquare = false;
 
         switch (explosionType) {
             case rocketExplosion:
                 VFXTexture = new Texture("explosions/explosion-6.png");
+                sound = "sounds/stomp.wav";
                 centered = true;
                 spriteIsSquare = true;
             break;
             case landMineExplosion:
                 VFXTexture = new Texture("explosions/explosion-2.png");
+                sound = "sounds/stomp.wav";
                 centered = false;
                 spriteIsSquare = true;
             break;
             case lightningStrike:
                 VFXTexture = new Texture("explosions/lightning.png");
+                sound = "sounds/stomp.wav";
                 centered = false;
                 spriteIsSquare = false;
                 break;
         }
 
-        VFXObjectList.add(new VFXObject("test", spawnpoint, VFXTexture, centered, spriteIsSquare));
+        VFXObjectList.add(new VFXObject("test", spawnpoint, VFXTexture, sound, centered, spriteIsSquare));
     }
 
 

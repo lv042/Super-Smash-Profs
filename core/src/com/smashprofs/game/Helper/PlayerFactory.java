@@ -16,9 +16,9 @@ public class PlayerFactory {
     private static Logger log = LogManager.getLogger(PlayerFactory.class);
 
 
-    private Vector2 playerOneSpawnPoint = new Vector2(3.4f * PPM, 0.85f * PPM);
+    private Vector2 playerOneSpawnPoint = new Vector2(4.5f * PPM, 0.85f * PPM); //new Vector2(3.4f * PPM, 0.85f * PPM);
 
-    private Vector2 playerTwoSpawnPoint = new Vector2( 5.522669f * PPM,0.53562f * PPM);
+    private Vector2 playerTwoSpawnPoint = new Vector2( 7.25f * PPM,0.5f * PPM); //new Vector2( 5.522669f * PPM,0.53562f * PPM);
 
     private Vector2 currentSpawnPoint = null;
 

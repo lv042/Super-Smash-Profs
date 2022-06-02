@@ -6,6 +6,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.OrthographicCamera;
+import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
@@ -16,33 +17,62 @@ import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.utils.SpriteDrawable;
+import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.badlogic.gdx.utils.ScreenUtils;
-import com.badlogic.gdx.utils.viewport.FitViewport;
+import com.badlogic.gdx.utils.viewport.FillViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
+import com.crashinvaders.vfx.VfxManager;
+import com.crashinvaders.vfx.effects.*;
+import com.crashinvaders.vfx.effects.util.MixEffect;
 
 public class MainMenuScreen implements Screen {
 
     private Game game;
-    private SpriteBatch batch;
+    private SpriteBatch spriteBatch;
     private Viewport viewport;
     private Stage stage;
     private OrthographicCamera camera;
     private Image playButton, exitButton, logo;
     private Texture playButtonInactive, playButtonActive, exitButtonInactive, exitButtonActive;
     private Table mainTable;
+    private VfxManager postProcessingManager;
+
+    private float timer;
+    private float zoomFactor;
+
+    int screenWidth = 1920;
+    int height = 1080;
+
+    Texture logoTexture = new Texture("mainmenu/ssp.png");
 
     public MainMenuScreen(Game game) {
         this.game = game;
-        this.batch = new SpriteBatch();
+        this.spriteBatch = new SpriteBatch();
         this.camera = new OrthographicCamera();
-        this.viewport = new FitViewport(1920, 1080, camera);
-        this.stage = new Stage(this.viewport, this.batch);
+        this.viewport = new FillViewport(screenWidth, height, camera);
+        this.stage = new Stage(this.viewport, this.spriteBatch);
 
         playButtonInactive = new Texture("mainmenu/buttons/playButtonInactive.png");
         playButtonActive = new Texture("mainmenu/buttons/playButtonActive.png");
         exitButtonInactive = new Texture("mainmenu/buttons/exitButtonInactive.png");
         exitButtonActive = new Texture("mainmenu/buttons/exitButtonActive.png");
         mainTable = new Table();
+
+
+       postProcessingManager = new VfxManager(Pixmap.Format.RGBA8888);
+        FilmGrainEffect filmGrainEffect = new FilmGrainEffect();
+        filmGrainEffect.setNoiseAmount(0.08f);
+        OldTvEffect oldTvEffect = new OldTvEffect();
+        VignettingEffect vignettingEffect = new VignettingEffect(false);
+        vignettingEffect.setIntensity(0.5f);
+        MotionBlurEffect motionBlurEffect = new MotionBlurEffect(Pixmap.Format.RGBA8888, MixEffect.Method.MIX, 0.2f);
+        BloomEffect bloomEffect = new BloomEffect();
+
+        postProcessingManager.addEffect(bloomEffect);
+        postProcessingManager.addEffect(motionBlurEffect);
+        postProcessingManager.addEffect(vignettingEffect);
+        postProcessingManager.addEffect(filmGrainEffect);
+        postProcessingManager.addEffect(oldTvEffect);
     }
 
     @Override
@@ -93,12 +123,13 @@ public class MainMenuScreen implements Screen {
             }
         });
 
-        mainTable.add(logo).maxSize(1228 , 104).pad(200).padBottom(200);
-        mainTable.row();
-        mainTable.add(playButton).padBottom(100).maxSize(300, 100);
+        //mainTable.add(logo).maxSize(1228 , 104).pad(200).padBottom(200);
+
+
+        mainTable.add(playButton).padBottom(100).maxSize(300, 100).padTop(500);
         mainTable.row();
         mainTable.add(exitButton).padBottom(100).maxSize(300, 100);
-
+        mainTable.background(new TextureRegionDrawable(new Texture("mainmenu/bgmenu.png")));
         //Add table to stage
         mainTable.setDebug(false);
         stage.addActor(mainTable);
@@ -107,11 +138,26 @@ public class MainMenuScreen implements Screen {
     @Override
     public void render(float delta) {
         ScreenUtils.clear(Color.CLEAR);
-        this.stage.getBatch().begin();
-        this.stage.getBatch().draw(new Texture("mainmenu/bgmenu.png"), 0, 0, 1920, 1080);
-        this.stage.getBatch().end();
+        postProcessingManager.cleanUpBuffers();
+
+        // Begin render to an off-screen buffer.
+        postProcessingManager.beginInputCapture();
         this.stage.act();
         this.stage.draw();
+
+        timer += 0.06f;
+        zoomFactor = 1 + (float) Math.cos(timer) / 50;
+
+        spriteBatch.begin();
+        spriteBatch.draw(logoTexture, screenWidth / 2f - 614f / zoomFactor, 700f / zoomFactor, 1228f / zoomFactor, 104f / zoomFactor);
+        //spriteBatch.draw(logoTexture, screenWidth / 2 - 614f, 104f );
+        spriteBatch.end();
+
+        postProcessingManager.endInputCapture();
+
+        postProcessingManager.applyEffects();
+
+        postProcessingManager.renderToScreen();
 
     }
 
@@ -119,6 +165,8 @@ public class MainMenuScreen implements Screen {
     public void resize(int width, int height) {
         this.viewport.update(width, height);
         camera.position.set(camera.viewportWidth / 2, camera.viewportHeight / 2, 0);
+        //this.width = width / 2;
+
         camera.update();
     }
 
@@ -140,6 +188,6 @@ public class MainMenuScreen implements Screen {
     @Override
     public void dispose() {
         this.stage.dispose();
-        this.batch.dispose();
+        this.spriteBatch.dispose();
     }
 }

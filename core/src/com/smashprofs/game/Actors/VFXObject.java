@@ -5,15 +5,10 @@ import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Vector2;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 
 import static com.smashprofs.game.Actors.Players.Player.PPM;
 
 public class VFXObject extends GameObject {
-
-    private static Logger log = LogManager.getLogger(VFXObject.class);
-
 
     public Boolean active;
     public Vector2 spawnpoint;
@@ -68,8 +63,7 @@ public class VFXObject extends GameObject {
             this.centeringFactor = 40f/PPM;
         }
 
-        //System.out.println("centering factor: "+ centeringFactor);
-        log.debug("centering factor: "+ centeringFactor);
+        System.out.println("centering factor: "+ centeringFactor);
 
 
 
@@ -89,8 +83,7 @@ public class VFXObject extends GameObject {
 
 
         sprite.getTexture().dispose();
-        //System.out.println("Disposed VFXObj texture via .dispose()");
-        log.info("Disposed VFXObj texture via .dispose()");
+        System.out.println("Disposed VFXObj texture via .dispose()");
 
     }
 
