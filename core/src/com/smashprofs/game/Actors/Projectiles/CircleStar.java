@@ -19,7 +19,7 @@ public class CircleStar extends Projectile {
 
 
     public CircleStar(World world, Player playerOrigin) {
-        super(world, playerOrigin, "Circle", new Texture("star.png"), 15);
+        super(world, playerOrigin, "Circle", new Texture("projectiles/star.png"), 15);
 
         int randInt = rand.nextInt(9999);
         userData = "Circle#" + randInt;
