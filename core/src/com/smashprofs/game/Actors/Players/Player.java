@@ -17,15 +17,16 @@ import com.smashprofs.game.Screens.PlayScreen;
 
 
 import java.util.ArrayList;
+import java.util.logging.Logger;
 
 /**
  * A controllable Player
  */
 public abstract class Player extends GameObject {
 
+    static final Logger logger = Logger.getLogger("Player");
 
     public static final float PPM = 100;
-    private final World world;
     private final Animation<TextureRegion> stand;
     private final Animation<TextureRegion> run;
     private final Animation<TextureRegion> jump;
@@ -37,6 +38,7 @@ public abstract class Player extends GameObject {
     private final CameraManager cameraManager = CameraManager.getCameraManager_INSTANCE();
     private final B2dContactListener contactListener = B2dContactListener.getContactListener_INSTANCE();
     private final float attackReach = 0.2f;
+    
     private final Batch batch = new SpriteBatch();
     private final float respawnDamping = 0.1f;
     private final int attackDamage = 10;
@@ -79,7 +81,7 @@ public abstract class Player extends GameObject {
     private Vector2 forcesCombined = new Vector2(0, 0);
     private boolean isShooting = false;
     private boolean facingRight = true;
-    private int isFacingRightAxe = 0;
+    private int isFacingRightAxe = 1;  // must be 1 or -1 otherwise the first projectile spawns in the player
     private boolean touchingGround;
     
     private final Sprite sprite = new Sprite(); //Sprite of the GameObject
@@ -116,18 +118,19 @@ public abstract class Player extends GameObject {
 
         sprite.setBounds(0, 15, 25 / PPM, 25 / PPM);
         //this.setRegion(alexStand);
-        this.world = world;
+        //this.world = world;
         this.currentInputState = inputState;
         this.spawnpoint = spawnpoint;
         this.playerName = playerName;
 
-        definePlayer();
+        definePlayer(world);
 
         soundManager = SoundManager.getSoundManager_INSTANCE();
         //LeosHomingMissle loli = new LeosHomingMissle(world, this);
         //leosProjectiles.add(loli);
 
-        System.out.println("Player created:" + this.playerName);
+        //System.out.println("Player created:" + this.playerName);
+        logger.fine("Player created:" + this.playerName);
 
     }
 
@@ -337,7 +340,7 @@ public abstract class Player extends GameObject {
     }
 
     //basically our constructor
-    private void definePlayer() {
+    private void definePlayer(World world) {
         bdef = new BodyDef();
         bdef.position.set(spawnpoint.x / PPM, spawnpoint.y / PPM);
         bdef.type = BodyDef.BodyType.DynamicBody;
@@ -422,6 +425,7 @@ public abstract class Player extends GameObject {
                     //TODO: Rate limiter needed here!! Otherwise, a lot of projectiles will spawn at once!
                     isShooting = p1Controller.getButton(Xbox360Pad.BUTTON_X);
                     System.out.println(p1Controller.getAxis(Xbox360Pad.AXIS_LEFT_X));
+                    //logger.info(p1Controller.getAxis(Xbox360Pad.AXIS_LEFT_X));
                 }
             } else {
                 leftRightInput = Util.adAxis();
@@ -452,6 +456,7 @@ public abstract class Player extends GameObject {
                     //TODO: Rate limiter needed here!! Otherwise, a lot of projectiles will spawn at once!
                     isShooting = p2Controller.getButton(Xbox360Pad.BUTTON_X);
                     System.out.println(p2Controller.getAxis(Xbox360Pad.AXIS_LEFT_X));
+                    //logger.info(p2Controller.getAxis(Xbox360Pad.AXIS_LEFT_X));
                 }
             } else {
                 leftRightInput = Util.leftrightAxis();
@@ -516,7 +521,8 @@ public abstract class Player extends GameObject {
 
         if (stompInput && !isGrounded) {
             applyForces(0, stompSpeed);
-            System.out.println("Stomping");
+            //System.out.println("Stomping");
+            logger.fine("Stomping");
             isStomping = true;
             setHP(getHP() - 0.1f);
         }

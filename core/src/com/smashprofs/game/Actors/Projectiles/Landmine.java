@@ -6,6 +6,7 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.World;
 import com.smashprofs.game.Actors.Players.Player;
+import com.smashprofs.game.Helper.ShapeCreator;
 
 import java.util.Random;
 
@@ -31,13 +32,8 @@ public class Landmine extends Projectile {
      */
     private final Texture mineExploding;
     float stateTime = 0;
-    
-    private State currentState;
-    Random rand = new Random();
 
-    public enum State {
-        WAITING, EXPLODING
-    }
+    Random rand = new Random();
 
     @Override
 
@@ -53,7 +49,7 @@ public class Landmine extends Projectile {
      * The player the mine will spawn in front of
      */
     public Landmine(World world, Player originPlayer) {
-        super(world, originPlayer, "Null", new Texture("projectiles/landmine.png"), 25);
+        super(world, originPlayer, "Null", ShapeCreator.getPolygonShape(9, 3.5f), 25f, new Texture("projectiles/landmine.png"), 25);
 
         // Create random user data
 
@@ -61,7 +57,6 @@ public class Landmine extends Projectile {
         b2dbody.setUserData("Mine " + rand.nextInt(9999));
 
         b2dbody.setFixedRotation(false);
-        this.currentState = State.WAITING;
 
         this.mineWaiting = new Texture("projectiles/landmine.png");
         this.mineExploding = new Texture("explosions/explosion-2.png");
@@ -87,11 +82,9 @@ public class Landmine extends Projectile {
     public void update(float delta){
         super.update(delta);
         applyGravity(delta);
-        stateTime += delta;
-
         rotation = -2.25*(b2dbody.getAngle()*2*Math.PI*4);
         sprite.setRotation( (float) rotation);
-        sprite.setRegion(getRenderTexture(stateTime)); //set the texture to the current state of the movement
+        //sprite.setRegion(getRenderTexture(stateTime)); //set the texture to the current state of the movement
 
     }
 
@@ -106,7 +99,7 @@ public class Landmine extends Projectile {
 
     }
 
-    public TextureRegion getRenderTexture(float stateTime) {
+/*    public TextureRegion getRenderTexture(float stateTime) {
         TextureRegion frame = null;
         switch (this.currentState) {
             case WAITING:
@@ -121,18 +114,8 @@ public class Landmine extends Projectile {
 
         }
         return frame;
-    }
+    }*/
 
-    public void setCurrentState(State state) {
-        // TODO: Implement logic when to set 
-//        if(!playerInDetonationRadius) {
-//            this.currentState = State.WAITING;
-//        }
-//        else if(playerInDetonationRadius) {
-//            this.currentState = State.EXPLODING;
-//        }
-        this.currentState = state;
-    }
 
 }
 

@@ -16,7 +16,7 @@ public class  Hud{
     public Stage stage; //stage to hold all the actors -> A 2D scene graph containing hierarchies of actors. Stage handles the viewport and distributes input events.
 
     private Viewport viewport; // viewport for the hud so the hud doesnt move with the normal camera
-    private Integer worldTimer = 256; //256 is the max time for the game
+    private Integer worldTimer = 120; //120 is the max time for the game
     private float timeCount; // time counter for the hud
     private int score; // score counter for the hud
     Label countdownLabel; // label for the countdown;
@@ -25,7 +25,6 @@ public class  Hud{
     Label playerOneHud; // label for the level
     Label modeLabel; // label for the world
     Label playerLabel; // label for the player
-    private String winner;
 
     public Hud(SpriteBatch spriteBatch, Player playerOne, Player playerTwo){
 
@@ -69,20 +68,15 @@ public class  Hud{
 
     public boolean testwin(Player playerOne, Player playerTwo)
     {
-        if(timeCount<0||playerOne.getHP()<0||playerTwo.getHP()<0)
-        {
-            if(playerOne.getHP()>playerTwo.getHP()) {winner = "Player 1";}
-            else {winner= "Player 2";}
-            return true;
-        }
-            return false;
+       return timeCount>=1||playerOne.getHP()<0||playerTwo.getHP()<0;
+
     }
 
-    public String getWinner()
-    {
-        return winner;
-    }
 
+public int getPlayerOneHP(Player playerOne)
+{
+    return 0;
+}
 
     public void dispose() {
         stage.dispose();
