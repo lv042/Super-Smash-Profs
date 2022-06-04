@@ -68,7 +68,7 @@ public class  Hud{
 
     public boolean testwin(Player playerOne, Player playerTwo)
     {
-       return timeCount>=1||playerOne.getHP()<0||playerTwo.getHP()<0;
+       return timeCount>=1||playerOne.getHP()<=0||playerTwo.getHP()<=0;
 
     }
 
