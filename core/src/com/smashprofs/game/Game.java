@@ -14,11 +14,12 @@ public class Game extends com.badlogic.gdx.Game {
 	Texture img;
 	public static final int V_WIDTH = 400;
 	public static final int V_HEIGHT = 208;
+	private GameThread thread;
 	
 	@Override
 	public void create () {
 
-		GameThread thread = new GameThread();
+		thread = new GameThread();
 		gamePropertiesManager.firstStart();
 		thread.start();
 
@@ -46,6 +47,7 @@ public class Game extends com.badlogic.gdx.Game {
 	@Override
 	public void dispose () {
 		batch.dispose();
+		thread.stop();
 
 	}
 }
