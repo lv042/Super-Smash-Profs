@@ -25,6 +25,7 @@ import com.crashinvaders.vfx.effects.*;
 import com.crashinvaders.vfx.effects.util.MixEffect;
 import com.smashprofs.game.Actors.Players.Player;
 import com.smashprofs.game.Helper.PostProcessingSettings;
+import com.smashprofs.game.Helper.SoundManager;
 import com.smashprofs.game.Scenes.Hud;
 
 public class WinScreen implements Screen {
@@ -43,6 +44,8 @@ public class WinScreen implements Screen {
     int screenWidth = 1920;
     int height = 1080;
     private VfxManager postProcessingManager;
+    private SoundManager sound;
+
 
     public WinScreen(Game game,Player playerOne,Player playerTwo) {
         this.game = game;
@@ -64,6 +67,8 @@ public class WinScreen implements Screen {
         //add pre configured settings to PostProcessingManager
         PostProcessingSettings ppSetUpHandler = new PostProcessingSettings();
         this.postProcessingManager = ppSetUpHandler.getPostProcessingManager();
+        sound=SoundManager.getSoundManager_INSTANCE();
+
     }
 
     @Override
@@ -95,6 +100,7 @@ public class WinScreen implements Screen {
 
                 menuButton.setDrawable(new SpriteDrawable(new Sprite(menuButtonActive)));
                 if (Gdx.input.isButtonJustPressed(0)) {
+                    sound.playSound("sounds/minecraft_click.mp3");
                     game.setScreen(new MainMenuScreen(game));
                 }
             }

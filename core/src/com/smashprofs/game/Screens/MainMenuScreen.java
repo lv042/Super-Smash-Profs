@@ -25,6 +25,7 @@ import com.crashinvaders.vfx.VfxManager;
 import com.crashinvaders.vfx.effects.*;
 import com.crashinvaders.vfx.effects.util.MixEffect;
 import com.smashprofs.game.Helper.PostProcessingSettings;
+import com.smashprofs.game.Helper.SoundManager;
 
 public class MainMenuScreen implements Screen {
 
@@ -37,6 +38,7 @@ public class MainMenuScreen implements Screen {
     private Texture playButtonInactive, playButtonActive, exitButtonInactive, exitButtonActive;
     private Table mainTable;
     private VfxManager postProcessingManager;
+    private SoundManager sound;
 
     private float timer;
     private float zoomFactor;
@@ -63,7 +65,7 @@ public class MainMenuScreen implements Screen {
         //add pre configured settings to PostProcessingManager
         PostProcessingSettings ppSetUpHandler = new PostProcessingSettings();
         this.postProcessingManager = ppSetUpHandler.getPostProcessingManager();
-
+        sound=SoundManager.getSoundManager_INSTANCE();
     }
 
     @Override
@@ -89,6 +91,7 @@ public class MainMenuScreen implements Screen {
                 //playButton = new Image(playButtonActive);
                 playButton.setDrawable(new SpriteDrawable(new Sprite(playButtonActive)));
                 if (Gdx.input.isButtonJustPressed(0)) {
+                    sound.playSound("sounds/minecraft_click.mp3");
                     game.setScreen(new PlayScreen((com.smashprofs.game.Game) game));
                 }
             }
@@ -104,6 +107,7 @@ public class MainMenuScreen implements Screen {
             public void enter(InputEvent event, float x, float y, int pointer, Actor actor) {
                 exitButton.setDrawable(new SpriteDrawable(new Sprite(exitButtonActive)));
                 if (Gdx.input.isButtonJustPressed(0)) {
+                    sound.playSound("sounds/minecraft_click.mp3");
                     Gdx.app.exit();
                 }
             }
