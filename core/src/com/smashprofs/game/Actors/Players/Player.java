@@ -46,7 +46,7 @@ public abstract class Player extends GameObject {
     private final boolean collideWithOtherPlayers = false;
     private final int maxExtraJumps = 1; //currently, only works with one extra jump
     private final Vector2 spawnpoint;
-    private final float maxVelocity = 1.6f;
+    private final float maxVelocity = 1.4f;
     private final float jumpForce = 2.5f;
     private final float walkingSpeedMultiplier = 1.3f;
     private final SoundManager soundManager;
@@ -84,6 +84,7 @@ public abstract class Player extends GameObject {
     private boolean facingRight = true;
     private int isFacingRightAxe = 1;  // must be 1 or -1 otherwise the first projectile spawns in the player
     private boolean touchingGround;
+    private float lastAxis;
     
     private final Sprite sprite = new Sprite(); //Sprite of the GameObject
 
@@ -508,11 +509,23 @@ public abstract class Player extends GameObject {
         }
 
         //walking left and right
-        if (getB2dbody().getLinearVelocity().x < getMaxVelocity()) {
+        if (getB2dbody().getLinearVelocity().x < getMaxVelocity() && getB2dbody().getLinearVelocity().x > - getMaxVelocity()) {
             getB2dbody().applyLinearImpulse(new Vector2(0.05f * leftRightInput * getWalkingSpeedMultiplier(), 0.0f), getB2dbody().getWorldCenter(), true);
 
         }
 
+        //Damping velocity when changing axis
+        if(leftRightInput!=lastAxis&&leftRightInput!=0&&!isGrounded())
+        {
+                getB2dbody().setLinearVelocity(new Vector2(getB2dbody().getLinearVelocity().x-(getB2dbody().getLinearVelocity().x * 0.3f), getB2dbody().getLinearVelocity().y));
+                lastAxis = leftRightInput;
+        }
+
+        //when running off a ground you get two jumps
+        /*if(isGrounded()!=touchingGround){
+            isExtraJumpReady = true;
+            touchingGround=isGrounded();
+        }*/
 
         //damping
         if (isGrounded()) {
