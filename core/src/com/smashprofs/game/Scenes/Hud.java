@@ -17,7 +17,7 @@ public class  Hud{
     public Stage stage; //stage to hold all the actors -> A 2D scene graph containing hierarchies of actors. Stage handles the viewport and distributes input events.
 
     private Viewport viewport; // viewport for the hud so the hud doesnt move with the normal camera
-    private Integer worldTimer = 2; //120 is the max time for the game
+    private Integer worldTimer = 120; //120 is the max time for the game
     private float timeCount; // time counter for the hud
     private int score; // score counter for the hud
     Label countdownLabel; // label for the countdown;
