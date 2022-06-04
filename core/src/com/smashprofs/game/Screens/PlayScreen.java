@@ -283,6 +283,7 @@ public class PlayScreen implements Screen {
         //Test for win and set to win screen
        if(hud.testwin(playerOne,playerTwo))
        {
+           soundManager.playSound("sounds/death.mp3");
            game.setScreen(winScreen);
        }
 
