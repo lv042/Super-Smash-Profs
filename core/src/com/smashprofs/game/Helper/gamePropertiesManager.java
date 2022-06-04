@@ -5,7 +5,7 @@ import java.util.Properties;
 
 public class gamePropertiesManager {
 
-    private static File file = new File("game_info.properties");
+    private static File file = new File("../core/src/resources/game_info.properties");
     private static Properties p = new Properties();
     public static void firstStart() {
         //checks if file exists
