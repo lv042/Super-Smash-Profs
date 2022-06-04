@@ -1,7 +1,7 @@
 package com.smashprofs.game.Helper;
 
 
-public class GameTimeThread extends Thread{
+public class GameThread extends Thread{
 
     @Override
     public void run() {

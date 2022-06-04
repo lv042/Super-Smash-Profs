@@ -2,12 +2,10 @@ package com.smashprofs.game;
 
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.smashprofs.game.Helper.GameTimeThread;
+import com.smashprofs.game.Helper.GameThread;
 import com.smashprofs.game.Helper.PropertiesReader;
 import com.smashprofs.game.Helper.gamePropertiesManager;
 import com.smashprofs.game.Screens.IntroScreen;
-import com.smashprofs.game.Screens.MainMenuScreen;
-import jdk.tools.jmod.Main;
 
 public class Game extends com.badlogic.gdx.Game {
 	public static SpriteBatch batch;
@@ -20,7 +18,7 @@ public class Game extends com.badlogic.gdx.Game {
 	@Override
 	public void create () {
 
-		GameTimeThread thread = new GameTimeThread();
+		GameThread thread = new GameThread();
 		gamePropertiesManager.firstStart();
 		thread.start();
 
