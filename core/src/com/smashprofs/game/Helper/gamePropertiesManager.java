@@ -14,7 +14,7 @@ public class gamePropertiesManager {
                 //creates new file
                 System.out.println("created");
                 file.createNewFile();
-                edit(Keys.GAMETIME,"0 sek");
+                edit(Keys.GAMETIME,"0 min 0 sek");
                 edit(Keys.TIMESPLAYED,"0");
             } catch (IOException e) {
                 System.out.println("net geklappt");
