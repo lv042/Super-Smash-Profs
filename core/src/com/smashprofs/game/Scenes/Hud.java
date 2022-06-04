@@ -11,12 +11,13 @@ import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import com.smashprofs.game.Game;
 import com.smashprofs.game.Actors.Players.Player;
+import com.smashprofs.game.Helper.SoundManager;
 
 public class  Hud{
     public Stage stage; //stage to hold all the actors -> A 2D scene graph containing hierarchies of actors. Stage handles the viewport and distributes input events.
 
     private Viewport viewport; // viewport for the hud so the hud doesnt move with the normal camera
-    private Integer worldTimer = 120; //120 is the max time for the game
+    private Integer worldTimer = 2; //120 is the max time for the game
     private float timeCount; // time counter for the hud
     private int score; // score counter for the hud
     Label countdownLabel; // label for the countdown;
@@ -25,8 +26,10 @@ public class  Hud{
     Label playerOneHud; // label for the level
     Label modeLabel; // label for the world
     Label playerLabel; // label for the player
+    private SoundManager soundManager;
 
     public Hud(SpriteBatch spriteBatch, Player playerOne, Player playerTwo){
+        soundManager=SoundManager.getSoundManager_INSTANCE();
 
         timeCount = 0;
         score = 0;
@@ -68,7 +71,14 @@ public class  Hud{
 
     public boolean testwin(Player playerOne, Player playerTwo)
     {
-       return timeCount>=1||playerOne.getHP()<=0||playerTwo.getHP()<=0;
+        if(timeCount>=1){
+            soundManager.playSound("sounds/clock.mp3");
+        }
+        else if (playerOne.getHP()<=0||playerTwo.getHP()<=0){
+            soundManager.playSound("sounds/death.mp3");
+        }
+
+        return timeCount>=1||playerOne.getHP()<=0||playerTwo.getHP()<=0;
 
     }
 
