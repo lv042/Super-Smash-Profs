@@ -123,6 +123,7 @@ public class MainMenuScreen implements Screen {
             }
         });
 
+        // Setting the values for the game statistics displayed in the main menu.
         gametime = new Label("Gametime: "+gamePropertiesManager.getEntry(Keys.GAMETIME), new Label.LabelStyle(new BitmapFont(), Color.valueOf("B2E6AD")));
         timesplayed = new Label("Times played: "+gamePropertiesManager.getEntry(Keys.TIMESPLAYED), new Label.LabelStyle(new BitmapFont(), Color.valueOf("9BD096")));
         gamedevs= new Label("Devs: Leo, Maurice, Alex, Luca", new Label.LabelStyle(new BitmapFont(), Color.valueOf("9BD096")));
