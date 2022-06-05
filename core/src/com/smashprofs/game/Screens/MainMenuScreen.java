@@ -43,7 +43,7 @@ public class MainMenuScreen implements Screen {
     private Table mainTable;
     private VfxManager postProcessingManager;
     private SoundManager sound;
-    private Label gametime,timesplayed;
+    private Label gametime,timesplayed, gamedevs;
 
     private float timer;
     private float zoomFactor;
@@ -123,16 +123,20 @@ public class MainMenuScreen implements Screen {
             }
         });
 
-        gametime = new Label("Gametime: "+gamePropertiesManager.getEntry(Keys.GAMETIME), new Label.LabelStyle(new BitmapFont(), Color.valueOf("9BD096")));
+        gametime = new Label("Gametime: "+gamePropertiesManager.getEntry(Keys.GAMETIME), new Label.LabelStyle(new BitmapFont(), Color.valueOf("B2E6AD")));
         timesplayed = new Label("Times played: "+gamePropertiesManager.getEntry(Keys.TIMESPLAYED), new Label.LabelStyle(new BitmapFont(), Color.valueOf("9BD096")));
+        gamedevs= new Label("Devs: Leo, Maurice, Alex, Luca", new Label.LabelStyle(new BitmapFont(), Color.valueOf("9BD096")));
+
 
         mainTable.add(playButton).padBottom(100).maxSize(300, 100).padTop(500);
         mainTable.row();
         mainTable.add(exitButton).padBottom(225).maxSize(300, 100);
+        mainTable.row().padRight(1700);
+        mainTable.add(gametime).maxSize(500, 200);
         mainTable.row();
-        mainTable.add(gametime).maxSize(300, 100);
+        mainTable.add(timesplayed).maxSize(300, 100).padRight(1700);
         mainTable.row();
-        mainTable.add(timesplayed).maxSize(300, 100);
+        mainTable.add(gamedevs).maxSize(600, 200).padLeft(1650);
         mainTable.background(new TextureRegionDrawable(new Texture("mainmenu/bgmenu.png")));
         //Add table to stage
         mainTable.setDebug(false);
