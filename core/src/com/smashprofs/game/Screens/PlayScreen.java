@@ -36,6 +36,10 @@ import org.apache.logging.log4j.Logger;
 
 import static com.smashprofs.game.Actors.Players.Player.PPM;
 
+
+/**
+ * The main game screen
+ */
 public class PlayScreen implements Screen {
 
     private static Logger log = LogManager.getLogger(PlayScreen.class);
@@ -83,6 +87,11 @@ public class PlayScreen implements Screen {
 
     private VfxManager postProcessingManager;
 
+    /**
+     * Checks if player presses the "ESC" and if so, opens the main menu.
+     * @param deltatime
+     * The game deltatime
+     */
     public void checkInput(float deltatime){
 
         //Player input is now handeled in the PlayerClass
@@ -100,6 +109,11 @@ public class PlayScreen implements Screen {
         return batch;
     }
 
+    /**
+     * Updates the PlayScreen and everything which is part of it.
+     * @param deltatime
+     * The game delta time
+     */
     public void update(float deltatime) {
 
         tiledMapRenderer.setView(gamecamera);
@@ -145,10 +159,21 @@ public class PlayScreen implements Screen {
         return viewport;
     }
 
+    /**
+     * World getter-method.
+     * @return
+     * Returns the game world.
+     */
     public static World getWorld(){
         return world;
     }
 
+    /**
+     * Constructor of PlayScreen. Sets up postprocessing, creates the player factory, sets viewport,
+     * creates Players, initializes connected controllers, resets combat manager and contact listener.
+     * @param game
+     * The game.
+     */
     public PlayScreen(Game game) {
 
         //add pre configured settings to PostProcessingManager
@@ -197,7 +222,10 @@ public class PlayScreen implements Screen {
         contactListener.resetContactListener();
 
     }
-
+    /**
+     * Initializes the tile map. Loads the files, sets up the renderer, creates b2dBodies for
+     * shapes in the object layers of the tile map.
+     */
     private void createTileMap() {
         mapLoader = new TmxMapLoader();
         map = mapLoader.load("1/Map1New2.tmx");
@@ -234,6 +262,12 @@ public class PlayScreen implements Screen {
 
     }
 
+    /**
+     * Renders the playScreen after calling update(). Renders every necessary part of the screen
+     * (players, items, tilemap, debug renderers, postprocessing filters and HUD.
+     * Checks, if one player has won.
+     * @param delta The time in seconds since the last render.
+     */
     @Override
     public void render(float delta) {
 
@@ -263,9 +297,6 @@ public class PlayScreen implements Screen {
         combatManager.drawProjectiles(batch);
         vafxManager.drawVFX(batch);
 
-        final Sprite sprite;
-        final Body body;
-
 
         batch.end();
 
@@ -289,6 +320,13 @@ public class PlayScreen implements Screen {
 
     }
 
+    /**
+     * Resizes the viewport.
+     * @param width
+     * The width the viewport should be set to.
+     * @param height
+     * The height the viewport should be set to.
+     */
     @Override
     public void resize(int width, int height) {
         viewport.update(width, height);
@@ -309,6 +347,9 @@ public class PlayScreen implements Screen {
 
     }
 
+    /**
+     * Dispose the PlayScreen and the map, the tiledMapRenderer, the b2dDebug renderer, the world and the hud.
+     */
     @Override
     public void dispose() {
         map.dispose();
