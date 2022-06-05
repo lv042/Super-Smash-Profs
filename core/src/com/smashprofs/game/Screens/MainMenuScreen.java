@@ -8,6 +8,7 @@ import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.scenes.scene2d.Actor;
@@ -15,6 +16,7 @@ import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.InputListener;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
+import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.utils.SpriteDrawable;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
@@ -24,8 +26,10 @@ import com.badlogic.gdx.utils.viewport.Viewport;
 import com.crashinvaders.vfx.VfxManager;
 import com.crashinvaders.vfx.effects.*;
 import com.crashinvaders.vfx.effects.util.MixEffect;
+import com.smashprofs.game.Helper.Keys;
 import com.smashprofs.game.Helper.PostProcessingSettings;
 import com.smashprofs.game.Helper.SoundManager;
+import com.smashprofs.game.Helper.gamePropertiesManager;
 
 public class MainMenuScreen implements Screen {
 
@@ -39,6 +43,7 @@ public class MainMenuScreen implements Screen {
     private Table mainTable;
     private VfxManager postProcessingManager;
     private SoundManager sound;
+    private Label gametime,timesplayed;
 
     private float timer;
     private float zoomFactor;
@@ -118,12 +123,16 @@ public class MainMenuScreen implements Screen {
             }
         });
 
-        //mainTable.add(logo).maxSize(1228 , 104).pad(200).padBottom(200);
-
+        gametime = new Label("Gametime: "+gamePropertiesManager.getEntry(Keys.GAMETIME), new Label.LabelStyle(new BitmapFont(), Color.valueOf("9BD096")));
+        timesplayed = new Label("Times played: "+gamePropertiesManager.getEntry(Keys.TIMESPLAYED), new Label.LabelStyle(new BitmapFont(), Color.valueOf("9BD096")));
 
         mainTable.add(playButton).padBottom(100).maxSize(300, 100).padTop(500);
         mainTable.row();
-        mainTable.add(exitButton).padBottom(100).maxSize(300, 100);
+        mainTable.add(exitButton).padBottom(225).maxSize(300, 100);
+        mainTable.row();
+        mainTable.add(gametime).maxSize(300, 100);
+        mainTable.row();
+        mainTable.add(timesplayed).maxSize(300, 100);
         mainTable.background(new TextureRegionDrawable(new Texture("mainmenu/bgmenu.png")));
         //Add table to stage
         mainTable.setDebug(false);

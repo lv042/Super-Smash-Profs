@@ -59,4 +59,16 @@ public class gamePropertiesManager {
         }
         return p.getProperty(key.getValue());
     }
+
+    //to reformat game time
+    public static int stringToSeconds(String time){
+        String[] timesplit =time.split(" ");
+        return Integer.parseInt(timesplit[0])*60+Integer.parseInt(timesplit[2]);
+    }
+
+    public static String secondsToString(int seconds){
+        int minutes = seconds/60;
+        int sec=seconds-minutes*60;
+        return minutes+" min "+sec+" sek";
+    }
 }
