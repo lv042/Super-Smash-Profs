@@ -24,8 +24,10 @@ public class HomingMissile extends Projectile {
      * The targetPlayer the missile will try to hit
      */
     Player targetPlayer;
+    /**
+     * The random for creating random integers used to append the userData.
+     */
     Random rand = new Random();
-    CircleShape bodyShape = new CircleShape();
 
     /**
      * Controls the flight speed of the missile
@@ -60,20 +62,22 @@ public class HomingMissile extends Projectile {
         this.targetPlayer = playerTarget;
         sprite.flip(true, false);
     }
+
+    /**
+     * Applies the initialMovement to the HomingMissile
+     */
     @Override
     void initialMovement() {
         super.initialMovement();
         return; // movement is handled in update
     }
 
-    public CircleShape generateBodyShape() {
-        bodyShape.setRadius(3/PPM);
-        return bodyShape;
-    }
-
-
-
-
+    /**
+     * Updates and interpolates the targetVector, corrects the missiles course to
+     * hit the target, sets the rotation of the sprite to the angle of the targetVector.
+     * @param delta
+     * The game delta time
+     */
     @Override
     public void update(float delta){
         super.update(delta);
