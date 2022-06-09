@@ -156,7 +156,7 @@ public class  Projectile extends GameObject {
             fDef.filter.groupIndex = 0;
 
             //System.out.println("Group index: " + fDef.filter.groupIndex);
-            log.info("Group index: " + fDef.filter.groupIndex);
+            log.debug("Group index: " + fDef.filter.groupIndex);
         }
 
         //fDef.density = 0.1f;
@@ -179,24 +179,12 @@ public class  Projectile extends GameObject {
      * The game delta time
      */
     public void update(float delta) {
-
-        //System.out.println("!!!! projectile update");
-        //this.setPosition(b2dbody.getPosition().x - getWidth() / 2, b2dbody.getPosition().y - getHeight() / 2);
-
-        //setBounds(b2dbody.getPosition().x - getWidth() / 2/PPM, b2dbody.getPosition().y - getHeight() / 2 /PPM, getTexture().getWidth()/PPM, getTexture().getHeight()/PPM );
-
-
         sprite.setPosition(b2dbody.getPosition().x - sprite.getWidth() / 2f, b2dbody.getPosition().y - sprite.getHeight() / 2f);
 
-
-        //rotation += 0.8f;
-        //setPosition(b2dbody.getPosition().x - getWidth() / 2/PPM, b2dbody.getPosition().y - getHeight() / 2 /PPM);
         rotation = -2.25*(b2dbody.getAngle()*2*Math.PI*4);
         sprite.setRotation((float) rotation);
 
-
-        //System.out.println("Projectile b2dBody userData: " + b2dbody.getUserData());
-        log.info("Projectile b2dBody userData: " + b2dbody.getUserData());
+        log.debug("Projectile b2dBody userData: " + b2dbody.getUserData());
     }
 
     /**
@@ -206,11 +194,8 @@ public class  Projectile extends GameObject {
      */
     @Override
     public void draw(Batch batch) {
-
-
-        //System.out.println("projectile draw");
-        log.info("projectile draw");
         super.draw(batch);
+        log.debug("Projectile drawn");
     }
 
 
@@ -247,7 +232,6 @@ public class  Projectile extends GameObject {
      * Destroys the b2dBody of the projectile
      */
     public void destroyBody() {
-        //System.out.println("Deleting Projectile body" + b2dbody.getUserData());
         log.debug("Deleting Projectile body" + b2dbody.getUserData());
         PlayScreen.getWorld().destroyBody(this.b2dbody);
     }
@@ -256,15 +240,8 @@ public class  Projectile extends GameObject {
      * Disposes the texture of the projectile sprite
      */
     public void destroy() {
-        //world.destroyBody(b2dbody);
-        //sprite.setPosition(100000f, 100000f);
-        //active = false;
-
         sprite.getTexture().dispose();
-        //System.out.println("Disposed projectile texture via .destroy()");
-        log.info("Disposed projectile texture via .destroy()");
-        //destroy sprite
-        //sprite.getTexture().dispose();
+        log.debug("Disposed projectile texture via .destroy()");
     }
 
     /**

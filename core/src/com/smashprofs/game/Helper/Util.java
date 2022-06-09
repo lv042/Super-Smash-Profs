@@ -4,6 +4,8 @@ package com.smashprofs.game.Helper;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.apache.logging.log4j.core.config.ConfigurationSource;
 import org.apache.logging.log4j.core.config.Configurator;
 
@@ -12,6 +14,7 @@ import java.io.IOException;
 import java.io.InputStream;
 
 public class Util {
+    private static Logger log = LogManager.getLogger(Util.class);
     //Maybe make this class singleton?
 
     public static boolean debugMode = true;
@@ -73,10 +76,14 @@ public class Util {
 
     public static void log4JconfLoad(String logConfigurationFile) {
         try {
+            log.info("Trying to read log4j config file...");
             InputStream inputStream = new FileInputStream(logConfigurationFile);
             ConfigurationSource source = new ConfigurationSource(inputStream);
             Configurator.initialize(null, source);
+            log.info("Read log4j config file successfully");
         } catch (IOException e) {
+            log.error("Failed to read log4j config file!");
+            log.error(e);
             e.printStackTrace();
         }
     }

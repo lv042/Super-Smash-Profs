@@ -28,6 +28,7 @@ public class GameThread extends Thread{
         log.info("Ending thread...");
         gamePropertiesManager.edit(Keys.TIMESPLAYED,Integer.toString(Integer.parseInt(gamePropertiesManager.getEntry(Keys.TIMESPLAYED))+1));
         gamePropertiesManager.edit(Keys.GAMETIME,gamePropertiesManager.secondsToString(gamePropertiesManager.stringToSeconds(gamePropertiesManager.getEntry(Keys.GAMETIME))+count));
+        log.info("Saved game time and times played successfully.");
     }
 
 

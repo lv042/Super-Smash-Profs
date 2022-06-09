@@ -34,6 +34,8 @@ public class VAFXManager {
         boolean centered = false;
         boolean spriteIsSquare = false;
 
+        log.debug("Spawning explosion. Type: " + explosionType);
+
         switch (explosionType) {
             case rocketExplosion:
                 VFXTexture = new Texture("explosions/explosion-6.png");
@@ -56,14 +58,13 @@ public class VAFXManager {
         }
 
         VFXObjectList.add(new VFXObject("test", spawnpoint, VFXTexture, sound, centered, spriteIsSquare));
+        log.debug("Added explosion to VFXObjectList.");
     }
 
 
     public void update(float deltatime) {
         for (VFXObject explosion: VFXObjectList) {
-            //TODO: @Alex Bitte die auskommentierten sout's als log.debug übernehmen :)
             explosion.update(deltatime);
-            //System.out.println("Is active before loop: " + explosion.active);
             log.debug("Is active before loop: " + explosion.active);
 
             if(!explosion.active) {
@@ -72,9 +73,7 @@ public class VAFXManager {
             else if(explosion.userData.equals("Destroyed")){
 
                 explosion.active = false;
-                //System.out.println("Explosion was set to inactive");
                 log.debug("Explosion was set to inactive");
-                //System.out.println("Is active: " + explosion.active);
                 log.debug("Is active: " + explosion.active);
 
             }

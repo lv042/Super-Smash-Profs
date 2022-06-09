@@ -26,8 +26,7 @@ public abstract class GameObject {
 
     public void update(float delta) {
         //System.out.println("GameObject updated");
-        log.info("GameObject updated");
-        // TODO: alex
+        log.debug("GameObject updated");
     }
 
     // Sprite related methods:dw
