@@ -1,10 +1,7 @@
 package com.smashprofs.game.Helper;
 
 import com.badlogic.gdx.math.Vector2;
-import com.smashprofs.game.Actors.Players.Player;
-import com.smashprofs.game.Actors.Players.Alex;
-import com.smashprofs.game.Actors.Players.Luca;
-import com.smashprofs.game.Actors.Players.Maurice;
+import com.smashprofs.game.Actors.Players.*;
 import com.smashprofs.game.Screens.PlayScreen;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -81,7 +78,7 @@ public class PlayerFactory {
                 playersCreated++;
                 //System.out.println("Created MauricePlayer");
                 log.info("Created LeoPlayer");
-                //return new Leo(PlayScreen.getWorld(), currentInputState, currentSpawnPoint, "Leo The Miner", userData);
+                return new Leo(PlayScreen.getWorld(), currentInputState, currentSpawnPoint, "Leo The Miner", userData);
 //            case Jens:
 //                return new Jens(5);
 //            case Martin:
