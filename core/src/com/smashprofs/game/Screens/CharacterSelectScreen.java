@@ -271,6 +271,7 @@ public class CharacterSelectScreen implements Screen {
         table.add(p2ctrls).colspan(2);
         table.row();
         table.add(playButton).center().colspan(4);
+        table.background(new TextureRegionDrawable(new Texture("selecbg.png")));
         stage.addActor(table);
 
     }
