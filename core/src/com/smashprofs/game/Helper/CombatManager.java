@@ -116,16 +116,15 @@ public class CombatManager {
         }
         if(playerOne.isShooting()){
             //System.out.println("Bullet spawned ");
-            log.info("Bullet spawned");
-            HomingMissile proj = new HomingMissile(world, playerOne, playerTwo);
+            log.debug("Bullet spawned");
+            //HomingMissile proj = new HomingMissile(world, playerOne, playerTwo);
             // CircleStar proj = new CircleStar(world, playerOne);
-
+            Landmine proj = new Landmine(world, playerOne);
             projectileArrayList.add(proj);
 
         }
         if(playerTwo.isShooting()) {
-            //System.out.println("Bullet spawned");
-            log.info("Bullet spawned");
+            log.debug("Bullet spawned");
             //ThrowingStar proj = new ThrowingStar(world, playerTwo);
             ThrowingStar proj = new ThrowingStar(world, new Vector2(playerTwo.getPosition().x + 10 / PPM, playerTwo.getPosition().y) , new Vector2(1,0));
             projectileArrayList.add(proj);
