@@ -9,15 +9,19 @@ import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
+import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
+import com.badlogic.gdx.scenes.scene2d.InputListener;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.ImageButton;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
+import com.badlogic.gdx.scenes.scene2d.utils.SpriteDrawable;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.ScreenUtils;
@@ -125,13 +129,24 @@ public class CharacterSelectScreen implements Screen {
             }
         });
 
-        playButton.addListener(new ClickListener() {
-            public void clicked(InputEvent event, float x, float y){
-                soundManager.playSound("sounds/minecraft_click.mp3");
-                log.info("PlayerOne selected the character " + getSelectedPlayerOne());
-                log.info("PlayerTwo selected the character " + getSelectedPlayerTwo());
-                game.setScreen(new PlayScreen((com.smashprofs.game.Game) game));
-                //game.setScreen(new MainMenuScreen(game));
+
+        playButton.addListener(new InputListener() {
+            @Override
+            public void enter(InputEvent event, float x, float y, int pointer, Actor actor) {
+
+                //playButton = new Image(playButtonActive);
+                playButton.setDrawable(new SpriteDrawable(new Sprite(new Texture("mainmenu/buttons/playButtonActive.png"))));
+                if (Gdx.input.isButtonJustPressed(0)) {
+                    soundManager.playSound("sounds/minecraft_click.mp3");
+                    log.info("PlayerOne selected the character " + getSelectedPlayerOne());
+                    log.info("PlayerTwo selected the character " + getSelectedPlayerTwo());
+                    game.setScreen(new PlayScreen((com.smashprofs.game.Game) game));
+                }
+            }
+
+            @Override
+            public void exit(InputEvent event, float x, float y, int pointer, Actor actor) {
+                playButton.setDrawable(new SpriteDrawable(new Sprite(new Texture("mainmenu/buttons/playButtonInactive.png"))));
             }
         });
 
