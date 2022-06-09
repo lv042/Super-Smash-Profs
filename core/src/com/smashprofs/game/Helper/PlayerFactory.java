@@ -38,6 +38,7 @@ public class PlayerFactory {
 
     public void resetFactory() {
         playersCreated = 0;
+        log.debug("PlayerFactory has been reset");
     }
 
     public Player getPlayer  (PlayerTypes player){
@@ -46,12 +47,13 @@ public class PlayerFactory {
             currentSpawnPoint = playerOneSpawnPoint;
             currentInputState = Player.InputState.WASD;
             userData = "PlayerOne";
-
+            log.debug("Creating PlayerOne...");
         }
         else if(playersCreated == 1){
             currentSpawnPoint = playerTwoSpawnPoint;
             currentInputState = Player.InputState.ARROWS;
             userData = "PlayerTwo";
+            log.debug("Creating PlayerTwo...");
         }
 
 
@@ -84,6 +86,7 @@ public class PlayerFactory {
 //            case Martin:
 //                return new Martin(6);
             default:
+                log.warn("Created NO player!");
                 return null;
         }
     }

@@ -30,9 +30,11 @@ import com.smashprofs.game.Helper.Keys;
 import com.smashprofs.game.Helper.PostProcessingSettings;
 import com.smashprofs.game.Helper.SoundManager;
 import com.smashprofs.game.Helper.gamePropertiesManager;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 public class MainMenuScreen implements Screen {
-
+    private static Logger log = LogManager.getLogger(MainMenuScreen.class);
     private Game game;
     private SpriteBatch spriteBatch;
     private Viewport viewport;
@@ -71,6 +73,7 @@ public class MainMenuScreen implements Screen {
         PostProcessingSettings ppSetUpHandler = new PostProcessingSettings();
         this.postProcessingManager = ppSetUpHandler.getPostProcessingManager();
         sound=SoundManager.getSoundManager_INSTANCE();
+        log.info("Created MainMenuScreen");
     }
 
     @Override
@@ -98,6 +101,7 @@ public class MainMenuScreen implements Screen {
                 if (Gdx.input.isButtonJustPressed(0)) {
                     sound.playSound("sounds/minecraft_click.mp3");
                     //game.setScreen(new PlayScreen((com.smashprofs.game.Game) game));
+                    log.info("Redirecting to CharacterSelectScreen");
                     game.setScreen(new CharacterSelectScreen(game));
                 }
             }
@@ -114,6 +118,7 @@ public class MainMenuScreen implements Screen {
                 exitButton.setDrawable(new SpriteDrawable(new Sprite(exitButtonActive)));
                 if (Gdx.input.isButtonJustPressed(0)) {
                     sound.playSound("sounds/minecraft_click.mp3");
+                    log.info("Exiting game...");
                     Gdx.app.exit();
                 }
             }
@@ -143,6 +148,8 @@ public class MainMenuScreen implements Screen {
         //Add table to stage
         mainTable.setDebug(false);
         stage.addActor(mainTable);
+
+        log.info("Showing MainMenuScreen");
     }
 
     @Override

@@ -101,9 +101,9 @@ public class B2dContactListener implements ContactListener {
             //}
 
             //System.out.println("Fixture B: " + contact.getFixtureB().getUserData());
-            log.info("Fixture B: " + contact.getFixtureB().getUserData());
+            log.debug("Fixture B: " + contact.getFixtureB().getUserData());
             //System.out.println("UserData of Fixture B starts with Bullet: " + contact.getFixtureB().getBody().getUserData().toString().startsWith("Bullet"));
-            log.info("UserData of Fixture B starts with Bullet: " + contact.getFixtureB().getBody().getUserData().toString().startsWith("Bullet"));
+            log.debug("UserData of Fixture B starts with Bullet: " + contact.getFixtureB().getBody().getUserData().toString().startsWith("Bullet"));
         }
 
         if("PlayerTwo".equals(contact.getFixtureA().getBody().getUserData()) && contact.getFixtureB().getBody().getUserData().toString().startsWith("Bullet")) {
@@ -118,9 +118,9 @@ public class B2dContactListener implements ContactListener {
 
 
             //System.out.println("Fixture B: " + contact.getFixtureB().getUserData());
-            log.info("Fixture B: " + contact.getFixtureB().getUserData());
+            log.debug("Fixture B: " + contact.getFixtureB().getUserData());
             //System.out.println("UserData of Fixture B starts with Bullet: " + contact.getFixtureB().getBody().getUserData().toString().startsWith("Bullet"));
-            log.info("UserData of Fixture B starts with Bullet: " + contact.getFixtureB().getBody().getUserData().toString().startsWith("Bullet"));
+            log.debug("UserData of Fixture B starts with Bullet: " + contact.getFixtureB().getBody().getUserData().toString().startsWith("Bullet"));
         }
 
 
@@ -131,13 +131,13 @@ public class B2dContactListener implements ContactListener {
 
         if ("Tile".equals(contact.getFixtureA().getBody().getUserData()) && "PlayerTwo".equals(contact.getFixtureB().getBody().getUserData())){
             //System.out.println("P2 Touching Tile:" + P2NotTouchingTile);
-            log.info("P2 Touching Tile:" + P2NotTouchingTile);
+            log.debug("P2 Touching Tile:" + P2NotTouchingTile);
             P2NotTouchingTile = false;
         }
 
         if ("Tile".equals(contact.getFixtureA().getBody().getUserData()) && "PlayerOne".equals(contact.getFixtureB().getBody().getUserData())){
             //System.out.println("P1 Touching Tile: " + P1NotTouchingTile);
-            log.info("P1 Touching Tile: " + P1NotTouchingTile);
+            log.debug("P1 Touching Tile: " + P1NotTouchingTile);
             P1NotTouchingTile = false;
         }
 
@@ -226,13 +226,13 @@ public class B2dContactListener implements ContactListener {
 
         if("Tile".equals(contact.getFixtureA().getBody().getUserData()) && "PlayerOne".equals(contact.getFixtureB().getBody().getUserData())){
             //System.out.println("P1 Touching Tile: " + P1NotTouchingTile);
-            log.info("P1 Touching Tile: " + P1NotTouchingTile);
+            log.debug("P1 Touching Tile: " + P1NotTouchingTile);
             P1NotTouchingTile = true;
         }
         if("Tile".equals(contact.getFixtureA().getBody().getUserData()) && "PlayerTwo".equals(contact.getFixtureB().getBody().getUserData())) // null because not touching anything
         {
             //System.out.println("P2 Touching Tile:" + P2NotTouchingTile);
-            log.info("P2 Touching Tile:" + P2NotTouchingTile);
+            log.debug("P2 Touching Tile:" + P2NotTouchingTile);
             P2NotTouchingTile = true;
         }
 

@@ -8,8 +8,11 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.smashprofs.game.Game;
 import com.smashprofs.game.Helper.SoundManager;
 import jdk.tools.jmod.Main;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 public class IntroScreen extends ScreenAdapter {
+    private static Logger log = LogManager.getLogger(IntroScreen.class);
     int width = 1920;
     int height = 1080;
 
@@ -38,7 +41,7 @@ public class IntroScreen extends ScreenAdapter {
 
         batch = new SpriteBatch();
         this.game = game;
-
+        log.info("Created IntroScreen");
     }
 
 

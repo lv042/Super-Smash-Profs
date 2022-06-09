@@ -22,10 +22,15 @@ import com.badlogic.gdx.utils.viewport.FillViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import com.crashinvaders.vfx.VfxManager;
 import com.smashprofs.game.Helper.Keys;
+import com.smashprofs.game.Helper.PlayerFactory;
 import com.smashprofs.game.Helper.SoundManager;
 import com.smashprofs.game.Helper.gamePropertiesManager;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 public class CharacterSelectScreen implements Screen {
+
+    private static Logger log = LogManager.getLogger(CharacterSelectScreen.class);
     int width = 1920;
     int height = 1080;
     private float zoomFactor = 1f;
@@ -108,10 +113,14 @@ public class CharacterSelectScreen implements Screen {
         playButton.addListener(new ClickListener() {
             public void clicked(InputEvent event, float x, float y){
                 soundManager.playSound("sounds/minecraft_click.mp3");
+                log.info("PlayerOne selected the character " + getSelectedPlayerOne());
+                log.info("PlayerTwo selected the character " + getSelectedPlayerTwo());
                 game.setScreen(new PlayScreen((com.smashprofs.game.Game) game));
                 //game.setScreen(new MainMenuScreen(game));
             }
         });
+
+        log.info("Created CharacterSelectScreen");
 
     }
 
@@ -127,7 +136,13 @@ public class CharacterSelectScreen implements Screen {
 
 
         //table.setDebug(true);
+        if(table.getDebug()) {
+            log.warn("Table is set to debug mode!");
+        }
+        
         stage.addActor(table);
+
+        log.info("Showing CharacterSelectScreen");
     }
 
     @Override
