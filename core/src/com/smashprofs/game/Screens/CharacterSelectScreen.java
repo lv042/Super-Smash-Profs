@@ -40,7 +40,7 @@ public class CharacterSelectScreen implements Screen {
     private SoundManager soundManager;
 
     private TextureRegion[] alex, maurice, luca, leo;
-    private Image left1, right1, left2, right2, playButton;
+    private Image left1, right1, left2, right2, playButton, p1ctrls, p2ctrls;
     private Table table;
     private VfxManager postProcessingManager;
     private static int carouselCounter = 0;
@@ -78,6 +78,11 @@ public class CharacterSelectScreen implements Screen {
         this.p2Label = new Label(playerNames[carouselCounter2], new Label.LabelStyle(labelFont, Color.valueOf("FFFFFF")));
 
         playButton = new Image(new Texture("mainmenu/buttons/playButtonInactive.png"));
+        p1ctrls = new Image(new Texture("ui/ctrlsP1.png"));
+        p2ctrls = new Image(new Texture("ui/ctrlsP2.png"));
+        // Keep in mind: scaleBy(1f) equals setScale(2f)!
+        p1ctrls.scaleBy(0.5f);
+        p2ctrls.scaleBy(0.5f);
 
         left1 = new Image(new Texture("ui/arrowLeft.png"));
         left2 = new Image(new Texture("ui/arrowLeft.png"));
@@ -213,13 +218,6 @@ public class CharacterSelectScreen implements Screen {
     }
 
     public void updateScreenContents() {
-            //this.currentSelection = new TextureRegionDrawable(playerImages[carouselCounter]);
-            //this.currentSelection.setBackground(new TextureRegionDrawable(playerImages[carouselCounter]));
-        //table.removeActor(currentSelection);
-        //this.currentSelection = new ImageButton(new TextureRegionDrawable(playerImages[carouselCounter]));
-        //table.row();
-        //table.add(currentSelection);
-
         this.currentSelection = new ImageButton(new TextureRegionDrawable(playerImages[carouselCounter]));
         this.p1Label.setText(playerNames[carouselCounter]);
         this.currentSelection2 = new ImageButton(new TextureRegionDrawable(playerImages[carouselCounter2]));
@@ -243,7 +241,10 @@ public class CharacterSelectScreen implements Screen {
         table.add(right1).maxSize(right1.getWidth(), right1.getHeight()).center();
         table.add(left2).maxSize(left2.getWidth(), left2.getHeight()).center();
         table.add(right2).maxSize(right2.getWidth(), right2.getHeight()).center();
-        table.row().padTop(height/5f);
+        table.row().padTop(height/12f).height(p1ctrls.getHeight());
+        table.add(p1ctrls).colspan(2);
+        table.add(p2ctrls).colspan(2);
+        table.row();
         table.add(playButton).center().colspan(4);
         stage.addActor(table);
 
