@@ -11,6 +11,9 @@ import org.apache.logging.log4j.Logger;
 
 import static com.smashprofs.game.Actors.Players.Player.PPM;
 
+/**
+ * A spawnable object that renders a specific eight-frame animation at its spawnpoint.
+ */
 public class VFXObject extends GameObject {
 
     private static Logger log = LogManager.getLogger(VFXObject.class);
@@ -25,6 +28,21 @@ public class VFXObject extends GameObject {
     float centeringFactor = 0f;
 
 
+    /**
+     * Creates a renderable VFXObject at a specified screen position with a specific animation.
+     * @param userData
+     * The VFXObject's userData
+     * @param Spawnpoint
+     * The point the object should spawn
+     * @param texture
+     * The texture stripe with all 8 frames for the animation
+     * @param sound
+     * The sound that should be played when the object spawns
+     * @param centered
+     * Decide whether the animation is already set to the center (spawnpoint) of the VFXObject or if it has to be manually adjusted.
+     * @param spriteIsSquare
+     * Set to true, if the individual frames of the animation are a square
+     */
     public VFXObject(String userData, Vector2 Spawnpoint, Texture texture, String sound, Boolean centered, Boolean spriteIsSquare) {
         super(userData);
         sprite = new Sprite(texture);
@@ -59,8 +77,6 @@ public class VFXObject extends GameObject {
             sprite.setBounds(Spawnpoint.x/PPM, (Spawnpoint.y)/PPM, sprite.getWidth()/8/PPM, sprite.getHeight()/PPM);
         }
 
-        //sprite.setPosition(Spawnpoint.x - sprite.getHeight()/2f, Spawnpoint.y - sprite.getHeight()/2f);
-
 
         //This part must be after set bounds otherwise the
         if(centered) {
@@ -71,9 +87,7 @@ public class VFXObject extends GameObject {
             this.centeringFactor = 40f/PPM;
         }
 
-        //System.out.println("centering factor: "+ centeringFactor);
         log.debug("centering factor: "+ centeringFactor);
-
 
 
         if(spriteIsSquare) {
@@ -82,7 +96,6 @@ public class VFXObject extends GameObject {
         else {
             sprite.setPosition(Spawnpoint.x - sprite.getWidth()/8/2f, Spawnpoint.y - centeringFactor);
         }
-        //sprite.setOrigin(0, -1000f);
         sprite.setScale(1f);
 
 
@@ -92,7 +105,6 @@ public class VFXObject extends GameObject {
 
 
         sprite.getTexture().dispose();
-        //System.out.println("Disposed VFXObj texture via .dispose()");
         log.debug("Disposed VFXObj texture via .dispose()");
 
     }
