@@ -7,6 +7,8 @@ import com.smashprofs.game.Helper.PropertiesReader;
 import com.smashprofs.game.Helper.gamePropertiesManager;
 import com.smashprofs.game.Screens.IntroScreen;
 
+import static com.smashprofs.game.Helper.Util.log4JconfLoad;
+
 public class Game extends com.badlogic.gdx.Game {
 	public static SpriteBatch batch;
 
@@ -18,7 +20,7 @@ public class Game extends com.badlogic.gdx.Game {
 	
 	@Override
 	public void create () {
-
+		log4JconfLoad(System.getProperty("user.dir") + "\\log4j2.xml");
 		thread = new GameThread();
 		gamePropertiesManager.firstStart();
 		thread.start();

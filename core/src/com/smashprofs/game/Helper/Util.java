@@ -4,7 +4,12 @@ package com.smashprofs.game.Helper;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
-import com.badlogic.gdx.audio.Music;
+import org.apache.logging.log4j.core.config.ConfigurationSource;
+import org.apache.logging.log4j.core.config.Configurator;
+
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.io.InputStream;
 
 public class Util {
     //Maybe make this class singleton?
@@ -66,6 +71,15 @@ public class Util {
         return Gdx.graphics.getHeight() / 2 - height / 2;
     }
 
+    public static void log4JconfLoad(String logConfigurationFile) {
+        try {
+            InputStream inputStream = new FileInputStream(logConfigurationFile);
+            ConfigurationSource source = new ConfigurationSource(inputStream);
+            Configurator.initialize(null, source);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
 
 
 
