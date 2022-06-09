@@ -1,6 +1,5 @@
 package com.smashprofs.game.Helper;
 
-import com.sun.org.apache.xml.internal.utils.res.XResources_zh_CN;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
