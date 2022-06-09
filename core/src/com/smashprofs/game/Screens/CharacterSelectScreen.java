@@ -3,6 +3,8 @@ package com.smashprofs.game.Screens;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.Game;
+import com.badlogic.gdx.controllers.Controller;
+import com.badlogic.gdx.controllers.Controllers;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
@@ -17,6 +19,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
+import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.ScreenUtils;
 import com.badlogic.gdx.utils.viewport.FillViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
@@ -38,7 +41,7 @@ public class CharacterSelectScreen implements Screen {
     private Viewport viewport;
     private Stage stage;
     private SoundManager soundManager;
-
+    private Array<Controller> controllers;
     private TextureRegion[] alex, maurice, luca, leo;
     private Image left1, right1, left2, right2, playButton, p1ctrls, p2ctrls;
     private Table table;
@@ -60,6 +63,7 @@ public class CharacterSelectScreen implements Screen {
         this.viewport = new FillViewport(this.width, this.height, this.camera);
         this.stage = new Stage(this.viewport, this.batch);
         this.soundManager = SoundManager.getSoundManager_INSTANCE();
+        this.controllers = Controllers.getControllers();
         table = new Table();
 
         this.alex = TextureRegion.split(new Texture("Sprites/Alex/alex_stand.png"), 100, 100)[0];
@@ -77,13 +81,6 @@ public class CharacterSelectScreen implements Screen {
         this.p1Label = new Label(playerNames[carouselCounter], new Label.LabelStyle(labelFont, Color.valueOf("FFFFFF")));
         this.p2Label = new Label(playerNames[carouselCounter2], new Label.LabelStyle(labelFont, Color.valueOf("FFFFFF")));
 
-        playButton = new Image(new Texture("mainmenu/buttons/playButtonInactive.png"));
-        p1ctrls = new Image(new Texture("ui/ctrlsP1.png"));
-        p2ctrls = new Image(new Texture("ui/ctrlsP2.png"));
-        // Keep in mind: scaleBy(1f) equals setScale(2f)!
-        p1ctrls.scaleBy(0.5f);
-        p2ctrls.scaleBy(0.5f);
-
         left1 = new Image(new Texture("ui/arrowLeft.png"));
         left2 = new Image(new Texture("ui/arrowLeft.png"));
         right1 = new Image(new Texture("ui/arrowRight.png"));
@@ -93,6 +90,19 @@ public class CharacterSelectScreen implements Screen {
         left2.scaleBy(2f);
         right1.scaleBy(2f);
         right2.scaleBy(2f);
+
+        playButton = new Image(new Texture("mainmenu/buttons/playButtonInactive.png"));
+        p1ctrls = new Image(new Texture("ui/ctrlsP1.png"));
+        p2ctrls = new Image(new Texture("ui/ctrlsP2.png"));
+        // Set control hints to "Gamepad" if every player has a connected gamepad.
+        if(controllers.size > 1) {
+            log.info("More than 1 gamepad connected! Showing controller hints.");
+            p1ctrls = new Image(new Texture("ui/ctrlsGamepad.png"));
+            p2ctrls = new Image(new Texture("ui/ctrlsGamepad.png"));
+        }
+        // Keep in mind: scaleBy(1f) equals setScale(2f)!
+        p1ctrls.scaleBy(0.5f);
+        p2ctrls.scaleBy(0.5f);
 
         left1.addListener(new ClickListener() {
             public void clicked(InputEvent event, float x, float y){
