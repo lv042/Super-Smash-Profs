@@ -56,9 +56,9 @@ public class IntroScreen extends ScreenAdapter {
         batch.end();
 
         if (Gdx.input.isKeyJustPressed(com.badlogic.gdx.Input.Keys.ANY_KEY) || Gdx.input.isButtonJustPressed(0)) {
-            //game.setScreen(new MainMenuScreen(game));
+            game.setScreen(new MainMenuScreen(game));
             // Zum Debuggen kann man hier die Weiterleitung auf den Character Select Screen einschalten:
-            game.setScreen(new CharacterSelectScreen(game));
+            //game.setScreen(new CharacterSelectScreen(game));
 
         }
     }

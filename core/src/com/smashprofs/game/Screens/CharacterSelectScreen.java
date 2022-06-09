@@ -108,7 +108,8 @@ public class CharacterSelectScreen implements Screen {
         playButton.addListener(new ClickListener() {
             public void clicked(InputEvent event, float x, float y){
                 soundManager.playSound("sounds/minecraft_click.mp3");
-                game.setScreen(new MainMenuScreen(game));
+                game.setScreen(new PlayScreen((com.smashprofs.game.Game) game));
+                //game.setScreen(new MainMenuScreen(game));
             }
         });
 

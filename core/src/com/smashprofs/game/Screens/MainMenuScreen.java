@@ -97,7 +97,8 @@ public class MainMenuScreen implements Screen {
                 playButton.setDrawable(new SpriteDrawable(new Sprite(playButtonActive)));
                 if (Gdx.input.isButtonJustPressed(0)) {
                     sound.playSound("sounds/minecraft_click.mp3");
-                    game.setScreen(new PlayScreen((com.smashprofs.game.Game) game));
+                    //game.setScreen(new PlayScreen((com.smashprofs.game.Game) game));
+                    game.setScreen(new CharacterSelectScreen(game));
                 }
             }
 
