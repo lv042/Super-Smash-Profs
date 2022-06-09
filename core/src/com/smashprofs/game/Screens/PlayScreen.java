@@ -197,9 +197,26 @@ public class PlayScreen implements Screen {
         createTileMap();
 
         //playerOne = new Player(world, Player.InputState.WASD, playerOneSpawnPoint, "Alex Boss", "PlayerOne");
-        playerOne = playerFactory.getPlayer(PlayerTypes.Alex);
+
+        //playerOne = playerFactory.getPlayer(PlayerTypes.Alex);
+        switch(CharacterSelectScreen.getSelectedPlayerOne()) {
+            case "Alex": playerOne = playerFactory.getPlayer(PlayerTypes.Alex); break;
+            case "Maurice": playerOne = playerFactory.getPlayer(PlayerTypes.Maurice); break;
+            case "Luca": playerOne = playerFactory.getPlayer(PlayerTypes.Luca); break;
+            case "Leo": playerOne = playerFactory.getPlayer(PlayerTypes.Leo); break;
+            default: playerOne = playerFactory.getPlayer(PlayerTypes.Alex);
+        }
+
         //playerTwo = new Player(world, Player.InputState.ARROWS, playerTwoSpawnPoint, "Jens Huhn", "PlayerTwo");
-        playerTwo = playerFactory.getPlayer(PlayerTypes.Maurice);
+
+        // playerTwo = playerFactory.getPlayer(PlayerTypes.Maurice);
+        switch(CharacterSelectScreen.getSelectedPlayerTwo()) {
+            case "Alex": playerTwo = playerFactory.getPlayer(PlayerTypes.Alex); break;
+            case "Maurice": playerTwo = playerFactory.getPlayer(PlayerTypes.Maurice); break;
+            case "Luca": playerTwo = playerFactory.getPlayer(PlayerTypes.Luca); break;
+            case "Leo": playerTwo = playerFactory.getPlayer(PlayerTypes.Leo); break;
+            default: playerTwo = playerFactory.getPlayer(PlayerTypes.Alex);
+        }
 
         contactListener = B2dContactListener.getContactListener_INSTANCE();
         world.setContactListener(contactListener);
