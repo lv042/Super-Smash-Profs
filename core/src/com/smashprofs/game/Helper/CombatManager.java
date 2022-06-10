@@ -192,8 +192,6 @@ public class CombatManager {
 
     public void shooting(Player playeractive,Player playerinactive, World world){
 
-        //TODO: @Leo am besten mit enum nicht mit player name -> wenn irgendwas am string falsch gibts direkt fehler
-
         //Ansonsten aber strukturell ziemlich gut :)
         if(playeractive.getPlayerType() == PlayerTypes.Leo){
             //TODO: bitte genau so fuer die anderen klassen integrieren
