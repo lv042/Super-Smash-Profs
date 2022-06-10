@@ -1,6 +1,7 @@
 package com.smashprofs.game.Screens;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.controllers.Controller;
@@ -128,7 +129,6 @@ public class CharacterSelectScreen implements Screen {
             }
         });
 
-
         playButton.addListener(new InputListener() {
             @Override
             public void enter(InputEvent event, float x, float y, int pointer, Actor actor) {
@@ -180,6 +180,9 @@ public class CharacterSelectScreen implements Screen {
         postProcessingManager.cleanUpBuffers();
         postProcessingManager.beginInputCapture();
 
+        //character selection with input keys
+        scrollWithKeys();
+
         this.stage.act();
         this.stage.draw();
 
@@ -198,6 +201,20 @@ public class CharacterSelectScreen implements Screen {
         camera.update();
     }
 
+    private void scrollWithKeys() {
+        if(Gdx.input.isKeyPressed(Input.Keys.A)){
+            decrementCarouselCounter(1);
+        }
+        if(Gdx.input.isKeyPressed(Input.Keys.D)){
+            incrementCarouselCounter(  1);
+        }
+        if(Gdx.input.isKeyPressed(Input.Keys.LEFT)){
+            decrementCarouselCounter(2);
+        }
+        if(Gdx.input.isKeyPressed(Input.Keys.RIGHT)){
+            incrementCarouselCounter(  2);
+        }
+    }
 
     public void incrementCarouselCounter(int NumberOfCarouselCounter) {
 
