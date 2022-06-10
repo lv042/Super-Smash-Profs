@@ -28,10 +28,7 @@ import com.badlogic.gdx.utils.ScreenUtils;
 import com.badlogic.gdx.utils.viewport.FillViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import com.crashinvaders.vfx.VfxManager;
-import com.smashprofs.game.Helper.Keys;
-import com.smashprofs.game.Helper.PlayerFactory;
-import com.smashprofs.game.Helper.SoundManager;
-import com.smashprofs.game.Helper.gamePropertiesManager;
+import com.smashprofs.game.Helper.*;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -69,6 +66,8 @@ public class CharacterSelectScreen implements Screen {
         this.soundManager = SoundManager.getSoundManager_INSTANCE();
         this.controllers = Controllers.getControllers();
         table = new Table();
+        PostProcessingSettings ppSetUpHandler = new PostProcessingSettings();
+        this.postProcessingManager = ppSetUpHandler.getPostProcessingManager();
 
         this.alex = TextureRegion.split(new Texture("Sprites/Alex/alex_stand.png"), 100, 100)[0];
         this.maurice = TextureRegion.split(new Texture("Sprites/Momo/momo_strip.png"), 100, 100)[0];
@@ -178,8 +177,17 @@ public class CharacterSelectScreen implements Screen {
     @Override
     public void render(float delta) {
         ScreenUtils.clear(Color.CLEAR);
+        postProcessingManager.cleanUpBuffers();
+        postProcessingManager.beginInputCapture();
+
         this.stage.act();
         this.stage.draw();
+
+        postProcessingManager.endInputCapture();
+
+        postProcessingManager.applyEffects();
+
+        postProcessingManager.renderToScreen();
 
     }
 
