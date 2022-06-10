@@ -195,8 +195,7 @@ public class CombatManager {
         //TODO: @Leo am besten mit enum nicht mit player name -> wenn irgendwas am string falsch gibts direkt fehler
 
         //Ansonsten aber strukturell ziemlich gut :)
-
-        if(playeractive.getPlayerName().equals("Leo The Miner")){
+        if(playeractive.getPlayerType() == PlayerTypes.Leo){
             //TODO: bitte genau so fuer die anderen klassen integrieren
 
 
@@ -216,7 +215,7 @@ public class CombatManager {
             }
 
         }
-        else if(playeractive.getPlayerName().equals("Maurice Boi")){
+        else if(playeractive.getPlayerType() == PlayerTypes.Maurice){
             log.debug("Bullet spawned");
             //ThrowingStar proj = new ThrowingStar(world, playerTwo);
             ThrowingStar proj = new ThrowingStar(world, new Vector2(playeractive.getPosition().x + 10 / PPM, playeractive.getPosition().y) , new Vector2(1,0));
@@ -231,12 +230,12 @@ public class CombatManager {
             ThrowingStar proj3 = new ThrowingStar(world, new Vector2(playeractive.getPosition().x, playeractive.getPosition().y - 10 / PPM), new Vector2(0,-1));
             projectileArrayList.add(proj3);
         }
-        else if(playeractive.getPlayerName().equals("Alex Boss")){
+        else if(playeractive.getPlayerType() == PlayerTypes.Alex){
             log.debug("Bullet spawned");
             HomingMissile proj = new HomingMissile(world, playeractive, playerinactive);
             projectileArrayList.add(proj);
         }
-        else if (playeractive.getPlayerName().equals("Luca Kanne")){
+        else if (playeractive.getPlayerType() == PlayerTypes.Luca){
             log.debug("Bullet spawned");
             CircleStar proj = new CircleStar(world, playeractive);
             projectileArrayList.add(proj);
