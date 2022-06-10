@@ -21,6 +21,12 @@ public class Landmine extends Projectile {
 
     float stateTime = 0;
 
+    public final static float delayInSeconds = 1;
+
+    public static float getDelayInSeconds() {
+        return delayInSeconds;
+    }
+
     Random rand = new Random();
 
     @Override

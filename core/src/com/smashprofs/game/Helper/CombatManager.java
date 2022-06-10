@@ -5,12 +5,14 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.World;
 
 import com.badlogic.gdx.utils.DelayedRemovalArray;
+import com.badlogic.gdx.utils.Timer;
 import com.smashprofs.game.Actors.Projectiles.*;
 
 import com.smashprofs.game.Actors.Players.Player;
 import com.smashprofs.game.Actors.Projectiles.HomingMissile;
 import com.smashprofs.game.Actors.VFXObject;
 import com.smashprofs.game.Screens.PlayScreen;
+import jdk.internal.org.jline.utils.ShutdownHooks;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -23,6 +25,9 @@ public class CombatManager {
      * The distance between the two players in the game world.
      */
     private Vector2 distanceBetweenPlayers = new Vector2(0, 0);
+
+
+    private boolean mineAvailable = true;
 
     /**
      * The box2DContact listener.
@@ -126,6 +131,9 @@ public class CombatManager {
         }
         if(playerTwo.isShooting()) {
             shooting(playerTwo,playerOne,world);
+
+            //das ist sehr gut so geloest :)
+
            /* log.debug("Bullet spawned");
             //ThrowingStar proj = new ThrowingStar(world, playerTwo);
             ThrowingStar proj = new ThrowingStar(world, new Vector2(playerTwo.getPosition().x + 10 / PPM, playerTwo.getPosition().y) , new Vector2(1,0));
@@ -183,10 +191,30 @@ public class CombatManager {
     }
 
     public void shooting(Player playeractive,Player playerinactive, World world){
+
+        //TODO: @Leo am besten mit enum nicht mit player name -> wenn irgendwas am string falsch gibts direkt fehler
+
+        //Ansonsten aber strukturell ziemlich gut :)
+
         if(playeractive.getPlayerName().equals("Leo The Miner")){
-        log.debug("Bullet spawned");
-        Landmine proj = new Landmine(world, playeractive);
-        projectileArrayList.add(proj);
+            //TODO: bitte genau so fuer die anderen klassen integrieren
+
+
+            if(mineAvailable){
+                Timer.schedule(new Timer.Task(){
+                    @Override
+                    public void run() {
+                        mineAvailable = true;
+                    }
+                }, Landmine.getDelayInSeconds());
+
+
+                log.debug("Bullet spawned");
+                Landmine proj = new Landmine(world, playeractive);
+                projectileArrayList.add(proj);
+                mineAvailable = false;
+            }
+
         }
         else if(playeractive.getPlayerName().equals("Maurice Boi")){
             log.debug("Bullet spawned");
@@ -216,7 +244,7 @@ public class CombatManager {
     }
 
     //Projectile attack
-
+    //kann das weg oder ist das kunst??????????????????????????????????????????
     public void attackPlayer(Vector2 damageOrigin, int damage, Player target, float attackKnockback , float yAttackKnockback){
         Vector2 attackVector = new Vector2(0, yAttackKnockback);
         if(damageOrigin.x < target.getPosition().x) attackVector.x = 1 * attackKnockback;
@@ -291,7 +319,13 @@ public class CombatManager {
         for (Projectile projectile: projectileArrayList) {
 
             // TODO: Gehört das so?
-            if(projectile.active && projectile.b2dbody.isActive() && projectile.isActive()) {
+
+            // Kein Plan was deaktviert wird :/ -> daher lieber alles hahah
+//            if(projectile.active && projectile.b2dbody.isActive() && projectile.isActive()) {
+//                projectile.draw(batch);
+//            }
+            //so scheints zu funktionieren -> ansonsten pls aendern
+            if(projectile.b2dbody.isActive()) {
                 projectile.draw(batch);
             }
 
