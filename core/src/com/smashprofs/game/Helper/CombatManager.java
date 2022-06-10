@@ -115,16 +115,18 @@ public class CombatManager {
 
         }
         if(playerOne.isShooting()){
-            //System.out.println("Bullet spawned ");
+            shooting(playerOne,playerTwo,world);
+            /*//System.out.println("Bullet spawned ");
             log.debug("Bullet spawned");
             //HomingMissile proj = new HomingMissile(world, playerOne, playerTwo);
             // CircleStar proj = new CircleStar(world, playerOne);
             Landmine proj = new Landmine(world, playerOne);
-            projectileArrayList.add(proj);
+            projectileArrayList.add(proj);*/
 
         }
         if(playerTwo.isShooting()) {
-            log.debug("Bullet spawned");
+            shooting(playerTwo,playerOne,world);
+           /* log.debug("Bullet spawned");
             //ThrowingStar proj = new ThrowingStar(world, playerTwo);
             ThrowingStar proj = new ThrowingStar(world, new Vector2(playerTwo.getPosition().x + 10 / PPM, playerTwo.getPosition().y) , new Vector2(1,0));
             projectileArrayList.add(proj);
@@ -141,7 +143,7 @@ public class CombatManager {
 
             //HomingMissile proj = new HomingMissile(world, playerTwo, playerOne);
             //Landmine proj = new Landmine(world, playerTwo);
-
+*/
         }
 
         //BULLETS
@@ -180,6 +182,38 @@ public class CombatManager {
 
     }
 
+    public void shooting(Player playeractive,Player playerinactive, World world){
+        if(playeractive.getPlayerName().equals("Leo The Miner")){
+        log.debug("Bullet spawned");
+        Landmine proj = new Landmine(world, playeractive);
+        projectileArrayList.add(proj);
+        }
+        else if(playeractive.getPlayerName().equals("Maurice Boi")){
+            log.debug("Bullet spawned");
+            //ThrowingStar proj = new ThrowingStar(world, playerTwo);
+            ThrowingStar proj = new ThrowingStar(world, new Vector2(playeractive.getPosition().x + 10 / PPM, playeractive.getPosition().y) , new Vector2(1,0));
+            projectileArrayList.add(proj);
+
+            ThrowingStar proj1 = new ThrowingStar(world, new Vector2(playeractive.getPosition().x - 10 / PPM, playeractive.getPosition().y), new Vector2(-1,0));
+            projectileArrayList.add(proj1);
+
+            ThrowingStar proj2 = new ThrowingStar(world, new Vector2(playeractive.getPosition().x, playeractive.getPosition().y + 10 / PPM), new Vector2(0,1));
+            projectileArrayList.add(proj2);
+
+            ThrowingStar proj3 = new ThrowingStar(world, new Vector2(playeractive.getPosition().x, playeractive.getPosition().y - 10 / PPM), new Vector2(0,-1));
+            projectileArrayList.add(proj3);
+        }
+        else if(playeractive.getPlayerName().equals("Alex Boss")){
+            log.debug("Bullet spawned");
+            HomingMissile proj = new HomingMissile(world, playeractive, playerinactive);
+            projectileArrayList.add(proj);
+        }
+        else if (playeractive.getPlayerName().equals("Luca Kanne")){
+            log.debug("Bullet spawned");
+            CircleStar proj = new CircleStar(world, playeractive);
+            projectileArrayList.add(proj);
+        }
+    }
 
     //Projectile attack
 
