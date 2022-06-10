@@ -79,6 +79,7 @@ public class PlayScreen implements Screen {
     public static World world;
 
     //debug
+    public Boolean debugMode;
     private Box2DDebugRenderer box2DDebugRenderer; //renders outline of box2d bodies
 
 
@@ -118,7 +119,7 @@ public class PlayScreen implements Screen {
 
         tiledMapRenderer.setView(gamecamera);
 
-        playerOne.update(deltatime); // Most of the code above should go in this method
+        playerOne.update(deltatime);
         playerTwo.update(deltatime); // update method must be before most of the code below otherwise some values are null;
         checkInput(deltatime);
         //combatManager
@@ -137,9 +138,11 @@ public class PlayScreen implements Screen {
 //        }
 
         viewport.setScreenPosition(0, 0);
-        //debug
-        //DrawDebugLine(playerOne.getPosition(), playerTwo.getPosition(), gamecamera.combined);
 
+        // Draw a debug line between p1 and p2
+        if(debugMode) {
+            DrawDebugLine(playerOne.getPosition(), playerTwo.getPosition(), gamecamera.combined);
+        }
 
         cameraManager.updateCameraManager(playerOne, playerTwo);
     }
@@ -175,14 +178,13 @@ public class PlayScreen implements Screen {
      * The game.
      */
     public PlayScreen(Game game) {
+        this.debugMode = Game.debugMode;
 
         //add pre configured settings to PostProcessingManager
         PostProcessingSettings ppSetUpHandler = new PostProcessingSettings();
         this.postProcessingManager = ppSetUpHandler.getPostProcessingManager();
 
-
         playerFactory = PlayerFactory.getPlayerFactory_INSTANCE();
-
 
         soundManager.setupMusic(gameSong);
         this.combatManager = CombatManager.getCombatManager_INSTANCE();
@@ -196,8 +198,6 @@ public class PlayScreen implements Screen {
 
         createTileMap();
 
-        //playerOne = new Player(world, Player.InputState.WASD, playerOneSpawnPoint, "Alex Boss", "PlayerOne");
-
         //playerOne = playerFactory.getPlayer(PlayerTypes.Alex);
         switch(CharacterSelectScreen.getSelectedPlayerOne()) {
             case "Alex": playerOne = playerFactory.getPlayer(PlayerTypes.Alex); break;
@@ -206,8 +206,6 @@ public class PlayScreen implements Screen {
             case "Leo": playerOne = playerFactory.getPlayer(PlayerTypes.Leo); break;
             default: playerOne = playerFactory.getPlayer(PlayerTypes.Alex);
         }
-
-        //playerTwo = new Player(world, Player.InputState.ARROWS, playerTwoSpawnPoint, "Jens Huhn", "PlayerTwo");
 
         // playerTwo = playerFactory.getPlayer(PlayerTypes.Maurice);
         switch(CharacterSelectScreen.getSelectedPlayerTwo()) {
@@ -221,19 +219,19 @@ public class PlayScreen implements Screen {
         contactListener = B2dContactListener.getContactListener_INSTANCE();
         world.setContactListener(contactListener);
 
-        //System.out.println("playerOne: " + playerOne);
         log.info("playerOne:" + playerOne);
-        //System.out.println("playerTwo: " + playerTwo);
         log.info("playerTwo:" + playerTwo);
+
         hud = new Hud(game.batch, playerOne, playerTwo);
 
-
+        // Log all connected controllers:
         for (Controller controller : Controllers.getControllers()) {
-            Gdx.app.log(controller.getUniqueId(), controller.getName());
+            log.info("Controller detected: " + controller.getUniqueId(), controller.getName());
         }
 
         winScreen=new WinScreen(game,playerOne,playerTwo);
 
+        // Necessary to avoid leftovers from another game session
         playerFactory.resetFactory();
         combatManager.resetCombatManager();
         contactListener.resetContactListener();
@@ -290,7 +288,6 @@ public class PlayScreen implements Screen {
 
         Gdx.gl.glClear(Gdx.gl.GL_COLOR_BUFFER_BIT);
         Gdx.gl.glClearColor(0, 0, 0, 1); //-> light blue
-        //Gdx.gl.glClearColor(1, 1, 1, 1);
         postProcessingManager.cleanUpBuffers();
 
         // Begin render to an off-screen buffer.
@@ -301,8 +298,11 @@ public class PlayScreen implements Screen {
         update(delta);
 
 
-        //render our tiledmap debug outlines to screen
-        box2DDebugRenderer.render(world, gamecamera.combined);
+        if (debugMode) {
+            //render our tiled map debug outlines to screen
+            box2DDebugRenderer.render(world, gamecamera.combined);
+        }
+
 
         //batch.setProjectionMatrix(cameraManager.getGameCamera().combined);
         batch.setProjectionMatrix(gamecamera.combined);

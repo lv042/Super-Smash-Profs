@@ -19,6 +19,7 @@ public class Game extends com.badlogic.gdx.Game {
 	public static final int V_WIDTH = 400;
 	public static final int V_HEIGHT = 208;
 	private GameThread thread;
+	public static Boolean debugMode;
 	
 	@Override
 	public void create () {
@@ -27,6 +28,10 @@ public class Game extends com.badlogic.gdx.Game {
 		thread = new GameThread();
 		gamePropertiesManager.firstStart();
 		thread.start();
+
+		// --Toggles debug mode--
+		debugMode = true;
+		// ----------------------
 
 		batch = new SpriteBatch();
 		//setScreen(new MainMenuScreen(this));
@@ -38,6 +43,12 @@ public class Game extends com.badlogic.gdx.Game {
 		setScreen(new IntroScreen(this));
 
 		//setScreen(new PlayScreen(this)); // passes game to set screen on its own -> now started by intro screen
+		if(debugMode) {
+			log.warn("-------------------------------------------");
+			log.warn("Game debug mode activated!");
+			log.warn("You might encounter debug lines and more.");
+			log.warn("-------------------------------------------");
+		}
 	}
 
 	@Override
