@@ -202,16 +202,16 @@ public class CharacterSelectScreen implements Screen {
     }
 
     private void scrollWithKeys() {
-        if(Gdx.input.isKeyPressed(Input.Keys.A)){
+        if(Gdx.input.isKeyJustPressed(Input.Keys.A)){
             decrementCarouselCounter(1);
         }
-        if(Gdx.input.isKeyPressed(Input.Keys.D)){
+        if(Gdx.input.isKeyJustPressed(Input.Keys.D)){
             incrementCarouselCounter(  1);
         }
-        if(Gdx.input.isKeyPressed(Input.Keys.LEFT)){
+        if(Gdx.input.isKeyJustPressed(Input.Keys.LEFT)){
             decrementCarouselCounter(2);
         }
-        if(Gdx.input.isKeyPressed(Input.Keys.RIGHT)){
+        if(Gdx.input.isKeyJustPressed(Input.Keys.RIGHT)){
             incrementCarouselCounter(  2);
         }
     }
