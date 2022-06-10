@@ -117,3 +117,4 @@ Thumbs.db
 ##properties file
 game_info.properties
 /assets/superSmashProfs.log
+/assets/superSmashProfs_DEBUG.log
