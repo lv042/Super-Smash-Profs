@@ -54,6 +54,7 @@ public abstract class Player extends GameObject {
     public float damping = 0.9995f; //the closer this value is to zero the more the player will slow down
     public ArrayList<Controller> controllers;
     InputState currentInputState;
+    PlayerTypes playerType;
     float stateTime = 0;
     float playerCollisionBoxRadius = 5;
     boolean isGrounded = false;
@@ -88,10 +89,10 @@ public abstract class Player extends GameObject {
     
     private final Sprite sprite = new Sprite(); //Sprite of the GameObject
 
-    public Player(World world, InputState inputState, Vector2 spawnpoint, String playerName, String userData, Texture playerStandTex, Texture playerRunTex, Texture playerJumpTex) {
+    public Player(World world, InputState inputState, Vector2 spawnpoint, String playerName, PlayerTypes playerType, String userData, Texture playerStandTex, Texture playerRunTex, Texture playerJumpTex) {
         super(userData);
 
-
+        this.playerType = playerType;
         this.userData = userData;
 
         /*playerStand = new Texture("Sprites/Alex_stand.png");
@@ -249,6 +250,9 @@ public abstract class Player extends GameObject {
 
     }
 
+    public PlayerTypes getPlayerType() {
+        return this.playerType;
+    }
     public int getAttackDamage() {
         return attackDamage;
     }

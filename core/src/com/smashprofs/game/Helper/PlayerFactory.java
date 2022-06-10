@@ -61,25 +61,22 @@ public class PlayerFactory {
             case Luca:
                 playersCreated++;
                 //System.out.println("Created LucaPlayer");
-                log.info("Created LucaPlayer");
+                log.debug("Created LucaPlayer");
                 return new Luca(PlayScreen.getWorld(), currentInputState, currentSpawnPoint, "Luca Kanne", userData);
-
             case Alex:
                 playersCreated++;
                 //System.out.println("Created AlexPlayer");
-                log.info("Created AlexPlayer");
+                log.debug("Created AlexPlayer");
                 return new Alex(PlayScreen.getWorld(), currentInputState, currentSpawnPoint, "Alex Boss", userData);
-//            case Leo:
-//                return new Leo(3);
             case Maurice:
                 playersCreated++;
                 //System.out.println("Created MauricePlayer");
-                log.info("Created MauricePlayer");
+                log.debug("Created MauricePlayer");
                 return new Maurice(PlayScreen.getWorld(), currentInputState, currentSpawnPoint, "Maurice Boi", userData);
             case Leo:
                 playersCreated++;
                 //System.out.println("Created MauricePlayer");
-                log.info("Created LeoPlayer");
+                log.debug("Created LeoPlayer");
                 return new Leo(PlayScreen.getWorld(), currentInputState, currentSpawnPoint, "Leo The Miner", userData);
 //            case Jens:
 //                return new Jens(5);
