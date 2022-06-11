@@ -51,7 +51,7 @@ public abstract class Player extends GameObject {
     private final float walkingSpeedMultiplier = 1.1f;
     private final SoundManager soundManager;
     private final String userData;
-    public float damping = 0.9995f; //the closer this value is to zero the more the player will slow down
+    public float damping = 0.999f; //the closer this value is to zero the more the player will slow down
     public ArrayList<Controller> controllers;
     InputState currentInputState;
     PlayerTypes playerType;

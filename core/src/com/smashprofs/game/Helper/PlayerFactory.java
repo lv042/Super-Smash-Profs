@@ -78,8 +78,8 @@ public class PlayerFactory {
                 //System.out.println("Created MauricePlayer");
                 log.debug("Created LeoPlayer");
                 return new Leo(PlayScreen.getWorld(), currentInputState, currentSpawnPoint, "Leo The Miner", userData);
-//            case Jens:
-//                return new Jens(5);
+            case Viktor:
+                return new Viktor(PlayScreen.getWorld(), currentInputState, currentSpawnPoint, "Just Viktor", userData);
 //            case Martin:
 //                return new Martin(6);
             default:

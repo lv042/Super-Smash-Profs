@@ -8,7 +8,8 @@ import org.apache.logging.log4j.Logger;
 
 public class SoundManager {
 
-    private boolean turnOnMusic= true;
+    private boolean turnOnMusic= false;
+    private boolean turnOnSound= false;
 
     private Music currenMusic;
 
@@ -58,20 +59,25 @@ public class SoundManager {
 
     public void playSound(String soundPath) {
         //play sound
-        if(soundPath.contains(".wav")) {
-            Sound wavSound = Gdx.audio.newSound(Gdx.files.internal(soundPath));
-            wavSound.play();
 
-        }
-        else if(soundPath.contains(".mp3")) {
-            Sound mp3Sound = Gdx.audio.newSound(Gdx.files.internal(soundPath));
-            mp3Sound.play();
+        if(turnOnSound){
+            if(soundPath.contains(".wav")) {
+                Sound wavSound = Gdx.audio.newSound(Gdx.files.internal(soundPath));
+                wavSound.play();
 
-        }
-        else {
-            //System.out.println("SoundManager: updateSounds: unknown sound format");
-            log.info("SoundManager: updateSounds: unknown sound format");
-            return;
+            }
+            else if(soundPath.contains(".mp3")) {
+                Sound mp3Sound = Gdx.audio.newSound(Gdx.files.internal(soundPath));
+                mp3Sound.play();
+
+            }
+            else {
+                //System.out.println("SoundManager: updateSounds: unknown sound format");
+                log.info("SoundManager: updateSounds: unknown sound format");
+                return;
+            }
+
+
         }
     }
 
