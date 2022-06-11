@@ -207,6 +207,7 @@ public class PlayScreen implements Screen {
             case "Maurice": playerOne = playerFactory.getPlayer(PlayerTypes.Maurice); break;
             case "Luca": playerOne = playerFactory.getPlayer(PlayerTypes.Luca); break;
             case "Leo": playerOne = playerFactory.getPlayer(PlayerTypes.Leo); break;
+            case "Viktor": playerOne = playerFactory.getPlayer(PlayerTypes.Viktor); break;
             default: playerOne = playerFactory.getPlayer(PlayerTypes.Alex);
         }
 
@@ -216,6 +217,7 @@ public class PlayScreen implements Screen {
             case "Maurice": playerTwo = playerFactory.getPlayer(PlayerTypes.Maurice); break;
             case "Luca": playerTwo = playerFactory.getPlayer(PlayerTypes.Luca); break;
             case "Leo": playerTwo = playerFactory.getPlayer(PlayerTypes.Leo); break;
+            case "Viktor": playerOne = playerFactory.getPlayer(PlayerTypes.Viktor); break;
             default: playerTwo = playerFactory.getPlayer(PlayerTypes.Alex);
         }
 

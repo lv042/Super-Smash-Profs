@@ -563,6 +563,7 @@ public abstract class Player extends GameObject {
                 sprite.setRegion(playerJump);
                 frame = jump.getKeyFrame(stateTime);
                 break;
+
         }
         //System.out.println(getCurrentState());
         //System.out.println(isGrounded());
