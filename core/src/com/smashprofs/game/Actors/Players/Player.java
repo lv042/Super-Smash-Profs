@@ -46,9 +46,9 @@ public abstract class Player extends GameObject {
     private final boolean collideWithOtherPlayers = false;
     private final int maxExtraJumps = 1; //currently, only works with one extra jump
     private final Vector2 spawnpoint;
-    private final float maxVelocity = 1.4f;
-    private final float jumpForce = 2.5f;
-    private final float walkingSpeedMultiplier = 1.3f;
+    private final float maxVelocity = 1f;
+    private final float jumpForce = 2.2f;
+    private final float walkingSpeedMultiplier = 1.1f;
     private final SoundManager soundManager;
     private final String userData;
     public float damping = 0.9995f; //the closer this value is to zero the more the player will slow down
@@ -364,12 +364,9 @@ public abstract class Player extends GameObject {
 
         fDef.shape = shape;
 
-        if (collideWithOtherPlayers) {
-            fDef.filter.groupIndex = 0;
-        } else {
-            fDef.filter.groupIndex = -1;
-        }
-
+        fDef.filter.categoryBits = B2dContactListener.PLAYER_ENTITY;
+        fDef.filter.maskBits = B2dContactListener.CIRCLESTAR_ENTITY | B2dContactListener.PROJECTILE_ENTITY | B2dContactListener.WORLD_ENTITY; //collides with everything except the player
+        fDef.filter.groupIndex = -1; // prevents player from colliding with other players
         //fDef.density = 0.1f;
         //fDef.restitution = 0.4f;
         // fDef.friction = 0.5f;

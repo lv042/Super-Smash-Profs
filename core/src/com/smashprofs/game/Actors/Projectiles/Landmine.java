@@ -1,13 +1,10 @@
 package com.smashprofs.game.Actors.Projectiles;
 
 import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.g2d.Animation;
-import com.badlogic.gdx.graphics.g2d.TextureRegion;
-import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.World;
 import com.smashprofs.game.Actors.Players.Player;
+import com.smashprofs.game.Helper.B2dContactListener;
 import com.smashprofs.game.Helper.ShapeCreator;
-import com.smashprofs.game.Helper.VAFXManager;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -43,7 +40,7 @@ public class Landmine extends Projectile {
      * The player the mine will spawn in front of
      */
     public Landmine(World world, Player originPlayer) {
-        super(world, originPlayer, "Null", ShapeCreator.getPolygonShape(9, 3.5f), 25f, new Texture("projectiles/landmine.png"), 25);
+        super(world, originPlayer, "Null", ShapeCreator.getCircleShape(5), 15f, new Texture("projectiles/landminesmall.png"), 25, B2dContactListener.PROJECTILE_ENTITY);
 
         // Create random user data
         userData = "Mine " + rand.nextInt(9999);

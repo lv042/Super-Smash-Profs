@@ -55,7 +55,9 @@ public class CombatManager {
      * The logger.
      */
     private static Logger log = LogManager.getLogger(CombatManager.class);
+    private int totalCircles = 0;
 
+    final private int maxCircles = 2;
 
 
     //private constructor to avoid client applications to use constructor
@@ -234,9 +236,13 @@ public class CombatManager {
             projectileArrayList.add(proj);
         }
         else if (playeractive.getPlayerType() == PlayerTypes.Luca){
-            log.debug("Bullet spawned");
-            CircleStar proj = new CircleStar(world, playeractive);
-            projectileArrayList.add(proj);
+            if(totalCircles < maxCircles){
+                log.debug("Bullet spawned");
+                CircleStar proj = new CircleStar(world, playeractive);
+                projectileArrayList.add(proj);
+                totalCircles++;
+
+            }
         }
     }
 

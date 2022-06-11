@@ -5,6 +5,7 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.CircleShape;
 import com.badlogic.gdx.physics.box2d.World;
 import com.smashprofs.game.Actors.Players.Player;
+import com.smashprofs.game.Helper.B2dContactListener;
 import com.smashprofs.game.Helper.ShapeCreator;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -52,7 +53,7 @@ public class HomingMissile extends Projectile {
      * The player the missile should fly to
      */
     public HomingMissile(World world, Player playerOrigin, Player playerTarget){
-        super(world, playerOrigin, "Bullet" , ShapeCreator.getCircleShape(3f), playerOrigin.getPlayerCollisionBoxRadius()*3f,  new Texture("projectiles/missile.png"), 10);
+        super(world, playerOrigin, "Bullet" , ShapeCreator.getCircleShape(3f), playerOrigin.getPlayerCollisionBoxRadius()*3f,  new Texture("projectiles/missile.png"), 10, B2dContactListener.PROJECTILE_ENTITY);
 
         int randInt = rand.nextInt(9999);
         userData = "Bullet#" + randInt;

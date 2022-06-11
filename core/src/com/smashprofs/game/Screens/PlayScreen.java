@@ -78,6 +78,9 @@ public class PlayScreen implements Screen {
     //Box2D
     public static World world;
 
+    //collision flags
+
+
     //debug
     public Boolean debugMode;
     private Box2DDebugRenderer box2DDebugRenderer; //renders outline of box2d bodies
@@ -257,6 +260,8 @@ public class PlayScreen implements Screen {
         BodyDef bdef = new BodyDef();
         PolygonShape shape = new PolygonShape();
         FixtureDef fdef = new FixtureDef();
+        fdef.filter.categoryBits = B2dContactListener.WORLD_ENTITY;
+        fdef.filter.maskBits = B2dContactListener.PLAYER_ENTITY | B2dContactListener.PROJECTILE_ENTITY;
         Body body;
 
         for(MapObject object : map.getLayers().get("obj").getObjects().getByType(RectangleMapObject.class)){

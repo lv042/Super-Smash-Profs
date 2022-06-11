@@ -35,6 +35,8 @@ public class  Projectile extends GameObject {
     public double rotation = 0;
     public float spawnOffset;
 
+    private short categoryBits = B2dContactListener.PROJECTILE_ENTITY;
+
     public final int damageOnHit;
 
     public final Shape bodyShape;
@@ -56,7 +58,7 @@ public class  Projectile extends GameObject {
      * @param damageOnHit
      * The amount of damage the projectile will do to a player
      */
-    public Projectile(World world, Player originPlayer, String userData, Shape bodyShape, float spawnOffset, Texture projectileTexture, int damageOnHit) {
+    public Projectile(World world, Player originPlayer, String userData, Shape bodyShape, float spawnOffset, Texture projectileTexture, int damageOnHit, short categoryBits) {
         super(userData);
         this.damageOnHit = damageOnHit;
         sprite = new Sprite(projectileTexture);
@@ -66,6 +68,7 @@ public class  Projectile extends GameObject {
         this.originPlayer = originPlayer;
         this.bodyShape = bodyShape;
         this.spawnOffset = spawnOffset;
+        this.categoryBits = categoryBits;
         //setTexture(new Texture("prettyplayer.png"));
         //setTexture(new Texture(Gdx.files.internal("prettyplayer.png")));
         projectileSpawnpoint = new Vector2(originPlayer.getPosition().x + (originPlayer.getIsFacingRightAxe() * spawnOffset / PPM), originPlayer.getPosition().y);
@@ -99,7 +102,7 @@ public class  Projectile extends GameObject {
      * @param damageOnHit
      * The amount of damage the projectile will do to a player
      */
-    public Projectile(World world, Vector2 originPosition, String userData, Shape bodyShape, float spawnOffset, Texture projectileTexture, int damageOnHit) {
+    public Projectile(World world, Vector2 originPosition, String userData, Shape bodyShape, float spawnOffset, Texture projectileTexture, int damageOnHit, short categoryBits) {
         super(userData);
         this.damageOnHit = damageOnHit;
         sprite = new Sprite(projectileTexture);
@@ -108,9 +111,9 @@ public class  Projectile extends GameObject {
         this.world = world;
         this.bodyShape = bodyShape;
         this.spawnOffset = spawnOffset;
+        this.categoryBits = categoryBits;
         //add ppm offset
         projectileSpawnpoint = new Vector2(originPosition.x, originPosition.y );
-
 
 
         sprite.setBounds(originPosition.x / PPM, originPosition.y / PPM, sprite.getWidth()/PPM, sprite.getHeight()/PPM);
@@ -119,6 +122,8 @@ public class  Projectile extends GameObject {
 
         initialMovement();
     }
+
+
 
 
     /**
@@ -152,12 +157,7 @@ public class  Projectile extends GameObject {
         fDef.shape = bodyShape;
 
         //filters collisions with other objects
-        if (true) {
-            fDef.filter.groupIndex = 0;
-
-            //System.out.println("Group index: " + fDef.filter.groupIndex);
-            log.debug("Group index: " + fDef.filter.groupIndex);
-        }
+        fDef.filter.categoryBits = categoryBits;
 
         //fDef.density = 0.1f;
         //fDef.restitution = 0.4f;

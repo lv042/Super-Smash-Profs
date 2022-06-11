@@ -8,6 +8,7 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 public class PostProcessingSettings {
+
     private static Logger log = LogManager.getLogger(PostProcessingSettings.class);
 
     VfxManager postProcessingManager = new VfxManager(Pixmap.Format.RGBA8888);

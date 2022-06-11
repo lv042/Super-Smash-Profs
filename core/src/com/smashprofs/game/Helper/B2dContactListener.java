@@ -1,11 +1,6 @@
 package com.smashprofs.game.Helper;
 
 import com.badlogic.gdx.physics.box2d.*;
-import com.badlogic.gdx.utils.DelayedRemovalArray;
-import com.smashprofs.game.Actors.Projectiles.HomingMissile;
-import com.smashprofs.game.Actors.Projectiles.Projectile;
-import com.smashprofs.game.Screens.PlayScreen;
-import com.smashprofs.game.Helper.explosionType;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -19,6 +14,12 @@ public class B2dContactListener implements ContactListener {
 
     private static Logger log = LogManager.getLogger(B2dContactListener.class);
 
+    public final static short PLAYER_ENTITY = 0b01;   // 1
+    public final static short WORLD_ENTITY = 0b10;  // 2
+    public final static short PROJECTILE_ENTITY = 0b11; // 3
+    public final static short CIRCLESTAR_ENTITY = 0b100; // 4
+
+
     boolean BulletHit = false;
 
     boolean P1NotTouchingTile = false;
@@ -29,12 +30,7 @@ public class B2dContactListener implements ContactListener {
 
     private CombatManager combatManager = CombatManager.getCombatManager_INSTANCE();
 
-//    public void update() {
-//        for (Body body : bodiesToDestroy) {
-//            body.setActive(false);
-//
-//        }
-//    }
+
 
     public boolean isP1NotTouchingTile() {
 
