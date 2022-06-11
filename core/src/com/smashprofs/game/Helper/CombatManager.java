@@ -28,6 +28,9 @@ public class CombatManager {
 
 
     private boolean mineAvailable = true;
+    private boolean missileAvailable = true;
+    private boolean throwingStarAvailable = true;
+    private boolean circleStarAvailable = true;
 
     /**
      * The box2DContact listener.
@@ -207,7 +210,6 @@ public class CombatManager {
                     }
                 }, Landmine.getDelayInSeconds());
 
-
                 log.debug("Bullet spawned");
                 Landmine proj = new Landmine(world, playeractive);
                 projectileArrayList.add(proj);
@@ -216,38 +218,80 @@ public class CombatManager {
 
         }
         else if(playeractive.getPlayerType() == PlayerTypes.Maurice){
-            log.debug("Bullet spawned");
-            //ThrowingStar proj = new ThrowingStar(world, playerTwo);
-            ThrowingStar proj = new ThrowingStar(world, new Vector2(playeractive.getPosition().x + 10 / PPM, playeractive.getPosition().y) , new Vector2(1,0));
-            projectileArrayList.add(proj);
 
-            ThrowingStar proj1 = new ThrowingStar(world, new Vector2(playeractive.getPosition().x - 10 / PPM, playeractive.getPosition().y), new Vector2(-1,0));
-            projectileArrayList.add(proj1);
+            if(throwingStarAvailable) {
+                    Timer.schedule(new Timer.Task(){
+                        @Override
+                        public void run() {
+                            throwingStarAvailable = true;
+                        }
+                    }, ThrowingStar.getDelayInSeconds());
 
-            ThrowingStar proj2 = new ThrowingStar(world, new Vector2(playeractive.getPosition().x, playeractive.getPosition().y + 10 / PPM), new Vector2(0,1));
-            projectileArrayList.add(proj2);
+                log.debug("Bullet spawned");
+                //ThrowingStar proj = new ThrowingStar(world, playerTwo);
+                ThrowingStar proj = new ThrowingStar(world, new Vector2(playeractive.getPosition().x + 10 / PPM, playeractive.getPosition().y) , new Vector2(1,0));
+                projectileArrayList.add(proj);
 
-            ThrowingStar proj3 = new ThrowingStar(world, new Vector2(playeractive.getPosition().x, playeractive.getPosition().y - 10 / PPM), new Vector2(0,-1));
-            projectileArrayList.add(proj3);
+                ThrowingStar proj1 = new ThrowingStar(world, new Vector2(playeractive.getPosition().x - 10 / PPM, playeractive.getPosition().y), new Vector2(-1,0));
+                projectileArrayList.add(proj1);
+
+                ThrowingStar proj2 = new ThrowingStar(world, new Vector2(playeractive.getPosition().x, playeractive.getPosition().y + 10 / PPM), new Vector2(0,1));
+                projectileArrayList.add(proj2);
+
+                ThrowingStar proj3 = new ThrowingStar(world, new Vector2(playeractive.getPosition().x, playeractive.getPosition().y - 10 / PPM), new Vector2(0,-1));
+                projectileArrayList.add(proj3);
+
+                throwingStarAvailable = false;
+            }
+
         }
         else if(playeractive.getPlayerType() == PlayerTypes.Alex){
-            log.debug("Bullet spawned");
-            HomingMissile proj = new HomingMissile(world, playeractive, playerinactive);
-            projectileArrayList.add(proj);
+
+            if(missileAvailable) {
+                Timer.schedule(new Timer.Task(){
+                    @Override
+                    public void run() {
+                        missileAvailable = true;
+                    }
+                }, HomingMissile.getDelayInSeconds());
+
+                log.debug("Bullet spawned");
+                HomingMissile proj = new HomingMissile(world, playeractive, playerinactive);
+                projectileArrayList.add(proj);
+                missileAvailable = false;
+            }
+
         }
         else if (playeractive.getPlayerType() == PlayerTypes.Luca){
             if(totalCircles < maxCircles){
-                log.debug("Bullet spawned");
-                CircleStar proj = new CircleStar(world, playeractive);
-                projectileArrayList.add(proj);
-                totalCircles++;
+
+                if(circleStarAvailable) {
+
+                    Timer.schedule(new Timer.Task(){
+                        @Override
+                        public void run() {
+                            circleStarAvailable = true;
+                        }
+                    }, CircleStar.getDelayInSeconds());
+
+
+                    log.debug("Bullet spawned");
+                    CircleStar proj = new CircleStar(world, playeractive);
+                    projectileArrayList.add(proj);
+                    totalCircles++;
+                    circleStarAvailable = false;
+                }
 
             }
+        }
+        else if(playeractive.getPlayerType() == PlayerTypes.Viktor) {
+            //TODO: Attacke für Viktor integrieren :D
         }
     }
 
     //Projectile attack
     //kann das weg oder ist das kunst??????????????????????????????????????????
+    // A: HdM = Hochschule der Medien => Medien = Kunst
     public void attackPlayer(Vector2 damageOrigin, int damage, Player target, float attackKnockback , float yAttackKnockback){
         Vector2 attackVector = new Vector2(0, yAttackKnockback);
         if(damageOrigin.x < target.getPosition().x) attackVector.x = 1 * attackKnockback;
