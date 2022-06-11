@@ -18,12 +18,6 @@ public class Landmine extends Projectile {
 
     float stateTime = 0;
 
-    public final static float delayInSeconds = 1;
-
-    public static float getDelayInSeconds() {
-        return delayInSeconds;
-    }
-
     Random rand = new Random();
 
     @Override
@@ -40,7 +34,7 @@ public class Landmine extends Projectile {
      * The player the mine will spawn in front of
      */
     public Landmine(World world, Player originPlayer) {
-        super(world, originPlayer, "Null", ShapeCreator.getCircleShape(5), 15f, new Texture("projectiles/landminesmall.png"), 25, B2dContactListener.PROJECTILE_ENTITY);
+        super(world, originPlayer, "Null", ShapeCreator.getCircleShape(5), 15f, new Texture("projectiles/landminesmall.png"), 25, 5f, B2dContactListener.PROJECTILE_ENTITY);
 
         // Create random user data
         userData = "Mine " + rand.nextInt(9999);
@@ -73,8 +67,6 @@ public class Landmine extends Projectile {
         b2dbody.applyLinearImpulse(gravityVector, b2dbody.getWorldCenter(), true);
         log.debug("Applied gravity to Landmine.");
     }
-
-
 
 }
 

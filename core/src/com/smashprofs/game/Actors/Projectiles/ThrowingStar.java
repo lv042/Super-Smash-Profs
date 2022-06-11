@@ -27,7 +27,7 @@ public class ThrowingStar extends Projectile {
      * The direction the star will fly in
      */
     public ThrowingStar(World world, Vector2 originPosition, Vector2 direction) {
-        super(world, originPosition, "Star", ShapeCreator.getCircleShape(3f), 3f, new Texture("projectiles/star.png"), 15, B2dContactListener.PROJECTILE_ENTITY);
+        super(world, originPosition, "Star", ShapeCreator.getCircleShape(3f), 3f, new Texture("projectiles/star.png"), 15, 0.75f, B2dContactListener.PROJECTILE_ENTITY);
 
 
 

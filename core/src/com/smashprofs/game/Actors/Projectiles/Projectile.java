@@ -39,6 +39,11 @@ public class  Projectile extends GameObject {
 
     public final int damageOnHit;
 
+    /**
+     * The delay in seconds before you can use this attack again.
+     */
+    public static float delayInSeconds;
+
     public final Shape bodyShape;
     public Boolean active;
     World world;
@@ -58,9 +63,10 @@ public class  Projectile extends GameObject {
      * @param damageOnHit
      * The amount of damage the projectile will do to a player
      */
-    public Projectile(World world, Player originPlayer, String userData, Shape bodyShape, float spawnOffset, Texture projectileTexture, int damageOnHit, short categoryBits) {
+    public Projectile(World world, Player originPlayer, String userData, Shape bodyShape, float spawnOffset, Texture projectileTexture, int damageOnHit, float delayInSec, short categoryBits) {
         super(userData);
         this.damageOnHit = damageOnHit;
+        delayInSeconds = delayInSec;
         sprite = new Sprite(projectileTexture);
         this.active = true;
         this.userData = userData;
@@ -102,9 +108,10 @@ public class  Projectile extends GameObject {
      * @param damageOnHit
      * The amount of damage the projectile will do to a player
      */
-    public Projectile(World world, Vector2 originPosition, String userData, Shape bodyShape, float spawnOffset, Texture projectileTexture, int damageOnHit, short categoryBits) {
+    public Projectile(World world, Vector2 originPosition, String userData, Shape bodyShape, float spawnOffset, Texture projectileTexture, int damageOnHit, float delayInSec, short categoryBits) {
         super(userData);
         this.damageOnHit = damageOnHit;
+        delayInSeconds = delayInSec;
         sprite = new Sprite(projectileTexture);
         this.active = true;
         this.userData = userData;
@@ -252,6 +259,16 @@ public class  Projectile extends GameObject {
     public void setActive(boolean b) {
         active = b;
     }
+
+    /**
+     * Get the delayInSeconds
+     * @return
+     * The delay in seconds before you can use this attack again.
+     */
+    public static float getDelayInSeconds() {
+        return delayInSeconds;
+    }
+
 }
 
 
