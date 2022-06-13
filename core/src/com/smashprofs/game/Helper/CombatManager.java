@@ -127,8 +127,8 @@ public class CombatManager {
         }
         if(playerOne.isShooting()){
             shooting(playerOne,playerTwo,world);
-            /*//System.out.println("Bullet spawned ");
-            log.debug("Bullet spawned");
+            /*//System.out.println("Rocket spawned ");
+            log.debug("Rocket spawned");
             //HomingMissile proj = new HomingMissile(world, playerOne, playerTwo);
             // CircleStar proj = new CircleStar(world, playerOne);
             Landmine proj = new Landmine(world, playerOne);
@@ -140,7 +140,7 @@ public class CombatManager {
 
             //das ist sehr gut so geloest :)
 
-           /* log.debug("Bullet spawned");
+           /* log.debug("Rocket spawned");
             //ThrowingStar proj = new ThrowingStar(world, playerTwo);
             ThrowingStar proj = new ThrowingStar(world, new Vector2(playerTwo.getPosition().x + 10 / PPM, playerTwo.getPosition().y) , new Vector2(1,0));
             projectileArrayList.add(proj);
@@ -161,18 +161,16 @@ public class CombatManager {
 */
         }
 
-        //BULLETS
+        //RocketS
 
         if (contactListener.isPlayerTwoGotShoot()) {
             attackPlayer(playerOne, playerTwo, 1.5f, 2f);
             contactListener.setPlayerTwoGotShoot(false);
-            contactListener.setBulletHit(false);
             //System.out.println("abracadabra");
         }
         if (contactListener.isPlayerOneGotShoot()) {
             attackPlayer(playerTwo, playerOne, 1.5f, 2f);
             contactListener.setPlayerOneGotShoot(false);
-            contactListener.setBulletHit(false);
             //System.out.println("adadadadada");
         }
 
@@ -181,13 +179,11 @@ public class CombatManager {
         if (contactListener.isPlayerTwoGotShoot()) {
             attackPlayer(playerOne, playerTwo, 1.5f, 2f);
             contactListener.setPlayerTwoGotShoot(false);
-            contactListener.setBulletHit(false);
             //System.out.println("abracadabra");
         }
         if (contactListener.isPlayerOneGotShoot()) {
             attackPlayer(playerTwo, playerOne, 1.5f, 2f);
             contactListener.setPlayerOneGotShoot(false);
-            contactListener.setBulletHit(false);
             //System.out.println("adadadadada");
         }
 
@@ -212,7 +208,7 @@ public class CombatManager {
                     }
                 }, Landmine.getDelayInSeconds());
 
-                log.debug("Bullet spawned");
+                log.debug("Rocket spawned");
                 Landmine proj = new Landmine(world, playeractive);
                 projectileArrayList.add(proj);
                 mineAvailable = false;
@@ -229,7 +225,7 @@ public class CombatManager {
                         }
                     }, ThrowingStar.getDelayInSeconds());
 
-                log.debug("Bullet spawned");
+                log.debug("ThrowingStar spawned");
                 //ThrowingStar proj = new ThrowingStar(world, playerTwo);
                 ThrowingStar proj = new ThrowingStar(world, new Vector2(playeractive.getPosition().x + 10 / PPM, playeractive.getPosition().y) , new Vector2(1,0));
                 projectileArrayList.add(proj);
@@ -257,7 +253,7 @@ public class CombatManager {
                     }
                 }, HomingMissile.getDelayInSeconds());
 
-                log.debug("Bullet spawned");
+                log.debug("Rocket spawned");
                 HomingMissile proj = new HomingMissile(world, playeractive, playerinactive);
                 projectileArrayList.add(proj);
                 missileAvailable = false;
@@ -277,7 +273,7 @@ public class CombatManager {
                     }, CircleStar.getDelayInSeconds());
 
 
-                    log.debug("Bullet spawned");
+                    log.debug("CircleStar spawned");
                     CircleStar proj = new CircleStar(world, playeractive);
                     projectileArrayList.add(proj);
                     totalCircles++;
@@ -295,7 +291,7 @@ public class CombatManager {
                     }
                 }, IBM.getDelayInSeconds());
 
-                log.debug("Bullet spawned");
+                log.debug("IBM spawned");
                 IBM proj = new IBM(world, playeractive);
                 projectileArrayList.add(proj);
                 ibmAvailable = false;

@@ -20,7 +20,7 @@ public class B2dContactListener implements ContactListener {
     public final static short CIRCLESTAR_ENTITY = 0b100; // 4
 
 
-    boolean BulletHit = false;
+
 
     boolean P1NotTouchingTile = false;
 
@@ -57,13 +57,8 @@ public class B2dContactListener implements ContactListener {
         PlayerTwoGotShoot = playerTwoGotShoot;
     }
 
-    public boolean isBulletHit() {
-        return BulletHit;
-    }
 
-    public void setBulletHit(boolean bulletHit) {
-        BulletHit = bulletHit;
-    }
+
 
     private static B2dContactListener  contactListener = new B2dContactListener();
 
@@ -86,44 +81,36 @@ public class B2dContactListener implements ContactListener {
 
 
         //System.out.println("beginContact");
-        if("PlayerOne".equals(contact.getFixtureA().getBody().getUserData()) && contact.getFixtureB().getBody().getUserData().toString().startsWith("Bullet")) {
+        if("PlayerOne".equals(contact.getFixtureA().getBody().getUserData()) && (contact.getFixtureB().getBody().getUserData().toString().startsWith("Rocket")
+                || contact.getFixtureB().getBody().getUserData().toString().startsWith("Mine") || contact.getFixtureB().getBody().getUserData().toString().startsWith("Star")
+                || contact.getFixtureB().getBody().getUserData().toString().startsWith("Circle") || contact.getFixtureB().getBody().getUserData().toString().startsWith("IBM"))) {
+
             PlayerOneGotShoot = true;
-            //contact.getFixtureB().getBody().getUserData().toString().startsWith("Bullet");
-            //bodiesToDestroy.add(contact.getFixtureB().getBody());
+            System.out.println("PlayerOneGotShoot");
 
-            // Add body which had contact with PlayerOne to bodiesToDestroy
-            //if(!bodiesToDestroy.contains(contact.getFixtureB().getBody())) {
-            //    bodiesToDestroy.add(contact.getFixtureB().getBody());
-            //}
 
             //System.out.println("Fixture B: " + contact.getFixtureB().getUserData());
             log.debug("Fixture B: " + contact.getFixtureB().getUserData());
-            //System.out.println("UserData of Fixture B starts with Bullet: " + contact.getFixtureB().getBody().getUserData().toString().startsWith("Bullet"));
-            log.debug("UserData of Fixture B starts with Bullet: " + contact.getFixtureB().getBody().getUserData().toString().startsWith("Bullet"));
+            //System.out.println("UserData of Fixture B starts with Rocket: " + contact.getFixtureB().getBody().getUserData().toString().startsWith("Rocket"));
+            log.debug("UserData of Fixture B starts with Rocket: " + contact.getFixtureB().getBody().getUserData().toString().startsWith("Rocket"));
         }
 
-        if("PlayerTwo".equals(contact.getFixtureA().getBody().getUserData()) && contact.getFixtureB().getBody().getUserData().toString().startsWith("Bullet")) {
+        if("PlayerTwo".equals(contact.getFixtureA().getBody().getUserData()) && (contact.getFixtureB().getBody().getUserData().toString().startsWith("Rocket")
+        || contact.getFixtureB().getBody().getUserData().toString().startsWith("Mine") || contact.getFixtureB().getBody().getUserData().toString().startsWith("Star")
+                || contact.getFixtureB().getBody().getUserData().toString().startsWith("Circle") || contact.getFixtureB().getBody().getUserData().toString().startsWith("IBM"))) {
+
             PlayerTwoGotShoot = true;
-            // bodiesToDestroy.add(contact.getFixtureB().getBody());
-            //contact.getFixtureB().getBody().getUserData().toString().startsWith("Bullet");
-
-            // Add body which had contact with PlayerTwo to bodiesToDestroy
-            //if(!bodiesToDestroy.contains(contact.getFixtureB().getBody())) {
-            //    bodiesToDestroy.add(contact.getFixtureB().getBody());
-            //}
+            System.out.println("PlayerTwoGotShoot");
 
 
             //System.out.println("Fixture B: " + contact.getFixtureB().getUserData());
             log.debug("Fixture B: " + contact.getFixtureB().getUserData());
-            //System.out.println("UserData of Fixture B starts with Bullet: " + contact.getFixtureB().getBody().getUserData().toString().startsWith("Bullet"));
-            log.debug("UserData of Fixture B starts with Bullet: " + contact.getFixtureB().getBody().getUserData().toString().startsWith("Bullet"));
+            //System.out.println("UserData of Fixture B starts with Rocket: " + contact.getFixtureB().getBody().getUserData().toString().startsWith("Rocket"));
+            log.debug("UserData of Fixture B starts with Rocket: " + contact.getFixtureB().getBody().getUserData().toString().startsWith("Rocket"));
         }
 
 
-//        if("Bullet".equals(contact.getFixtureB().getBody().getUserData())) BulletHit = true;
-//        System.out.println("PlayerOneGotShoot: " + PlayerOneGotShoot);
-//        System.out.println("PlayerTwoGotShoot: " + PlayerTwoGotShoot);
-//        System.out.println("BulletHit: " + BulletHit);
+
 
         if ("Tile".equals(contact.getFixtureA().getBody().getUserData()) && "PlayerTwo".equals(contact.getFixtureB().getBody().getUserData())){
             //System.out.println("P2 Touching Tile:" + P2NotTouchingTile);
@@ -137,12 +124,12 @@ public class B2dContactListener implements ContactListener {
             P1NotTouchingTile = false;
         }
 
-        //BULLETS
+        //RocketS
 
-        // TODO Implement bullet and landmine damage with boolean variables
+        // TODO Implement Rocket and landmine damage with boolean variables
         //  because no references to real classes :)
 
-        if(contact.getFixtureB().getBody().getUserData().toString().startsWith("Bullet")){
+        if(contact.getFixtureB().getBody().getUserData().toString().startsWith("Rocket")){
             bodiesToDestroy.add(contact.getFixtureB().getBody());
             contact.getFixtureB().getBody().setUserData("Destroyed");
 
@@ -151,7 +138,7 @@ public class B2dContactListener implements ContactListener {
             //contact.getFixtureB().getFilterData().categoryBits
 
         }
-        if(contact.getFixtureA().getBody().getUserData().toString().startsWith("Bullet")){
+        if(contact.getFixtureA().getBody().getUserData().toString().startsWith("Rocket")){
             bodiesToDestroy.add(contact.getFixtureA().getBody());
             contact.getFixtureA().getBody().setUserData("Destroyed");
 
@@ -164,7 +151,6 @@ public class B2dContactListener implements ContactListener {
         //IBM
 
 
-
         if(contact.getFixtureB().getBody().getUserData().toString().startsWith("IBM")){
             bodiesToDestroy.add(contact.getFixtureB().getBody());
             contact.getFixtureB().getBody().setUserData("Destroyed");
@@ -173,6 +159,8 @@ public class B2dContactListener implements ContactListener {
             vafxManager.spawnExplosion(explosionType.electricZap, contact.getFixtureB().getBody().getPosition());
             //PlayScreen.getWorld().destroyBody(contact.getFixtureB().getBody());
             //contact.getFixtureB().getFilterData().categoryBits
+
+
 
         }
         if(contact.getFixtureA().getBody().getUserData().toString().startsWith("IBM")){

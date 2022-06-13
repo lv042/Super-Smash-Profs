@@ -34,7 +34,7 @@ public class Landmine extends Projectile {
      * The player the mine will spawn in front of
      */
     public Landmine(World world, Player originPlayer) {
-        super(world, originPlayer, "Null", ShapeCreator.getCircleShape(5), 15f, new Texture("projectiles/landminesmall.png"), 25, 5f, B2dContactListener.PROJECTILE_ENTITY);
+        super(world, originPlayer, "Mine", ShapeCreator.getCircleShape(5), 15f, new Texture("projectiles/landminesmall.png"), 25, 5f, B2dContactListener.PROJECTILE_ENTITY);
 
         // Create random user data
         userData = "Mine " + rand.nextInt(9999);

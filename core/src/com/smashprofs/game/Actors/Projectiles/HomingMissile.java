@@ -50,11 +50,11 @@ public class HomingMissile extends Projectile {
      * The player the missile should fly to
      */
     public HomingMissile(World world, Player playerOrigin, Player playerTarget){
-        super(world, playerOrigin, "Bullet" , ShapeCreator.getCircleShape(3f), playerOrigin.getPlayerCollisionBoxRadius()*3f,  new Texture("projectiles/missile.png"), 10, 3f, B2dContactListener.PROJECTILE_ENTITY);
+        super(world, playerOrigin, "Rocket" , ShapeCreator.getCircleShape(3f), playerOrigin.getPlayerCollisionBoxRadius()*3f,  new Texture("projectiles/missile.png"), 10, 3f, B2dContactListener.PROJECTILE_ENTITY);
 
         int randInt = rand.nextInt(9999);
-        userData = "Bullet#" + randInt;
-        b2dbody.setUserData("Bullet#" + randInt);
+        userData = "Rocket#" + randInt;
+        b2dbody.setUserData("Rocket#" + randInt);
 
 
         b2dbody.setFixedRotation(false);
