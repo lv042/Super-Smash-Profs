@@ -394,5 +394,6 @@ public class CombatManager {
      */
     public void resetCombatManager() {
         projectileArrayList.clear();
+        totalCircles = 0;
     }
 }
