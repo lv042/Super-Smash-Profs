@@ -169,7 +169,8 @@ public class B2dContactListener implements ContactListener {
             bodiesToDestroy.add(contact.getFixtureB().getBody());
             contact.getFixtureB().getBody().setUserData("Destroyed");
 
-            vafxManager.spawnExplosion(explosionType.rocketExplosion, contact.getFixtureB().getBody().getPosition());
+            //vafxManager.spawnExplosion(explosionType.rocketExplosion, contact.getFixtureB().getBody().getPosition());
+            vafxManager.spawnExplosion(explosionType.electricZap, contact.getFixtureB().getBody().getPosition());
             //PlayScreen.getWorld().destroyBody(contact.getFixtureB().getBody());
             //contact.getFixtureB().getFilterData().categoryBits
 
@@ -178,8 +179,8 @@ public class B2dContactListener implements ContactListener {
             bodiesToDestroy.add(contact.getFixtureA().getBody());
             contact.getFixtureA().getBody().setUserData("Destroyed");
 
-            vafxManager.spawnExplosion(explosionType.rocketExplosion, contact.getFixtureA().getBody().getPosition());
-
+            //vafxManager.spawnExplosion(explosionType.rocketExplosion, contact.getFixtureA().getBody().getPosition());
+            vafxManager.spawnExplosion(explosionType.electricZap, contact.getFixtureB().getBody().getPosition());
 
 
             //contact.getFixtureB().getFilterData().categoryBits
