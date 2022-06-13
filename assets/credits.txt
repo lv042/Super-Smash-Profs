@@ -1,0 +1,7 @@
+Credits:
+    Assets:
+        - retro keyboard: Caz Wolf (https://cazwolf.itch.io/)
+        - Magical Animation Effects: pimen (https://pimen.itch.io)
+        - Electric Zap: NYKNCK (https://nyknck.itch.io/)
+        - Free Lunar Battle Pack: Matt Walkden (https://mattwalkden.itch.io/)
+        - m5x7 font: Daniel Linssen (https://managore.itch.io/)
