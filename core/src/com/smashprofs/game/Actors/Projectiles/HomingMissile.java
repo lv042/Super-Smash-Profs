@@ -2,7 +2,6 @@ package com.smashprofs.game.Actors.Projectiles;
 
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.math.Vector2;
-import com.badlogic.gdx.physics.box2d.CircleShape;
 import com.badlogic.gdx.physics.box2d.World;
 import com.smashprofs.game.Actors.Players.Player;
 import com.smashprofs.game.Helper.B2dContactListener;
@@ -11,8 +10,6 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import java.util.Random;
-
-import static com.smashprofs.game.Actors.Players.Player.PPM;
 
 /**
  * A missile that will follow its target
@@ -72,8 +69,8 @@ public class HomingMissile extends Projectile {
      * Applies the initialMovement to the HomingMissile
      */
     @Override
-    void initialMovement() {
-        super.initialMovement();
+    void initialMovement(float speed) {
+        super.initialMovement(speed);
         log.debug("Applied initial movement to HomingMissile.");
         // movement is handled in update
     }

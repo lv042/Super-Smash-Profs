@@ -37,7 +37,7 @@ public class CircleStar extends Projectile {
         this.playerOrigin = playerOrigin;
     }
     @Override
-    void initialMovement() {
+    void initialMovement(float speed) {
         // no initial movement
     }
 

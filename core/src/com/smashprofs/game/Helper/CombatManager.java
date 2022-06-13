@@ -31,6 +31,7 @@ public class CombatManager {
     private boolean missileAvailable = true;
     private boolean throwingStarAvailable = true;
     private boolean circleStarAvailable = true;
+    private boolean ibmAvailable = true;
 
     /**
      * The box2DContact listener.
@@ -152,6 +153,7 @@ public class CombatManager {
 
             ThrowingStar proj3 = new ThrowingStar(world, new Vector2(playerTwo.getPosition().x, playerTwo.getPosition().y - 10 / PPM), new Vector2(0,-1));
             projectileArrayList.add(proj3);
+
 
 
             //HomingMissile proj = new HomingMissile(world, playerTwo, playerOne);
@@ -285,7 +287,19 @@ public class CombatManager {
             }
         }
         else if(playeractive.getPlayerType() == PlayerTypes.Viktor) {
-            //TODO: Attacke für Viktor integrieren :D
+            if(ibmAvailable) {
+                Timer.schedule(new Timer.Task(){
+                    @Override
+                    public void run() {
+                        ibmAvailable = true;
+                    }
+                }, IBM.getDelayInSeconds());
+
+                log.debug("Bullet spawned");
+                IBM proj = new IBM(world, playeractive);
+                projectileArrayList.add(proj);
+                ibmAvailable = false;
+            }
         }
     }
 

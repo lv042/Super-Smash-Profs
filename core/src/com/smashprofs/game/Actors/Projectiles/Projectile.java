@@ -89,9 +89,11 @@ public class  Projectile extends GameObject {
 
 
 
-        initialMovement();
+
 
     }
+
+
 
     /**
      * Constructor for creating a projectile that spawns at the given originPosition
@@ -127,7 +129,6 @@ public class  Projectile extends GameObject {
         create();
 
 
-        initialMovement();
     }
 
 
@@ -136,8 +137,8 @@ public class  Projectile extends GameObject {
     /**
      * Applies a horizontal linearVelocity to the Projectile
      */
-    void initialMovement() {
-        b2dbody.setLinearVelocity(new Vector2(originPlayer.getIsFacingRightAxe() * 0.1f, 0));
+    void initialMovement(float speed) {
+        b2dbody.setLinearVelocity(new Vector2(originPlayer.getIsFacingRightAxe() * speed, 0));
     }
 
     /**

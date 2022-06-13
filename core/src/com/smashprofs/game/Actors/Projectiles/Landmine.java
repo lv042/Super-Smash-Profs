@@ -22,7 +22,7 @@ public class Landmine extends Projectile {
 
     @Override
 
-    void initialMovement() {
+    void initialMovement(float speed) {
         //No initial velocity for the landmine
     }
 

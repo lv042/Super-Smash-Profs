@@ -161,6 +161,30 @@ public class B2dContactListener implements ContactListener {
             //contact.getFixtureB().getFilterData().categoryBits
         }
 
+        //IBM
+
+
+
+        if(contact.getFixtureB().getBody().getUserData().toString().startsWith("IBM")){
+            bodiesToDestroy.add(contact.getFixtureB().getBody());
+            contact.getFixtureB().getBody().setUserData("Destroyed");
+
+            vafxManager.spawnExplosion(explosionType.rocketExplosion, contact.getFixtureB().getBody().getPosition());
+            //PlayScreen.getWorld().destroyBody(contact.getFixtureB().getBody());
+            //contact.getFixtureB().getFilterData().categoryBits
+
+        }
+        if(contact.getFixtureA().getBody().getUserData().toString().startsWith("IBM")){
+            bodiesToDestroy.add(contact.getFixtureA().getBody());
+            contact.getFixtureA().getBody().setUserData("Destroyed");
+
+            vafxManager.spawnExplosion(explosionType.rocketExplosion, contact.getFixtureA().getBody().getPosition());
+
+
+
+            //contact.getFixtureB().getFilterData().categoryBits
+        }
+
         //STAR
 
         if(contact.getFixtureB().getBody().getUserData().toString().startsWith("Star")){ //should be Star
