@@ -1,5 +1,5 @@
 package com.smashprofs.game.Helper;
 
 public enum explosionType{
-    rocketExplosion, landMineExplosion, lightningStrike
+    rocketExplosion, landMineExplosion, anotherExplosion, electricZap, lightningStrike
 }
