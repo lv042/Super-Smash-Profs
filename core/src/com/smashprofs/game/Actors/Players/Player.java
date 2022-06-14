@@ -100,19 +100,19 @@ public abstract class Player extends GameObject {
         this.playerPunch = playerPunchTex;
 
         TextureRegion[] standing = TextureRegion.split(playerStand, 100, 100)[0];
-        stand = new Animation(0.25f, standing[0], standing[1], standing[2], standing[3]);
+        stand = new Animation<>(0.25f, standing[0], standing[1], standing[2], standing[3]);
         stand.setPlayMode(Animation.PlayMode.LOOP);
 
         TextureRegion[] running = TextureRegion.split(playerRun, 100, 100)[0];
-        run = new Animation(0.15f, running[0], running[1], running[2], running[3], running[4], running[5]);
+        run = new Animation<>(0.15f, running[0], running[1], running[2], running[3], running[4], running[5]);
         run.setPlayMode(Animation.PlayMode.LOOP);
 
         TextureRegion[] jumping = TextureRegion.split(playerJump, 100, 100)[0];
-        jump = new Animation(1f, running[0], running[3]); //Originally -> jump = new Animation(0.15f, running[0], jumping[1], jumping[2]); -> but jump animation looks like poop
+        jump = new Animation<>(1f, running[0], running[3]); //Originally -> jump = new Animation(0.15f, running[0], jumping[1], jumping[2]); -> but jump animation looks like poop
         jump.setPlayMode(Animation.PlayMode.LOOP);
 
         TextureRegion[] punching = TextureRegion.split(playerPunch, 100, 100)[0];
-        punch = new Animation(0.05f, punching[0], punching[1], punching[2]);
+        punch = new Animation<>(0.05f, punching[0], punching[1], punching[2]);
         punch.setPlayMode(Animation.PlayMode.NORMAL);
 
 
