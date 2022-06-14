@@ -10,7 +10,7 @@ import com.smashprofs.game.Helper.PlayerTypes;
 public class Leo extends Player {
 
     public Leo(World world, Player.InputState inputState, Vector2 spawnpoint, String playerName, String userData) {
-        super(world, inputState, spawnpoint, playerName, PlayerTypes.Leo, userData, new Texture("Sprites/Leo/leo_stand.png"), new Texture("Sprites/Leo/leo_run.png"), new Texture("Sprites/Leo/leo_run.png"));
+        super(world, inputState, spawnpoint, playerName, PlayerTypes.Leo, userData, new Texture("Sprites/Leo/leo_stand.png"), new Texture("Sprites/Leo/leo_run.png"), new Texture("Sprites/Leo/leo_run.png"), new Texture("Sprites/Leo/leo_punch.png"));
 
 
     }
