@@ -9,8 +9,8 @@ public class Viktor extends Player {
 
     public Viktor(World world, InputState inputState, Vector2 spawnpoint, String playerName, String userData) {
         super(world, inputState, spawnpoint, playerName, PlayerTypes.Viktor, userData, new Texture("Sprites/Viktor/viktor_stand.png"),
-                new Texture("Sprites/Viktor/viktor_run.png"), new Texture("Sprites/Viktor/viktor_stand.png"));
-
+                new Texture("Sprites/Viktor/viktor_run.png"), new Texture("Sprites/Viktor/viktor_stand.png"), new Texture("Sprites/Alex/alex_punch.png"));
+                // TODO: Change punch texture to viktor_punch.png when file available.
 
     }
 }
