@@ -50,8 +50,8 @@ public class MainMenuScreen implements Screen {
     private float timer;
     private float zoomFactor;
 
-    int screenWidth = 1920;
-    int height = 1080;
+    int screenWidth = Gdx.graphics.getWidth();
+    int height = Gdx.graphics.getHeight();
 
     Texture logoTexture = new Texture("mainmenu/ssp.png");
 
@@ -137,7 +137,7 @@ public class MainMenuScreen implements Screen {
 
         mainTable.add(playButton).padBottom(100).maxSize(300, 100).padTop(500);
         mainTable.row();
-        mainTable.add(exitButton).padBottom(225).maxSize(300, 100);
+        mainTable.add(exitButton).padBottom(180).maxSize(300, 100);
         mainTable.row().padRight(1700);
         mainTable.add(gametime).maxSize(500, 200);
         mainTable.row();

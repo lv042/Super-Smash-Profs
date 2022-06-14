@@ -41,8 +41,8 @@ public class WinScreen implements Screen {
     private Player playerOne,playerTwo;
     private float timer;
     private float zoomFactor;
-    int screenWidth = 1920;
-    int height = 1080;
+    int screenWidth = Gdx.graphics.getWidth();
+    int height = Gdx.graphics.getHeight();
     private VfxManager postProcessingManager;
     private SoundManager sound;
 

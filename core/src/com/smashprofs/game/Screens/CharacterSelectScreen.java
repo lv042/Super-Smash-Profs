@@ -36,8 +36,8 @@ import org.apache.logging.log4j.Logger;
 public class CharacterSelectScreen implements Screen {
 
     private static Logger log = LogManager.getLogger(CharacterSelectScreen.class);
-    int width = 1920;
-    int height = 1080;
+    int width = Gdx.graphics.getWidth();
+    int height = Gdx.graphics.getHeight();
     private float zoomFactor = 1f;
     private OrthographicCamera camera;
     private Viewport viewport;
