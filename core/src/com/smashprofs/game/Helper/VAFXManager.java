@@ -49,6 +49,18 @@ public class VAFXManager {
                 centered = false;
                 spriteIsSquare = true;
             break;
+            case anotherExplosion:
+                VFXTexture = new Texture("explosions/explosion-7.png");
+                sound = "sounds/stomp.wav";
+                centered = true;
+                spriteIsSquare = true;
+                break;
+            case electricZap:
+                VFXTexture = new Texture("explosions/electric-zap-1.png");
+                sound = "sounds/stomp.wav";
+                centered = true;
+                spriteIsSquare = true;
+                break;
             case lightningStrike:
                 VFXTexture = new Texture("explosions/lightning.png");
                 sound = "sounds/stomp.wav";

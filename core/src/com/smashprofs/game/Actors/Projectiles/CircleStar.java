@@ -4,6 +4,7 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.World;
 import com.smashprofs.game.Actors.Players.Player;
+import com.smashprofs.game.Helper.B2dContactListener;
 import com.smashprofs.game.Helper.ShapeCreator;
 
 import static com.smashprofs.game.Actors.Players.Player.PPM;
@@ -20,7 +21,7 @@ public class CircleStar extends Projectile {
 
 
     public CircleStar(World world, Player playerOrigin) {
-        super(world, playerOrigin, "Circle", ShapeCreator.getCircleShape(3f), 3f, new Texture("projectiles/star.png"), 15);
+        super(world, playerOrigin.getPosition(), "Circle", ShapeCreator.getCircleShape(3f), 3f, new Texture("projectiles/star.png"), 15, 2f, B2dContactListener.CIRCLESTAR_ENTITY);
 
 
         int randInt = rand.nextInt(9999);
@@ -36,7 +37,7 @@ public class CircleStar extends Projectile {
         this.playerOrigin = playerOrigin;
     }
     @Override
-    void initialMovement() {
+    void initialMovement(float speed) {
         // no initial movement
     }
 

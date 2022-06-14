@@ -28,6 +28,10 @@ public class CombatManager {
 
 
     private boolean mineAvailable = true;
+    private boolean missileAvailable = true;
+    private boolean throwingStarAvailable = true;
+    private boolean circleStarAvailable = true;
+    private boolean ibmAvailable = true;
 
     /**
      * The box2DContact listener.
@@ -55,7 +59,9 @@ public class CombatManager {
      * The logger.
      */
     private static Logger log = LogManager.getLogger(CombatManager.class);
+    private int totalCircles = 0;
 
+    final private int maxCircles = 2;
 
 
     //private constructor to avoid client applications to use constructor
@@ -121,8 +127,8 @@ public class CombatManager {
         }
         if(playerOne.isShooting()){
             shooting(playerOne,playerTwo,world);
-            /*//System.out.println("Bullet spawned ");
-            log.debug("Bullet spawned");
+            /*//System.out.println("Rocket spawned ");
+            log.debug("Rocket spawned");
             //HomingMissile proj = new HomingMissile(world, playerOne, playerTwo);
             // CircleStar proj = new CircleStar(world, playerOne);
             Landmine proj = new Landmine(world, playerOne);
@@ -134,7 +140,7 @@ public class CombatManager {
 
             //das ist sehr gut so geloest :)
 
-           /* log.debug("Bullet spawned");
+           /* log.debug("Rocket spawned");
             //ThrowingStar proj = new ThrowingStar(world, playerTwo);
             ThrowingStar proj = new ThrowingStar(world, new Vector2(playerTwo.getPosition().x + 10 / PPM, playerTwo.getPosition().y) , new Vector2(1,0));
             projectileArrayList.add(proj);
@@ -149,23 +155,22 @@ public class CombatManager {
             projectileArrayList.add(proj3);
 
 
+
             //HomingMissile proj = new HomingMissile(world, playerTwo, playerOne);
             //Landmine proj = new Landmine(world, playerTwo);
 */
         }
 
-        //BULLETS
+        //RocketS
 
         if (contactListener.isPlayerTwoGotShoot()) {
             attackPlayer(playerOne, playerTwo, 1.5f, 2f);
             contactListener.setPlayerTwoGotShoot(false);
-            contactListener.setBulletHit(false);
             //System.out.println("abracadabra");
         }
         if (contactListener.isPlayerOneGotShoot()) {
             attackPlayer(playerTwo, playerOne, 1.5f, 2f);
             contactListener.setPlayerOneGotShoot(false);
-            contactListener.setBulletHit(false);
             //System.out.println("adadadadada");
         }
 
@@ -174,13 +179,11 @@ public class CombatManager {
         if (contactListener.isPlayerTwoGotShoot()) {
             attackPlayer(playerOne, playerTwo, 1.5f, 2f);
             contactListener.setPlayerTwoGotShoot(false);
-            contactListener.setBulletHit(false);
             //System.out.println("abracadabra");
         }
         if (contactListener.isPlayerOneGotShoot()) {
             attackPlayer(playerTwo, playerOne, 1.5f, 2f);
             contactListener.setPlayerOneGotShoot(false);
-            contactListener.setBulletHit(false);
             //System.out.println("adadadadada");
         }
 
@@ -205,8 +208,7 @@ public class CombatManager {
                     }
                 }, Landmine.getDelayInSeconds());
 
-
-                log.debug("Bullet spawned");
+                log.debug("Rocket spawned");
                 Landmine proj = new Landmine(world, playeractive);
                 projectileArrayList.add(proj);
                 mineAvailable = false;
@@ -214,34 +216,92 @@ public class CombatManager {
 
         }
         else if(playeractive.getPlayerType() == PlayerTypes.Maurice){
-            log.debug("Bullet spawned");
-            //ThrowingStar proj = new ThrowingStar(world, playerTwo);
-            ThrowingStar proj = new ThrowingStar(world, new Vector2(playeractive.getPosition().x + 10 / PPM, playeractive.getPosition().y) , new Vector2(1,0));
-            projectileArrayList.add(proj);
 
-            ThrowingStar proj1 = new ThrowingStar(world, new Vector2(playeractive.getPosition().x - 10 / PPM, playeractive.getPosition().y), new Vector2(-1,0));
-            projectileArrayList.add(proj1);
+            if(throwingStarAvailable) {
+                    Timer.schedule(new Timer.Task(){
+                        @Override
+                        public void run() {
+                            throwingStarAvailable = true;
+                        }
+                    }, ThrowingStar.getDelayInSeconds());
 
-            ThrowingStar proj2 = new ThrowingStar(world, new Vector2(playeractive.getPosition().x, playeractive.getPosition().y + 10 / PPM), new Vector2(0,1));
-            projectileArrayList.add(proj2);
+                log.debug("ThrowingStar spawned");
+                //ThrowingStar proj = new ThrowingStar(world, playerTwo);
+                ThrowingStar proj = new ThrowingStar(world, new Vector2(playeractive.getPosition().x + 10 / PPM, playeractive.getPosition().y) , new Vector2(1,0));
+                projectileArrayList.add(proj);
 
-            ThrowingStar proj3 = new ThrowingStar(world, new Vector2(playeractive.getPosition().x, playeractive.getPosition().y - 10 / PPM), new Vector2(0,-1));
-            projectileArrayList.add(proj3);
+                ThrowingStar proj1 = new ThrowingStar(world, new Vector2(playeractive.getPosition().x - 10 / PPM, playeractive.getPosition().y), new Vector2(-1,0));
+                projectileArrayList.add(proj1);
+
+                ThrowingStar proj2 = new ThrowingStar(world, new Vector2(playeractive.getPosition().x, playeractive.getPosition().y + 10 / PPM), new Vector2(0,1));
+                projectileArrayList.add(proj2);
+
+                ThrowingStar proj3 = new ThrowingStar(world, new Vector2(playeractive.getPosition().x, playeractive.getPosition().y - 10 / PPM), new Vector2(0,-1));
+                projectileArrayList.add(proj3);
+
+                throwingStarAvailable = false;
+            }
+
         }
         else if(playeractive.getPlayerType() == PlayerTypes.Alex){
-            log.debug("Bullet spawned");
-            HomingMissile proj = new HomingMissile(world, playeractive, playerinactive);
-            projectileArrayList.add(proj);
+
+            if(missileAvailable) {
+                Timer.schedule(new Timer.Task(){
+                    @Override
+                    public void run() {
+                        missileAvailable = true;
+                    }
+                }, HomingMissile.getDelayInSeconds());
+
+                log.debug("Rocket spawned");
+                HomingMissile proj = new HomingMissile(world, playeractive, playerinactive);
+                projectileArrayList.add(proj);
+                missileAvailable = false;
+            }
+
         }
         else if (playeractive.getPlayerType() == PlayerTypes.Luca){
-            log.debug("Bullet spawned");
-            CircleStar proj = new CircleStar(world, playeractive);
-            projectileArrayList.add(proj);
+            if(totalCircles < maxCircles){
+
+                if(circleStarAvailable) {
+
+                    Timer.schedule(new Timer.Task(){
+                        @Override
+                        public void run() {
+                            circleStarAvailable = true;
+                        }
+                    }, CircleStar.getDelayInSeconds());
+
+
+                    log.debug("CircleStar spawned");
+                    CircleStar proj = new CircleStar(world, playeractive);
+                    projectileArrayList.add(proj);
+                    totalCircles++;
+                    circleStarAvailable = false;
+                }
+
+            }
+        }
+        else if(playeractive.getPlayerType() == PlayerTypes.Viktor) {
+            if(ibmAvailable) {
+                Timer.schedule(new Timer.Task(){
+                    @Override
+                    public void run() {
+                        ibmAvailable = true;
+                    }
+                }, IBM.getDelayInSeconds());
+
+                log.debug("IBM spawned");
+                IBM proj = new IBM(world, playeractive);
+                projectileArrayList.add(proj);
+                ibmAvailable = false;
+            }
         }
     }
 
     //Projectile attack
     //kann das weg oder ist das kunst??????????????????????????????????????????
+    // A: HdM = Hochschule der Medien => Medien = Kunst
     public void attackPlayer(Vector2 damageOrigin, int damage, Player target, float attackKnockback , float yAttackKnockback){
         Vector2 attackVector = new Vector2(0, yAttackKnockback);
         if(damageOrigin.x < target.getPosition().x) attackVector.x = 1 * attackKnockback;
@@ -334,5 +394,6 @@ public class CombatManager {
      */
     public void resetCombatManager() {
         projectileArrayList.clear();
+        totalCircles = 0;
     }
 }

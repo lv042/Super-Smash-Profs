@@ -44,7 +44,7 @@ public class CharacterSelectScreen implements Screen {
     private Stage stage;
     private SoundManager soundManager;
     private Array<Controller> controllers;
-    private TextureRegion[] alex, maurice, luca, leo;
+    private TextureRegion[] alex, maurice, luca, leo, viktor;
     private Image left1, right1, left2, right2, playButton, p1ctrls, p2ctrls;
     private Table table;
     private VfxManager postProcessingManager;
@@ -74,8 +74,9 @@ public class CharacterSelectScreen implements Screen {
         this.maurice = TextureRegion.split(new Texture("Sprites/Momo/momo_strip.png"), 100, 100)[0];
         this.luca = TextureRegion.split(new Texture("Sprites/Luca/luca_stand.png"), 100, 100)[0];
         this.leo = TextureRegion.split(new Texture("Sprites/Leo/leo_stand.png"), 100, 100)[0];
-        this.playerImages = new TextureRegion[]{alex[0], maurice[0], luca[0], leo[0]};
-        this.playerNames = new String[]{"Alex", "Maurice", "Luca", "Leo"};
+        this.viktor = TextureRegion.split(new Texture("Sprites/Viktor/viktor_stand.png"), 100, 100)[0];
+        this.playerImages = new TextureRegion[]{alex[0], maurice[0], luca[0], leo[0], viktor[0]};
+        this.playerNames = new String[]{"Alex", "Maurice", "Luca", "Leo", "Viktor"};
 
         this.currentSelection = new ImageButton(new TextureRegionDrawable(playerImages[0]));
         this.currentSelection2 = new ImageButton(new TextureRegionDrawable(playerImages[0]));

@@ -3,7 +3,7 @@ import java.util.Random;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.World;
-import com.smashprofs.game.Actors.Players.Player;
+import com.smashprofs.game.Helper.B2dContactListener;
 import com.smashprofs.game.Helper.ShapeCreator;
 
 /**
@@ -26,7 +26,8 @@ public class ThrowingStar extends Projectile {
      * The direction the star will fly in
      */
     public ThrowingStar(World world, Vector2 originPosition, Vector2 direction) {
-        super(world, originPosition, "Star", ShapeCreator.getCircleShape(3f), 3f, new Texture("projectiles/star.png"), 15);
+        super(world, originPosition, "Star", ShapeCreator.getCircleShape(3f), 3f, new Texture("projectiles/star.png"), 15, 0.75f, B2dContactListener.PROJECTILE_ENTITY);
+
 
 
 
@@ -44,7 +45,7 @@ public class ThrowingStar extends Projectile {
         projectileDirection = direction;
     }
     @Override
-    void initialMovement() {
+    void initialMovement(float speed) {
 
     }
 

@@ -60,28 +60,24 @@ public class PlayerFactory {
         switch (player){
             case Luca:
                 playersCreated++;
-                //System.out.println("Created LucaPlayer");
                 log.debug("Created LucaPlayer");
                 return new Luca(PlayScreen.getWorld(), currentInputState, currentSpawnPoint, "Luca Kanne", userData);
             case Alex:
                 playersCreated++;
-                //System.out.println("Created AlexPlayer");
                 log.debug("Created AlexPlayer");
                 return new Alex(PlayScreen.getWorld(), currentInputState, currentSpawnPoint, "Alex Boss", userData);
             case Maurice:
                 playersCreated++;
-                //System.out.println("Created MauricePlayer");
                 log.debug("Created MauricePlayer");
                 return new Maurice(PlayScreen.getWorld(), currentInputState, currentSpawnPoint, "Maurice Boi", userData);
             case Leo:
                 playersCreated++;
-                //System.out.println("Created MauricePlayer");
                 log.debug("Created LeoPlayer");
                 return new Leo(PlayScreen.getWorld(), currentInputState, currentSpawnPoint, "Leo The Miner", userData);
-//            case Jens:
-//                return new Jens(5);
-//            case Martin:
-//                return new Martin(6);
+            case Viktor:
+                playersCreated++;
+                log.debug("Created new VictorPlayer");
+                return new Viktor(PlayScreen.getWorld(), currentInputState, currentSpawnPoint, "Just Viktor", userData);
             default:
                 log.warn("Created NO player!");
                 return null;
