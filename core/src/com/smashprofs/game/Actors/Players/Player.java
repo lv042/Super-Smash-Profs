@@ -1,7 +1,10 @@
 package com.smashprofs.game.Actors.Players;
 
 
+import com.badlogic.gdx.utils.TimeUtils;
+import com.badlogic.gdx.utils.Timer;
 import com.smashprofs.game.Actors.GameObject;
+import com.smashprofs.game.Actors.Projectiles.Landmine;
 import com.smashprofs.game.Actors.Projectiles.Projectile;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
@@ -28,9 +31,7 @@ public abstract class Player extends GameObject {
     private static Logger log = LogManager.getLogger(Player.class);
 
     public static final float PPM = 100;
-    private final Animation<TextureRegion> stand;
-    private final Animation<TextureRegion> run;
-    private final Animation<TextureRegion> jump;
+    private final Animation<TextureRegion> stand, run, jump, punch;
     private final float stompSpeed = -5f;
     private final String deathSoundMp3 = "sounds/death.mp3";
     private final String punchSoundMp3 = "sounds/punch.mp3";
@@ -58,14 +59,12 @@ public abstract class Player extends GameObject {
     float stateTime = 0;
     float playerCollisionBoxRadius = 5;
     boolean isGrounded = false;
+    boolean isPunching = false;
+    AnimationTimer animTimer;
     boolean standardAttackInput = false;
-    private final Texture playerStand;
-    private final Texture playerRun;
-    private final Texture playerJump;
+    private final Texture playerStand, playerRun, playerJump, playerPunch;
     private String playerName;
     private Vector2 poistion;
-    private float timeCount;
-    private float worldTimer;
     private boolean isStomping;
     private boolean isDead = false;
     private boolean stompHitground;
@@ -102,6 +101,7 @@ public abstract class Player extends GameObject {
         this.playerStand = playerStandTex;
         this.playerRun = playerRunTex;
         this.playerJump = playerJumpTex;
+        this.playerPunch = new Texture("Sprites/Alex/alex_punch.png");
 
         TextureRegion[] standing = TextureRegion.split(playerStand, 100, 100)[0];
         stand = new Animation(0.25f, standing[0], standing[1], standing[2], standing[3]);
@@ -115,9 +115,14 @@ public abstract class Player extends GameObject {
         jump = new Animation(1f, running[0], running[3]); //Originally -> jump = new Animation(0.15f, running[0], jumping[1], jumping[2]); -> but jump animation looks like poop
         jump.setPlayMode(Animation.PlayMode.LOOP);
 
+        TextureRegion[] punching = TextureRegion.split(playerPunch, 100, 100)[0];
+        punch = new Animation(0.05f, punching[0], punching[1], punching[2]);
+        punch.setPlayMode(Animation.PlayMode.NORMAL);
+
+
         this.currentState = State.STANDING;
 
-
+        this.animTimer = new AnimationTimer(punch.getAnimationDuration());
 
         sprite.setBounds(0, 15, 25 / PPM, 25 / PPM);
         //this.setRegion(alexStand);
@@ -441,6 +446,15 @@ public abstract class Player extends GameObject {
                 isShooting = Gdx.input.isKeyJustPressed(Input.Keys.F);
 
             }
+            if(standardAttackInput) {
+                animTimer.start();
+            }
+            if(animTimer.isFinished()) {
+                isPunching = false;
+            }
+            else{
+                isPunching = true;
+            }
         }
 
 
@@ -457,7 +471,6 @@ public abstract class Player extends GameObject {
                     isBlocking = Gdx.input.isKeyPressed(Input.Keys.CONTROL_LEFT);
                     stompInput = p2Controller.getButton(Xbox360Pad.BUTTON_Y);
 
-                    //TODO: Rate limiter needed here!! Otherwise, a lot of projectiles will spawn at once!
                     isShooting = p2Controller.getButton(Xbox360Pad.BUTTON_X);
                     //System.out.println(p2Controller.getAxis(Xbox360Pad.AXIS_LEFT_X));
                     log.debug(p2Controller.getAxis(Xbox360Pad.AXIS_LEFT_X));
@@ -471,6 +484,15 @@ public abstract class Player extends GameObject {
                 isBlocking = Gdx.input.isKeyPressed(Input.Keys.ALT_RIGHT);
                 stompInput = Gdx.input.isKeyJustPressed(Input.Keys.DOWN);
                 isShooting = Gdx.input.isKeyJustPressed(Input.Keys.P);
+            }
+            if(standardAttackInput) {
+                animTimer.start();
+            }
+            if(animTimer.isFinished()) {
+                isPunching = false;
+            }
+            else{
+                isPunching = true;
             }
         }
 
@@ -547,26 +569,32 @@ public abstract class Player extends GameObject {
 
     public TextureRegion getRenderTexture(float stateTime) {
         TextureRegion frame = null;
-        switch (this.currentState) {
-            case STANDING:
-                sprite.setRegion(playerStand);
-                frame = stand.getKeyFrame(stateTime);
-                break;
 
-            case RUNNING:
-
-                sprite.setRegion(playerRun);
-                frame = run.getKeyFrame(stateTime);
-                break;
-
-            case JUMPING:
-                sprite.setRegion(playerJump);
-                frame = jump.getKeyFrame(stateTime);
-                break;
-
+        if(isPunching) {
+            sprite.setRegion(playerPunch);
+            frame = punch.getKeyFrame(stateTime);
         }
-        //System.out.println(getCurrentState());
-        //System.out.println(isGrounded());
+        else {
+            switch (this.currentState) {
+                case STANDING:
+                    sprite.setRegion(playerStand);
+                    frame = stand.getKeyFrame(stateTime);
+                    break;
+
+                case RUNNING:
+
+                    sprite.setRegion(playerRun);
+                    frame = run.getKeyFrame(stateTime);
+                    break;
+
+                case JUMPING:
+                    sprite.setRegion(playerJump);
+                    frame = jump.getKeyFrame(stateTime);
+                    break;
+
+            }
+        }
+
         log.debug(isGrounded());
         return frame;
 
