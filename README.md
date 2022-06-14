@@ -69,7 +69,7 @@ To start the game, simply add a new run configuration and type in "run".
 
 ### Built With
 
-<a href="https://docs.oracle.com/javase/tutorial/index.html"><img src="https://raw.githubusercontent.com/devicons/devicon/master/icons/java/java-original.svg" height="40px" width="40px" /></a> <a href="https://libgdx.com/"><img src="https://libgdx.com/assets/brand/logo.svg" height="40px" width="100px" /></a>  <a href="https://www.mapeditor.org/"><img src="https://www.mapeditor.org/img/tiled-logo-filled.png" height="40px" width="40px" /></a>
+<a href="https://docs.oracle.com/javase/tutorial/index.html"><img src="https://raw.githubusercontent.com/devicons/devicon/master/icons/java/java-original.svg" height="40px" width="40px" /></a> <a href="https://libgdx.com/"><img src="https://libgdx.com/assets/brand/logo.svg" height="40px" width="160px" /></a>  <a href="https://www.mapeditor.org/"><img src="https://www.mapeditor.org/img/tiled-logo-filled.png" height="40px" width="40px" /></a>
 
 
 ## Screenshots
