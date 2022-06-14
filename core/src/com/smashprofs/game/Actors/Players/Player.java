@@ -88,20 +88,16 @@ public abstract class Player extends GameObject {
     
     private final Sprite sprite = new Sprite(); //Sprite of the GameObject
 
-    public Player(World world, InputState inputState, Vector2 spawnpoint, String playerName, PlayerTypes playerType, String userData, Texture playerStandTex, Texture playerRunTex, Texture playerJumpTex) {
+    public Player(World world, InputState inputState, Vector2 spawnpoint, String playerName, PlayerTypes playerType, String userData, Texture playerStandTex, Texture playerRunTex, Texture playerJumpTex, Texture playerPunchTex) {
         super(userData);
 
         this.playerType = playerType;
         this.userData = userData;
 
-        /*playerStand = new Texture("Sprites/Alex_stand.png");
-        playerRun = new Texture("Sprites/Alex_run.png");
-        playerJump = new Texture("Sprites/Alex_jump.png");*/
-
         this.playerStand = playerStandTex;
         this.playerRun = playerRunTex;
         this.playerJump = playerJumpTex;
-        this.playerPunch = new Texture("Sprites/Alex/alex_punch.png");
+        this.playerPunch = playerPunchTex;
 
         TextureRegion[] standing = TextureRegion.split(playerStand, 100, 100)[0];
         stand = new Animation(0.25f, standing[0], standing[1], standing[2], standing[3]);
@@ -142,33 +138,7 @@ public abstract class Player extends GameObject {
 
     }
 
-    public Sprite getPlayerSprite() {
-        return sprite;
-    }
 
-    public boolean isStompHitground() {
-        return stompHitground;
-    }
-
-    public void setStompHitground(boolean stompHitground) {
-        this.stompHitground = stompHitground;
-    }
-
-    public Player getInstancePlayer(Player player) {
-        return this;
-    }
-
-    public String getDamageSoundMp3() {
-        return damageSoundMp3;
-    }
-
-    public Vector2 getPosition() {
-        return poistion;
-    }
-
-    public float getAttackReach() {
-        return attackReach;
-    }
 
     public void updatePosition(float deltatime) {
         poistion = b2dbody.getPosition();
@@ -234,123 +204,7 @@ public abstract class Player extends GameObject {
         }
     }
 
-    public boolean isDead() {
-        return isDead;
-    }
 
-    public void setDead(boolean dead) {
-        isDead = dead;
-    }
-
-    public boolean isBlocking() {
-        return isBlocking;
-    }
-
-    public float getHP() {
-        return HP;
-    }
-
-    public void setHP(float HP) {
-        this.HP = HP;
-
-    }
-
-    public PlayerTypes getPlayerType() {
-        return this.playerType;
-    }
-    public int getAttackDamage() {
-        return attackDamage;
-    }
-
-    public boolean isStandardAttackInput() {
-        return standardAttackInput;
-    }
-
-    public float getStartingGravity() {
-        return startingGravity;
-    }
-
-    public String getPlayerName() {
-        return playerName;
-    }
-
-    public void setPlayerName(String playerName) {
-        this.playerName = playerName;
-    }
-
-    public boolean isFacingRight() {
-        return facingRight;
-    }
-
-    public int getIsFacingRightAxe() {
-        return isFacingRightAxe;
-    }
-
-    private void setTouchingGround(boolean touchingGround) {
-        this.touchingGround = touchingGround;
-    }
-
-    public float getRespawnDamping() {
-        return respawnDamping;
-    }
-
-    public float getDamping() {
-        return damping;
-    }
-
-    public float getWalkingSpeedMultiplier() {
-        return walkingSpeedMultiplier;
-    }
-
-    public State getCurrentState() {
-        return currentState;
-    }
-
-    public float getJumpForce() {
-        return jumpForce;
-    }
-
-    public Body getB2dbody() {
-        return b2dbody;
-    }
-
-    public float getMaxVelocity() {
-        return maxVelocity;
-    }
-
-    public int getJumpCOunt() {
-        return jumpCount;
-    }
-
-    public void setJumpCOunt(int jumpCOunt) {
-        this.jumpCount = jumpCOunt;
-    }
-
-    public boolean isGrounded() {
-        return isGrounded;
-    }
-
-    public Vector2 getSpawnPoint() {
-        return spawnpoint;
-    }
-
-    public boolean getIsExtraJumpReady() {
-        return isExtraJumpReady;
-    }
-
-    public boolean isStomping() {
-        return isStomping;
-    }
-
-    public BodyDef getBdef() {
-        return bdef;
-    }
-
-    public Vector2 getSpawnpoint() {
-        return spawnpoint;
-    }
-
-    //basically our constructor
     private void definePlayer(World world) {
         bdef = new BodyDef();
         bdef.position.set(spawnpoint.x / PPM, spawnpoint.y / PPM);
@@ -379,7 +233,6 @@ public abstract class Player extends GameObject {
 
         b2dbody.createFixture(fDef);
 
-
     }
 
     private void checkHealth() {
@@ -392,8 +245,6 @@ public abstract class Player extends GameObject {
         if (!isDead) {
             setDead(true);
             soundManager.playSound(deathSoundMp3);
-            //b2dbody.setLinearVelocity(0, 0);
-            //b2dbody.setTransform(spawnpoint.x / PPM, spawnpoint.y / PPM, 0);
         }
     }
 
@@ -407,9 +258,7 @@ public abstract class Player extends GameObject {
 
     public void managePlayerInput(float dt) {
 
-
         Array<Controller> controllers2 = Controllers.getControllers();
-
 
         float upDownInput = 0;
         float leftRightInput = 0;
@@ -458,7 +307,6 @@ public abstract class Player extends GameObject {
         }
 
 
-
         if (currentInputState == InputState.ARROWS) {
 
             if(controllers2.size > 1) {
@@ -497,7 +345,6 @@ public abstract class Player extends GameObject {
         }
 
 
-
         if (standardAttackInput) {
             soundManager.playSound(punchSoundMp3);
         }
@@ -511,11 +358,7 @@ public abstract class Player extends GameObject {
             facingRight = false;
             isFacingRightAxe = -1;
         }
-        //System.out.println(facingRight);
 
-        //jumping
-        //System.out.println(jumpCount);
-        //System.out.println(isExtraJumpReady);
 
         if (jumpCount <= maxExtraJumps && (jumpInput) && (isGrounded || isExtraJumpReady)) {
 
@@ -544,11 +387,6 @@ public abstract class Player extends GameObject {
                 lastAxis = leftRightInput;
         }
 
-        //when running off a ground you get two jumps
-        /*if(isGrounded()!=touchingGround){
-            isExtraJumpReady = true;
-            touchingGround=isGrounded();
-        }*/
 
         //damping
         if (isGrounded()) {
@@ -707,5 +545,153 @@ public abstract class Player extends GameObject {
     public enum State {
         FALLING, JUMPING, STANDING, RUNNING
     }
+
+    // GETTER AND SETTER METHODS:
+
+    public boolean isDead() {
+        return isDead;
+    }
+
+    public void setDead(boolean dead) {
+        isDead = dead;
+    }
+
+    public boolean isBlocking() {
+        return isBlocking;
+    }
+
+    public float getHP() {
+        return HP;
+    }
+
+    public void setHP(float HP) {
+        this.HP = HP;
+
+    }
+
+    public PlayerTypes getPlayerType() {
+        return this.playerType;
+    }
+    public int getAttackDamage() {
+        return attackDamage;
+    }
+
+    public boolean isStandardAttackInput() {
+        return standardAttackInput;
+    }
+
+    public float getStartingGravity() {
+        return startingGravity;
+    }
+
+    public String getPlayerName() {
+        return playerName;
+    }
+
+    public void setPlayerName(String playerName) {
+        this.playerName = playerName;
+    }
+
+    public boolean isFacingRight() {
+        return facingRight;
+    }
+
+    public int getIsFacingRightAxe() {
+        return isFacingRightAxe;
+    }
+
+    private void setTouchingGround(boolean touchingGround) {
+        this.touchingGround = touchingGround;
+    }
+
+    public float getRespawnDamping() {
+        return respawnDamping;
+    }
+
+    public float getDamping() {
+        return damping;
+    }
+
+    public float getWalkingSpeedMultiplier() {
+        return walkingSpeedMultiplier;
+    }
+
+    public State getCurrentState() {
+        return currentState;
+    }
+
+    public float getJumpForce() {
+        return jumpForce;
+    }
+
+    public Body getB2dbody() {
+        return b2dbody;
+    }
+
+    public float getMaxVelocity() {
+        return maxVelocity;
+    }
+
+    public int getJumpCOunt() {
+        return jumpCount;
+    }
+
+    public void setJumpCOunt(int jumpCOunt) {
+        this.jumpCount = jumpCOunt;
+    }
+
+    public boolean isGrounded() {
+        return isGrounded;
+    }
+
+    public Vector2 getSpawnPoint() {
+        return spawnpoint;
+    }
+
+    public boolean getIsExtraJumpReady() {
+        return isExtraJumpReady;
+    }
+
+    public boolean isStomping() {
+        return isStomping;
+    }
+
+    public BodyDef getBdef() {
+        return bdef;
+    }
+
+    public Vector2 getSpawnpoint() {
+        return spawnpoint;
+    }
+    public Sprite getPlayerSprite() {
+        return sprite;
+    }
+
+    public boolean isStompHitground() {
+        return stompHitground;
+    }
+
+    public void setStompHitground(boolean stompHitground) {
+        this.stompHitground = stompHitground;
+    }
+
+    public Player getInstancePlayer(Player player) {
+        return this;
+    }
+
+    public String getDamageSoundMp3() {
+        return damageSoundMp3;
+    }
+
+    public Vector2 getPosition() {
+        return poistion;
+    }
+
+    public float getAttackReach() {
+        return attackReach;
+    }
+
+
+
 
 }
