@@ -447,8 +447,13 @@ public abstract class Player extends GameObject {
     //Check if the player is touching the ground
     public void checkGrounded() {
         currentY = b2dbody.getPosition().y;
-        if (b2dbody.getLinearVelocity().y - getGravity() <= 0.1 && b2dbody.getLinearVelocity().y - getGravity() >= -0.1 && !isNotTouchingTiles) {
 
+        if (b2dbody.getLinearVelocity().y - getGravity() >= 0.2 || b2dbody.getLinearVelocity().y - getGravity() <= -0.2) {
+            isNotTouchingTiles = true;
+        }
+
+        if (!isNotTouchingTiles) {
+            //is not touching tiles doesnt work right now and causes the
             if (isStomping()) {
                 soundManager.playSound(stompSoundWav);
                 setStompHitground(true);

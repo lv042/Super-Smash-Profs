@@ -60,7 +60,7 @@ public class MainMenuScreen implements Screen {
         this.game = game;
         this.spriteBatch = new SpriteBatch();
         this.camera = new OrthographicCamera();
-        this.viewport = new FillViewport(screenWidth, height, camera);
+        this.viewport = new FillViewport(1920, 1080, camera);
         this.stage = new Stage(this.viewport, this.spriteBatch);
 
         playButtonInactive = new Texture("mainmenu/buttons/playButtonInactive.png");

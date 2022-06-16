@@ -51,7 +51,7 @@ public class WinScreen implements Screen {
         this.game = game;
         this.batch = new SpriteBatch();
         this.camera = new OrthographicCamera();
-        this.viewport = new FillViewport(screenWidth, height, camera);
+        this.viewport = new FillViewport(1920, 1080, camera);
         this.stage = new Stage(this.viewport, this.batch);
         this.playerOne=playerOne;
         this.playerTwo=playerTwo;

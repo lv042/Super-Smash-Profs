@@ -233,17 +233,17 @@ public class B2dContactListener implements ContactListener {
     @Override
     public void endContact(Contact contact) {
 
-        if("Tile".equals(contact.getFixtureA().getBody().getUserData()) && "PlayerOne".equals(contact.getFixtureB().getBody().getUserData())){
-            //System.out.println("P1 Touching Tile: " + P1NotTouchingTile);
-            log.debug("P1 Touching Tile: " + P1NotTouchingTile);
-            P1NotTouchingTile = true;
-        }
-        if("Tile".equals(contact.getFixtureA().getBody().getUserData()) && "PlayerTwo".equals(contact.getFixtureB().getBody().getUserData())) // null because not touching anything
-        {
-            //System.out.println("P2 Touching Tile:" + P2NotTouchingTile);
-            log.debug("P2 Touching Tile:" + P2NotTouchingTile);
-            P2NotTouchingTile = true;
-        }
+//        if("Tile".equals(contact.getFixtureA().getBody().getUserData()) && "PlayerOne".equals(contact.getFixtureB().getBody().getUserData())){
+//            //System.out.println("P1 Touching Tile: " + P1NotTouchingTile);
+//            log.debug("P1 Touching Tile: " + P1NotTouchingTile);
+//            P1NotTouchingTile = true;
+//        }
+//        if("Tile".equals(contact.getFixtureA().getBody().getUserData()) && "PlayerTwo".equals(contact.getFixtureB().getBody().getUserData())) // null because not touching anything
+//        {
+//            //System.out.println("P2 Touching Tile:" + P2NotTouchingTile);
+//            log.debug("P2 Touching Tile:" + P2NotTouchingTile);
+//            P2NotTouchingTile = true;
+//        }
 
         //System.out.println(contact.getFixtureA().getBody().getUserData());
         //System.out.println(contact.getFixtureB().getBody().getUserData());

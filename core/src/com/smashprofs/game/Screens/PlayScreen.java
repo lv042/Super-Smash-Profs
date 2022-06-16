@@ -204,7 +204,7 @@ public class PlayScreen implements Screen {
         //playerOne = playerFactory.getPlayer(PlayerTypes.Alex);
         switch(CharacterSelectScreen.getSelectedPlayerOne()) {
             case "Alex": playerOne = playerFactory.getPlayer(PlayerTypes.Alex); break;
-            case "Maurice": playerOne = playerFactory.getPlayer(PlayerTypes.Maurice); break;
+            case "Maurice": playerOne = playerFactory.getPlayer(    PlayerTypes.Maurice); break;
             case "Luca": playerOne = playerFactory.getPlayer(PlayerTypes.Luca); break;
             case "Leo": playerOne = playerFactory.getPlayer(PlayerTypes.Leo); break;
             case "Viktor": playerOne = playerFactory.getPlayer(PlayerTypes.Viktor); break;
@@ -296,7 +296,7 @@ public class PlayScreen implements Screen {
         Gdx.gl.glClear(Gdx.gl.GL_COLOR_BUFFER_BIT);
         Gdx.gl.glClearColor(0, 0, 0, 1); //-> light blue
         postProcessingManager.cleanUpBuffers();
-
+        System.out.println(Gdx.graphics.getFramesPerSecond());
         // Begin render to an off-screen buffer.
         postProcessingManager.beginInputCapture();
 

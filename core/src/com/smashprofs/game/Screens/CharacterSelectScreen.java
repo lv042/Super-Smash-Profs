@@ -62,7 +62,7 @@ public class CharacterSelectScreen implements Screen {
         this.camera = new OrthographicCamera(width, height);
         this.batch = new SpriteBatch();
         this.game = game;
-        this.viewport = new FillViewport(this.width, this.height, this.camera);
+        this.viewport = new FillViewport(1920, 1080, this.camera);
         this.stage = new Stage(this.viewport, this.batch);
         this.soundManager = SoundManager.getSoundManager_INSTANCE();
         this.controllers = Controllers.getControllers();
