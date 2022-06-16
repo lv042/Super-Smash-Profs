@@ -40,8 +40,6 @@ public abstract class Player extends GameObject {
     private final CameraManager cameraManager = CameraManager.getCameraManager_INSTANCE();
     private final B2dContactListener contactListener = B2dContactListener.getContactListener_INSTANCE();
     private final float attackReach = 0.2f;
-    
-    private final Batch batch = new SpriteBatch();
     private final float respawnDamping = 0.1f;
     private final int attackDamage = 10;
     private final boolean collideWithOtherPlayers = false;
@@ -53,7 +51,6 @@ public abstract class Player extends GameObject {
     private final SoundManager soundManager;
     private final String userData;
     public float damping = 0.999f; //the closer this value is to zero the more the player will slow down
-    public ArrayList<Controller> controllers;
     InputState currentInputState;
     PlayerTypes playerType;
     float stateTime = 0;
@@ -83,7 +80,6 @@ public abstract class Player extends GameObject {
     private boolean isShooting = false;
     private boolean facingRight = true;
     private int isFacingRightAxe = 1;  // must be 1 or -1 otherwise the first projectile spawns in the player
-    private boolean touchingGround;
     private float lastAxis;
     
     private final Sprite sprite = new Sprite(); //Sprite of the GameObject
@@ -115,14 +111,11 @@ public abstract class Player extends GameObject {
         punch = new Animation<>(0.05f, punching[0], punching[1], punching[2]);
         punch.setPlayMode(Animation.PlayMode.NORMAL);
 
-
         this.currentState = State.STANDING;
-
         this.animTimer = new AnimationTimer(punch.getAnimationDuration());
 
         sprite.setBounds(0, 15, 25 / PPM, 25 / PPM);
-        //this.setRegion(alexStand);
-        //this.world = world;
+
         this.currentInputState = inputState;
         this.spawnpoint = spawnpoint;
         this.playerName = playerName;
@@ -130,10 +123,7 @@ public abstract class Player extends GameObject {
         definePlayer(world);
 
         soundManager = SoundManager.getSoundManager_INSTANCE();
-        //LeosHomingMissle loli = new LeosHomingMissle(world, this);
-        //leosProjectiles.add(loli);
 
-        //System.out.println("Player created:" + this.playerName);
         log.debug("Player created:" + this.playerName);
 
     }
@@ -145,7 +135,6 @@ public abstract class Player extends GameObject {
     }
 
     public void update(float deltatime) {
-        //System.out.println("Player update");
         updatePosition(deltatime);
         touchingTiles();
         checkGrounded();
@@ -217,9 +206,6 @@ public abstract class Player extends GameObject {
         CircleShape shape = new CircleShape(); // circle shape is better for player characters so that it can be easily hit walls and other objects
 
         shape.setRadius(playerCollisionBoxRadius / PPM);
-
-        //Implement the player textures and animations -> @Maurice @Alex
-
 
         fDef.shape = shape;
 
@@ -364,20 +350,14 @@ public abstract class Player extends GameObject {
 
             jumpCount++;
 
-
             getB2dbody().applyLinearImpulse(new Vector2(0, getB2dbody().getLinearVelocity().y * (-0.8f) + getJumpForce()), getB2dbody().getWorldCenter(), true);
 
-
-            //System.out.println("Jumping");
             isExtraJumpReady = true;
-
-
         }
 
         //walking left and right
         if (getB2dbody().getLinearVelocity().x < getMaxVelocity() && getB2dbody().getLinearVelocity().x > - getMaxVelocity()) {
             getB2dbody().applyLinearImpulse(new Vector2(0.05f * leftRightInput * getWalkingSpeedMultiplier(), 0.0f), getB2dbody().getWorldCenter(), true);
-
         }
 
         //Damping velocity when changing axis
@@ -391,7 +371,6 @@ public abstract class Player extends GameObject {
         //damping
         if (isGrounded()) {
             getB2dbody().setLinearVelocity(new Vector2(getB2dbody().getLinearVelocity().x * damping, getB2dbody().getLinearVelocity().y));
-
         }
 
         //stomp
@@ -491,13 +470,9 @@ public abstract class Player extends GameObject {
     //respawn jumping
     public void respawnPlayers() {
         if (reachedWorldEdge()) {
-            //getB2dbody().applyLinearImpulse(new Vector2(0, 2f), getB2dbody().getWorldCenter(), true);
             getB2dbody().setLinearVelocity(new Vector2(getB2dbody().getLinearVelocity().x * getRespawnDamping(), 2.6f));
-            //System.out.println("Player respawn jump");
 
             //lower gravity for some seconds :)
-
-
             setGravity(startingGravity * 0.3f);
             soundManager.playSound(getDamageSoundMp3());
 
@@ -507,7 +482,6 @@ public abstract class Player extends GameObject {
 
             //damages the player
             setHP(getHP() - 10);
-
 
         }
 
@@ -525,7 +499,6 @@ public abstract class Player extends GameObject {
         //sets player velocity to 0 if they are at the edge of the map
         float pushBack = 1f;
 
-        //System.out.println(getB2dbody().getPosition());
         log.debug(getB2dbody().getPosition());
         if (getB2dbody().getPosition().x  > 8.5) {
 
@@ -603,10 +576,6 @@ public abstract class Player extends GameObject {
 
     public int getIsFacingRightAxe() {
         return isFacingRightAxe;
-    }
-
-    private void setTouchingGround(boolean touchingGround) {
-        this.touchingGround = touchingGround;
     }
 
     public float getRespawnDamping() {

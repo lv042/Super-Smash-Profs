@@ -248,7 +248,7 @@ public class PlayScreen implements Screen {
      */
     private void createTileMap() {
         mapLoader = new TmxMapLoader();
-        map = mapLoader.load("1/Map1New2.tmx");
+        map = mapLoader.load("1/Map1New2Remake.tmx");
         tiledMapRenderer = new OrthogonalTiledMapRenderer(map, 1 / PPM);
         //tiledMapRenderer.setBlending(true);
 
