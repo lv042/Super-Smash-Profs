@@ -77,8 +77,6 @@ public class  Projectile extends GameObject {
         this.categoryBits = categoryBits;
         projectileSpawnpoint = new Vector2(originPlayer.getPosition().x + (originPlayer.getIsFacingRightAxe() * spawnOffset / PPM), originPlayer.getPosition().y);
 
-        System.out.println("Projectile spawned at: " + projectileSpawnpoint);
-        System.out.println("Player position: " + originPlayer.getPosition());
 
         sprite.setBounds(originPlayer.getPlayerSprite().getX() / PPM, originPlayer.getPlayerSprite().getY() / PPM, sprite.getWidth()/PPM, sprite.getHeight()/PPM);
         create();
@@ -114,8 +112,8 @@ public class  Projectile extends GameObject {
         this.bodyShape = bodyShape;
         this.spawnOffset = spawnOffset;
         this.categoryBits = categoryBits;
-        //add ppm offset
-        projectileSpawnpoint = new Vector2(originPosition.x, originPosition.y );
+        //projectileSpawnpoint = new Vector2(originPosition.x, originPosition.y );
+        projectileSpawnpoint = new Vector2(originPosition.x + (spawnOffset / PPM), originPosition.y);
 
 
         sprite.setBounds(originPosition.x / PPM, originPosition.y / PPM, sprite.getWidth()/PPM, sprite.getHeight()/PPM);
