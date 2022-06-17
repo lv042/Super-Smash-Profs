@@ -308,6 +308,7 @@ public class PlayScreen implements Screen {
         if (debugMode) {
             //render our tiled map debug outlines to screen
             box2DDebugRenderer.render(world, gamecamera.combined);
+            //System.out.println(Gdx.graphics.getFramesPerSecond());
         }
 
 
