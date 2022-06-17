@@ -294,8 +294,7 @@ public abstract class Player extends GameObject {
 
                     //TODO: Rate limiter needed here!! Otherwise, a lot of projectiles will spawn at once!
                     isShooting = p1Controller.getButton(Xbox360Pad.BUTTON_X);
-                    //System.out.println(p1Controller.getAxis(Xbox360Pad.AXIS_LEFT_X));
-                    log.debug(p1Controller.getAxis(Xbox360Pad.AXIS_LEFT_X));
+                    //log.debug(p1Controller.getAxis(Xbox360Pad.AXIS_LEFT_X));
 
                 }
             } else {
@@ -333,8 +332,7 @@ public abstract class Player extends GameObject {
                     stompInput = p2Controller.getButton(Xbox360Pad.BUTTON_Y);
 
                     isShooting = p2Controller.getButton(Xbox360Pad.BUTTON_X);
-                    //System.out.println(p2Controller.getAxis(Xbox360Pad.AXIS_LEFT_X));
-                    log.debug(p2Controller.getAxis(Xbox360Pad.AXIS_LEFT_X));
+                    //log.debug(p2Controller.getAxis(Xbox360Pad.AXIS_LEFT_X));
 
                 }
             } else {
@@ -447,7 +445,7 @@ public abstract class Player extends GameObject {
             }
         }
 
-        log.debug(isGrounded());
+        // log.debug("isGrounded: " + isGrounded());
         return frame;
 
 
@@ -537,7 +535,7 @@ public abstract class Player extends GameObject {
         //sets player velocity to 0 if they are at the edge of the map
         float pushBack = 1f;
 
-        log.debug(getB2dbody().getPosition());
+        // log.debug("b2dBody position: " + getB2dbody().getPosition());
         if (getB2dbody().getPosition().x  > 8.5) {
 
             getB2dbody().setLinearVelocity(new Vector2(-pushBack, getB2dbody().getLinearVelocity().y + 0.1f));
