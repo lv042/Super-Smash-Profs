@@ -296,7 +296,6 @@ public class PlayScreen implements Screen {
         Gdx.gl.glClear(Gdx.gl.GL_COLOR_BUFFER_BIT);
         Gdx.gl.glClearColor(0, 0, 0, 1); //-> light blue
         postProcessingManager.cleanUpBuffers();
-        System.out.println(Gdx.graphics.getFramesPerSecond());
         // Begin render to an off-screen buffer.
         postProcessingManager.beginInputCapture();
 
