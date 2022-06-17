@@ -78,8 +78,8 @@ public class CharacterSelectScreen implements Screen {
         this.playerImages = new TextureRegion[]{alex[0], maurice[0], luca[0], leo[0], viktor[0]};
         this.playerNames = new String[]{"Alex", "Maurice", "Luca", "Leo", "Viktor"};
 
-        this.currentSelection = new ImageButton(new TextureRegionDrawable(playerImages[0]));
-        this.currentSelection2 = new ImageButton(new TextureRegionDrawable(playerImages[0]));
+        this.currentSelection = new ImageButton(new TextureRegionDrawable(playerImages[carouselCounter]));
+        this.currentSelection2 = new ImageButton(new TextureRegionDrawable(playerImages[carouselCounter2]));
 
         this.labelFont = new BitmapFont();
         labelFont.getData().setScale(4f);
