@@ -35,6 +35,8 @@ public class CircleStar extends Projectile {
         sprite.flip(true, false);
         sprite.setScale(0.7f, 0.7f);
         this.playerOrigin = playerOrigin;
+
+        System.out.println();
     }
     @Override
     void initialMovement(float speed) {
