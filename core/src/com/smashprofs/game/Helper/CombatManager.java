@@ -3,20 +3,12 @@ package com.smashprofs.game.Helper;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.World;
-
 import com.badlogic.gdx.utils.DelayedRemovalArray;
 import com.badlogic.gdx.utils.Timer;
-import com.smashprofs.game.Actors.Projectiles.*;
-
 import com.smashprofs.game.Actors.Players.Player;
-import com.smashprofs.game.Actors.Projectiles.HomingMissile;
-import com.smashprofs.game.Actors.VFXObject;
-import com.smashprofs.game.Screens.PlayScreen;
-import jdk.internal.org.jline.utils.ShutdownHooks;
+import com.smashprofs.game.Actors.Projectiles.*;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-
-import java.util.ArrayList;
 
 import static com.smashprofs.game.Actors.Players.Player.PPM;
 
