@@ -4,15 +4,11 @@ package com.smashprofs.game.Screens;
 import com.badlogic.gdx.controllers.Controller;
 import com.badlogic.gdx.controllers.Controllers;
 import com.badlogic.gdx.graphics.Color;
-import com.badlogic.gdx.graphics.Pixmap;
-import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
 import com.badlogic.gdx.math.Matrix4;
 import com.crashinvaders.vfx.VfxManager;
-import com.crashinvaders.vfx.effects.*;
-import com.crashinvaders.vfx.effects.util.MixEffect;
 import com.smashprofs.game.Actors.Players.Player;
 import com.smashprofs.game.Game;
 import com.smashprofs.game.Helper.*;
@@ -336,7 +332,7 @@ public class PlayScreen implements Screen {
         postProcessingManager.renderToScreen();
 
         //Test for win and set to win screen
-       if(hud.testwin(playerOne,playerTwo))
+       if(hud.testWin(playerOne,playerTwo))
        {
            game.setScreen(winScreen);
        }
