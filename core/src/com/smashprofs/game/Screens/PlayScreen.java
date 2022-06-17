@@ -134,12 +134,6 @@ public class PlayScreen implements Screen {
         //updates the physics 60 times per second
         world.step(1/60f, 6, 2); //higher iterations make physics more accurate but also way slower
 
-//        //contactListener.update();
-//
-//        if(contactListener.bodiesToDestroy.size > 0){
-//            contactListener.bodiesToDestroy.clear();
-//        }
-
         viewport.setScreenPosition(0, 0);
 
         // Draw a debug line between p1 and p2
@@ -230,9 +224,14 @@ public class PlayScreen implements Screen {
         hud = new Hud(game.batch, playerOne, playerTwo);
 
         // Log all connected controllers:
+        log.info("Connected Controllers:");
+        log.info("---------------------------------");
+        int controllerIndex = 1;
         for (Controller controller : Controllers.getControllers()) {
-            log.info("Controller detected: " + controller.getUniqueId(), controller.getName());
+            log.info("Controller " + controllerIndex + ": " + controller.getUniqueId(), controller.getName());
+            controllerIndex++;
         }
+        log.info("---------------------------------");
 
         winScreen=new WinScreen(game,playerOne,playerTwo);
 
@@ -276,6 +275,7 @@ public class PlayScreen implements Screen {
             fdef.shape = shape;
             body.createFixture(fdef);
         }
+        log.debug("TiledMap created. Initialized object layers and created matching b2dBodies.");
     }
 
 
@@ -286,7 +286,7 @@ public class PlayScreen implements Screen {
 
     /**
      * Renders the playScreen after calling update(). Renders every necessary part of the screen
-     * (players, items, tilemap, debug renderers, postprocessing filters and HUD.
+     * (players, items, tilemap, debug renderers, postprocessing filters and HUD).
      * Checks, if one player has won.
      * @param delta The time in seconds since the last render.
      */
@@ -308,11 +308,12 @@ public class PlayScreen implements Screen {
         if (debugMode) {
             //render our tiled map debug outlines to screen
             box2DDebugRenderer.render(world, gamecamera.combined);
+
+            // REMOVE "//" TO PRINT FPS OF TO THE CONSOLE!!-----
             //System.out.println(Gdx.graphics.getFramesPerSecond());
+            // -------------------------------------------------
         }
 
-
-        //batch.setProjectionMatrix(cameraManager.getGameCamera().combined);
         batch.setProjectionMatrix(gamecamera.combined);
 
         batch.begin();
@@ -321,7 +322,6 @@ public class PlayScreen implements Screen {
         playerTwo.draw(batch);
         combatManager.drawProjectiles(batch);
         vafxManager.drawVFX(batch);
-
 
         batch.end();
 
