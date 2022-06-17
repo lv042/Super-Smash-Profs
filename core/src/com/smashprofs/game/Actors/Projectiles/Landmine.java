@@ -65,7 +65,7 @@ public class Landmine extends Projectile {
      */
     private void applyGravity(float delta) {
         b2dbody.applyLinearImpulse(gravityVector, b2dbody.getWorldCenter(), true);
-        log.debug("Applied gravity to Landmine.");
+        // log.debug("Applied gravity to Landmine.");
     }
 
 }

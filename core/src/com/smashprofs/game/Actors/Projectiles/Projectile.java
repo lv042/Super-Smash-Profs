@@ -183,7 +183,7 @@ public class  Projectile extends GameObject {
         rotation = -2.25*(b2dbody.getAngle()*2*Math.PI*4);
         sprite.setRotation((float) rotation);
 
-        log.debug("Projectile b2dBody userData: " + b2dbody.getUserData());
+        //log.debug("Projectile b2dBody userData: " + b2dbody.getUserData());
     }
 
     /**
@@ -194,7 +194,7 @@ public class  Projectile extends GameObject {
     @Override
     public void draw(Batch batch) {
         super.draw(batch);
-        log.debug("Projectile drawn");
+        // log.debug("Projectile drawn");
     }
 
 

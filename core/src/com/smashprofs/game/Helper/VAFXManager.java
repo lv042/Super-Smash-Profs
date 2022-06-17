@@ -70,14 +70,14 @@ public class VAFXManager {
         }
 
         VFXObjectList.add(new VFXObject("test", spawnpoint, VFXTexture, sound, centered, spriteIsSquare));
-        log.debug("Added explosion to VFXObjectList.");
+        //log.debug("Added explosion to VFXObjectList.");
     }
 
 
     public void update(float deltatime) {
         for (VFXObject explosion: VFXObjectList) {
             explosion.update(deltatime);
-            log.debug("Is active before loop: " + explosion.active);
+            //log.debug("Is active before loop: " + explosion.active);
 
             if(!explosion.active) {
                 VFXObjectList.removeValue(explosion, true);
