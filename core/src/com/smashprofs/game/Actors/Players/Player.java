@@ -171,7 +171,12 @@ public abstract class Player extends GameObject {
 
     }
 
-
+    /**
+     * Refreshes the texture drawn on the player's position.
+     * Sets the texture position to the player body's position.
+     * Flips the sprite according to the players walking direction.
+     * Sets the texture to the most up-to-date animation frame.
+     */
     private void setAnimationPosition() {
         sprite.setPosition(b2dbody.getPosition().x - sprite.getWidth() / 2, b2dbody.getPosition().y - sprite.getHeight() / 4); //set the position of the animation to the center of the body
 
@@ -180,6 +185,9 @@ public abstract class Player extends GameObject {
         sprite.setFlip(facingRight, false); // lets the player face the correct direction
     }
 
+    /**
+     * Sets the player state based on velocities and isGrounded.
+     */
     private void setAnimationState() {
         // Set State depending on x-velocity of the player body
         if (getB2dbody().getLinearVelocity().x == 0f && isGrounded()) {
@@ -194,6 +202,11 @@ public abstract class Player extends GameObject {
     }
 
 
+    /**
+     * Defining the player. Creating the body definitions, the fixture definitions and the b2dBody.
+     * @param world
+     * The world the player's b2dBody will be created in.
+     */
     private void definePlayer(World world) {
         bdef = new BodyDef();
         bdef.position.set(spawnpoint.x / PPM, spawnpoint.y / PPM);
@@ -221,12 +234,20 @@ public abstract class Player extends GameObject {
 
     }
 
+    /**
+     * Checks if the player has enough health.
+     * If not, the player dies.
+     */
     private void checkHealth() {
         if (getHP() <= 0) {
             die();
         }
     }
 
+    /**
+     * Lets the player die.
+     * If the player is not dead already, sets isDead to true and plays the deathSound.
+     */
     private void die() {
         if (!isDead) {
             setDead(true);
@@ -242,6 +263,12 @@ public abstract class Player extends GameObject {
         return playerCollisionBoxRadius;
     }
 
+    /**
+     * Handles input from controllers and the keyboard.
+     * Controls are also mapped in here.
+     * @param dt
+     * The game delta time.
+     */
     public void managePlayerInput(float dt) {
 
         Array<Controller> controllers2 = Controllers.getControllers();
@@ -330,7 +357,7 @@ public abstract class Player extends GameObject {
             }
         }
 
-
+        // Play attack sound
         if (standardAttackInput) {
             soundManager.playSound(punchSoundMp3);
         }
@@ -346,6 +373,7 @@ public abstract class Player extends GameObject {
         }
 
 
+        // Double jumping
         if (jumpCount <= maxExtraJumps && (jumpInput) && (isGrounded || isExtraJumpReady)) {
 
             jumpCount++;
@@ -384,6 +412,13 @@ public abstract class Player extends GameObject {
         }
     }
 
+    /**
+     * Returns the matching frame of the player animation.
+     * @param stateTime
+     * The current state time.
+     * @return
+     * The frame of the animation matching the current state time and the player state.
+     */
     public TextureRegion getRenderTexture(float stateTime) {
         TextureRegion frame = null;
 
@@ -423,7 +458,10 @@ public abstract class Player extends GameObject {
         return b2dbody.getPosition().y < 0;
     }
 
-    //Check if the player is touching the ground
+    /**
+     * Checks if the player is touching the ground.
+     * Sets isGrounded, isNotTouchingTiles, isExtraJumpReady and isStomping accordingly.
+     */
     public void checkGrounded() {
         currentY = b2dbody.getPosition().y;
 
