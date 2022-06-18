@@ -3,11 +3,12 @@ import java.util.Random;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.World;
-import com.smashprofs.game.Actors.Players.Player;
+import com.smashprofs.game.Helper.B2dContactListener;
 import com.smashprofs.game.Helper.ShapeCreator;
 
-//import static jdk.nashorn.internal.runtime.regexp.joni.Syntax.Java;
-
+/**
+ * A throwing star which the player will throw in a specific direction
+ */
 public class ThrowingStar extends Projectile {
     Random rand = new Random();
     private float projectileSpeed = 10;
@@ -15,9 +16,18 @@ public class ThrowingStar extends Projectile {
 
     Vector2 projectileDirection;
 
-
+    /**
+     * Spawns a throwing star with a specific moving speed pointing in a specific direction next to the originPosition
+     * @param world
+     * The world the star will exist in
+     * @param originPosition
+     * The position the star will spawn at
+     * @param direction
+     * The direction the star will fly in
+     */
     public ThrowingStar(World world, Vector2 originPosition, Vector2 direction) {
-        super(world, originPosition, "Star", ShapeCreator.getCircleShape(3f), 3f, new Texture("projectiles/star.png"), 15);
+        super(world, originPosition, "Star", ShapeCreator.getCircleShape(3f), 3f, new Texture("projectiles/star.png"), 15, 0.75f, B2dContactListener.PROJECTILE_ENTITY);
+
 
 
 
@@ -35,7 +45,7 @@ public class ThrowingStar extends Projectile {
         projectileDirection = direction;
     }
     @Override
-    void initialMovement() {
+    void initialMovement(float speed) {
 
     }
 

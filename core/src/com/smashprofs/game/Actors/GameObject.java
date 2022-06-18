@@ -2,9 +2,15 @@ package com.smashprofs.game.Actors;
 import com.badlogic.gdx.graphics.g2d.*;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.*;
+import com.smashprofs.game.Actors.Projectiles.Projectile;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 
 public abstract class GameObject {
+
+    private static Logger log = LogManager.getLogger(GameObject.class);
+
     public Body b2dbody;    // Can't be final because of the change in child classes
     public Sprite sprite;   // <>
     public String userData; // <> userData is a string to identify the object in the game
@@ -19,8 +25,7 @@ public abstract class GameObject {
     }
 
     public void update(float delta) {
-        //System.out.println("GameObject updated");
-        // TODO: alex
+        //log.debug("GameObject updated");
     }
 
     // Sprite related methods:dw

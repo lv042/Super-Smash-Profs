@@ -10,9 +10,12 @@ import com.badlogic.gdx.math.Matrix4;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.*;
 import com.smashprofs.game.Actors.GameObject;
+import com.smashprofs.game.Helper.B2dContactListener;
 import com.smashprofs.game.Helper.CameraManager;
 import com.smashprofs.game.Actors.Players.Player;
 import com.smashprofs.game.Screens.PlayScreen;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import static com.smashprofs.game.Actors.Players.Player.PPM;
 
@@ -20,6 +23,9 @@ import static com.smashprofs.game.Actors.Players.Player.PPM;
  * A basic projectile
  */
 public class  Projectile extends GameObject {
+
+    private static Logger log = LogManager.getLogger(Projectile.class);
+
     private BodyDef bdef;
     // public Body b2dbody;
     private CameraManager cameraManager = CameraManager.getCameraManager_INSTANCE();
@@ -29,7 +35,14 @@ public class  Projectile extends GameObject {
     public double rotation = 0;
     public float spawnOffset;
 
+    private short categoryBits = B2dContactListener.PROJECTILE_ENTITY;
+
     public final int damageOnHit;
+
+    /**
+     * The delay in seconds before you can use this attack again.
+     */
+    public static float delayInSeconds;
 
     public final Shape bodyShape;
     public Boolean active;
@@ -50,9 +63,10 @@ public class  Projectile extends GameObject {
      * @param damageOnHit
      * The amount of damage the projectile will do to a player
      */
-    public Projectile(World world, Player originPlayer, String userData, Shape bodyShape, float spawnOffset, Texture projectileTexture, int damageOnHit) {
+    public Projectile(World world, Player originPlayer, String userData, Shape bodyShape, float spawnOffset, Texture projectileTexture, int damageOnHit, float delayInSec, short categoryBits) {
         super(userData);
         this.damageOnHit = damageOnHit;
+        delayInSeconds = delayInSec;
         sprite = new Sprite(projectileTexture);
         this.active = true;
         this.userData = userData;
@@ -60,23 +74,17 @@ public class  Projectile extends GameObject {
         this.originPlayer = originPlayer;
         this.bodyShape = bodyShape;
         this.spawnOffset = spawnOffset;
-        //setTexture(new Texture("prettyplayer.png"));
-        //setTexture(new Texture(Gdx.files.internal("prettyplayer.png")));
+        this.categoryBits = categoryBits;
         projectileSpawnpoint = new Vector2(originPlayer.getPosition().x + (originPlayer.getIsFacingRightAxe() * spawnOffset / PPM), originPlayer.getPosition().y);
 
 
-
-        //setPosition(12, 12);
-
         sprite.setBounds(originPlayer.getPlayerSprite().getX() / PPM, originPlayer.getPlayerSprite().getY() / PPM, sprite.getWidth()/PPM, sprite.getHeight()/PPM);
         create();
-        //scale(1/PPM);
 
-
-
-        initialMovement();
 
     }
+
+
 
     /**
      * Constructor for creating a projectile that spawns at the given originPosition
@@ -93,33 +101,35 @@ public class  Projectile extends GameObject {
      * @param damageOnHit
      * The amount of damage the projectile will do to a player
      */
-    public Projectile(World world, Vector2 originPosition, String userData, Shape bodyShape, float spawnOffset, Texture projectileTexture, int damageOnHit) {
+    public Projectile(World world, Vector2 originPosition, String userData, Shape bodyShape, float spawnOffset, Texture projectileTexture, int damageOnHit, float delayInSec, short categoryBits) {
         super(userData);
         this.damageOnHit = damageOnHit;
+        delayInSeconds = delayInSec;
         sprite = new Sprite(projectileTexture);
         this.active = true;
         this.userData = userData;
         this.world = world;
         this.bodyShape = bodyShape;
         this.spawnOffset = spawnOffset;
-        //add ppm offset
-        projectileSpawnpoint = new Vector2(originPosition.x, originPosition.y );
-
+        this.categoryBits = categoryBits;
+        //projectileSpawnpoint = new Vector2(originPosition.x, originPosition.y );
+        projectileSpawnpoint = new Vector2(originPosition.x + (spawnOffset / PPM), originPosition.y);
 
 
         sprite.setBounds(originPosition.x / PPM, originPosition.y / PPM, sprite.getWidth()/PPM, sprite.getHeight()/PPM);
         create();
 
 
-        initialMovement();
     }
+
+
 
 
     /**
      * Applies a horizontal linearVelocity to the Projectile
      */
-    void initialMovement() {
-        b2dbody.setLinearVelocity(new Vector2(originPlayer.getIsFacingRightAxe() * 0.1f, 0));
+    void initialMovement(float speed) {
+        b2dbody.setLinearVelocity(new Vector2(originPlayer.getIsFacingRightAxe() * speed, 0));
     }
 
     /**
@@ -146,11 +156,7 @@ public class  Projectile extends GameObject {
         fDef.shape = bodyShape;
 
         //filters collisions with other objects
-        if (true) {
-            fDef.filter.groupIndex = 0;
-
-            System.out.println("Group index: " + fDef.filter.groupIndex);
-        }
+        fDef.filter.categoryBits = categoryBits;
 
         //fDef.density = 0.1f;
         //fDef.restitution = 0.4f;
@@ -161,7 +167,8 @@ public class  Projectile extends GameObject {
         sprite.setOrigin(sprite.getWidth()*0.5f, sprite.getHeight()*0.5f);
 
 
-        System.out.println("projectile address: " + this);
+        //System.out.println("projectile address: " + this);
+        log.debug("projectile address: " + this);
     }
 
     /**
@@ -171,23 +178,12 @@ public class  Projectile extends GameObject {
      * The game delta time
      */
     public void update(float delta) {
-
-        //System.out.println("!!!! projectile update");
-        //this.setPosition(b2dbody.getPosition().x - getWidth() / 2, b2dbody.getPosition().y - getHeight() / 2);
-
-        //setBounds(b2dbody.getPosition().x - getWidth() / 2/PPM, b2dbody.getPosition().y - getHeight() / 2 /PPM, getTexture().getWidth()/PPM, getTexture().getHeight()/PPM );
-
-
         sprite.setPosition(b2dbody.getPosition().x - sprite.getWidth() / 2f, b2dbody.getPosition().y - sprite.getHeight() / 2f);
 
-
-        //rotation += 0.8f;
-        //setPosition(b2dbody.getPosition().x - getWidth() / 2/PPM, b2dbody.getPosition().y - getHeight() / 2 /PPM);
         rotation = -2.25*(b2dbody.getAngle()*2*Math.PI*4);
         sprite.setRotation((float) rotation);
 
-
-        System.out.println("Projectile b2dBody userData: " + b2dbody.getUserData());
+        //log.debug("Projectile b2dBody userData: " + b2dbody.getUserData());
     }
 
     /**
@@ -197,10 +193,8 @@ public class  Projectile extends GameObject {
      */
     @Override
     public void draw(Batch batch) {
-
-
-        //System.out.println("projectile draw");
         super.draw(batch);
+        // log.debug("Projectile drawn");
     }
 
 
@@ -237,7 +231,7 @@ public class  Projectile extends GameObject {
      * Destroys the b2dBody of the projectile
      */
     public void destroyBody() {
-        System.out.println("Deleting Projectile body" + b2dbody.getUserData());
+        log.debug("Deleting Projectile body" + b2dbody.getUserData());
         PlayScreen.getWorld().destroyBody(this.b2dbody);
     }
 
@@ -245,14 +239,8 @@ public class  Projectile extends GameObject {
      * Disposes the texture of the projectile sprite
      */
     public void destroy() {
-        //world.destroyBody(b2dbody);
-        //sprite.setPosition(100000f, 100000f);
-        //active = false;
-
         sprite.getTexture().dispose();
-        System.out.println("Disposed projectile texture via .destroy()");
-        //destroy sprite
-        //sprite.getTexture().dispose();
+        log.debug("Disposed projectile texture via .destroy()");
     }
 
     /**
@@ -263,6 +251,16 @@ public class  Projectile extends GameObject {
     public void setActive(boolean b) {
         active = b;
     }
+
+    /**
+     * Get the delayInSeconds
+     * @return
+     * The delay in seconds before you can use this attack again.
+     */
+    public static float getDelayInSeconds() {
+        return delayInSeconds;
+    }
+
 }
 
 

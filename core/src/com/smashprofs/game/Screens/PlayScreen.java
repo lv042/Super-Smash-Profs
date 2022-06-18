@@ -4,11 +4,11 @@ package com.smashprofs.game.Screens;
 import com.badlogic.gdx.controllers.Controller;
 import com.badlogic.gdx.controllers.Controllers;
 import com.badlogic.gdx.graphics.Color;
-import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
 import com.badlogic.gdx.math.Matrix4;
+import com.crashinvaders.vfx.VfxManager;
 import com.smashprofs.game.Actors.Players.Player;
 import com.smashprofs.game.Game;
 import com.smashprofs.game.Helper.*;
@@ -26,15 +26,19 @@ import com.badlogic.gdx.physics.box2d.*;
 import com.badlogic.gdx.utils.viewport.FillViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import com.smashprofs.game.Scenes.Hud;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
-
-import java.util.logging.Logger;
 
 import static com.smashprofs.game.Actors.Players.Player.PPM;
 
+
+/**
+ * The main game screen
+ */
 public class PlayScreen implements Screen {
 
-    static final Logger logger = Logger.getLogger("Playscreen");
+    private static Logger log = LogManager.getLogger(PlayScreen.class);
 
     private Game game;
     public static Viewport viewport; // Manages a Camera and determines how world coordinates are mapped to and from the screen.
@@ -60,7 +64,7 @@ public class PlayScreen implements Screen {
 
     private CameraManager cameraManager = CameraManager.getCameraManager_INSTANCE();
 
-    private VFXManager vfxManager = VFXManager.getVFXManager_INSTANCE();
+    private VAFXManager vafxManager = VAFXManager.getVFXManager_INSTANCE();
 
     private OrthographicCamera gamecamera; //set by camera manager
 
@@ -70,14 +74,24 @@ public class PlayScreen implements Screen {
     //Box2D
     public static World world;
 
+    //collision flags
+
+
     //debug
+    public Boolean debugMode;
     private Box2DDebugRenderer box2DDebugRenderer; //renders outline of box2d bodies
 
 
     //factories
     private PlayerFactory playerFactory = null;
 
+    private VfxManager postProcessingManager;
 
+    /**
+     * Checks if player presses the "ESC" and if so, opens the main menu.
+     * @param deltatime
+     * The game deltatime
+     */
     public void checkInput(float deltatime){
 
         //Player input is now handeled in the PlayerClass
@@ -95,32 +109,33 @@ public class PlayScreen implements Screen {
         return batch;
     }
 
+    /**
+     * Updates the PlayScreen and everything which is part of it.
+     * @param deltatime
+     * The game delta time
+     */
     public void update(float deltatime) {
 
         tiledMapRenderer.setView(gamecamera);
 
-        playerOne.update(deltatime); // Most of the code above should go in this method
+        playerOne.update(deltatime);
         playerTwo.update(deltatime); // update method must be before most of the code below otherwise some values are null;
         checkInput(deltatime);
         //combatManager
         combatManager.update(deltatime, playerOne, playerTwo, world);
-        vfxManager.update(deltatime);
+        vafxManager.update(deltatime);
 
 
 
         //updates the physics 60 times per second
         world.step(1/60f, 6, 2); //higher iterations make physics more accurate but also way slower
 
-//        //contactListener.update();
-//
-//        if(contactListener.bodiesToDestroy.size > 0){
-//            contactListener.bodiesToDestroy.clear();
-//        }
-
         viewport.setScreenPosition(0, 0);
-        //debug
-        //DrawDebugLine(playerOne.getPosition(), playerTwo.getPosition(), gamecamera.combined);
 
+        // Draw a debug line between p1 and p2
+        if(debugMode) {
+            DrawDebugLine(playerOne.getPosition(), playerTwo.getPosition(), gamecamera.combined);
+        }
 
         cameraManager.updateCameraManager(playerOne, playerTwo);
     }
@@ -140,14 +155,29 @@ public class PlayScreen implements Screen {
         return viewport;
     }
 
+    /**
+     * World getter-method.
+     * @return
+     * Returns the game world.
+     */
     public static World getWorld(){
         return world;
     }
 
+    /**
+     * Constructor of PlayScreen. Sets up postprocessing, creates the player factory, sets viewport,
+     * creates Players, initializes connected controllers, resets combat manager and contact listener.
+     * @param game
+     * The game.
+     */
     public PlayScreen(Game game) {
+        this.debugMode = Game.debugMode;
+
+        //add pre configured settings to PostProcessingManager
+        PostProcessingSettings ppSetUpHandler = new PostProcessingSettings();
+        this.postProcessingManager = ppSetUpHandler.getPostProcessingManager();
 
         playerFactory = PlayerFactory.getPlayerFactory_INSTANCE();
-
 
         soundManager.setupMusic(gameSong);
         this.combatManager = CombatManager.getCombatManager_INSTANCE();
@@ -161,36 +191,59 @@ public class PlayScreen implements Screen {
 
         createTileMap();
 
-        //playerOne = new Player(world, Player.InputState.WASD, playerOneSpawnPoint, "Alex Boss", "PlayerOne");
-        playerOne = playerFactory.getPlayer(PlayerTypes.Alex);
-        //playerTwo = new Player(world, Player.InputState.ARROWS, playerTwoSpawnPoint, "Jens Huhn", "PlayerTwo");
-        playerTwo = playerFactory.getPlayer(PlayerTypes.Maurice);
+        //playerOne = playerFactory.getPlayer(PlayerTypes.Alex);
+        switch(CharacterSelectScreen.getSelectedPlayerOne()) {
+            case "Alex": playerOne = playerFactory.getPlayer(PlayerTypes.Alex); break;
+            case "Maurice": playerOne = playerFactory.getPlayer(    PlayerTypes.Maurice); break;
+            case "Luca": playerOne = playerFactory.getPlayer(PlayerTypes.Luca); break;
+            case "Leo": playerOne = playerFactory.getPlayer(PlayerTypes.Leo); break;
+            case "Viktor": playerOne = playerFactory.getPlayer(PlayerTypes.Viktor); break;
+            default: playerOne = playerFactory.getPlayer(PlayerTypes.Alex);
+        }
+
+        // playerTwo = playerFactory.getPlayer(PlayerTypes.Maurice);
+        switch(CharacterSelectScreen.getSelectedPlayerTwo()) {
+            case "Alex": playerTwo = playerFactory.getPlayer(PlayerTypes.Alex); break;
+            case "Maurice": playerTwo = playerFactory.getPlayer(PlayerTypes.Maurice); break;
+            case "Luca": playerTwo = playerFactory.getPlayer(PlayerTypes.Luca); break;
+            case "Leo": playerTwo = playerFactory.getPlayer(PlayerTypes.Leo); break;
+            case "Viktor": playerTwo = playerFactory.getPlayer(PlayerTypes.Viktor); break;
+            default: playerTwo = playerFactory.getPlayer(PlayerTypes.Alex);
+        }
 
         contactListener = B2dContactListener.getContactListener_INSTANCE();
         world.setContactListener(contactListener);
 
-        //System.out.println("playerOne: " + playerOne);
-        logger.info("playerOne:" + playerOne);
-        //System.out.println("playerTwo: " + playerTwo);
-        logger.info("playerTwo:" + playerTwo);
+        log.info("playerOne:" + playerOne);
+        log.info("playerTwo:" + playerTwo);
+
         hud = new Hud(game.batch, playerOne, playerTwo);
 
-
+        // Log all connected controllers:
+        log.info("Connected Controllers:");
+        log.info("---------------------------------");
+        int controllerIndex = 1;
         for (Controller controller : Controllers.getControllers()) {
-            Gdx.app.log(controller.getUniqueId(), controller.getName());
+            log.info("Controller " + controllerIndex + ": " + controller.getUniqueId(), controller.getName());
+            controllerIndex++;
         }
+        log.info("---------------------------------");
 
         winScreen=new WinScreen(game,playerOne,playerTwo);
 
+        // Necessary to avoid leftovers from another game session
         playerFactory.resetFactory();
         combatManager.resetCombatManager();
         contactListener.resetContactListener();
 
     }
-
+    /**
+     * Initializes the tile map. Loads the files, sets up the renderer, creates b2dBodies for
+     * shapes in the object layers of the tile map.
+     */
     private void createTileMap() {
         mapLoader = new TmxMapLoader();
-        map = mapLoader.load("1/Map1New2.tmx");
+        map = mapLoader.load("1/Map1New2Remake.tmx");
         tiledMapRenderer = new OrthogonalTiledMapRenderer(map, 1 / PPM);
         //tiledMapRenderer.setBlending(true);
 
@@ -204,6 +257,8 @@ public class PlayScreen implements Screen {
         BodyDef bdef = new BodyDef();
         PolygonShape shape = new PolygonShape();
         FixtureDef fdef = new FixtureDef();
+        fdef.filter.categoryBits = B2dContactListener.WORLD_ENTITY;
+        fdef.filter.maskBits = B2dContactListener.PLAYER_ENTITY | B2dContactListener.PROJECTILE_ENTITY;
         Body body;
 
         for(MapObject object : map.getLayers().get("obj").getObjects().getByType(RectangleMapObject.class)){
@@ -216,6 +271,7 @@ public class PlayScreen implements Screen {
             fdef.shape = shape;
             body.createFixture(fdef);
         }
+        log.debug("TiledMap created. Initialized object layers and created matching b2dBodies.");
     }
 
 
@@ -224,22 +280,35 @@ public class PlayScreen implements Screen {
 
     }
 
+    /**
+     * Renders the playScreen after calling update(). Renders every necessary part of the screen
+     * (players, items, tilemap, debug renderers, postprocessing filters and HUD).
+     * Checks, if one player has won.
+     * @param delta The time in seconds since the last render.
+     */
     @Override
     public void render(float delta) {
 
         Gdx.gl.glClear(Gdx.gl.GL_COLOR_BUFFER_BIT);
         Gdx.gl.glClearColor(0, 0, 0, 1); //-> light blue
-        //Gdx.gl.glClearColor(1, 1, 1, 1);
+        postProcessingManager.cleanUpBuffers();
+        // Begin render to an off-screen buffer.
+        postProcessingManager.beginInputCapture();
 
         tiledMapRenderer.render();
 
         update(delta);
 
 
-        //render our tiledmap debug outlines to screen
-        box2DDebugRenderer.render(world, gamecamera.combined);
+        if (debugMode) {
+            //render our tiled map debug outlines to screen
+            box2DDebugRenderer.render(world, gamecamera.combined);
 
-        //batch.setProjectionMatrix(cameraManager.getGameCamera().combined);
+            // REMOVE "//" TO PRINT FPS OF TO THE CONSOLE!!-----
+            //System.out.println(Gdx.graphics.getFramesPerSecond());
+            // -------------------------------------------------
+        }
+
         batch.setProjectionMatrix(gamecamera.combined);
 
         batch.begin();
@@ -247,11 +316,7 @@ public class PlayScreen implements Screen {
         playerOne.draw(batch);
         playerTwo.draw(batch);
         combatManager.drawProjectiles(batch);
-        vfxManager.drawVFX(batch);
-
-        final Sprite sprite;
-        final Body body;
-
+        vafxManager.drawVFX(batch);
 
         batch.end();
 
@@ -260,8 +325,14 @@ public class PlayScreen implements Screen {
         hud.stage.draw();
         hud.updateHud(delta, playerOne, playerTwo);
 
+        postProcessingManager.endInputCapture();
+
+        postProcessingManager.applyEffects();
+
+        postProcessingManager.renderToScreen();
+
         //Test for win and set to win screen
-       if(hud.testwin(playerOne,playerTwo))
+       if(hud.testWin(playerOne,playerTwo))
        {
            game.setScreen(winScreen);
        }
@@ -269,6 +340,13 @@ public class PlayScreen implements Screen {
 
     }
 
+    /**
+     * Resizes the viewport.
+     * @param width
+     * The width the viewport should be set to.
+     * @param height
+     * The height the viewport should be set to.
+     */
     @Override
     public void resize(int width, int height) {
         viewport.update(width, height);
@@ -289,6 +367,9 @@ public class PlayScreen implements Screen {
 
     }
 
+    /**
+     * Dispose the PlayScreen and the map, the tiledMapRenderer, the b2dDebug renderer, the world and the hud.
+     */
     @Override
     public void dispose() {
         map.dispose();

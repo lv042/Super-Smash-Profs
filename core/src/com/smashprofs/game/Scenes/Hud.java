@@ -1,5 +1,6 @@
 package com.smashprofs.game.Scenes;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
@@ -11,6 +12,7 @@ import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import com.smashprofs.game.Game;
 import com.smashprofs.game.Actors.Players.Player;
+import com.smashprofs.game.Helper.SoundManager;
 
 public class  Hud{
     public Stage stage; //stage to hold all the actors -> A 2D scene graph containing hierarchies of actors. Stage handles the viewport and distributes input events.
@@ -25,15 +27,25 @@ public class  Hud{
     Label playerOneHud; // label for the level
     Label modeLabel; // label for the world
     Label playerLabel; // label for the player
+    Label fpsLabel; // label for the current FPS
+    BitmapFont fpsFont; // font for the FPS number. Different styling than the default bitmap font.
+    private SoundManager soundManager;
 
     public Hud(SpriteBatch spriteBatch, Player playerOne, Player playerTwo){
-
+        soundManager=SoundManager.getSoundManager_INSTANCE();
+        this.fpsFont = new BitmapFont();
+        fpsFont.getData().setScale(0.5f);
         timeCount = 0;
         score = 0;
         this.viewport = new FitViewport(Game.V_WIDTH, Game.V_HEIGHT, new OrthographicCamera());
         stage = new Stage(viewport, spriteBatch);
 
         Table table = new Table();
+
+        if(Game.debugMode) {
+            table.setDebug(true);
+        }
+
         table.top(); // aligns the table to the top of the screen
         table.setFillParent(true); // fills the entire screen with the table
 
@@ -47,10 +59,15 @@ public class  Hud{
         playerTwoHud = new Label(playerTwo.getPlayerName() + " " + playerTwo.getHP() + "%", new Label.LabelStyle(new BitmapFont(), Color.WHITE));
         modeLabel = new Label("1 vs. 1", new Label.LabelStyle(new BitmapFont(), Color.WHITE));
 
+        if(Game.debugMode) {
+            fpsLabel = new Label( "FPS: "  + Gdx.graphics.getFramesPerSecond(), new Label.LabelStyle(fpsFont, Color.RED));
+        }
+
         table.add(playerOneHud).expandX().padTop(2);
         table.add(countdownLabel).expandX().padTop(2);
         table.add(playerTwoHud).expandX().padTop(2);
         table.row(); // new row
+        table.add(fpsLabel);
         stage.addActor(table);
 
     }
@@ -64,11 +81,33 @@ public class  Hud{
         }
         playerOneHud.setText(playerOne.getPlayerName() + " " + (int)playerOne.getHP() + "%");
         playerTwoHud.setText(playerTwo.getPlayerName() + " " + (int)playerTwo.getHP() + "%");
+
+        if(Game.debugMode) {
+            fpsLabel.setText("FPS: " + Gdx.graphics.getFramesPerSecond());
+            // Set color of FPS label if FPS are low.
+            if(Gdx.graphics.getFramesPerSecond() < 30) {
+                fpsLabel.setStyle(new Label.LabelStyle(fpsFont, Color.RED));
+            }
+            else if(Gdx.graphics.getFramesPerSecond() < 45) {
+                fpsLabel.setStyle(new Label.LabelStyle(fpsFont, Color.YELLOW));
+            }
+            else if(Gdx.graphics.getFramesPerSecond() > 55) {
+                fpsLabel.setStyle(new Label.LabelStyle(fpsFont, Color.GREEN));
+            }
+        }
+
     }
 
-    public boolean testwin(Player playerOne, Player playerTwo)
+    public boolean testWin(Player playerOne, Player playerTwo)
     {
-       return timeCount>=1||playerOne.getHP()<0||playerTwo.getHP()<0;
+        if(timeCount>=1){
+            soundManager.playSound("sounds/clock.mp3");
+        }
+        else if (playerOne.getHP()<=0||playerTwo.getHP()<=0){
+            soundManager.playSound("sounds/death.mp3");
+        }
+
+        return timeCount>=1||playerOne.getHP()<=0||playerTwo.getHP()<=0;
 
     }
 

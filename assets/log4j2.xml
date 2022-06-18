@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Configuration>
+    <Appenders>
+        <!-- Schreibt Standard-Log in die Logdatei A1.log -->
+        <!--<File name="A1" fileName="A1.log" append="false">
+            <PatternLayout pattern="%t %-5p %c{2} - %m%n"/>
+        </File> -->
+        <!-- Schreibt Root Log in die Logdatei superSmashProfs.log -->
+        <File name="fileOut" fileName="superSmashProfs.log" append="false">
+            <PatternLayout pattern="%t %-5p %c{2} - %m%n"/>
+        </File>
+        <File name="fileOutDebug" fileName="superSmashProfs_DEBUG.log" append="false">
+            <PatternLayout pattern="%t %-5p %c{2} - %m%n"/>
+        </File>
+        <Console name="STDOUT" target="SYSTEM_OUT">
+            <PatternLayout pattern="%d %-5p [%t] %C{2} (%F:%L) - %m%n"/>
+        </Console>
+    </Appenders>
+    <Loggers>
+
+        <!-- You may want to define class or package level per-logger rules -->
+        <!--        <Logger name="de.weatherforecastcli.mi.App" level="debug">
+                    <AppenderRef ref="A1"/>
+                </Logger>-->
+<!--        <Root level="info" additivity="false">-->
+<!--            <AppenderRef ref="fileOut" level="info"/>-->
+<!--            <AppenderRef ref="fileOutDebug" level="info"/>-->
+<!--        </Root>-->
+
+        <Logger name="com.smashprofs" level="debug" additivity="false">
+            <AppenderRef ref="fileOutDebug" level="debug"/>
+            <AppenderRef ref="fileOut" level="info"/>
+        </Logger>
+
+
+    </Loggers>
+</Configuration>
