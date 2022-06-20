@@ -113,7 +113,7 @@ public class  Projectile extends GameObject {
         this.spawnOffset = spawnOffset;
         this.categoryBits = categoryBits;
         //projectileSpawnpoint = new Vector2(originPosition.x, originPosition.y );
-        projectileSpawnpoint = new Vector2(originPosition.x + (spawnOffset / PPM), originPosition.y);
+        projectileSpawnpoint = new Vector2(originPosition.x, originPosition.y);
 
 
         sprite.setBounds(originPosition.x / PPM, originPosition.y / PPM, sprite.getWidth()/PPM, sprite.getHeight()/PPM);
