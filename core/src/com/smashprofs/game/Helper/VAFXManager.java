@@ -8,7 +8,9 @@ import com.smashprofs.game.Actors.VFXObject;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-
+/**
+ * A VFF manager for playing animations at different positions on the screen.
+ */
 public class VAFXManager {
 
     private static Logger log = LogManager.getLogger(VAFXManager.class);
@@ -27,7 +29,13 @@ public class VAFXManager {
     public static VAFXManager getVFXManager_INSTANCE() {return VAFX_MANAGER___INSTANCE;}
 
 
-
+    /**
+     * Spawns an explosion of a valid type at a specified position on the screen.
+     * @param explosionType
+     * The type of the explosion.
+     * @param spawnpoint
+     * The point the explosion should spawn at.
+     */
     public void spawnExplosion(explosionType explosionType, Vector2 spawnpoint) {
         Texture VFXTexture = null;
         String sound = null;
@@ -74,6 +82,11 @@ public class VAFXManager {
     }
 
 
+    /**
+     * Updates all currently existing VFX-objects in the array.
+     * Remove elements in the array that are inactive.
+     * @param deltatime
+     */
     public void update(float deltatime) {
         for (VFXObject explosion: VFXObjectList) {
             explosion.update(deltatime);
@@ -92,6 +105,11 @@ public class VAFXManager {
         }
     }
 
+    /**
+     * Draws all existing VFX-objects.
+     * @param batch
+     * The batch the VFX-objects should be drawn in.
+     */
     public void drawVFX(SpriteBatch batch) {
         for(VFXObject explosion : VFXObjectList) {
             explosion.draw(batch);

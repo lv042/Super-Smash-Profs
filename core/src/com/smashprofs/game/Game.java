@@ -1,12 +1,9 @@
 package com.smashprofs.game;
 
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.smashprofs.game.Helper.GameThread;
-import com.smashprofs.game.Helper.PropertiesReader;
 import com.smashprofs.game.Helper.gamePropertiesManager;
-import com.smashprofs.game.Screens.CharacterSelectScreen;
 import com.smashprofs.game.Screens.IntroScreen;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -37,8 +34,6 @@ public class Game extends com.badlogic.gdx.Game {
 		batch = new SpriteBatch();
 		//setScreen(new MainMenuScreen(this));
 
-		PropertiesReader propReader = new PropertiesReader();
-		String  result = propReader.readProperties();
 
 		log.info("Redirecting to IntroScreen...");
 		setScreen(new IntroScreen(this));
@@ -54,11 +49,6 @@ public class Game extends com.badlogic.gdx.Game {
 
 	@Override
 	public void render () {
-/*		ScreenUtils.clear(1, 0, 0, 1);
-		batch.begin();
-		batch.draw(img, 0, 0);
-		batch.end();*/
-
 		super.render();
 	}
 	

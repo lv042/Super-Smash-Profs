@@ -6,10 +6,17 @@ import org.apache.logging.log4j.Logger;
 import java.io.*;
 import java.util.Properties;
 
+/**
+ * Handles the game.properties file.
+ */
 public class gamePropertiesManager {
     private static Logger log = LogManager.getLogger(gamePropertiesManager.class);
     private static File file = new File("../core/src/resources/game_info.properties");
     private static Properties p = new Properties();
+
+    /**
+     * This needs to be called on the first start of the game.
+     */
     public static void firstStart() {
         //checks if file exists
         if (!file.exists()) {
@@ -31,6 +38,13 @@ public class gamePropertiesManager {
     }
 
 
+    /**
+     * Edits the value of a specific key.
+     * @param key
+     * The key whose value is to be changed.
+     * @param value
+     * The new value of the selected key.
+     */
     public static void edit(Keys key,String value) {
         log.debug("Editing game properties file...");
         //creates file writer
@@ -57,6 +71,13 @@ public class gamePropertiesManager {
         }
     }
 
+    /**
+     * Gets the value of a specific key.
+     * @param key
+     * The key to get the value of.
+     * @return
+     * The value of the specific key.
+     */
     public static String getEntry(Keys key) {
 
         //creates file reader
@@ -83,13 +104,26 @@ public class gamePropertiesManager {
         return p.getProperty(key.getValue());
     }
 
-    //to reformat game time
+    /**
+     * Reformat the game time string to an int value.
+     * @param time
+     * The time string.
+     * @return
+     * The time in seconds.
+     */
     public static int stringToSeconds(String time){
         String[] timesplit =time.split(" ");
         log.debug("Reformatted time string to int.");
         return Integer.parseInt(timesplit[0])*60+Integer.parseInt(timesplit[2]);
     }
 
+    /**
+     * Reformat the game time in seconds to a string.
+     * @param seconds
+     * The game time in seconds.
+     * @return
+     * The time as a string.
+     */
     public static String secondsToString(int seconds){
         int minutes = seconds/60;
         int sec=seconds-minutes*60;

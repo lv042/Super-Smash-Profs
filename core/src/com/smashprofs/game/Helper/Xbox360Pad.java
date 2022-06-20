@@ -1,5 +1,8 @@
 package com.smashprofs.game.Helper;
 
+/**
+ * The button / axis mapping for the Xbox360 gamepad.
+ */
 public class Xbox360Pad {
 
     /*

@@ -74,6 +74,11 @@ public class Util {
         return Gdx.graphics.getHeight() / 2 - height / 2;
     }
 
+    /**
+     * Loads the log4j configuration file.
+     * @param logConfigurationFile
+     * The file to load.
+     */
     public static void log4JconfLoad(String logConfigurationFile) {
         try {
             log.info("Trying to read log4j config file...");
