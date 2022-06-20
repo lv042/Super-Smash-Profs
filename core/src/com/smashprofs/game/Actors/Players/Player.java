@@ -84,6 +84,29 @@ public abstract class Player extends GameObject {
     
     private final Sprite sprite = new Sprite(); //Sprite of the GameObject
 
+    /**
+     * Creates a playable player that has a b2dBody, a sprite and animation for his individual states.
+     * @param world
+     * The world the player lives in.
+     * @param inputState
+     * The input method the player can be controlled with.
+     * @param spawnpoint
+     * The point the player will spawn at.
+     * @param playerName
+     * The player's in-game name.
+     * @param playerType
+     * The player's type.
+     * @param userData
+     * The userData of the player as a game object.
+     * @param playerStandTex
+     * The stand texture stripe (4 frames)
+     * @param playerRunTex
+     * The run texture stripe (6 frames)
+     * @param playerJumpTex
+     * The jump texture stripe (2 frames)
+     * @param playerPunchTex
+     * The punch texture stripe (3 frames)
+     */
     public Player(World world, InputState inputState, Vector2 spawnpoint, String playerName, PlayerTypes playerType, String userData, Texture playerStandTex, Texture playerRunTex, Texture playerJumpTex, Texture playerPunchTex) {
         super(userData);
 
@@ -134,6 +157,12 @@ public abstract class Player extends GameObject {
         poistion = b2dbody.getPosition();
     }
 
+    /**
+     * Update the player and all of his parameters.
+     * Do necessary checks.
+     * @param deltatime
+     * The game delta time.
+     */
     public void update(float deltatime) {
         updatePosition(deltatime);
         touchingTiles();
