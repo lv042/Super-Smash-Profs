@@ -67,7 +67,7 @@ public class  Hud{
         table.add(countdownLabel).expandX().padTop(2);
         table.add(playerTwoHud).expandX().padTop(2);
         table.row(); // new row
-        table.add(fpsLabel);
+        table.add(fpsLabel).right().padRight(6f).padTop(3f).colspan(3);
         stage.addActor(table);
 
     }
