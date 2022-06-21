@@ -17,7 +17,7 @@ public class Game extends com.badlogic.gdx.Game {
 	public static final int V_WIDTH = 400;
 	public static final int V_HEIGHT = 208;
 	private GameThread thread;
-	public static Boolean debugMode;
+	public static Boolean debugMode, showFPS;
 	
 	@Override
 	public void create () {
@@ -28,8 +28,11 @@ public class Game extends com.badlogic.gdx.Game {
 		thread.start();
 
 		// --Toggles debug mode--
-		debugMode = true;
+		debugMode = false;
 		// ----------------------
+		// --Toggles FPS visibility--
+		showFPS = true;
+		// --------------------------
 
 		batch = new SpriteBatch();
 		//setScreen(new MainMenuScreen(this));
@@ -43,6 +46,15 @@ public class Game extends com.badlogic.gdx.Game {
 			log.warn("-------------------------------------------");
 			log.warn("Game debug mode activated!");
 			log.warn("You might encounter debug lines and more.");
+			log.warn("-------------------------------------------");
+		}
+		if(showFPS) {
+			log.info("");
+			log.info("");
+			log.warn("-------------------------------------------");
+			log.warn("FPS counter visible!");
+			log.warn("Keep in mind that the FPS indicator is only ");
+			log.warn("visible when the PlayScreen is active.");
 			log.warn("-------------------------------------------");
 		}
 	}

@@ -304,7 +304,7 @@ public class PlayScreen implements Screen {
             //render our tiled map debug outlines to screen
             box2DDebugRenderer.render(world, gamecamera.combined);
 
-            // REMOVE "//" TO PRINT FPS OF TO THE CONSOLE!!-----
+            // REMOVE "//" TO PRINT FPS TO THE CONSOLE!!-----
             //System.out.println(Gdx.graphics.getFramesPerSecond());
             // -------------------------------------------------
         }

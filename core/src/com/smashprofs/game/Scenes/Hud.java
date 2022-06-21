@@ -59,7 +59,7 @@ public class  Hud{
         playerTwoHud = new Label(playerTwo.getPlayerName() + " " + playerTwo.getHP() + "%", new Label.LabelStyle(new BitmapFont(), Color.WHITE));
         modeLabel = new Label("1 vs. 1", new Label.LabelStyle(new BitmapFont(), Color.WHITE));
 
-        if(Game.debugMode) {
+        if(Game.showFPS || Game.debugMode) {
             fpsLabel = new Label( "FPS: "  + Gdx.graphics.getFramesPerSecond(), new Label.LabelStyle(fpsFont, Color.RED));
         }
 
