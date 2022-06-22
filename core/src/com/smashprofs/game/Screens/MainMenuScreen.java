@@ -42,6 +42,7 @@ public class MainMenuScreen implements Screen {
     private OrthographicCamera camera;
     private Image playButton, exitButton, logo;
     private Texture playButtonInactive, playButtonActive, exitButtonInactive, exitButtonActive;
+    private Sprite logoSprite;
     private Table mainTable;
     private VfxManager postProcessingManager;
     private SoundManager sound;
@@ -53,7 +54,7 @@ public class MainMenuScreen implements Screen {
     int screenWidth = Gdx.graphics.getWidth();
     int height = Gdx.graphics.getHeight();
 
-    Texture logoTexture = new Texture("mainmenu/ssp.png");
+
 
     public MainMenuScreen(Game game) {
 
@@ -89,7 +90,7 @@ public class MainMenuScreen implements Screen {
         //Create buttons
         playButton = new Image(playButtonInactive);
         exitButton = new Image(exitButtonInactive);
-        logo = new Image(new Texture("mainmenu/ssp.png"));
+        logoSprite=new Sprite(new Texture("mainmenu/ssp.png"));
 
         //Add listeners to buttons
         playButton.addListener(new InputListener() {
@@ -166,7 +167,8 @@ public class MainMenuScreen implements Screen {
         zoomFactor = 1 + (float) Math.cos(timer) / 50;
 
         spriteBatch.begin();
-        spriteBatch.draw(logoTexture, screenWidth / 2f - 614f / zoomFactor, 700f / zoomFactor, 1228f / zoomFactor, 104f / zoomFactor);
+
+        spriteBatch.draw(logoSprite, screenWidth / 2f -logoSprite.getWidth() /2/ zoomFactor, 700f / zoomFactor, 1228f / zoomFactor, 104f / zoomFactor);
         //spriteBatch.draw(logoTexture, screenWidth / 2 - 614f, 104f );
         spriteBatch.end();
 
@@ -180,6 +182,7 @@ public class MainMenuScreen implements Screen {
     public void resize(int width, int height) {
         this.viewport.update(width, height);
         camera.position.set(camera.viewportWidth / 2, camera.viewportHeight / 2, 0);
+
         //this.width = width / 2;
 
         camera.update();
