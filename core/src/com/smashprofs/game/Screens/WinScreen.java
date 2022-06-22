@@ -142,7 +142,7 @@ public class WinScreen implements Screen {
         zoomFactor = 1 + (float) Math.cos(timer) / 50;
 
         batch.begin();
-        batch.draw(pokal, screenWidth / 2f - 145f / zoomFactor, 600f / zoomFactor, 290f / zoomFactor, 360f / zoomFactor);
+        batch.draw(pokal, stage.getViewport().getWorldWidth() / 2f - pokal.getWidth()/2 / zoomFactor, 600f / zoomFactor, 290f / zoomFactor, 360f / zoomFactor);
         batch.end();
 
         postProcessingManager.endInputCapture();

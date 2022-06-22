@@ -6,7 +6,6 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.OrthographicCamera;
-import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.Sprite;
@@ -24,8 +23,6 @@ import com.badlogic.gdx.utils.ScreenUtils;
 import com.badlogic.gdx.utils.viewport.FillViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import com.crashinvaders.vfx.VfxManager;
-import com.crashinvaders.vfx.effects.*;
-import com.crashinvaders.vfx.effects.util.MixEffect;
 import com.smashprofs.game.Helper.Keys;
 import com.smashprofs.game.Helper.PostProcessingSettings;
 import com.smashprofs.game.Helper.SoundManager;
@@ -40,9 +37,9 @@ public class MainMenuScreen implements Screen {
     private Viewport viewport;
     private Stage stage;
     private OrthographicCamera camera;
-    private Image playButton, exitButton, logo;
-    private Texture playButtonInactive, playButtonActive, exitButtonInactive, exitButtonActive;
-    private Sprite logoSprite;
+    private Image playButton;
+    private Image exitButton;
+    private Texture playButtonInactive, playButtonActive, exitButtonInactive, exitButtonActive, logo;
     private Table mainTable;
     private VfxManager postProcessingManager;
     private SoundManager sound;
@@ -90,7 +87,7 @@ public class MainMenuScreen implements Screen {
         //Create buttons
         playButton = new Image(playButtonInactive);
         exitButton = new Image(exitButtonInactive);
-        logoSprite=new Sprite(new Texture("mainmenu/ssp.png"));
+        logo=new Texture("mainmenu/ssp.png");
 
         //Add listeners to buttons
         playButton.addListener(new InputListener() {
@@ -168,7 +165,7 @@ public class MainMenuScreen implements Screen {
 
         spriteBatch.begin();
 
-        spriteBatch.draw(logoSprite, screenWidth / 2f -logoSprite.getWidth() /2/ zoomFactor, 700f / zoomFactor, 1228f / zoomFactor, 104f / zoomFactor);
+        spriteBatch.draw(logo, stage.getViewport().getWorldWidth() / 2f -logo.getWidth() /2/ zoomFactor, 700f / zoomFactor, 1228f / zoomFactor, 104f / zoomFactor);
         //spriteBatch.draw(logoTexture, screenWidth / 2 - 614f, 104f );
         spriteBatch.end();
 
