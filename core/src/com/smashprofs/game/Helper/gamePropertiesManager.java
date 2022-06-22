@@ -27,6 +27,7 @@ public class gamePropertiesManager {
                 file.createNewFile();
                 edit(Keys.GAMETIME,"0 min 0 sek");
                 edit(Keys.TIMESPLAYED,"0");
+                edit(Keys.EASTEREGG,"false");
                 log.info("Created default game properties file.");
             } catch (IOException e) {
                 log.error("Failed creating game properties file!");

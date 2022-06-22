@@ -40,10 +40,10 @@ public class IntroScreen extends ScreenAdapter {
         camera.update();
 
         if(gamePropertiesManager.getEntry(Keys.EASTEREGG).equals("true")) {
-            texture = new Texture(Gdx.files.internal("introEE.png"));
+            texture = new Texture(Gdx.files.internal("rickrollroll.gif"));
         }
         else {
-            texture = new Texture(Gdx.files.internal("logo.jpeg"));
+            texture = new Texture(Gdx.files.internal("intro.png"));
         }
 
         batch = new SpriteBatch();
