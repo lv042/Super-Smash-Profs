@@ -67,7 +67,7 @@ public class Game extends com.badlogic.gdx.Game {
 	@Override
 	public void dispose () {
 		batch.dispose();
-		thread.stop();
+		thread.interrupt();
 		thread.threadEnd();
 
 	}
