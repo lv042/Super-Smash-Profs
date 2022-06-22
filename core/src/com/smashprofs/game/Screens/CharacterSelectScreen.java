@@ -81,7 +81,7 @@ public class CharacterSelectScreen implements Screen {
 
         this.playerImages = textureRegions.stream().map(tr -> tr[0]).toList();
         Set<String> keys = players.keySet();
-        this.playerNames = keys.toArray(new String[keys.size()]);
+        playerNames = keys.toArray(new String[keys.size()]);
 
         //this.playerNames = new String[]{"Alex", "Maurice", "Luca", "Leo", "Viktor"};
 
