@@ -115,6 +115,6 @@ Thumbs.db
 /ios/IOSLauncher.app.dSYM
 
 ##properties file
-game_info.properties
+/core/src/resources/game_info.properties
 /assets/superSmashProfs.log
 /assets/superSmashProfs_DEBUG.log
