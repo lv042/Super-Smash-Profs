@@ -11,7 +11,7 @@ public class B2dContactListener implements ContactListener {
     //public Array<Body> bodiesToDestroy = new Array<Body>();
     boolean PlayerOneGotShoot = false;
     boolean PlayerTwoGotShoot = false;
-
+    //add map with key3
     private static Logger log = LogManager.getLogger(B2dContactListener.class);
 
     public final static short PLAYER_ENTITY = 0b01;   // 1
