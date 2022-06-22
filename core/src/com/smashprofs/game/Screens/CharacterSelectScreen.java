@@ -33,6 +33,10 @@ import com.smashprofs.game.Helper.*;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+
 public class CharacterSelectScreen implements Screen {
 
     private static Logger log = LogManager.getLogger(CharacterSelectScreen.class);
@@ -44,13 +48,14 @@ public class CharacterSelectScreen implements Screen {
     private Stage stage;
     private SoundManager soundManager;
     private Array<Controller> controllers;
-    private TextureRegion[] alex, maurice, luca, leo, viktor;
+    //private TextureRegion[] alex, maurice, luca, leo, viktor;
     private Image left1, right1, left2, right2, playButton, p1ctrls, p2ctrls;
     private Table table;
     private VfxManager postProcessingManager;
     private static int carouselCounter = 0;
     private static int carouselCounter2 = 0;
-    private TextureRegion[] playerImages;
+    //private TextureRegion[] playerImages;
+    private List<TextureRegion> playerImages;
     private static String[] playerNames;
     private ImageButton currentSelection, currentSelection2;
     private Label p1Label, p2Label;
@@ -70,16 +75,18 @@ public class CharacterSelectScreen implements Screen {
         PostProcessingSettings ppSetUpHandler = new PostProcessingSettings();
         this.postProcessingManager = ppSetUpHandler.getPostProcessingManager();
 
-        this.alex = TextureRegion.split(new Texture("Sprites/Alex/alex_stand.png"), 100, 100)[0];
-        this.maurice = TextureRegion.split(new Texture("Sprites/Momo/momo_strip.png"), 100, 100)[0];
-        this.luca = TextureRegion.split(new Texture("Sprites/Luca/luca_stand.png"), 100, 100)[0];
-        this.leo = TextureRegion.split(new Texture("Sprites/Leo/leo_stand.png"), 100, 100)[0];
-        this.viktor = TextureRegion.split(new Texture("Sprites/Viktor/viktor_stand.png"), 100, 100)[0];
-        this.playerImages = new TextureRegion[]{alex[0], maurice[0], luca[0], leo[0], viktor[0]};
-        this.playerNames = new String[]{"Alex", "Maurice", "Luca", "Leo", "Viktor"};
+        Map<String, String> players = Map.of("Alex", "Sprites/Alex/alex_stand.png", "Maurice", "Sprites/Momo/momo_strip.png", "Luca", "Sprites/Luca/luca_stand.png", "Leo", "Sprites/Leo/leo_stand.png", "Viktor", "Sprites/Viktor/viktor_stand.png");
+        List<TextureRegion[]> textureRegions = players.values().stream().map(path -> new Texture(path)).map(t -> TextureRegion.split(t, 100, 100)[0]).toList();
+        //List<TextureRegion> playerImages1 = textureRegions.stream().map(tr -> tr[0]).toList();
 
-        this.currentSelection = new ImageButton(new TextureRegionDrawable(playerImages[carouselCounter]));
-        this.currentSelection2 = new ImageButton(new TextureRegionDrawable(playerImages[carouselCounter2]));
+        this.playerImages = textureRegions.stream().map(tr -> tr[0]).toList();
+        Set<String> keys = players.keySet();
+        this.playerNames = keys.toArray(new String[keys.size()]);
+
+        //this.playerNames = new String[]{"Alex", "Maurice", "Luca", "Leo", "Viktor"};
+
+        this.currentSelection = new ImageButton(new TextureRegionDrawable(playerImages.get(carouselCounter)));
+        this.currentSelection2 = new ImageButton(new TextureRegionDrawable(playerImages.get(carouselCounter2)));
 
         this.labelFont = new BitmapFont();
         labelFont.getData().setScale(4f);
@@ -220,19 +227,19 @@ public class CharacterSelectScreen implements Screen {
     public void incrementCarouselCounter(int NumberOfCarouselCounter) {
 
         if(NumberOfCarouselCounter == 1) {
-            if(carouselCounter < playerImages.length-1) {
+            if(carouselCounter < playerImages.size()-1) {
                 carouselCounter++;
             }
-            else if (carouselCounter == playerImages.length -1) {
+            else if (carouselCounter == playerImages.size() -1) {
                 carouselCounter = 0;
             }
             System.out.println("CarouselCounter1: " + carouselCounter);
             System.out.println("CurrentPlayer1: " + playerNames[carouselCounter]);
         } else if (NumberOfCarouselCounter == 2) {
-            if(carouselCounter2 < playerImages.length-1) {
+            if(carouselCounter2 < playerImages.size()-1) {
                 carouselCounter2++;
             }
-            else if (carouselCounter2 == playerImages.length -1) {
+            else if (carouselCounter2 == playerImages.size() -1) {
                 carouselCounter2 = 0;
             }
             System.out.println("CarouselCounter2: " + carouselCounter2);
@@ -249,7 +256,7 @@ public class CharacterSelectScreen implements Screen {
                 carouselCounter--;
             }
             else if (carouselCounter == 0) {
-                carouselCounter = playerImages.length-1;
+                carouselCounter = playerImages.size()-1;
             }
             System.out.println("CarouselCounter1: " + carouselCounter);
             System.out.println("CurrentPlayer1: " + playerNames[carouselCounter]);
@@ -259,7 +266,7 @@ public class CharacterSelectScreen implements Screen {
                 carouselCounter2--;
             }
             else if (carouselCounter2 == 0) {
-                carouselCounter2 = playerImages.length-1;
+                carouselCounter2 = playerImages.size()-1;
             }
             System.out.println("CarouselCounter2: " + carouselCounter2);
             System.out.println("CurrentPlayer2: " + playerNames[carouselCounter2]);
@@ -269,9 +276,10 @@ public class CharacterSelectScreen implements Screen {
     }
 
     public void updateScreenContents() {
-        this.currentSelection = new ImageButton(new TextureRegionDrawable(playerImages[carouselCounter]));
+        //this.currentSelection = new ImageButton(new TextureRegionDrawable(playerImages.get(carouselCounter)));
+        this.currentSelection = new ImageButton(new TextureRegionDrawable(playerImages.get(carouselCounter)));
         this.p1Label.setText(playerNames[carouselCounter]);
-        this.currentSelection2 = new ImageButton(new TextureRegionDrawable(playerImages[carouselCounter2]));
+        this.currentSelection2 = new ImageButton(new TextureRegionDrawable(playerImages.get(carouselCounter2)));
         this.p2Label.setText(playerNames[carouselCounter2]);
         table.clear();
 
