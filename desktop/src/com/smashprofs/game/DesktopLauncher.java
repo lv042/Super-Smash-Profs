@@ -30,7 +30,7 @@ public class DesktopLauncher {
 		boolean useFullScreenMode = false;
 		boolean useOwnResolution = false;
 		boolean useVSync = false;
-		int fps = 120;
+		int fps = 60;
 		//-------------------------------------
 
 		config.setTitle("SuperSmashProfs");
