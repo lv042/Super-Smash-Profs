@@ -33,6 +33,7 @@ public class Game extends com.badlogic.gdx.Game {
 		// --Toggles FPS visibility--
 		showFPS = true;
 		// --------------------------
+		// Set other graphic settings in DesktopLauncher.java
 
 		batch = new SpriteBatch();
 		//setScreen(new MainMenuScreen(this));

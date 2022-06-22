@@ -26,11 +26,12 @@ public class DesktopLauncher {
 		String iconPath = "icon.png";
 
 
-
+		//------------- Graphics --------------
 		boolean useFullScreenMode = false;
 		boolean useOwnResolution = false;
 		boolean useVSync = false;
-		int fps = 60;
+		int fps = 120;
+		//-------------------------------------
 
 		config.setTitle("SuperSmashProfs");
 		config.setWindowIcon(iconPath);
