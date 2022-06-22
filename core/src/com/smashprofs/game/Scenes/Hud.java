@@ -82,7 +82,7 @@ public class  Hud{
         playerOneHud.setText(playerOne.getPlayerName() + " " + (int)playerOne.getHP() + "%");
         playerTwoHud.setText(playerTwo.getPlayerName() + " " + (int)playerTwo.getHP() + "%");
 
-        if(Game.debugMode) {
+        if(Game.showFPS || Game.debugMode) {
             fpsLabel.setText("FPS: " + Gdx.graphics.getFramesPerSecond());
             // Set color of FPS label if FPS are low.
             if(Gdx.graphics.getFramesPerSecond() < 30) {
