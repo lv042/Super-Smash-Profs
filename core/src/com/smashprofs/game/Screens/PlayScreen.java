@@ -115,7 +115,6 @@ public class PlayScreen implements Screen {
      * The game delta time
      */
     public void update(float deltatime) {
-
         tiledMapRenderer.setView(gamecamera);
 
         playerOne.update(deltatime);

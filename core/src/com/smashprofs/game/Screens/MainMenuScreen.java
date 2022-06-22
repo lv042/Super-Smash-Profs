@@ -3,6 +3,7 @@ package com.smashprofs.game.Screens;
 
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.OrthographicCamera;
@@ -172,6 +173,17 @@ public class MainMenuScreen implements Screen {
         postProcessingManager.endInputCapture();
         postProcessingManager.applyEffects();
         postProcessingManager.renderToScreen();
+
+
+        if (Gdx.input.isKeyJustPressed(Input.Keys.NUM_6)
+            && Gdx.input.isKeyJustPressed(Input.Keys.NUM_9)) {
+            if(gamePropertiesManager.getEntry(Keys.EASTEREGG).equals("true")) {
+                gamePropertiesManager.edit(Keys.EASTEREGG, "false");
+            }
+            else if(gamePropertiesManager.getEntry(Keys.EASTEREGG).equals("false")) {
+                gamePropertiesManager.edit(Keys.EASTEREGG, "true");
+            }
+        }
 
     }
 
