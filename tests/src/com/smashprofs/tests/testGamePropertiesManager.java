@@ -1,4 +1,4 @@
-package com.smashprofs.game;
+package com.smashprofs.tests;
 
 import com.smashprofs.game.Helper.gamePropertiesManager;
 import org.junit.Assert;

@@ -1,0 +1,26 @@
+apply plugin: "java"
+
+sourceCompatibility = 17
+[compileJava, compileTestJava]*.options*.encoding = 'UTF-8'
+
+
+
+sourceSets {
+    test {
+        java {
+            srcDir 'src'
+        }
+    }
+
+
+}
+
+dependencies {
+    implementation 'junit:junit:4.13.1'
+    testImplementation 'com.badlogicgames.gdx:gdx-backend-headless:1.11.0'
+
+}
+
+eclipse.project {
+    name = appName + "-tests"
+}

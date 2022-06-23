@@ -51,8 +51,8 @@ public class PlayScreen implements Screen {
     private TmxMapLoader mapLoader;
     private TiledMap map;
     private OrthogonalTiledMapRenderer tiledMapRenderer;
-    private Player playerOne;
-    private Player playerTwo;
+    public Player playerOne;
+    public Player playerTwo;
 
 
     //managers

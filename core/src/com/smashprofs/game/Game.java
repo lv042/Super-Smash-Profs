@@ -29,7 +29,7 @@ public class Game extends com.badlogic.gdx.Game {
 		thread.start();
 
 		// --Toggle unit test mode--
-		unitTestMode = true;
+		unitTestMode = false;
 		//--------------------------
 		// --Toggles debug mode--
 		debugMode = false;

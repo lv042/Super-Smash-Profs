@@ -20,7 +20,7 @@ public class DesktopLauncher {
 	public static void main (String[] arg) {
 
 		// --Toggle unit test mode--
-		unitTestMode = true;
+		unitTestMode = false;
 		//--------------------------
 
 		int width = 1920;
