@@ -40,7 +40,10 @@ public class DesktopLauncher {
 		if(useVSync) config.useVsync(true); //uses max refresh rate of the monitor » prevents tearing and other errors
 		else config.setForegroundFPS(fps);
 
-
+		// If unitTestMode is activated, set the game to invisible
+		if(Game.unitTestMode) {
+			config.setInitialVisible(false);
+		}
 
 		if(useFullScreenMode) config.setFullscreenMode(Lwjgl3ApplicationConfiguration.getDisplayMode());
 
