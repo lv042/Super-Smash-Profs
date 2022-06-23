@@ -174,14 +174,15 @@ public class MainMenuScreen implements Screen {
         postProcessingManager.applyEffects();
         postProcessingManager.renderToScreen();
 
-
         if (Gdx.input.isKeyJustPressed(Input.Keys.NUM_6)
             && Gdx.input.isKeyJustPressed(Input.Keys.NUM_9)) {
             if(gamePropertiesManager.getEntry(Keys.EASTEREGG).equals("true")) {
                 gamePropertiesManager.edit(Keys.EASTEREGG, "false");
+                log.warn("Easter egg disabled");
             }
             else if(gamePropertiesManager.getEntry(Keys.EASTEREGG).equals("false")) {
                 gamePropertiesManager.edit(Keys.EASTEREGG, "true");
+                log.warn("Easter egg enabled");
             }
         }
 
