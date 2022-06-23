@@ -17,7 +17,7 @@ public class Game extends com.badlogic.gdx.Game {
 	public static final int V_WIDTH = 400;
 	public static final int V_HEIGHT = 208;
 	private GameThread thread;
-	public static Boolean debugMode, showFPS, unitTestMode;
+	public static Boolean debugMode, showFPS;
 	
 	@Override
 	public void create () {
@@ -27,9 +27,6 @@ public class Game extends com.badlogic.gdx.Game {
 		gamePropertiesManager.firstStart();
 		thread.start();
 
-		// --Toggle unit test mode--
-		unitTestMode = false;
-		//--------------------------
 		// --Toggles debug mode--
 		debugMode = false;
 		// ----------------------

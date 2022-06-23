@@ -5,7 +5,7 @@ import com.badlogic.gdx.backends.lwjgl3.Lwjgl3ApplicationConfiguration;
 
 // Please note that on macOS your application needs to be started with the -XstartOnFirstThread JVM argument
 public class DesktopLauncher {
-
+	public static boolean unitTestMode;
 	static int width = 1920;
 	static int height = 1080;
 
@@ -18,6 +18,11 @@ public class DesktopLauncher {
 	}
 
 	public static void main (String[] arg) {
+
+		// --Toggle unit test mode--
+		unitTestMode = true;
+		//--------------------------
+
 		int width = 1920;
 		int height = 1080;
 
@@ -41,7 +46,7 @@ public class DesktopLauncher {
 		else config.setForegroundFPS(fps);
 
 		// If unitTestMode is activated, set the game to invisible
-		if(Game.unitTestMode) {
+		if(unitTestMode) {
 			config.setInitialVisible(false);
 		}
 
