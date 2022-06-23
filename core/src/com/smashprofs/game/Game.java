@@ -5,6 +5,7 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.smashprofs.game.Helper.GameThread;
 import com.smashprofs.game.Helper.gamePropertiesManager;
 import com.smashprofs.game.Screens.IntroScreen;
+import com.smashprofs.game.Screens.PlayScreen;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -17,7 +18,7 @@ public class Game extends com.badlogic.gdx.Game {
 	public static final int V_WIDTH = 400;
 	public static final int V_HEIGHT = 208;
 	private GameThread thread;
-	public static Boolean debugMode, showFPS;
+	public static Boolean debugMode, showFPS, unitTestMode;
 	
 	@Override
 	public void create () {
@@ -27,6 +28,9 @@ public class Game extends com.badlogic.gdx.Game {
 		gamePropertiesManager.firstStart();
 		thread.start();
 
+		// --Toggle unit test mode--
+		unitTestMode = true;
+		//--------------------------
 		// --Toggles debug mode--
 		debugMode = false;
 		// ----------------------
@@ -38,6 +42,11 @@ public class Game extends com.badlogic.gdx.Game {
 		batch = new SpriteBatch();
 		//setScreen(new MainMenuScreen(this));
 
+		if(unitTestMode) {
+			log.warn("Unit test mode enabled, skipping intro screen");
+			log.warn("Redirecting to PlayScreen...");
+			setScreen(new PlayScreen(this));
+		}
 
 		log.info("Redirecting to IntroScreen...");
 		setScreen(new IntroScreen(this));
