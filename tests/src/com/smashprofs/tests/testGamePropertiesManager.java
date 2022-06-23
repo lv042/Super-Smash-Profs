@@ -1,5 +1,6 @@
 package com.smashprofs.tests;
 
+import com.badlogic.gdx.Gdx;
 import com.smashprofs.game.Helper.gamePropertiesManager;
 import org.junit.Assert;
 import org.junit.Test;
@@ -23,5 +24,12 @@ public class testGamePropertiesManager {
         Assert.assertNotEquals("2 min 0 sek", gamePropertiesManager.secondsToString(121));
         Assert.assertEquals("30 min 46 sek",gamePropertiesManager.secondsToString(1846));
     }
+
+    @Test
+    public void testPropertiesFile(){
+        gamePropertiesManager.firstStart();
+        Assert.assertTrue(Gdx.files.internal("../core/src/resources/game_info.properties").exists());
+    }
+
 
 }
