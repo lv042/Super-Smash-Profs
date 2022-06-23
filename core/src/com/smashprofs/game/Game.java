@@ -47,9 +47,11 @@ public class Game extends com.badlogic.gdx.Game {
 			log.warn("Redirecting to PlayScreen...");
 			setScreen(new PlayScreen(this));
 		}
+		else {
+			log.info("Redirecting to IntroScreen...");
+			setScreen(new IntroScreen(this));
+		}
 
-		log.info("Redirecting to IntroScreen...");
-		setScreen(new IntroScreen(this));
 
 		//setScreen(new PlayScreen(this)); // passes game to set screen on its own -> now started by intro screen
 		if(debugMode) {
