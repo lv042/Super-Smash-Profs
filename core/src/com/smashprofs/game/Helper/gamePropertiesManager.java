@@ -27,6 +27,7 @@ public class gamePropertiesManager {
                 file.createNewFile();
                 edit(Keys.GAMETIME,"0 min 0 sek");
                 edit(Keys.TIMESPLAYED,"0");
+                edit(Keys.TEST,"teest");
                 edit(Keys.EASTEREGG,"false");
                 log.info("Created default game properties file.");
             } catch (IOException e) {
@@ -64,6 +65,7 @@ public class gamePropertiesManager {
             //saving changes
             log.debug("Trying to save changes...");
             p.store (writer, "Update by FileWriter");
+            writer.close();
             log.debug("Changes saved.");
         } catch (IOException e) {
             log.error("Failed saving changes!");
@@ -95,6 +97,7 @@ public class gamePropertiesManager {
         try {
             log.debug("Trying to load property with FileReader...");
             p.load(reader);
+            reader.close();
             log.debug("Loaded property.");
         } catch (IOException e) {
             log.error("Failed loading property!");
