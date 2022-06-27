@@ -10,6 +10,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
+import com.smashprofs.game.Actors.Players.PlayerView;
 import com.smashprofs.game.Game;
 import com.smashprofs.game.Actors.Players.Player;
 import com.smashprofs.game.Helper.SoundManager;
@@ -31,7 +32,7 @@ public class  Hud{
     BitmapFont fpsFont; // font for the FPS number. Different styling than the default bitmap font.
     private SoundManager soundManager;
 
-    public Hud(SpriteBatch spriteBatch, Player playerOne, Player playerTwo){
+    public Hud(SpriteBatch spriteBatch, PlayerView playerOne, PlayerView playerTwo){
         soundManager=SoundManager.getSoundManager_INSTANCE();
         this.fpsFont = new BitmapFont();
         fpsFont.getData().setScale(0.5f);
@@ -98,7 +99,7 @@ public class  Hud{
 
     }
 
-    public boolean testWin(Player playerOne, Player playerTwo)
+    public boolean testWin(PlayerView playerOne, PlayerView playerTwo)
     {
         if(timeCount>=1){
             soundManager.playSound("sounds/clock.mp3");
@@ -112,10 +113,6 @@ public class  Hud{
     }
 
 
-public int getPlayerOneHP(Player playerOne)
-{
-    return 0;
-}
 
     public void dispose() {
         stage.dispose();
