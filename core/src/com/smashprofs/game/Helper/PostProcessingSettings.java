@@ -30,6 +30,7 @@ public class PostProcessingSettings {
         postProcessingManager.addEffect(filmGrainEffect);
         postProcessingManager.addEffect(oldTvEffect);
         log.debug("Finished setting up VFXManager");
+        System.out.println(postProcessingManager.toString());
     }
 
     public VfxManager getPostProcessingManager()

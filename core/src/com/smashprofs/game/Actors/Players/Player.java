@@ -720,6 +720,12 @@ public abstract class Player extends GameObject implements PlayerView {
         return position;
         // returns the location witnout
     }
+    public Sprite getPlayerSpriteView() {
+        return this.sprite;
+    }
+    public int getIsFacingRightAxeView() {
+        return this.isFacingRightAxe;
+    }
 
     public float getAttackReach() {
         return attackReach;
