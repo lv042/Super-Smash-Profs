@@ -27,7 +27,6 @@ public class Game extends com.badlogic.gdx.Game {
 		log.warn("---------------------------------------");
 		log.warn("This game uses assets made by others.");
 		log.warn("For credits, see assets/credits.txt");
-		log.warn("♥‿♥");
 		log.warn("---------------------------------------");
 		thread = new GameThread();
 		gamePropertiesManager.firstStart();
@@ -66,8 +65,6 @@ public class Game extends com.badlogic.gdx.Game {
 			log.warn("-------------------------------------------");
 		}
 		if(showFPS) {
-			log.info("");
-			log.info("");
 			log.warn("-------------------------------------------");
 			log.warn("FPS counter visible!");
 			log.warn("Keep in mind that the FPS indicator is only ");
