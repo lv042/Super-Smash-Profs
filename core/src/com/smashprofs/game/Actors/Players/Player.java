@@ -1,11 +1,7 @@
 package com.smashprofs.game.Actors.Players;
 
 
-import com.badlogic.gdx.utils.TimeUtils;
-import com.badlogic.gdx.utils.Timer;
 import com.smashprofs.game.Actors.GameObject;
-import com.smashprofs.game.Actors.Projectiles.Landmine;
-import com.smashprofs.game.Actors.Projectiles.Projectile;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.controllers.Controller;
@@ -16,17 +12,13 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.*;
 import com.badlogic.gdx.utils.Array;
 import com.smashprofs.game.Helper.*;
-import com.smashprofs.game.Screens.PlayScreen;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-
-
-import java.util.ArrayList;
 
 /**
  * A controllable Player
  */
-public abstract class Player extends GameObject {
+public abstract class Player extends GameObject implements PlayerView {
 
     private static Logger log = LogManager.getLogger(Player.class);
 
@@ -61,7 +53,7 @@ public abstract class Player extends GameObject {
     boolean standardAttackInput = false;
     private final Texture playerStand, playerRun, playerJump, playerPunch;
     private String playerName;
-    private Vector2 poistion;
+    private Vector2 position;
     private boolean isStomping;
     private boolean isDead = false;
     private boolean stompHitground;
@@ -154,7 +146,7 @@ public abstract class Player extends GameObject {
 
 
     public void updatePosition(float deltatime) {
-        poistion = b2dbody.getPosition();
+        position = b2dbody.getPosition();
     }
 
     /**
@@ -497,7 +489,6 @@ public abstract class Player extends GameObject {
         }
 
         if (!isNotTouchingTiles) {
-            //is not touching tiles doesnt work right now and causes the
             if (isStomping()) {
                 soundManager.playSound(stompSoundWav);
                 setStompHitground(true);
@@ -508,7 +499,6 @@ public abstract class Player extends GameObject {
             }
             isGrounded = true;
             setGravity(getStartingGravity());
-            //System.out.println("grounded");
 
             jumpCount = 0;
             isExtraJumpReady = false;
@@ -519,7 +509,6 @@ public abstract class Player extends GameObject {
             isGrounded = false;
         }
         previousY = b2dbody.getLinearVelocity().y;
-        // System.out.println(isTouchingTiles);
 
 
     }
@@ -554,6 +543,7 @@ public abstract class Player extends GameObject {
 
     public void applyForces(float x, float y) {
 
+        //all forces applied to the player should be done with this method
         //all forces applied to the player should be done with this method
         forcesCombined = new Vector2(0 + x, gravity + y);
         getB2dbody().applyLinearImpulse(forcesCombined, getB2dbody().getWorldCenter(), true);
@@ -723,7 +713,12 @@ public abstract class Player extends GameObject {
     }
 
     public Vector2 getPosition() {
-        return poistion;
+        return position;
+    }
+
+    public Vector2 getPositionView() {
+        return position;
+        // returns the location witnout
     }
 
     public float getAttackReach() {
