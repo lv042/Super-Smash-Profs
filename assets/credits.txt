@@ -6,3 +6,5 @@ Credits:
         - Free Lunar Battle Pack: Matt Walkden (https://mattwalkden.itch.io/)
         - m5x7 font: Daniel Linssen (https://managore.itch.io/)
         - Peaceful Nightfield Tileset: Trixie (https://trixelized.itch.io/)
+    Code:
+        - GdxTestRunner: https://github.com/TomGrill/gdx-testing

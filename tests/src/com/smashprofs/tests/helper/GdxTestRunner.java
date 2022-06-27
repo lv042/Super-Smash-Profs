@@ -15,6 +15,8 @@ import com.badlogic.gdx.ApplicationListener;
 import com.badlogic.gdx.backends.headless.HeadlessApplication;
 import com.badlogic.gdx.backends.headless.HeadlessApplicationConfiguration;
 
+
+// https://github.com/TomGrill/gdx-testing
 public class GdxTestRunner extends BlockJUnit4ClassRunner implements ApplicationListener {
 
     private final Map<FrameworkMethod, RunNotifier> invokeInRender = new HashMap<FrameworkMethod, RunNotifier>();
