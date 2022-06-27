@@ -6,7 +6,7 @@ package com.smashprofs.game.Helper;
 public enum Keys {
     GAMETIME("Gametime"),
     TIMESPLAYED("Times_played"),
-
+    TEST("test_value"),
     EASTEREGG("Easteregg");
 
     private final String value;

@@ -19,4 +19,14 @@ public class assetest {
         Assert.assertTrue(Gdx.files.internal("../assets/mainmenu/buttons/playButtonActive.png").exists());
         Assert.assertTrue(Gdx.files.internal("../assets/mainmenu/buttons/playButtonInactive.png").exists());
     }
+
+    @Test
+    public void testForWinScreenFiles() {
+        Assert.assertTrue(Gdx.files.internal("../assets/winscreen/menuButtonActive.png").exists());
+        Assert.assertTrue(Gdx.files.internal("../assets/winscreen/menuButtonInactive.png").exists());
+        Assert.assertTrue(Gdx.files.internal("../assets/winscreen/player1.png").exists());
+        Assert.assertTrue(Gdx.files.internal("../assets/winscreen/player2.png").exists());
+        Assert.assertTrue(Gdx.files.internal("../assets/winscreen/pokal.png").exists());
+        Assert.assertTrue(Gdx.files.internal("../assets/winscreen/winbg.png").exists());
+    }
 }
