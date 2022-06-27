@@ -24,6 +24,11 @@ public class Game extends com.badlogic.gdx.Game {
 	public void create () {
 		log4JconfLoad(System.getProperty("user.dir") + "\\log4j2.xml");
 		log.info("Game created, starting up...");
+		log.warn("---------------------------------------");
+		log.warn("This game uses assets made by others.");
+		log.warn("For credits, see assets/credits.txt");
+		log.warn("♥‿♥");
+		log.warn("---------------------------------------");
 		thread = new GameThread();
 		gamePropertiesManager.firstStart();
 		thread.start();
