@@ -23,8 +23,7 @@ public class DesktopLauncher {
 		unitTestMode = false;
 		//--------------------------
 
-		int width = 1920;
-		int height = 1080;
+
 
 		Lwjgl3ApplicationConfiguration config = new Lwjgl3ApplicationConfiguration();
 
@@ -32,6 +31,8 @@ public class DesktopLauncher {
 
 
 		//------------- Graphics --------------
+		int width = 1920;
+		int height = 1080;
 		boolean useFullScreenMode = false;
 		boolean useOwnResolution = false;
 		boolean useVSync = false;
