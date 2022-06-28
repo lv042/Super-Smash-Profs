@@ -76,16 +76,8 @@ public class CharacterSelectScreen implements Screen {
         this.postProcessingManager = ppSetUpHandler.getPostProcessingManager();
 
         Map<String, String> players = Map.of("Alex", "Sprites/Alex/alex_stand.png", "Maurice", "Sprites/Momo/momo_strip.png", "Luca", "Sprites/Luca/luca_stand.png", "Leo", "Sprites/Leo/leo_stand.png", "Viktor", "Sprites/Viktor/viktor_stand.png");
-        //List<TextureRegion[]> textureRegions = players.values().stream().map(path -> new Texture(path)).map(t -> TextureRegion.split(t, 100, 100)[0]).toList();
-        //List<TextureRegion[]> textureRegions = players.values().stream().map(path -> new Texture(path)).map(t -> TextureRegion.split(t, 100, 100)[0]).map(tr -> tr[0]).toList();
         this.playerImages = players.values().stream().map(path -> new Texture(path)).map(t -> TextureRegion.split(t, 100, 100)[0]).map(tr -> tr[0]).toList();
-        //List<TextureRegion> playerImages1 = textureRegions.stream().map(tr -> tr[0]).toList();
-        //this.playerImages = textureRegions.stream().map(tr -> tr[0]).toList();
         playerNames = players.keySet().toArray(new String[players.keySet().size()]);
-        //Set<String> keys = players.keySet();
-        //playerNames = keys.toArray(new String[keys.size()]);
-
-        //this.playerNames = new String[]{"Alex", "Maurice", "Luca", "Leo", "Viktor"};
 
         this.currentSelection = new ImageButton(new TextureRegionDrawable(playerImages.get(carouselCounter)));
         this.currentSelection2 = new ImageButton(new TextureRegionDrawable(playerImages.get(carouselCounter2)));
