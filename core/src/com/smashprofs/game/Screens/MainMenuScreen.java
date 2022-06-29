@@ -30,7 +30,9 @@ import com.smashprofs.game.Helper.SoundManager;
 import com.smashprofs.game.Helper.gamePropertiesManager;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-
+/**
+ * The main menu screen
+ */
 public class MainMenuScreen implements Screen {
     private static Logger log = LogManager.getLogger(MainMenuScreen.class);
     private Game game;
@@ -60,7 +62,12 @@ public class MainMenuScreen implements Screen {
     int screenWidth = 1929;
     int screenHeight = 1080;
 
-
+    /**
+     * Constructor of MainMenuScreen. Sets up postprocessing and soundmanager, creates the main table,
+     * sets viewport,stage,camera,spritebatch
+     * @param game
+     * The game.
+     */
     public MainMenuScreen(Game game) {
 
         this.game = game;
@@ -76,6 +83,11 @@ public class MainMenuScreen implements Screen {
         log.info("Created MainMenuScreen");
     }
 
+    /**
+     * Gets called when showing the MainMenu.
+     * Fills the main table with Content(buttons, background, labels), creates buttons with Listeners for Hovering/Clicking.
+     * Adds the maintable to the stage.
+     */
     @Override
     public void show() {
         Gdx.input.setInputProcessor(stage);
@@ -147,6 +159,11 @@ public class MainMenuScreen implements Screen {
         log.info("Showing MainMenuScreen");
     }
 
+    /**
+     * Renders the stage (maintable), sets and plays Logo-Animation, adds post processing.
+     * Checks if User clicks '6' and '9' for activating an Easteregg.
+     * @param delta The time in seconds since the last render.
+     */
     @Override
     public void render(float delta) {
         ScreenUtils.clear(Color.CLEAR);
@@ -183,6 +200,13 @@ public class MainMenuScreen implements Screen {
 
     }
 
+    /**
+     * Resizes the viewport.
+     * @param width
+     * The width the viewport should be set to.
+     * @param height
+     * The height the viewport should be set to.
+     */
     @Override
     public void resize(int width, int height) {
         this.viewport.update(width, height);
@@ -208,6 +232,9 @@ public class MainMenuScreen implements Screen {
 
     }
 
+    /**
+     * Disposes the stage and spriteBatch.
+     */
     @Override
     public void dispose() {
         this.stage.dispose();

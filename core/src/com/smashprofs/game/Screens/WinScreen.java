@@ -23,7 +23,9 @@ import com.crashinvaders.vfx.VfxManager;
 import com.smashprofs.game.Actors.Players.PlayerView;
 import com.smashprofs.game.Helper.PostProcessingSettings;
 import com.smashprofs.game.Helper.SoundManager;
-
+/**
+ * The win menu screen
+ */
 public class WinScreen implements Screen {
 
     private Game game;
@@ -50,7 +52,12 @@ public class WinScreen implements Screen {
     int screenHeight = 1080;
 
 
-
+    /**
+     * Constructor of WinScreen. Sets up postprocessing and soundmanager, creates the main table,
+     * sets viewport,stage,camera,spritebatch
+     * @param game
+     * The game.
+     */
     public WinScreen(Game game, PlayerView playerOne, PlayerView playerTwo) {
         this.game = game;
         this.batch = new SpriteBatch();
@@ -68,6 +75,12 @@ public class WinScreen implements Screen {
 
     }
 
+    /**
+     * Gets called when showing the WinScreen.
+     * Fills the main table with Content(button, background), creates button with Listeners for Hovering/Clicking.
+     * Detects, who won the Game.
+     * Adds the maintable to the stage.
+     */
     @Override
     public void show() {
         Gdx.input.setInputProcessor(stage);
@@ -116,7 +129,10 @@ public class WinScreen implements Screen {
         stage.addActor(mainTable);
     }
 
-
+    /**
+     * Renders the stage (maintable), sets and plays Trophy-Animation, adds post processing.
+     * @param delta The time in seconds since the last render.
+     */
     @Override
     public void render(float delta) {
         ScreenUtils.clear(Color.CLEAR);
@@ -142,6 +158,13 @@ public class WinScreen implements Screen {
         postProcessingManager.renderToScreen();
     }
 
+    /**
+     * Resizes the viewport.
+     * @param width
+     * The width the viewport should be set to.
+     * @param height
+     * The height the viewport should be set to.
+     */
     @Override
     public void resize(int width, int height) {
         this.viewport.update(width, height);
@@ -164,6 +187,9 @@ public class WinScreen implements Screen {
 
     }
 
+    /**
+     * Disposes the stage and spriteBatch.
+     */
     @Override
     public void dispose() {
         this.stage.dispose();

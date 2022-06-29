@@ -4,10 +4,16 @@ package com.smashprofs.game.Helper;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+/**
+ * The GameThread Class for counting the ingame time
+ */
 public class GameThread extends Thread{
     private static Logger log = LogManager.getLogger(GameThread.class);
     private int count;
     private boolean running=true;
+    /**
+     * Adds +1 to the counter every second while running is true.
+     */
     @Override
     public void run() {
         log.info("Thread started.");
@@ -24,6 +30,10 @@ public class GameThread extends Thread{
       }
     }
 
+    /**
+     * Stops the count and adds it to the existing Count in the gameproperties file.
+     * Also increasing the times plkayed in gameproperties.
+     */
     //wegen performance gründen erst am ende erst properties verändern
     public void threadEnd(){
         running=false;
