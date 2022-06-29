@@ -59,7 +59,7 @@ public class MainMenuScreen implements Screen {
 
     private float timer;
     private float zoomFactor;
-    int screenWidth = 1929;
+    int screenWidth = 1920;
     int screenHeight = 1080;
 
     /**
