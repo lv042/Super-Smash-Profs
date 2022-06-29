@@ -15,10 +15,12 @@ import com.smashprofs.tests.helper.GdxTestRunner;
 import org.junit.Assert;
 
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
 @RunWith(GdxTestRunner.class)
+@Ignore
 public class testShapeCreator {
     float PPM =100;
 

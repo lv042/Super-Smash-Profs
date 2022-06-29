@@ -1,5 +1,6 @@
 package com.smashprofs.game.Helper;
 
+import com.smashprofs.game.Exceptions.NegativeSeconds;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -128,10 +129,15 @@ public class gamePropertiesManager {
      * @return
      * The time as a string.
      */
-    public static String secondsToString(int seconds){
-        int minutes = seconds/60;
-        int sec=seconds-minutes*60;
-        log.debug("Reformatted time int to string.");
-        return minutes+" min "+sec+" sek";
+    public static String secondsToString(int seconds) throws NegativeSeconds{
+        if (seconds>=0) {
+            int minutes = seconds / 60;
+            int sec = seconds - minutes * 60;
+            log.debug("Reformatted time int to string.");
+            return minutes + " min " + sec + " sek";
+        }
+        else {
+            throw new NegativeSeconds(seconds +" seconds is not possible!");
+        }
     }
 }

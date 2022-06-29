@@ -1,6 +1,7 @@
 package com.smashprofs.game.Helper;
 
 
+import com.smashprofs.game.Exceptions.NegativeSeconds;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -35,7 +36,7 @@ public class GameThread extends Thread{
      * Also increasing the times plkayed in gameproperties.
      */
     //wegen performance gründen erst am ende erst properties verändern
-    public void threadEnd(){
+    public void threadEnd() throws NegativeSeconds {
         running=false;
         log.info("Ending thread...");
         gamePropertiesManager.edit(Keys.TIMESPLAYED,Integer.toString(Integer.parseInt(gamePropertiesManager.getEntry(Keys.TIMESPLAYED))+1));

@@ -2,6 +2,7 @@ package com.smashprofs.game;
 
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.smashprofs.game.Exceptions.NegativeSeconds;
 import com.smashprofs.game.Helper.GameThread;
 import com.smashprofs.game.Helper.gamePropertiesManager;
 import com.smashprofs.game.Screens.IntroScreen;
@@ -81,7 +82,11 @@ public class Game extends com.badlogic.gdx.Game {
 	@Override
 	public void dispose () {
 		batch.dispose();
-		thread.threadEnd();
+		try {
+			thread.threadEnd();
+		} catch (NegativeSeconds e) {
+			e.printStackTrace();
+		}
 
 	}
 }

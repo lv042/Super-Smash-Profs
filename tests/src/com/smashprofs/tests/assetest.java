@@ -1,17 +1,32 @@
 package com.smashprofs.tests;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.maps.tiled.TiledMap;
+import com.badlogic.gdx.maps.tiled.TmxMapLoader;
 import com.smashprofs.tests.helper.GdxTestRunner;
 import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.core.IsNull.notNullValue;
 
 @RunWith(GdxTestRunner.class)
 public class assetest {
 
 
     @Test
+    public void loadTexture()
+    {
+        TmxMapLoader mapLoader = new TmxMapLoader();
+        TiledMap map = mapLoader.load("../assets/1/Map1New2Remake.tmx");
+        assertThat(map, notNullValue());
+    }
+
+    @Test
     public void testForMainMenuFiles() {
+
         Assert.assertTrue(Gdx.files.internal("../assets/mainmenu/ssp.png").exists());
         Assert.assertTrue(Gdx.files.internal("../assets/mainmenu/bgmenu.png").exists());
         Assert.assertTrue(Gdx.files.internal("../assets/mainmenu/buttons/exitButtonActive.png").exists());
