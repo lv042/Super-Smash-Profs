@@ -38,20 +38,27 @@ public class MainMenuScreen implements Screen {
     private Viewport viewport;
     private Stage stage;
     private OrthographicCamera camera;
-    private Image playButton;
-    private Image exitButton;
-    private Texture playButtonInactive, playButtonActive, exitButtonInactive, exitButtonActive, logo;
     private Table mainTable;
-    private VfxManager postProcessingManager;
+    private Image playButton, exitButton;
+    private final VfxManager postProcessingManager;
     private SoundManager sound;
-    private Label gametime,timesplayed, gamedevs;
+
+    private final Texture playButtonInactive = new Texture("mainmenu/buttons/playButtonInactive.png"),
+            playButtonActive = new Texture("mainmenu/buttons/playButtonActive.png"),
+            exitButtonInactive = new Texture("mainmenu/buttons/exitButtonInactive.png"),
+            exitButtonActive = new Texture("mainmenu/buttons/exitButtonActive.png"),
+            logo = new Texture("mainmenu/ssp.png");
+
+    // Setting the values for the game statistics displayed in the main menu.
+    private final Label gametime = new Label("Gametime: " + gamePropertiesManager.getEntry(Keys.GAMETIME), new Label.LabelStyle(new BitmapFont(), Color.valueOf("B2E6AD"))),
+            timesplayed = new Label("Times played: " + gamePropertiesManager.getEntry(Keys.TIMESPLAYED), new Label.LabelStyle(new BitmapFont(), Color.valueOf("9BD096"))),
+            gamedevs = new Label("Devs: Leo, Maurice, Alex, Luca", new Label.LabelStyle(new BitmapFont(), Color.valueOf("9BD096")));
+
 
     private float timer;
     private float zoomFactor;
-
-    int screenWidth = Gdx.graphics.getWidth();
-    int height = Gdx.graphics.getHeight();
-
+    int screenWidth = 1929;
+    int screenHeight = 1080;
 
 
     public MainMenuScreen(Game game) {
@@ -59,19 +66,13 @@ public class MainMenuScreen implements Screen {
         this.game = game;
         this.spriteBatch = new SpriteBatch();
         this.camera = new OrthographicCamera();
-        this.viewport = new FillViewport(1920, 1080, camera);
+        this.viewport = new FillViewport(screenWidth, screenHeight, camera);
         this.stage = new Stage(this.viewport, this.spriteBatch);
-
-        playButtonInactive = new Texture("mainmenu/buttons/playButtonInactive.png");
-        playButtonActive = new Texture("mainmenu/buttons/playButtonActive.png");
-        exitButtonInactive = new Texture("mainmenu/buttons/exitButtonInactive.png");
-        exitButtonActive = new Texture("mainmenu/buttons/exitButtonActive.png");
-        mainTable = new Table();
-
+        this.mainTable = new Table();
         //add pre configured settings to PostProcessingManager
         PostProcessingSettings ppSetUpHandler = new PostProcessingSettings();
         this.postProcessingManager = ppSetUpHandler.getPostProcessingManager();
-        sound=SoundManager.getSoundManager_INSTANCE();
+        this.sound = SoundManager.getSoundManager_INSTANCE();
         log.info("Created MainMenuScreen");
     }
 
@@ -88,7 +89,6 @@ public class MainMenuScreen implements Screen {
         //Create buttons
         playButton = new Image(playButtonInactive);
         exitButton = new Image(exitButtonInactive);
-        logo=new Texture("mainmenu/ssp.png");
 
         //Add listeners to buttons
         playButton.addListener(new InputListener() {
@@ -128,10 +128,6 @@ public class MainMenuScreen implements Screen {
             }
         });
 
-        // Setting the values for the game statistics displayed in the main menu.
-        gametime = new Label("Gametime: "+gamePropertiesManager.getEntry(Keys.GAMETIME), new Label.LabelStyle(new BitmapFont(), Color.valueOf("B2E6AD")));
-        timesplayed = new Label("Times played: "+gamePropertiesManager.getEntry(Keys.TIMESPLAYED), new Label.LabelStyle(new BitmapFont(), Color.valueOf("9BD096")));
-        gamedevs= new Label("Devs: Leo, Maurice, Alex, Luca", new Label.LabelStyle(new BitmapFont(), Color.valueOf("9BD096")));
 
 
         mainTable.add(playButton).padBottom(100).maxSize(300, 100).padTop(500);
@@ -166,7 +162,7 @@ public class MainMenuScreen implements Screen {
 
         spriteBatch.begin();
 
-        spriteBatch.draw(logo, stage.getViewport().getWorldWidth() / 2f -logo.getWidth() /2/ zoomFactor, 700f / zoomFactor, 1228f / zoomFactor, 104f / zoomFactor);
+        spriteBatch.draw(logo, stage.getViewport().getWorldWidth() / 2f - logo.getWidth() / 2 / zoomFactor, 700f / zoomFactor, 1228f / zoomFactor, 104f / zoomFactor);
         //spriteBatch.draw(logoTexture, screenWidth / 2 - 614f, 104f );
         spriteBatch.end();
 
@@ -175,12 +171,11 @@ public class MainMenuScreen implements Screen {
         postProcessingManager.renderToScreen();
 
         if (Gdx.input.isKeyJustPressed(Input.Keys.NUM_6)
-            && Gdx.input.isKeyJustPressed(Input.Keys.NUM_9)) {
-            if(gamePropertiesManager.getEntry(Keys.EASTEREGG).equals("true")) {
+                && Gdx.input.isKeyJustPressed(Input.Keys.NUM_9)) {
+            if (gamePropertiesManager.getEntry(Keys.EASTEREGG).equals("true")) {
                 gamePropertiesManager.edit(Keys.EASTEREGG, "false");
                 log.warn("Easter egg disabled");
-            }
-            else if(gamePropertiesManager.getEntry(Keys.EASTEREGG).equals("false")) {
+            } else if (gamePropertiesManager.getEntry(Keys.EASTEREGG).equals("false")) {
                 gamePropertiesManager.edit(Keys.EASTEREGG, "true");
                 log.warn("Easter egg enabled");
             }
