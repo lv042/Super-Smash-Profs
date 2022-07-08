@@ -187,7 +187,7 @@ public class MainMenuScreen implements Screen {
         postProcessingManager.applyEffects();
         postProcessingManager.renderToScreen();
 
-        if (Gdx.input.isKeyJustPressed(Input.Keys.NUM_6)
+        if (Gdx.input.isKeyPressed(Input.Keys.NUM_6)
                 && Gdx.input.isKeyJustPressed(Input.Keys.NUM_9)) {
             if (gamePropertiesManager.getEntry(Keys.EASTEREGG).equals("true")) {
                 gamePropertiesManager.edit(Keys.EASTEREGG, "false");
