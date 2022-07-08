@@ -633,7 +633,7 @@ public abstract class Player extends GameObject implements PlayerView {
         return isFacingRightAxe;
     }
 
-    private float getRespawnDamping() {
+    public float getRespawnDamping() {
         return respawnDamping;
     }
 
@@ -641,11 +641,11 @@ public abstract class Player extends GameObject implements PlayerView {
         return damping;
     }
 
-    private float getWalkingSpeedMultiplier() {
+    public float getWalkingSpeedMultiplier() {
         return walkingSpeedMultiplier;
     }
 
-    private State getCurrentState() {
+    public State getCurrentState() {
         return currentState;
     }
 
@@ -657,7 +657,7 @@ public abstract class Player extends GameObject implements PlayerView {
         return b2dbody;
     }
 
-    private float getMaxVelocity() {
+    public float getMaxVelocity() {
         return maxVelocity;
     }
 
@@ -673,11 +673,11 @@ public abstract class Player extends GameObject implements PlayerView {
         return isGrounded;
     }
 
-    private Vector2 getSpawnPoint() {
+    public Vector2 getSpawnPoint() {
         return spawnpoint;
     }
 
-    private boolean getIsExtraJumpReady() {
+    public boolean getIsExtraJumpReady() {
         return isExtraJumpReady;
     }
 
@@ -689,7 +689,7 @@ public abstract class Player extends GameObject implements PlayerView {
         return bdef;
     }
 
-    private Vector2 getSpawnpoint() {
+    public Vector2 getSpawnpoint() {
         return spawnpoint;
     }
     public Sprite getPlayerSprite() {
