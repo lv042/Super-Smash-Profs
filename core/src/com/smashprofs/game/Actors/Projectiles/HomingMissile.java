@@ -4,6 +4,7 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.World;
 import com.smashprofs.game.Actors.Players.Player;
+import com.smashprofs.game.Actors.Players.PlayerView;
 import com.smashprofs.game.Helper.B2dContactListener;
 import com.smashprofs.game.Helper.ShapeCreator;
 import org.apache.logging.log4j.LogManager;
@@ -20,25 +21,25 @@ public class HomingMissile extends Projectile {
     /**
      * The vector pointing to the target position
      */
-    Vector2 targetVector = new Vector2();
+    private Vector2 targetVector = new Vector2();
     /**
      * The targetPlayer the missile will try to hit
      */
-    Player targetPlayer;
+    private PlayerView targetPlayer;
     /**
      * The random for creating random integers used to append the userData.
      */
-    Random rand = new Random();
+    private Random rand = new Random();
 
     /**
      * Controls the flight speed of the missile
      */
-    float speed = 0.7f;
+    private float speed = 0.7f;
 
     /**
      * Controls how fast the missile will react to the movement of the targetPlayer
      */
-    float missileInertia = 0.05f;
+    private float missileInertia = 0.05f;
 
     /**
      * Create a homing missile which will try to hit its targetPlayer
@@ -49,8 +50,8 @@ public class HomingMissile extends Projectile {
      * @param playerTarget
      * The player the missile should fly to
      */
-    public HomingMissile(World world, Player playerOrigin, Player playerTarget){
-        super(world, playerOrigin, "Rocket" , ShapeCreator.getCircleShape(3f), playerOrigin.getPlayerCollisionBoxRadius()*3f,  new Texture("projectiles/missile.png"), 10, 3f, B2dContactListener.PROJECTILE_ENTITY);
+    public HomingMissile(World world, PlayerView playerOrigin, PlayerView playerTarget){
+        super(world, playerOrigin, "Rocket" , ShapeCreator.getCircleShape(3f), playerOrigin.getPlayerCollisionBoxRadiusView()*3f,  new Texture("projectiles/missile.png"), 10, 3f, B2dContactListener.PROJECTILE_ENTITY);
 
         int randInt = rand.nextInt(9999);
         userData = "Rocket#" + randInt;
@@ -84,7 +85,7 @@ public class HomingMissile extends Projectile {
     @Override
     public void update(float delta){
         super.update(delta);
-        Vector2 tartgetPlayPos = targetPlayer.getPosition();
+        Vector2 tartgetPlayPos = targetPlayer.getPositionView();
         Vector2 newTargetVector = new Vector2(tartgetPlayPos.x - b2dbody.getPosition().x, tartgetPlayPos.y - b2dbody.getPosition().y);
         targetVector = targetVector.lerp(newTargetVector, missileInertia);
         b2dbody.setLinearVelocity(targetVector.nor().scl(0.5f));

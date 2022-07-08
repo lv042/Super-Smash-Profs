@@ -585,7 +585,7 @@ public abstract class Player extends GameObject implements PlayerView {
         return isDead;
     }
 
-    private void setDead(boolean dead) {
+    public void setDead(boolean dead) {
         isDead = dead;
     }
 
@@ -613,7 +613,7 @@ public abstract class Player extends GameObject implements PlayerView {
         return standardAttackInput;
     }
 
-    private float getStartingGravity() {
+    public float getStartingGravity() {
         return startingGravity;
     }
 
@@ -621,11 +621,11 @@ public abstract class Player extends GameObject implements PlayerView {
         return playerName;
     }
 
-    private void setPlayerName(String playerName) {
+    public void setPlayerName(String playerName) {
         this.playerName = playerName;
     }
 
-    private boolean isFacingRight() {
+    public boolean isFacingRight() {
         return facingRight;
     }
 
@@ -649,7 +649,7 @@ public abstract class Player extends GameObject implements PlayerView {
         return currentState;
     }
 
-    private float getJumpForce() {
+    public float getJumpForce() {
         return jumpForce;
     }
 
@@ -661,15 +661,15 @@ public abstract class Player extends GameObject implements PlayerView {
         return maxVelocity;
     }
 
-    private int getJumpCOunt() {
+    public int getJumpCOunt() {
         return jumpCount;
     }
 
-    private void setJumpCOunt(int jumpCOunt) {
+    public void setJumpCOunt(int jumpCOunt) {
         this.jumpCount = jumpCOunt;
     }
 
-    private boolean isGrounded() {
+    public boolean isGrounded() {
         return isGrounded;
     }
 
@@ -681,11 +681,11 @@ public abstract class Player extends GameObject implements PlayerView {
         return isExtraJumpReady;
     }
 
-    private boolean isStomping() {
+    public boolean isStomping() {
         return isStomping;
     }
 
-    private BodyDef getBdef() {
+    public BodyDef getBdef() {
         return bdef;
     }
 
@@ -726,6 +726,7 @@ public abstract class Player extends GameObject implements PlayerView {
     public int getIsFacingRightAxeView() {
         return this.isFacingRightAxe;
     }
+    public float getPlayerCollisionBoxRadiusView() {return this.playerCollisionBoxRadius;}
 
     public float getAttackReach() {
         return attackReach;

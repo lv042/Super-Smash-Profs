@@ -11,6 +11,7 @@ public interface PlayerView {
     public Vector2 getPositionView();
     public Sprite getPlayerSpriteView();
     public int getIsFacingRightAxeView();
+    public float getPlayerCollisionBoxRadiusView();
     public float getHP();
     public String getPlayerName();
 }

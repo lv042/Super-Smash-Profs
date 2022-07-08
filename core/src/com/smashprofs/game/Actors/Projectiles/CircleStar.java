@@ -11,7 +11,7 @@ import static com.smashprofs.game.Actors.Players.Player.PPM;
 
 
 public class CircleStar extends Projectile {
-    Random rand = new Random();
+    private Random rand = new Random();
     private float projectileSpeed = 5;
     private float projectileRotationSpeed = -12f;
 
@@ -19,7 +19,7 @@ public class CircleStar extends Projectile {
 
 
 
-    public CircleStar(World world, Player playerOrigin) {
+    public CircleStar(World world, PlayerView playerOrigin) {
         // super(world, playerOrigin.getPosition(), "Circle", ShapeCreator.getCircleShape(3f), 8f, new Texture("projectiles/star.png"), 15, 2f, B2dContactListener.CIRCLESTAR_ENTITY);
         super(world, playerOrigin, "Circle", ShapeCreator.getCircleShape(3f), 20f, new Texture("projectiles/star.png"), 15, 2f, B2dContactListener.CIRCLESTAR_ENTITY);
 
@@ -65,8 +65,8 @@ public class CircleStar extends Projectile {
         super.update(delta);
         moveProjectile(projectileSpeed, playerOrigin.getB2dbody().getPosition());
         calculateOrbit(b2dbody.getAngle(), 25 / PPM, new Vector2
-                (playerOrigin.getPlayerSprite().getX() + (playerOrigin.getPlayerSprite().getWidth() / 2),
-                        playerOrigin.getPlayerSprite().getY() + (playerOrigin.getPlayerSprite().getHeight() / 2)));
+                (playerOrigin.getPlayerSpriteView().getX() + (playerOrigin.getPlayerSpriteView().getWidth() / 2),
+                        playerOrigin.getPlayerSpriteView().getY() + (playerOrigin.getPlayerSpriteView().getHeight() / 2)));
     }
 
 
