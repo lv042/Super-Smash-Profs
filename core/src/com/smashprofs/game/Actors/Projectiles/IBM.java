@@ -4,6 +4,7 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.World;
 import com.smashprofs.game.Actors.Players.Player;
+import com.smashprofs.game.Actors.Players.PlayerView;
 import com.smashprofs.game.Helper.B2dContactListener;
 import com.smashprofs.game.Helper.ShapeCreator;
 import org.apache.logging.log4j.LogManager;
@@ -18,11 +19,10 @@ public class IBM extends Projectile {
     private static Logger log = LogManager.getLogger(HomingMissile.class);
 
 
-    Vector2 targetVector = new Vector2();
-    Vector2 projectileDirection;
+    private Vector2 projectileDirection;
 
-    private Player originPlayer;
-    Random rand = new Random();
+    private PlayerView originPlayer;
+    private Random rand = new Random();
     private float speed = 0.7f;
     private float rotationSpeed = 4f;
 
@@ -33,8 +33,8 @@ public class IBM extends Projectile {
      * @param playerOrigin
      * The origin player of the IBM PC.
      */
-    public IBM(World world, Player playerOrigin){
-        super(world, playerOrigin, "IBM" , ShapeCreator.getCircleShape(3f), playerOrigin.getPlayerCollisionBoxRadius()*3f,  new Texture("projectiles/ibmpc.png"), 10, 3f, B2dContactListener.PROJECTILE_ENTITY);
+    public IBM(World world, PlayerView playerOrigin){
+        super(world, playerOrigin, "IBM" , ShapeCreator.getCircleShape(3f), playerOrigin.getPlayerCollisionBoxRadiusView()*3f,  new Texture("projectiles/ibmpc.png"), 10, 3f, B2dContactListener.PROJECTILE_ENTITY);
 
         int randInt = rand.nextInt(9999);
         userData = "IBM#" + randInt;
@@ -48,7 +48,7 @@ public class IBM extends Projectile {
         sprite.flip(true, false);
         log.debug("Created new IBM: " + this);
         this.originPlayer = playerOrigin;
-        projectileDirection = new Vector2(originPlayer.getIsFacingRightAxe() * speed, 0);
+        projectileDirection = new Vector2(originPlayer.getIsFacingRightAxeView() * speed, 0);
 
     }
 

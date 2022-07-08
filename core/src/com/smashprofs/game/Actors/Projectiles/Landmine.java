@@ -3,6 +3,7 @@ package com.smashprofs.game.Actors.Projectiles;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.physics.box2d.World;
 import com.smashprofs.game.Actors.Players.Player;
+import com.smashprofs.game.Actors.Players.PlayerView;
 import com.smashprofs.game.Helper.B2dContactListener;
 import com.smashprofs.game.Helper.ShapeCreator;
 import org.apache.logging.log4j.LogManager;
@@ -16,9 +17,8 @@ import java.util.Random;
 public class Landmine extends Projectile {
     private static Logger log = LogManager.getLogger(Landmine.class);
 
-    float stateTime = 0;
 
-    Random rand = new Random();
+    private Random rand = new Random();
 
     @Override
 
@@ -33,7 +33,7 @@ public class Landmine extends Projectile {
      * @param originPlayer
      * The player the mine will spawn in front of
      */
-    public Landmine(World world, Player originPlayer) {
+    public Landmine(World world, PlayerView originPlayer) {
         super(world, originPlayer, "Mine", ShapeCreator.getCircleShape(5), 15f, new Texture("projectiles/landminesmall.png"), 25, 5f, B2dContactListener.PROJECTILE_ENTITY);
 
         // Create random user data

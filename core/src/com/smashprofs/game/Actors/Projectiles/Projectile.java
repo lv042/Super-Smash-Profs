@@ -47,7 +47,7 @@ public class  Projectile extends GameObject {
 
     public final Shape bodyShape;
     public Boolean active;
-    World world;
+    private World world;
 
     /**
      * Constructor for creating a projectile that spawns at the position of the originPlayer

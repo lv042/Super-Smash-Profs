@@ -4,6 +4,7 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.World;
 import com.smashprofs.game.Actors.Players.Player;
+import com.smashprofs.game.Actors.Players.PlayerView;
 import com.smashprofs.game.Helper.B2dContactListener;
 import com.smashprofs.game.Helper.ShapeCreator;
 
@@ -15,7 +16,7 @@ public class CircleStar extends Projectile {
     private float projectileSpeed = 5;
     private float projectileRotationSpeed = -12f;
 
-    Player playerOrigin;
+    PlayerView playerOrigin;
 
 
 
@@ -63,7 +64,7 @@ public class CircleStar extends Projectile {
     @Override
     public void update(float delta){
         super.update(delta);
-        moveProjectile(projectileSpeed, playerOrigin.getB2dbody().getPosition());
+        moveProjectile(projectileSpeed, playerOrigin.getPositionView());
         calculateOrbit(b2dbody.getAngle(), 25 / PPM, new Vector2
                 (playerOrigin.getPlayerSpriteView().getX() + (playerOrigin.getPlayerSpriteView().getWidth() / 2),
                         playerOrigin.getPlayerSpriteView().getY() + (playerOrigin.getPlayerSpriteView().getHeight() / 2)));

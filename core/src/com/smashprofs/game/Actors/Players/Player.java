@@ -637,7 +637,7 @@ public abstract class Player extends GameObject implements PlayerView {
         return respawnDamping;
     }
 
-    private float getDamping() {
+    public float getDamping() {
         return damping;
     }
 
@@ -700,11 +700,11 @@ public abstract class Player extends GameObject implements PlayerView {
         return stompHitground;
     }
 
-    private void setStompHitground(boolean stompHitground) {
+    public void setStompHitground(boolean stompHitground) {
         this.stompHitground = stompHitground;
     }
 
-    private Player getInstancePlayer(Player player) {
+    public Player getInstancePlayer(Player player) {
         return this;
     }
 

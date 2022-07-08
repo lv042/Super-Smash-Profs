@@ -10,11 +10,10 @@ import com.smashprofs.game.Helper.ShapeCreator;
  * A throwing star which the player will throw in a specific direction
  */
 public class ThrowingStar extends Projectile {
-    Random rand = new Random();
-    private float projectileSpeed = 10;
+    private Random rand = new Random();
     private float projectileRotationSpeed = -12f;
 
-    Vector2 projectileDirection;
+    private Vector2 projectileDirection;
 
     /**
      * Spawns a throwing star with a specific moving speed pointing in a specific direction next to the originPosition
@@ -49,7 +48,7 @@ public class ThrowingStar extends Projectile {
 
     }
 
-    public void moveProjectile(){
+    private void moveProjectile(){
         b2dbody.setLinearVelocity(projectileDirection);
     }
 
