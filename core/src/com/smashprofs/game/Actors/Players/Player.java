@@ -42,7 +42,7 @@ public abstract class Player extends GameObject implements PlayerView {
     private final float walkingSpeedMultiplier = 1.1f;
     private final SoundManager soundManager;
     private final String userData;
-    public float damping = 0.999f; //the closer this value is to zero the more the player will slow down
+    private float damping = 0.999f; //the closer this value is to zero the more the player will slow down
     InputState currentInputState;
     PlayerTypes playerType;
     float stateTime = 0;
@@ -99,7 +99,7 @@ public abstract class Player extends GameObject implements PlayerView {
      * @param playerPunchTex
      * The punch texture stripe (3 frames)
      */
-    public Player(World world, InputState inputState, Vector2 spawnpoint, String playerName, PlayerTypes playerType, String userData, Texture playerStandTex, Texture playerRunTex, Texture playerJumpTex, Texture playerPunchTex) {
+    Player(World world, InputState inputState, Vector2 spawnpoint, String playerName, PlayerTypes playerType, String userData, Texture playerStandTex, Texture playerRunTex, Texture playerJumpTex, Texture playerPunchTex) {
         super(userData);
 
         this.playerType = playerType;
@@ -145,7 +145,7 @@ public abstract class Player extends GameObject implements PlayerView {
 
 
 
-    public void updatePosition(float deltatime) {
+    private void updatePosition(float deltatime) {
         position = b2dbody.getPosition();
     }
 
@@ -290,7 +290,7 @@ public abstract class Player extends GameObject implements PlayerView {
      * @param dt
      * The game delta time.
      */
-    public void managePlayerInput(float dt) {
+    private void managePlayerInput(float dt) {
 
         Array<Controller> controllers2 = Controllers.getControllers();
 
@@ -438,7 +438,7 @@ public abstract class Player extends GameObject implements PlayerView {
      * @return
      * The frame of the animation matching the current state time and the player state.
      */
-    public TextureRegion getRenderTexture(float stateTime) {
+    private TextureRegion getRenderTexture(float stateTime) {
         TextureRegion frame = null;
 
         if(isPunching) {
@@ -472,7 +472,7 @@ public abstract class Player extends GameObject implements PlayerView {
 
     }
 
-    public boolean reachedWorldEdge() {
+    private boolean reachedWorldEdge() {
 
         return b2dbody.getPosition().y < 0;
     }
@@ -481,7 +481,7 @@ public abstract class Player extends GameObject implements PlayerView {
      * Checks if the player is touching the ground.
      * Sets isGrounded, isNotTouchingTiles, isExtraJumpReady and isStomping accordingly.
      */
-    public void checkGrounded() {
+    private void checkGrounded() {
         currentY = b2dbody.getPosition().y;
 
         if (b2dbody.getLinearVelocity().y - getGravity() >= 0.2 || b2dbody.getLinearVelocity().y - getGravity() <= -0.2) {
@@ -513,16 +513,16 @@ public abstract class Player extends GameObject implements PlayerView {
 
     }
 
-    public float getGravity() {
+    private float getGravity() {
         return gravity;
     }
 
-    public void setGravity(float gravity) {
+    private void setGravity(float gravity) {
         this.gravity = gravity;
     }
 
     //respawn jumping
-    public void respawnPlayers() {
+    private void respawnPlayers() {
         if (reachedWorldEdge()) {
             getB2dbody().setLinearVelocity(new Vector2(getB2dbody().getLinearVelocity().x * getRespawnDamping(), 2.6f));
 
@@ -550,7 +550,7 @@ public abstract class Player extends GameObject implements PlayerView {
         forcesCombined.setZero();
     }
 
-    public void limitPlayersToEdge() {
+    private void limitPlayersToEdge() {
         //sets player velocity to 0 if they are at the edge of the map
         float pushBack = 1f;
 
@@ -575,7 +575,7 @@ public abstract class Player extends GameObject implements PlayerView {
         WASD, ARROWS
     }
 
-    public enum State {
+    private enum State {
         FALLING, JUMPING, STANDING, RUNNING
     }
 
@@ -585,7 +585,7 @@ public abstract class Player extends GameObject implements PlayerView {
         return isDead;
     }
 
-    public void setDead(boolean dead) {
+    private void setDead(boolean dead) {
         isDead = dead;
     }
 
@@ -613,7 +613,7 @@ public abstract class Player extends GameObject implements PlayerView {
         return standardAttackInput;
     }
 
-    public float getStartingGravity() {
+    private float getStartingGravity() {
         return startingGravity;
     }
 
@@ -621,11 +621,11 @@ public abstract class Player extends GameObject implements PlayerView {
         return playerName;
     }
 
-    public void setPlayerName(String playerName) {
+    private void setPlayerName(String playerName) {
         this.playerName = playerName;
     }
 
-    public boolean isFacingRight() {
+    private boolean isFacingRight() {
         return facingRight;
     }
 
@@ -633,23 +633,23 @@ public abstract class Player extends GameObject implements PlayerView {
         return isFacingRightAxe;
     }
 
-    public float getRespawnDamping() {
+    private float getRespawnDamping() {
         return respawnDamping;
     }
 
-    public float getDamping() {
+    private float getDamping() {
         return damping;
     }
 
-    public float getWalkingSpeedMultiplier() {
+    private float getWalkingSpeedMultiplier() {
         return walkingSpeedMultiplier;
     }
 
-    public State getCurrentState() {
+    private State getCurrentState() {
         return currentState;
     }
 
-    public float getJumpForce() {
+    private float getJumpForce() {
         return jumpForce;
     }
 
@@ -657,39 +657,39 @@ public abstract class Player extends GameObject implements PlayerView {
         return b2dbody;
     }
 
-    public float getMaxVelocity() {
+    private float getMaxVelocity() {
         return maxVelocity;
     }
 
-    public int getJumpCOunt() {
+    private int getJumpCOunt() {
         return jumpCount;
     }
 
-    public void setJumpCOunt(int jumpCOunt) {
+    private void setJumpCOunt(int jumpCOunt) {
         this.jumpCount = jumpCOunt;
     }
 
-    public boolean isGrounded() {
+    private boolean isGrounded() {
         return isGrounded;
     }
 
-    public Vector2 getSpawnPoint() {
+    private Vector2 getSpawnPoint() {
         return spawnpoint;
     }
 
-    public boolean getIsExtraJumpReady() {
+    private boolean getIsExtraJumpReady() {
         return isExtraJumpReady;
     }
 
-    public boolean isStomping() {
+    private boolean isStomping() {
         return isStomping;
     }
 
-    public BodyDef getBdef() {
+    private BodyDef getBdef() {
         return bdef;
     }
 
-    public Vector2 getSpawnpoint() {
+    private Vector2 getSpawnpoint() {
         return spawnpoint;
     }
     public Sprite getPlayerSprite() {
@@ -700,11 +700,11 @@ public abstract class Player extends GameObject implements PlayerView {
         return stompHitground;
     }
 
-    public void setStompHitground(boolean stompHitground) {
+    private void setStompHitground(boolean stompHitground) {
         this.stompHitground = stompHitground;
     }
 
-    public Player getInstancePlayer(Player player) {
+    private Player getInstancePlayer(Player player) {
         return this;
     }
 
