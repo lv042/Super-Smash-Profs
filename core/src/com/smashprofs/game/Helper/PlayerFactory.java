@@ -8,10 +8,12 @@ import org.apache.logging.log4j.Logger;
 
 import static com.smashprofs.game.Actors.Players.Player.PPM;
 
+/**
+ * The Player factory.
+ */
 public class PlayerFactory {
 
     private static Logger log = LogManager.getLogger(PlayerFactory.class);
-
 
     private Vector2 playerOneSpawnPoint = new Vector2(4.5f * PPM, 0.85f * PPM); //new Vector2(3.4f * PPM, 0.85f * PPM);
 
@@ -36,11 +38,21 @@ public class PlayerFactory {
 
     }
 
+    /**
+     * Reset the playersCreated value.
+     */
     public void resetFactory() {
         playersCreated = 0;
         log.debug("PlayerFactory has been reset");
     }
 
+    /**
+     * Create a certain type of Player.
+     * @param player
+     * The PlayerType of the requested Player.
+     * @return
+     * A Player of the requested PlayerType.
+     */
     public Player getPlayer  (PlayerTypes player){
 
         if(playersCreated == 0){
