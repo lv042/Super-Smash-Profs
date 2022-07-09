@@ -9,8 +9,8 @@ import java.util.ArrayList;
 public class B2dContactListener implements ContactListener {
 
     //public Array<Body> bodiesToDestroy = new Array<Body>();
-    boolean PlayerOneGotShoot = false;
-    boolean PlayerTwoGotShoot = false;
+    private boolean PlayerOneGotShoot = false;
+    private boolean PlayerTwoGotShoot = false;
     //add map with key3
     private static Logger log = LogManager.getLogger(B2dContactListener.class);
 
@@ -22,9 +22,9 @@ public class B2dContactListener implements ContactListener {
 
 
 
-    boolean P1NotTouchingTile = false;
+    private boolean P1NotTouchingTile = false;
 
-    boolean P2NotTouchingTile = false;
+    private boolean P2NotTouchingTile = false;
 
     private VAFXManager vafxManager = VAFXManager.getVFXManager_INSTANCE();
 
@@ -67,7 +67,7 @@ public class B2dContactListener implements ContactListener {
     }
 
 
-    public ArrayList<Body> bodiesToDestroy = new ArrayList<>();
+    private ArrayList<Body> bodiesToDestroy = new ArrayList<>();
 
 
 

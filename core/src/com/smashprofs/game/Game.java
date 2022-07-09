@@ -15,7 +15,6 @@ import static com.smashprofs.game.Helper.Util.log4JconfLoad;
 public class Game extends com.badlogic.gdx.Game {
 	public static SpriteBatch batch;
 	private static Logger log = LogManager.getLogger(Game.class);
-	Texture img;
 	public static final int V_WIDTH = 400;
 	public static final int V_HEIGHT = 208;
 	private GameThread thread;

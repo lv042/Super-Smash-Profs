@@ -28,12 +28,12 @@ public class CombatManager {
     /**
      * The box2DContact listener.
      */
-    private B2dContactListener contactListener = B2dContactListener.getContactListener_INSTANCE();
+    private final B2dContactListener contactListener = B2dContactListener.getContactListener_INSTANCE();
 
     /**
      * The sound manager.
      */
-    private SoundManager soundManager = SoundManager.getSoundManager_INSTANCE();
+    private final SoundManager soundManager = SoundManager.getSoundManager_INSTANCE();
 
     /**
      * The distance between the two players as a length.
@@ -68,89 +68,36 @@ public class CombatManager {
      * Updates the combatManager. Updates all present projectiles.
      * Spawns projectiles if the players are shooting.
      * Hits the players if they got shot.
-     * @param deltatime
-     * The game delta time.
-     * @param playerOne
-     * The first player of the game.
-     * @param playerTwo
-     * The second player of the game.
-     * @param world
-     * The game world.
+     *
+     * @param deltatime The game delta time.
+     * @param playerOne The first player of the game.
+     * @param playerTwo The second player of the game.
+     * @param world     The game world.
      */
-    public void update(float deltatime, Player playerOne, Player playerTwo, World world)  {
+    public void update(float deltatime, Player playerOne, Player playerTwo, World world) {
         distanceBetweenPlayers = new Vector2(Math.abs(playerOne.getPosition().x - playerTwo.getPosition().x), Math.abs(playerOne.getPosition().y - playerTwo.getPosition().y));
         distanceBetweenPlayersLength = distanceBetweenPlayers.len();
-        //System.out.println(distanceBetweenPlayersLength);
 
 
         updateProjectiles(deltatime);
         if (distanceBetweenPlayersLength < playerOne.getAttackReach()) {
-
             float attackKnockback = 1.5f;
-
-
-            //System.out.println("Player is in range attack range");
-            if(playerOne.isStandardAttackInput() && !playerTwo.isBlocking()){
-                //System.out.println("Player is attacking");
-                //take damage and yeeeeeet
-
-                //playerTwo.getB2dbody().applyLinearImpulse(From1To2, playerOne.getB2dbody().getWorldCenter(), true);
-                //playerTwo.setHP(playerTwo.getHP() - playerOne.getAttackDamage());
-
-
-                attackPlayer(playerOne, playerTwo, attackKnockback , 0.2f);
-
+            if (playerOne.isStandardAttackInput() && !playerTwo.isBlocking()) {
+                attackPlayer(playerOne, playerTwo, attackKnockback, 0.2f);
             }
-            if(playerTwo.isStandardAttackInput() && !playerOne.isBlocking()){
-               //System.out.println("Player is attacking");
-                // take damage and yeeeeeet
+            if (playerTwo.isStandardAttackInput() && !playerOne.isBlocking()) {
 
-                //playerOne.getB2dbody().applyLinearImpulse(From2To1, playerOne.getB2dbody().getWorldCenter(), true);
-                //playerOne.setHP(playerOne.getHP() - playerOne.getAttackDamage());
-                attackPlayer(playerTwo, playerOne, attackKnockback , 2f);
-
+                attackPlayer(playerTwo, playerOne, attackKnockback, 2f);
             }
             attackKnockback = 2f;
-            if(playerOne.isStompHitground())attackPlayer(playerOne, playerTwo, attackKnockback, 2f);
-            if(playerTwo.isStompHitground())attackPlayer(playerTwo, playerOne, attackKnockback, 2f);
-
-            //Landmine proj = new Landmine(world,playerOne);
-
+            if (playerOne.isStompHitground()) attackPlayer(playerOne, playerTwo, attackKnockback, 2f);
+            if (playerTwo.isStompHitground()) attackPlayer(playerTwo, playerOne, attackKnockback, 2f);
         }
-        if(playerOne.isShooting()){
-            shooting(playerOne,playerTwo,world);
-            /*//System.out.println("Rocket spawned ");
-            log.debug("Rocket spawned");
-            //HomingMissile proj = new HomingMissile(world, playerOne, playerTwo);
-            // CircleStar proj = new CircleStar(world, playerOne);
-            Landmine proj = new Landmine(world, playerOne);
-            projectileArrayList.add(proj);*/
-
+        if (playerOne.isShooting()) {
+            shooting(playerOne, playerTwo, world);
         }
-        if(playerTwo.isShooting()) {
-            shooting(playerTwo,playerOne,world);
-
-            //das ist sehr gut so geloest :)
-
-           /* log.debug("Rocket spawned");
-            //ThrowingStar proj = new ThrowingStar(world, playerTwo);
-            ThrowingStar proj = new ThrowingStar(world, new Vector2(playerTwo.getPosition().x + 10 / PPM, playerTwo.getPosition().y) , new Vector2(1,0));
-            projectileArrayList.add(proj);
-
-            ThrowingStar proj1 = new ThrowingStar(world, new Vector2(playerTwo.getPosition().x - 10 / PPM, playerTwo.getPosition().y), new Vector2(-1,0));
-            projectileArrayList.add(proj1);
-
-            ThrowingStar proj2 = new ThrowingStar(world, new Vector2(playerTwo.getPosition().x, playerTwo.getPosition().y + 10 / PPM), new Vector2(0,1));
-            projectileArrayList.add(proj2);
-
-            ThrowingStar proj3 = new ThrowingStar(world, new Vector2(playerTwo.getPosition().x, playerTwo.getPosition().y - 10 / PPM), new Vector2(0,-1));
-            projectileArrayList.add(proj3);
-
-
-
-            //HomingMissile proj = new HomingMissile(world, playerTwo, playerOne);
-            //Landmine proj = new Landmine(world, playerTwo);
-*/
+        if (playerTwo.isShooting()) {
+            shooting(playerTwo, playerOne, world);
         }
 
         //RocketS
@@ -158,12 +105,10 @@ public class CombatManager {
         if (contactListener.isPlayerTwoGotShoot()) {
             attackPlayer(playerOne, playerTwo, 1.5f, 2f);
             contactListener.setPlayerTwoGotShoot(false);
-            //System.out.println("abracadabra");
         }
         if (contactListener.isPlayerOneGotShoot()) {
             attackPlayer(playerTwo, playerOne, 1.5f, 2f);
             contactListener.setPlayerOneGotShoot(false);
-            //System.out.println("adadadadada");
         }
 
         //LANDMINES
@@ -171,29 +116,20 @@ public class CombatManager {
         if (contactListener.isPlayerTwoGotShoot()) {
             attackPlayer(playerOne, playerTwo, 1.5f, 2f);
             contactListener.setPlayerTwoGotShoot(false);
-            //System.out.println("abracadabra");
         }
         if (contactListener.isPlayerOneGotShoot()) {
             attackPlayer(playerTwo, playerOne, 1.5f, 2f);
             contactListener.setPlayerOneGotShoot(false);
-            //System.out.println("adadadadada");
         }
-
-
-
-
-
     }
 
-    public void shooting(Player playeractive,Player playerinactive, World world){
+    private void shooting(Player playeractive, Player playerinactive, World world) {
 
         //Ansonsten aber strukturell ziemlich gut :)
-        if(playeractive.getPlayerType() == PlayerTypes.Leo){
-            //TODO: bitte genau so fuer die anderen klassen integrieren
+        if (playeractive.getPlayerType() == PlayerTypes.Leo) {
 
-
-            if(mineAvailable){
-                Timer.schedule(new Timer.Task(){
+            if (mineAvailable) {
+                Timer.schedule(new Timer.Task() {
                     @Override
                     public void run() {
                         mineAvailable = true;
@@ -206,39 +142,37 @@ public class CombatManager {
                 mineAvailable = false;
             }
 
-        }
-        else if(playeractive.getPlayerType() == PlayerTypes.Maurice){
+        } else if (playeractive.getPlayerType() == PlayerTypes.Maurice) {
 
-            if(throwingStarAvailable) {
-                    Timer.schedule(new Timer.Task(){
-                        @Override
-                        public void run() {
-                            throwingStarAvailable = true;
-                        }
-                    }, ThrowingStar.getDelayInSeconds());
+            if (throwingStarAvailable) {
+                Timer.schedule(new Timer.Task() {
+                    @Override
+                    public void run() {
+                        throwingStarAvailable = true;
+                    }
+                }, ThrowingStar.getDelayInSeconds());
 
                 log.debug("ThrowingStar spawned");
                 //ThrowingStar proj = new ThrowingStar(world, playerTwo);
-                ThrowingStar proj = new ThrowingStar(world, new Vector2(playeractive.getPosition().x + 10 / PPM, playeractive.getPosition().y) , new Vector2(1,0));
+                ThrowingStar proj = new ThrowingStar(world, new Vector2(playeractive.getPosition().x + 10 / PPM, playeractive.getPosition().y), new Vector2(1, 0));
                 projectileArrayList.add(proj);
 
-                ThrowingStar proj1 = new ThrowingStar(world, new Vector2(playeractive.getPosition().x - 10 / PPM, playeractive.getPosition().y), new Vector2(-1,0));
+                ThrowingStar proj1 = new ThrowingStar(world, new Vector2(playeractive.getPosition().x - 10 / PPM, playeractive.getPosition().y), new Vector2(-1, 0));
                 projectileArrayList.add(proj1);
 
-                ThrowingStar proj2 = new ThrowingStar(world, new Vector2(playeractive.getPosition().x, playeractive.getPosition().y + 10 / PPM), new Vector2(0,1));
+                ThrowingStar proj2 = new ThrowingStar(world, new Vector2(playeractive.getPosition().x, playeractive.getPosition().y + 10 / PPM), new Vector2(0, 1));
                 projectileArrayList.add(proj2);
 
-                ThrowingStar proj3 = new ThrowingStar(world, new Vector2(playeractive.getPosition().x, playeractive.getPosition().y - 10 / PPM), new Vector2(0,-1));
+                ThrowingStar proj3 = new ThrowingStar(world, new Vector2(playeractive.getPosition().x, playeractive.getPosition().y - 10 / PPM), new Vector2(0, -1));
                 projectileArrayList.add(proj3);
 
                 throwingStarAvailable = false;
             }
 
-        }
-        else if(playeractive.getPlayerType() == PlayerTypes.Alex){
+        } else if (playeractive.getPlayerType() == PlayerTypes.Alex) {
 
-            if(missileAvailable) {
-                Timer.schedule(new Timer.Task(){
+            if (missileAvailable) {
+                Timer.schedule(new Timer.Task() {
                     @Override
                     public void run() {
                         missileAvailable = true;
@@ -251,13 +185,12 @@ public class CombatManager {
                 missileAvailable = false;
             }
 
-        }
-        else if (playeractive.getPlayerType() == PlayerTypes.Luca){
-            if(totalCircles < maxCircles){
+        } else if (playeractive.getPlayerType() == PlayerTypes.Luca) {
+            if (totalCircles < maxCircles) {
 
-                if(circleStarAvailable) {
+                if (circleStarAvailable) {
 
-                    Timer.schedule(new Timer.Task(){
+                    Timer.schedule(new Timer.Task() {
                         @Override
                         public void run() {
                             circleStarAvailable = true;
@@ -273,10 +206,9 @@ public class CombatManager {
                 }
 
             }
-        }
-        else if(playeractive.getPlayerType() == PlayerTypes.Viktor) {
-            if(ibmAvailable) {
-                Timer.schedule(new Timer.Task(){
+        } else if (playeractive.getPlayerType() == PlayerTypes.Viktor) {
+            if (ibmAvailable) {
+                Timer.schedule(new Timer.Task() {
                     @Override
                     public void run() {
                         ibmAvailable = true;
@@ -294,13 +226,13 @@ public class CombatManager {
     //Projectile attack
     //kann das weg oder ist das kunst??????????????????????????????????????????
     // A: HdM = Hochschule der Medien => Medien = Kunst
-    public void attackPlayer(Vector2 damageOrigin, int damage, Player target, float attackKnockback , float yAttackKnockback){
+    public void attackPlayer(Vector2 damageOrigin, int damage, Player target, float attackKnockback, float yAttackKnockback) {
         Vector2 attackVector = new Vector2(0, yAttackKnockback);
-        if(damageOrigin.x < target.getPosition().x) attackVector.x = 1 * attackKnockback;
+        if (damageOrigin.x < target.getPosition().x) attackVector.x = 1 * attackKnockback;
         else attackVector.x = -1 * attackKnockback;
 
 
-        target.applyForces(attackVector.x, attackVector.y );
+        target.applyForces(attackVector.x, attackVector.y);
         target.setHP(target.getHP() - damage);
         soundManager.playSound("stomp.wav");
     }
@@ -309,44 +241,40 @@ public class CombatManager {
 
     /**
      * Melee attack
-     * @param attacker
-     * The player who is attacking.
-     * @param target
-     * The target the player is attacking.
-     * @param attackKnockback
-     * The knock-back the target will receive.
-     * @param yAttackKnockback
-     * The knock-back the target will receive in y-Axis direction.
+     *
+     * @param attacker         The player who is attacking.
+     * @param target           The target the player is attacking.
+     * @param attackKnockback  The knock-back the target will receive.
+     * @param yAttackKnockback The knock-back the target will receive in y-Axis direction.
      */
-    public void attackPlayer(Player attacker, Player target, float attackKnockback , float yAttackKnockback){
+    private void attackPlayer(Player attacker, Player target, float attackKnockback, float yAttackKnockback) {
         Vector2 attackVector = new Vector2(0, yAttackKnockback);
-        if(attacker.getPosition().x < target.getPosition().x) attackVector.x = 1 * attackKnockback;
+        if (attacker.getPosition().x < target.getPosition().x) attackVector.x = 1 * attackKnockback;
         else attackVector.x = -1 * attackKnockback;
 
 
-        target.applyForces(attackVector.x, attackVector.y );
+        target.applyForces(attackVector.x, attackVector.y);
         target.setHP(target.getHP() - target.getAttackDamage());
         soundManager.playSound(target.getDamageSoundMp3());
     }
 
     /**
      * Update all projectiles existing in the game world.
-     * @param deltatime
-     * The game delta time.
+     *
+     * @param deltatime The game delta time.
      */
     private void updateProjectiles(float deltatime) {
-        for (Projectile projectile: projectileArrayList) {
+        for (Projectile projectile : projectileArrayList) {
             //TODO: @Alex Bitte die auskommentierten sout's als log.debug übernehmen :)
             projectile.update(deltatime);
             //System.out.println("Is active before loop: " + projectile.active);
             log.debug("Is active before loop: " + projectile.active);
-            if(!projectile.active) {
+            if (!projectile.active) {
                 //System.out.println("Trying to remove body");
                 log.debug("Trying to remove body");
                 projectile.destroyBody();
                 projectileArrayList.removeValue(projectile, true);
-            }
-            else if(projectile.getBody().getUserData().equals("Destroyed")){
+            } else if (projectile.getBody().getUserData().equals("Destroyed")) {
 
                 projectile.active = false;
                 //System.out.println("Projectile was set to inactive");
@@ -361,11 +289,11 @@ public class CombatManager {
 
     /**
      * Draw all projectiles existing in the game world.
-     * @param batch
-     * The batch the projectile sprites should be drawn in.
+     *
+     * @param batch The batch the projectile sprites should be drawn in.
      */
-    public void drawProjectiles(SpriteBatch batch){
-        for (Projectile projectile: projectileArrayList) {
+    public void drawProjectiles(SpriteBatch batch) {
+        for (Projectile projectile : projectileArrayList) {
 
             // TODO: Gehört das so?
 
@@ -374,7 +302,7 @@ public class CombatManager {
 //                projectile.draw(batch);
 //            }
             //so scheints zu funktionieren -> ansonsten pls aendern
-            if(projectile.b2dbody.isActive()) {
+            if (projectile.b2dbody.isActive()) {
                 projectile.draw(batch);
             }
 

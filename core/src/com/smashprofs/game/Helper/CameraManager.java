@@ -28,9 +28,7 @@ public class CameraManager {
     }
     // ENDE
 
-    public void setCamera(Player playerOne, Player playerTwo) {
 
-    }
 
     public OrthographicCamera getGameCamera() {
         return gameCamera;

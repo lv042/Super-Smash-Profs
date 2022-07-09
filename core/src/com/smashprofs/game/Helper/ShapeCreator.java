@@ -22,6 +22,7 @@ public class ShapeCreator {
      * @return
      * The polygon shape.
      */
+    //no usages yet
     public static PolygonShape getPolygonShape(float width, float height) {
         PolygonShape bodyShape = new PolygonShape();
         bodyShape.setAsBox(width/PPM, height/PPM);

@@ -22,13 +22,13 @@ public class  Hud{
     private Integer worldTimer = 120; //120 is the max time for the game
     private float timeCount; // time counter for the hud
     private int score; // score counter for the hud
-    Label countdownLabel; // label for the countdown;
-    Label scoreLabel; // label for the score
-    Label playerTwoHud; // label for the time
-    Label playerOneHud; // label for the level
-    Label modeLabel; // label for the world
-    Label playerLabel; // label for the player
-    Label fpsLabel; // label for the current FPS
+    private Label countdownLabel; // label for the countdown;
+    private Label scoreLabel; // label for the score
+    private Label playerTwoHud; // label for the time
+    private Label playerOneHud; // label for the level
+    private Label modeLabel; // label for the world
+    private Label playerLabel; // label for the player
+    private Label fpsLabel; // label for the current FPS
     BitmapFont fpsFont; // font for the FPS number. Different styling than the default bitmap font.
     private SoundManager soundManager;
 

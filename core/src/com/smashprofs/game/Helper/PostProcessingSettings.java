@@ -13,7 +13,7 @@ public class PostProcessingSettings {
 
     VfxManager postProcessingManager = new VfxManager(Pixmap.Format.RGBA8888);
 
-    public void setUpManager()
+    private void setUpManager()
     {
         log.debug("Setting up the VFXManager...");
         FilmGrainEffect filmGrainEffect = new FilmGrainEffect();

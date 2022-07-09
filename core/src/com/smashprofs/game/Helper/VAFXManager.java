@@ -15,7 +15,7 @@ public class VAFXManager {
 
     private static Logger log = LogManager.getLogger(VAFXManager.class);
 
-    public static DelayedRemovalArray<VFXObject> VFXObjectList = new DelayedRemovalArray<>();
+    private static DelayedRemovalArray<VFXObject> VFXObjectList = new DelayedRemovalArray<>();
 
     //implements singelton sound manager
 

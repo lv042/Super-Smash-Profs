@@ -17,7 +17,7 @@ public class Util {
     private static Logger log = LogManager.getLogger(Util.class);
     //Maybe make this class singleton?
 
-    public static boolean debugMode = true;
+  /*  public static boolean debugMode = true;
 
     private static boolean turnOnMusic = true;
 
@@ -27,7 +27,7 @@ public class Util {
 
     public static void setTurnOnMusic(boolean turnOnMusic) {
         Util.turnOnMusic = turnOnMusic;
-    }
+    }*/
 
     public static int wsAxis(){
         if(Gdx.input.isKeyPressed(Input.Keys.W)) return 1;
