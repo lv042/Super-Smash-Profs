@@ -12,6 +12,9 @@ import org.apache.logging.log4j.Logger;
 
 import static com.smashprofs.game.Actors.Players.Player.PPM;
 
+/**
+ * Manages attack cooldown, damage application and calls the projectile update.
+ */
 public class CombatManager {
     /**
      * The distance between the two players in the game world.
@@ -100,7 +103,7 @@ public class CombatManager {
             shooting(playerTwo, playerOne, world);
         }
 
-        //RocketS
+        //Rockets
 
         if (contactListener.isPlayerTwoGotShoot()) {
             attackPlayer(playerOne, playerTwo, 1.5f, 2f);
@@ -267,21 +270,20 @@ public class CombatManager {
         for (Projectile projectile : projectileArrayList) {
             //TODO: @Alex Bitte die auskommentierten sout's als log.debug übernehmen :)
             projectile.update(deltatime);
-            //System.out.println("Is active before loop: " + projectile.active);
+
             log.debug("Is active before loop: " + projectile.active);
+
             if (!projectile.active) {
-                //System.out.println("Trying to remove body");
                 log.debug("Trying to remove body");
+
                 projectile.destroyBody();
                 projectileArrayList.removeValue(projectile, true);
             } else if (projectile.getBody().getUserData().equals("Destroyed")) {
 
                 projectile.active = false;
-                //System.out.println("Projectile was set to inactive");
-                log.debug("Projectile was set to inactive");
-                //System.out.println("Is active: " + projectile.active);
-                log.debug("Is active: " + projectile.active);
 
+                log.debug("Projectile was set to inactive");
+                log.debug("Is active: " + projectile.active);
             }
         }
     }
@@ -295,13 +297,6 @@ public class CombatManager {
     public void drawProjectiles(SpriteBatch batch) {
         for (Projectile projectile : projectileArrayList) {
 
-            // TODO: Gehört das so?
-
-            // Kein Plan was deaktviert wird :/ -> daher lieber alles hahah
-//            if(projectile.active && projectile.b2dbody.isActive() && projectile.isActive()) {
-//                projectile.draw(batch);
-//            }
-            //so scheints zu funktionieren -> ansonsten pls aendern
             if (projectile.b2dbody.isActive()) {
                 projectile.draw(batch);
             }
