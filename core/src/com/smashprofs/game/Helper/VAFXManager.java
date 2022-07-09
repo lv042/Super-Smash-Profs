@@ -45,36 +45,36 @@ public class VAFXManager {
         log.debug("Spawning explosion. Type: " + explosionType);
 
         switch (explosionType) {
-            case rocketExplosion:
+            case rocketExplosion -> {
                 VFXTexture = new Texture("explosions/explosion-6.png");
                 sound = "sounds/stomp.wav";
                 centered = true;
                 spriteIsSquare = true;
-            break;
-            case landMineExplosion:
+            }
+            case landMineExplosion -> {
                 VFXTexture = new Texture("explosions/explosion-2.png");
                 sound = "sounds/stomp.wav";
                 centered = false;
                 spriteIsSquare = true;
-            break;
-            case anotherExplosion:
+            }
+            case anotherExplosion -> {
                 VFXTexture = new Texture("explosions/explosion-7.png");
                 sound = "sounds/stomp.wav";
                 centered = true;
                 spriteIsSquare = true;
-                break;
-            case electricZap:
+            }
+            case electricZap -> {
                 VFXTexture = new Texture("explosions/electric-zap-1.png");
                 sound = "sounds/stomp.wav";
                 centered = true;
                 spriteIsSquare = true;
-                break;
-            case lightningStrike:
+            }
+            case lightningStrike -> {
                 VFXTexture = new Texture("explosions/lightning.png");
                 sound = "sounds/stomp.wav";
                 centered = false;
                 spriteIsSquare = false;
-                break;
+            }
         }
 
         VFXObjectList.add(new VFXObject("test", spawnpoint, VFXTexture, sound, centered, spriteIsSquare));
