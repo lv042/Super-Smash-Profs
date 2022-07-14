@@ -21,6 +21,7 @@ A Java platformer developed with LIBgdx and Tiled
   - [How can I play the game?](#how-can-i-play-the-game)
 - [Authors](#authors)
 - [Screenshots](#screenshots)
+- [Documentation](#dokumentation)
 - [Feedback](#feedback)
 
 ## Description
@@ -79,7 +80,9 @@ To start the game, simply add a new run configuration and type in "run".
 ![gameplay](./assets/screenshots/gameplay.png)
 ![winner](./assets/screenshots/winner.png)
 
+##Documentation
 
+https://drive.google.com/file/d/15gitvx5r0FNpOf9QIgNHDvPcJrHTNwK1/view?usp=sharing
 
 ## Feedback
 
