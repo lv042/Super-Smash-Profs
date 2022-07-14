@@ -18,7 +18,7 @@ public class Game extends com.badlogic.gdx.Game {
 	public static final int V_WIDTH = 400;
 	public static final int V_HEIGHT = 208;
 	private GameThread thread;
-	public static Boolean debugMode, showFPS, unitTestMode;
+	public static Boolean soundEffects, ingameMusic, debugMode, showFPS, unitTestMode;
 	
 	@Override
 	public void create () {
@@ -32,6 +32,12 @@ public class Game extends com.badlogic.gdx.Game {
 		gamePropertiesManager.firstStart();
 		thread.start();
 
+		// --Toggles sound effects--
+		soundEffects = true;
+		//--------------------------
+		// --Toggles in-game music--
+		ingameMusic = true;
+		//--------------------------
 		// --Toggle unit test mode--
 		unitTestMode = false;
 		//--------------------------
@@ -41,10 +47,9 @@ public class Game extends com.badlogic.gdx.Game {
 		// --Toggles FPS visibility--
 		showFPS = true;
 		// --------------------------
-		// Set other graphic settings in DesktopLauncher.java
+		// ! See other graphic settings in DesktopLauncher.java !
 
 		batch = new SpriteBatch();
-		//setScreen(new MainMenuScreen(this));
 
 		if(unitTestMode) {
 			log.warn("Unit test mode enabled, skipping intro screen");

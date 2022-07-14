@@ -7,12 +7,18 @@ import com.crashinvaders.vfx.effects.util.MixEffect;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+/**
+ * Creates and returns preconfigured VfxManagers to use on different screens.
+ */
 public class PostProcessingSettings {
 
     private static Logger log = LogManager.getLogger(PostProcessingSettings.class);
 
     VfxManager postProcessingManager = new VfxManager(Pixmap.Format.RGBA8888);
 
+    /**
+     * Sets up a pre-configured VfxManager.
+     */
     private void setUpManager()
     {
         log.debug("Setting up the VFXManager...");
@@ -32,6 +38,11 @@ public class PostProcessingSettings {
         log.debug("Finished setting up VFXManager");
     }
 
+    /**
+     * Get a preconfigured VfxManager.
+     * @return
+     * A preconfigured VfxManager.
+     */
     public VfxManager getPostProcessingManager()
     {
         setUpManager();

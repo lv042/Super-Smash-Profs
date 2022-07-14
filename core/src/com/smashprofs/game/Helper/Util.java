@@ -13,21 +13,11 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 
+/**
+ * Utility class for initializing log4j and game input axes.
+ */
 public class Util {
     private static Logger log = LogManager.getLogger(Util.class);
-    //Maybe make this class singleton?
-
-  /*  public static boolean debugMode = true;
-
-    private static boolean turnOnMusic = true;
-
-    public static void setDebugMode(boolean debugMode) {
-        Util.debugMode = debugMode;
-    }
-
-    public static void setTurnOnMusic(boolean turnOnMusic) {
-        Util.turnOnMusic = turnOnMusic;
-    }*/
 
     public static int wsAxis(){
         if(Gdx.input.isKeyPressed(Input.Keys.W)) return 1;

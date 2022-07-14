@@ -6,12 +6,13 @@ import org.apache.logging.log4j.Logger;
 
 import java.util.ArrayList;
 
+/**
+ * Listens for contacts between Box2D objects and handles contact states.
+ */
 public class B2dContactListener implements ContactListener {
 
-    //public Array<Body> bodiesToDestroy = new Array<Body>();
     private boolean PlayerOneGotShoot = false;
     private boolean PlayerTwoGotShoot = false;
-    //add map with key3
     private static Logger log = LogManager.getLogger(B2dContactListener.class);
 
     public final static short PLAYER_ENTITY = 0b01;   // 1
@@ -20,17 +21,11 @@ public class B2dContactListener implements ContactListener {
     public final static short CIRCLESTAR_ENTITY = 0b100; // 4
 
 
-
-
     private boolean P1NotTouchingTile = false;
 
     private boolean P2NotTouchingTile = false;
 
     private VAFXManager vafxManager = VAFXManager.getVFXManager_INSTANCE();
-
-    private CombatManager combatManager = CombatManager.getCombatManager_INSTANCE();
-
-
 
     public boolean isP1NotTouchingTile() {
 
@@ -76,10 +71,6 @@ public class B2dContactListener implements ContactListener {
 
 
 
-
-
-
-
         //System.out.println("beginContact");
         if("PlayerOne".equals(contact.getFixtureA().getBody().getUserData()) && (contact.getFixtureB().getBody().getUserData().toString().startsWith("Rocket")
                 || contact.getFixtureB().getBody().getUserData().toString().startsWith("Mine") || contact.getFixtureB().getBody().getUserData().toString().startsWith("Star")
@@ -88,10 +79,7 @@ public class B2dContactListener implements ContactListener {
             PlayerOneGotShoot = true;
             System.out.println("PlayerOneGotShoot");
 
-
-            //System.out.println("Fixture B: " + contact.getFixtureB().getUserData());
             log.debug("Fixture B: " + contact.getFixtureB().getUserData());
-            //System.out.println("UserData of Fixture B starts with Rocket: " + contact.getFixtureB().getBody().getUserData().toString().startsWith("Rocket"));
             log.debug("UserData of Fixture B starts with Rocket: " + contact.getFixtureB().getBody().getUserData().toString().startsWith("Rocket"));
         }
 
@@ -102,32 +90,22 @@ public class B2dContactListener implements ContactListener {
             PlayerTwoGotShoot = true;
             System.out.println("PlayerTwoGotShoot");
 
-
-            //System.out.println("Fixture B: " + contact.getFixtureB().getUserData());
             log.debug("Fixture B: " + contact.getFixtureB().getUserData());
-            //System.out.println("UserData of Fixture B starts with Rocket: " + contact.getFixtureB().getBody().getUserData().toString().startsWith("Rocket"));
             log.debug("UserData of Fixture B starts with Rocket: " + contact.getFixtureB().getBody().getUserData().toString().startsWith("Rocket"));
         }
 
 
 
-
         if ("Tile".equals(contact.getFixtureA().getBody().getUserData()) && "PlayerTwo".equals(contact.getFixtureB().getBody().getUserData())){
-            //System.out.println("P2 Touching Tile:" + P2NotTouchingTile);
             log.debug("P2 Touching Tile:" + P2NotTouchingTile);
             P2NotTouchingTile = false;
         }
 
         if ("Tile".equals(contact.getFixtureA().getBody().getUserData()) && "PlayerOne".equals(contact.getFixtureB().getBody().getUserData())){
-            //System.out.println("P1 Touching Tile: " + P1NotTouchingTile);
             log.debug("P1 Touching Tile: " + P1NotTouchingTile);
             P1NotTouchingTile = false;
         }
 
-        //RocketS
-
-        // TODO Implement Rocket and landmine damage with boolean variables
-        //  because no references to real classes :)
 
         if(contact.getFixtureB().getBody().getUserData().toString().startsWith("Rocket")){
             bodiesToDestroy.add(contact.getFixtureB().getBody());
@@ -148,9 +126,8 @@ public class B2dContactListener implements ContactListener {
             //contact.getFixtureB().getFilterData().categoryBits
         }
 
-        //IBM
 
-
+        //IBM:
         if(contact.getFixtureB().getBody().getUserData().toString().startsWith("IBM")){
             bodiesToDestroy.add(contact.getFixtureB().getBody());
             contact.getFixtureB().getBody().setUserData("Destroyed");
@@ -174,8 +151,8 @@ public class B2dContactListener implements ContactListener {
             //contact.getFixtureB().getFilterData().categoryBits
         }
 
-        //STAR
 
+        //STAR:
         if(contact.getFixtureB().getBody().getUserData().toString().startsWith("Star")){ //should be Star
             bodiesToDestroy.add(contact.getFixtureB().getBody());
             contact.getFixtureB().getBody().setUserData("Destroyed");
@@ -190,10 +167,8 @@ public class B2dContactListener implements ContactListener {
             //contact.getFixtureB().getFilterData().categoryBits
         }
 
-        //LANDMINE
 
-        //should not explode when contacting with ground
-
+        //LANDMINE:
         if(!("Tile".equals(contact.getFixtureA().getBody().getUserData())) && contact.getFixtureB().getBody().getUserData().toString().startsWith("Mine")){
             bodiesToDestroy.add(contact.getFixtureB().getBody());
             contact.getFixtureB().getBody().setUserData("Destroyed");
@@ -210,8 +185,8 @@ public class B2dContactListener implements ContactListener {
             //contact.getFixtureB().getFilterData().categoryBits
         }
 
-        //MINEBALL
 
+        //MINEBALL:
         if(contact.getFixtureB().getBody().getUserData().toString().startsWith("Fire")){
             bodiesToDestroy.add(contact.getFixtureB().getBody());
             contact.getFixtureB().getBody().setUserData("Destroyed");
@@ -231,23 +206,7 @@ public class B2dContactListener implements ContactListener {
         }
 
     @Override
-    public void endContact(Contact contact) {
-
-//        if("Tile".equals(contact.getFixtureA().getBody().getUserData()) && "PlayerOne".equals(contact.getFixtureB().getBody().getUserData())){
-//            //System.out.println("P1 Touching Tile: " + P1NotTouchingTile);
-//            log.debug("P1 Touching Tile: " + P1NotTouchingTile);
-//            P1NotTouchingTile = true;
-//        }
-//        if("Tile".equals(contact.getFixtureA().getBody().getUserData()) && "PlayerTwo".equals(contact.getFixtureB().getBody().getUserData())) // null because not touching anything
-//        {
-//            //System.out.println("P2 Touching Tile:" + P2NotTouchingTile);
-//            log.debug("P2 Touching Tile:" + P2NotTouchingTile);
-//            P2NotTouchingTile = true;
-//        }
-
-        //System.out.println(contact.getFixtureA().getBody().getUserData());
-        //System.out.println(contact.getFixtureB().getBody().getUserData());
-    }
+    public void endContact(Contact contact) {}
 
     @Override
     public void preSolve(Contact contact, Manifold oldManifold) {
@@ -258,7 +217,6 @@ public class B2dContactListener implements ContactListener {
     public void postSolve(Contact contact, ContactImpulse impulse) {
         return;
     }
-
 
     public void resetContactListener() {
         bodiesToDestroy.clear();

@@ -6,7 +6,7 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 /**
- * The GameThread Class for counting the ingame time
+ * The GameThread for counting the in-game time / playtime.
  */
 public class GameThread extends Thread{
     private static Logger log = LogManager.getLogger(GameThread.class);
@@ -33,9 +33,9 @@ public class GameThread extends Thread{
 
     /**
      * Stops the count and adds it to the existing Count in the gameproperties file.
-     * Also increasing the times plkayed in gameproperties.
+     * Also increasing the times played in gameproperties.
      */
-    //wegen performance gründen erst am ende erst properties verändern
+    // For better performance modifying gameproperties at the very end.
     public void threadEnd() throws NegativeSeconds {
         running=false;
         log.info("Ending thread...");
