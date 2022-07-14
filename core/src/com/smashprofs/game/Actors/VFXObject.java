@@ -23,9 +23,9 @@ public class VFXObject extends GameObject {
     public Texture rawTexture;
     private final Animation<TextureRegion> explode;
     private final SoundManager soundManager = SoundManager.getSoundManager_INSTANCE();
-    float stateTime = 0;
+    private float stateTime = 0;
 
-    float centeringFactor = 0f;
+    private float centeringFactor = 0f;
 
 
     /**

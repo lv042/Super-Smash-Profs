@@ -10,6 +10,7 @@ import com.badlogic.gdx.math.Matrix4;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.*;
 import com.smashprofs.game.Actors.GameObject;
+import com.smashprofs.game.Actors.Players.PlayerView;
 import com.smashprofs.game.Helper.B2dContactListener;
 import com.smashprofs.game.Helper.CameraManager;
 import com.smashprofs.game.Actors.Players.Player;
@@ -29,7 +30,7 @@ public class  Projectile extends GameObject {
     private BodyDef bdef;
     // public Body b2dbody;
     private CameraManager cameraManager = CameraManager.getCameraManager_INSTANCE();
-    private com.smashprofs.game.Actors.Players.Player originPlayer;
+    private com.smashprofs.game.Actors.Players.PlayerView originPlayer;
 
     private Vector2 projectileSpawnpoint;
     public double rotation = 0;
@@ -46,7 +47,7 @@ public class  Projectile extends GameObject {
 
     public final Shape bodyShape;
     public Boolean active;
-    World world;
+    private World world;
 
     /**
      * Constructor for creating a projectile that spawns at the position of the originPlayer
@@ -63,7 +64,7 @@ public class  Projectile extends GameObject {
      * @param damageOnHit
      * The amount of damage the projectile will do to a player
      */
-    public Projectile(World world, Player originPlayer, String userData, Shape bodyShape, float spawnOffset, Texture projectileTexture, int damageOnHit, float delayInSec, short categoryBits) {
+    public Projectile(World world, PlayerView originPlayer, String userData, Shape bodyShape, float spawnOffset, Texture projectileTexture, int damageOnHit, float delayInSec, short categoryBits) {
         super(userData);
         this.damageOnHit = damageOnHit;
         delayInSeconds = delayInSec;
@@ -75,10 +76,10 @@ public class  Projectile extends GameObject {
         this.bodyShape = bodyShape;
         this.spawnOffset = spawnOffset;
         this.categoryBits = categoryBits;
-        projectileSpawnpoint = new Vector2(originPlayer.getPosition().x + (originPlayer.getIsFacingRightAxe() * spawnOffset / PPM), originPlayer.getPosition().y);
+        projectileSpawnpoint = new Vector2(originPlayer.getPositionView().x + (originPlayer.getIsFacingRightAxeView() * spawnOffset / PPM), originPlayer.getPositionView().y);
 
 
-        sprite.setBounds(originPlayer.getPlayerSprite().getX() / PPM, originPlayer.getPlayerSprite().getY() / PPM, sprite.getWidth()/PPM, sprite.getHeight()/PPM);
+        sprite.setBounds(originPlayer.getPlayerSpriteView().getX() / PPM, originPlayer.getPlayerSpriteView().getY() / PPM, sprite.getWidth()/PPM, sprite.getHeight()/PPM);
         create();
 
 
@@ -113,7 +114,7 @@ public class  Projectile extends GameObject {
         this.spawnOffset = spawnOffset;
         this.categoryBits = categoryBits;
         //projectileSpawnpoint = new Vector2(originPosition.x, originPosition.y );
-        projectileSpawnpoint = new Vector2(originPosition.x + (spawnOffset / PPM), originPosition.y);
+        projectileSpawnpoint = new Vector2(originPosition.x, originPosition.y);
 
 
         sprite.setBounds(originPosition.x / PPM, originPosition.y / PPM, sprite.getWidth()/PPM, sprite.getHeight()/PPM);
@@ -129,7 +130,7 @@ public class  Projectile extends GameObject {
      * Applies a horizontal linearVelocity to the Projectile
      */
     void initialMovement(float speed) {
-        b2dbody.setLinearVelocity(new Vector2(originPlayer.getIsFacingRightAxe() * speed, 0));
+        b2dbody.setLinearVelocity(new Vector2(originPlayer.getIsFacingRightAxeView() * speed, 0));
     }
 
     /**

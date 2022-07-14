@@ -1,15 +1,23 @@
 package com.smashprofs.game.Helper;
 
+import com.smashprofs.game.Exceptions.NegativeSeconds;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import java.io.*;
 import java.util.Properties;
 
+/**
+ * Handles the game.properties file.
+ */
 public class gamePropertiesManager {
     private static Logger log = LogManager.getLogger(gamePropertiesManager.class);
     private static File file = new File("../core/src/resources/game_info.properties");
     private static Properties p = new Properties();
+
+    /**
+     * This needs to be called on the first start of the game.
+     */
     public static void firstStart() {
         //checks if file exists
         if (!file.exists()) {
@@ -20,6 +28,8 @@ public class gamePropertiesManager {
                 file.createNewFile();
                 edit(Keys.GAMETIME,"0 min 0 sek");
                 edit(Keys.TIMESPLAYED,"0");
+                edit(Keys.TEST,"teest");
+                edit(Keys.EASTEREGG,"false");
                 log.info("Created default game properties file.");
             } catch (IOException e) {
                 log.error("Failed creating game properties file!");
@@ -31,6 +41,13 @@ public class gamePropertiesManager {
     }
 
 
+    /**
+     * Edits the value of a specific key.
+     * @param key
+     * The key whose value is to be changed.
+     * @param value
+     * The new value of the selected key.
+     */
     public static void edit(Keys key,String value) {
         log.debug("Editing game properties file...");
         //creates file writer
@@ -49,6 +66,7 @@ public class gamePropertiesManager {
             //saving changes
             log.debug("Trying to save changes...");
             p.store (writer, "Update by FileWriter");
+            writer.close();
             log.debug("Changes saved.");
         } catch (IOException e) {
             log.error("Failed saving changes!");
@@ -57,6 +75,13 @@ public class gamePropertiesManager {
         }
     }
 
+    /**
+     * Gets the value of a specific key.
+     * @param key
+     * The key to get the value of.
+     * @return
+     * The value of the specific key.
+     */
     public static String getEntry(Keys key) {
 
         //creates file reader
@@ -73,6 +98,7 @@ public class gamePropertiesManager {
         try {
             log.debug("Trying to load property with FileReader...");
             p.load(reader);
+            reader.close();
             log.debug("Loaded property.");
         } catch (IOException e) {
             log.error("Failed loading property!");
@@ -83,17 +109,35 @@ public class gamePropertiesManager {
         return p.getProperty(key.getValue());
     }
 
-    //to reformat game time
+    /**
+     * Reformat the game time string to an int value.
+     * @param time
+     * The time string.
+     * @return
+     * The time in seconds.
+     */
     public static int stringToSeconds(String time){
         String[] timesplit =time.split(" ");
         log.debug("Reformatted time string to int.");
         return Integer.parseInt(timesplit[0])*60+Integer.parseInt(timesplit[2]);
     }
 
-    public static String secondsToString(int seconds){
-        int minutes = seconds/60;
-        int sec=seconds-minutes*60;
-        log.debug("Reformatted time int to string.");
-        return minutes+" min "+sec+" sek";
+    /**
+     * Reformat the game time in seconds to a string.
+     * @param seconds
+     * The game time in seconds.
+     * @return
+     * The time as a string.
+     */
+    public static String secondsToString(int seconds) throws NegativeSeconds{
+        if (seconds>=0) {
+            int minutes = seconds / 60;
+            int sec = seconds - minutes * 60;
+            log.debug("Reformatted time int to string.");
+            return minutes + " min " + sec + " sek";
+        }
+        else {
+            throw new NegativeSeconds(seconds +" seconds is not possible!");
+        }
     }
 }

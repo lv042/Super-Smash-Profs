@@ -6,7 +6,9 @@ import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.smashprofs.game.Game;
+import com.smashprofs.game.Helper.Keys;
 import com.smashprofs.game.Helper.SoundManager;
+import com.smashprofs.game.Helper.gamePropertiesManager;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -36,7 +38,13 @@ public class IntroScreen extends ScreenAdapter {
         camera = new OrthographicCamera(width, height);
 
         camera.update();
-        texture = new Texture(Gdx.files.internal("logo.jpeg"));
+
+        if(gamePropertiesManager.getEntry(Keys.EASTEREGG).equals("true")) {
+            texture = new Texture(Gdx.files.internal("rickrollroll.gif"));
+        }
+        else {
+            texture = new Texture(Gdx.files.internal("intro.png"));
+        }
 
         batch = new SpriteBatch();
         this.game = game;

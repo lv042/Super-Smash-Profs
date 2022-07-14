@@ -51,8 +51,8 @@ public class PlayScreen implements Screen {
     private TmxMapLoader mapLoader;
     private TiledMap map;
     private OrthogonalTiledMapRenderer tiledMapRenderer;
-    private Player playerOne;
-    private Player playerTwo;
+    public Player playerOne;
+    public Player playerTwo;
 
 
     //managers
@@ -115,7 +115,6 @@ public class PlayScreen implements Screen {
      * The game delta time
      */
     public void update(float deltatime) {
-
         tiledMapRenderer.setView(gamecamera);
 
         playerOne.update(deltatime);
@@ -304,7 +303,7 @@ public class PlayScreen implements Screen {
             //render our tiled map debug outlines to screen
             box2DDebugRenderer.render(world, gamecamera.combined);
 
-            // REMOVE "//" TO PRINT FPS OF TO THE CONSOLE!!-----
+            // REMOVE "//" TO PRINT FPS TO THE CONSOLE!!-----
             //System.out.println(Gdx.graphics.getFramesPerSecond());
             // -------------------------------------------------
         }

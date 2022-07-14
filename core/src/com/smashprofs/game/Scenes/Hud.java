@@ -10,6 +10,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
+import com.smashprofs.game.Actors.Players.PlayerView;
 import com.smashprofs.game.Game;
 import com.smashprofs.game.Actors.Players.Player;
 import com.smashprofs.game.Helper.SoundManager;
@@ -21,17 +22,17 @@ public class  Hud{
     private Integer worldTimer = 120; //120 is the max time for the game
     private float timeCount; // time counter for the hud
     private int score; // score counter for the hud
-    Label countdownLabel; // label for the countdown;
-    Label scoreLabel; // label for the score
-    Label playerTwoHud; // label for the time
-    Label playerOneHud; // label for the level
-    Label modeLabel; // label for the world
-    Label playerLabel; // label for the player
-    Label fpsLabel; // label for the current FPS
+    private Label countdownLabel; // label for the countdown;
+    private Label scoreLabel; // label for the score
+    private Label playerTwoHud; // label for the time
+    private Label playerOneHud; // label for the level
+    private Label modeLabel; // label for the world
+    private Label playerLabel; // label for the player
+    private Label fpsLabel; // label for the current FPS
     BitmapFont fpsFont; // font for the FPS number. Different styling than the default bitmap font.
     private SoundManager soundManager;
 
-    public Hud(SpriteBatch spriteBatch, Player playerOne, Player playerTwo){
+    public Hud(SpriteBatch spriteBatch, PlayerView playerOne, PlayerView playerTwo){
         soundManager=SoundManager.getSoundManager_INSTANCE();
         this.fpsFont = new BitmapFont();
         fpsFont.getData().setScale(0.5f);
@@ -59,7 +60,7 @@ public class  Hud{
         playerTwoHud = new Label(playerTwo.getPlayerName() + " " + playerTwo.getHP() + "%", new Label.LabelStyle(new BitmapFont(), Color.WHITE));
         modeLabel = new Label("1 vs. 1", new Label.LabelStyle(new BitmapFont(), Color.WHITE));
 
-        if(Game.debugMode) {
+        if(Game.showFPS || Game.debugMode) {
             fpsLabel = new Label( "FPS: "  + Gdx.graphics.getFramesPerSecond(), new Label.LabelStyle(fpsFont, Color.RED));
         }
 
@@ -67,7 +68,7 @@ public class  Hud{
         table.add(countdownLabel).expandX().padTop(2);
         table.add(playerTwoHud).expandX().padTop(2);
         table.row(); // new row
-        table.add(fpsLabel);
+        table.add(fpsLabel).right().padRight(6f).padTop(3f).colspan(3);
         stage.addActor(table);
 
     }
@@ -82,7 +83,7 @@ public class  Hud{
         playerOneHud.setText(playerOne.getPlayerName() + " " + (int)playerOne.getHP() + "%");
         playerTwoHud.setText(playerTwo.getPlayerName() + " " + (int)playerTwo.getHP() + "%");
 
-        if(Game.debugMode) {
+        if(Game.showFPS || Game.debugMode) {
             fpsLabel.setText("FPS: " + Gdx.graphics.getFramesPerSecond());
             // Set color of FPS label if FPS are low.
             if(Gdx.graphics.getFramesPerSecond() < 30) {
@@ -98,7 +99,7 @@ public class  Hud{
 
     }
 
-    public boolean testWin(Player playerOne, Player playerTwo)
+    public boolean testWin(PlayerView playerOne, PlayerView playerTwo)
     {
         if(timeCount>=1){
             soundManager.playSound("sounds/clock.mp3");
@@ -112,10 +113,6 @@ public class  Hud{
     }
 
 
-public int getPlayerOneHP(Player playerOne)
-{
-    return 0;
-}
 
     public void dispose() {
         stage.dispose();

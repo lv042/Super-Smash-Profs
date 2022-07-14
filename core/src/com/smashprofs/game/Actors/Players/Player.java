@@ -1,11 +1,7 @@
 package com.smashprofs.game.Actors.Players;
 
 
-import com.badlogic.gdx.utils.TimeUtils;
-import com.badlogic.gdx.utils.Timer;
 import com.smashprofs.game.Actors.GameObject;
-import com.smashprofs.game.Actors.Projectiles.Landmine;
-import com.smashprofs.game.Actors.Projectiles.Projectile;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.controllers.Controller;
@@ -16,17 +12,13 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.*;
 import com.badlogic.gdx.utils.Array;
 import com.smashprofs.game.Helper.*;
-import com.smashprofs.game.Screens.PlayScreen;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-
-
-import java.util.ArrayList;
 
 /**
  * A controllable Player
  */
-public abstract class Player extends GameObject {
+public abstract class Player extends GameObject implements PlayerView {
 
     private static Logger log = LogManager.getLogger(Player.class);
 
@@ -50,7 +42,7 @@ public abstract class Player extends GameObject {
     private final float walkingSpeedMultiplier = 1.1f;
     private final SoundManager soundManager;
     private final String userData;
-    public float damping = 0.999f; //the closer this value is to zero the more the player will slow down
+    private float damping = 0.999f; //the closer this value is to zero the more the player will slow down
     InputState currentInputState;
     PlayerTypes playerType;
     float stateTime = 0;
@@ -61,7 +53,7 @@ public abstract class Player extends GameObject {
     boolean standardAttackInput = false;
     private final Texture playerStand, playerRun, playerJump, playerPunch;
     private String playerName;
-    private Vector2 poistion;
+    private Vector2 position;
     private boolean isStomping;
     private boolean isDead = false;
     private boolean stompHitground;
@@ -84,7 +76,30 @@ public abstract class Player extends GameObject {
     
     private final Sprite sprite = new Sprite(); //Sprite of the GameObject
 
-    public Player(World world, InputState inputState, Vector2 spawnpoint, String playerName, PlayerTypes playerType, String userData, Texture playerStandTex, Texture playerRunTex, Texture playerJumpTex, Texture playerPunchTex) {
+    /**
+     * Creates a playable player that has a b2dBody, a sprite and animation for his individual states.
+     * @param world
+     * The world the player lives in.
+     * @param inputState
+     * The input method the player can be controlled with.
+     * @param spawnpoint
+     * The point the player will spawn at.
+     * @param playerName
+     * The player's in-game name.
+     * @param playerType
+     * The player's type.
+     * @param userData
+     * The userData of the player as a game object.
+     * @param playerStandTex
+     * The stand texture stripe (4 frames)
+     * @param playerRunTex
+     * The run texture stripe (6 frames)
+     * @param playerJumpTex
+     * The jump texture stripe (2 frames)
+     * @param playerPunchTex
+     * The punch texture stripe (3 frames)
+     */
+    Player(World world, InputState inputState, Vector2 spawnpoint, String playerName, PlayerTypes playerType, String userData, Texture playerStandTex, Texture playerRunTex, Texture playerJumpTex, Texture playerPunchTex) {
         super(userData);
 
         this.playerType = playerType;
@@ -130,10 +145,16 @@ public abstract class Player extends GameObject {
 
 
 
-    public void updatePosition(float deltatime) {
-        poistion = b2dbody.getPosition();
+    private void updatePosition(float deltatime) {
+        position = b2dbody.getPosition();
     }
 
+    /**
+     * Update the player and all of his parameters.
+     * Do necessary checks.
+     * @param deltatime
+     * The game delta time.
+     */
     public void update(float deltatime) {
         updatePosition(deltatime);
         touchingTiles();
@@ -269,7 +290,7 @@ public abstract class Player extends GameObject {
      * @param dt
      * The game delta time.
      */
-    public void managePlayerInput(float dt) {
+    private void managePlayerInput(float dt) {
 
         Array<Controller> controllers2 = Controllers.getControllers();
 
@@ -417,7 +438,7 @@ public abstract class Player extends GameObject {
      * @return
      * The frame of the animation matching the current state time and the player state.
      */
-    public TextureRegion getRenderTexture(float stateTime) {
+    private TextureRegion getRenderTexture(float stateTime) {
         TextureRegion frame = null;
 
         if(isPunching) {
@@ -451,7 +472,7 @@ public abstract class Player extends GameObject {
 
     }
 
-    public boolean reachedWorldEdge() {
+    private boolean reachedWorldEdge() {
 
         return b2dbody.getPosition().y < 0;
     }
@@ -460,7 +481,7 @@ public abstract class Player extends GameObject {
      * Checks if the player is touching the ground.
      * Sets isGrounded, isNotTouchingTiles, isExtraJumpReady and isStomping accordingly.
      */
-    public void checkGrounded() {
+    private void checkGrounded() {
         currentY = b2dbody.getPosition().y;
 
         if (b2dbody.getLinearVelocity().y - getGravity() >= 0.2 || b2dbody.getLinearVelocity().y - getGravity() <= -0.2) {
@@ -468,7 +489,6 @@ public abstract class Player extends GameObject {
         }
 
         if (!isNotTouchingTiles) {
-            //is not touching tiles doesnt work right now and causes the
             if (isStomping()) {
                 soundManager.playSound(stompSoundWav);
                 setStompHitground(true);
@@ -479,7 +499,6 @@ public abstract class Player extends GameObject {
             }
             isGrounded = true;
             setGravity(getStartingGravity());
-            //System.out.println("grounded");
 
             jumpCount = 0;
             isExtraJumpReady = false;
@@ -490,21 +509,20 @@ public abstract class Player extends GameObject {
             isGrounded = false;
         }
         previousY = b2dbody.getLinearVelocity().y;
-        // System.out.println(isTouchingTiles);
 
 
     }
 
-    public float getGravity() {
+    private float getGravity() {
         return gravity;
     }
 
-    public void setGravity(float gravity) {
+    private void setGravity(float gravity) {
         this.gravity = gravity;
     }
 
     //respawn jumping
-    public void respawnPlayers() {
+    private void respawnPlayers() {
         if (reachedWorldEdge()) {
             getB2dbody().setLinearVelocity(new Vector2(getB2dbody().getLinearVelocity().x * getRespawnDamping(), 2.6f));
 
@@ -526,12 +544,13 @@ public abstract class Player extends GameObject {
     public void applyForces(float x, float y) {
 
         //all forces applied to the player should be done with this method
+        //all forces applied to the player should be done with this method
         forcesCombined = new Vector2(0 + x, gravity + y);
         getB2dbody().applyLinearImpulse(forcesCombined, getB2dbody().getWorldCenter(), true);
         forcesCombined.setZero();
     }
 
-    public void limitPlayersToEdge() {
+    private void limitPlayersToEdge() {
         //sets player velocity to 0 if they are at the edge of the map
         float pushBack = 1f;
 
@@ -556,7 +575,7 @@ public abstract class Player extends GameObject {
         WASD, ARROWS
     }
 
-    public enum State {
+    private enum State {
         FALLING, JUMPING, STANDING, RUNNING
     }
 
@@ -694,8 +713,20 @@ public abstract class Player extends GameObject {
     }
 
     public Vector2 getPosition() {
-        return poistion;
+        return position;
     }
+
+    public Vector2 getPositionView() {
+        return position;
+        // returns the location witnout
+    }
+    public Sprite getPlayerSpriteView() {
+        return this.sprite;
+    }
+    public int getIsFacingRightAxeView() {
+        return this.isFacingRightAxe;
+    }
+    public float getPlayerCollisionBoxRadiusView() {return this.playerCollisionBoxRadius;}
 
     public float getAttackReach() {
         return attackReach;

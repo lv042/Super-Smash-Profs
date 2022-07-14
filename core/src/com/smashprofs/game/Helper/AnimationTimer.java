@@ -2,6 +2,10 @@ package com.smashprofs.game.Helper;
 
 import com.badlogic.gdx.utils.TimeUtils;
 
+/**
+ * A timer for making sure that the Player punch animation only gets played from the beginning
+ * when it was run completely.
+ */
 public class AnimationTimer {
     private long startTime;
     private final float duration;
