@@ -80,7 +80,7 @@ To start the game, simply add a new run configuration and type in "run".
 ![gameplay](./assets/screenshots/gameplay.png)
 ![winner](./assets/screenshots/winner.png)
 
-##Documentation
+## Documentation
 
 https://drive.google.com/file/d/15gitvx5r0FNpOf9QIgNHDvPcJrHTNwK1/view?usp=sharing
 
