@@ -21,7 +21,7 @@ A Java platformer developed with LIBgdx and Tiled
   - [How can I play the game?](#how-can-i-play-the-game)
 - [Authors](#authors)
 - [Screenshots](#screenshots)
-- [Documentation](#dokumentation)
+- [Documentation](#documentation)
 - [Feedback](#feedback)
 
 ## Description
