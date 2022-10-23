@@ -11,7 +11,7 @@
 ```
 # Super Smash Profs
 
-A Java platformer developed with LIBgdx and Tiled
+A Java platformer which is inspired by Super Smash Bros and developed with libGDX and Tiled.
 
 ## Table of Contents
 
@@ -58,9 +58,9 @@ To start the game, simply add a new run configuration and type in "run".
 ## Authors
 
 - [@lv042](https://github.com/lv042)
-- [@ll071](https://gitlab.mi.hdm-stuttgart.de/ll071)
-- [@md147](https://gitlab.mi.hdm-stuttgart.de/md147)
-- [@ab306](https://gitlab.mi.hdm-stuttgart.de/ab306)
+- [@ll071]
+- [@md147]
+- [@ab306]
 
 ### License
 
